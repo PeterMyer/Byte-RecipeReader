@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./client/components/NewRecipe.js":
-/*!****************************************!*\
-  !*** ./client/components/NewRecipe.js ***!
-  \****************************************/
+/***/ "./client/components/RecipeIntake.js":
+/*!*******************************************!*\
+  !*** ./client/components/RecipeIntake.js ***!
+  \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14,10 +14,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39,10 +35,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-
-
-var _require = __webpack_require__(/*! tesseract.js */ "./node_modules/tesseract.js/src/index.js"),
-    createWorker = _require.createWorker;
+ //Intakes new recipe upload
 
 var NewRecipe = /*#__PURE__*/function (_React$Component) {
   _inherits(NewRecipe, _React$Component);
@@ -56,10 +49,8 @@ var NewRecipe = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this);
     _this.state = {
-      text: "waiting on recipe",
-      lines: [],
-      recipeuploaded: false,
-      recipeDone: false
+      loaded: false,
+      result: "Waiting on recipe"
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     return _this;
@@ -68,71 +59,39 @@ var NewRecipe = /*#__PURE__*/function (_React$Component) {
   _createClass(NewRecipe, [{
     key: "handleChange",
     value: function handleChange(event) {
-      var _this2 = this;
+      var file = event.target.files[0]; //create new file reader
 
-      var readerResult = "";
       var reader = new FileReader();
-      var file = event.target.files[0];
-      reader.addEventListener("load", function () {
-        readerResult = reader.result;
-      }, false);
 
-      if (file) {
-        reader.readAsDataURL(file);
-        var worker = createWorker();
+      reader.onload = function (e) {
+        this.setState({
+          result: e.target.result,
+          loaded: true
+        });
+        this.forceUpdate();
+      }.bind(this);
 
-        _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-          var _yield$worker$recogni, _yield$worker$recogni2, text, lines;
+      reader.onerror = function () {
+        console.log("error:", reader.error);
+      };
 
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _context.next = 2;
-                  return worker.load();
+      reader.readAsDataURL(file);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      //builds canvas and inserts image
+      var canvas = document.getElementById("recipecanvas");
+      var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#FF0000";
+      var img = document.getElementById("recipeImg"); // let hRatio = ctx.width / img.width    ;
+      // let vRatio = ctx.height / img.height
+      // let ratio  = Math.min ( hRatio, vRatio )
 
-                case 2:
-                  _context.next = 4;
-                  return worker.loadLanguage("eng");
-
-                case 4:
-                  _context.next = 6;
-                  return worker.initialize("eng");
-
-                case 6:
-                  _context.next = 8;
-                  return worker.setParameters({
-                    preserve_interword_spaces: 1
-                  });
-
-                case 8:
-                  _context.next = 10;
-                  return worker.recognize(readerResult);
-
-                case 10:
-                  _yield$worker$recogni = _context.sent;
-                  _yield$worker$recogni2 = _yield$worker$recogni.data;
-                  text = _yield$worker$recogni2.text;
-                  lines = _yield$worker$recogni2.lines;
-
-                  //console.log(text);
-                  _this2.setState({
-                    text: text,
-                    lines: lines
-                  });
-
-                  console.log(_this2.state);
-                  _context.next = 18;
-                  return worker.terminate();
-
-                case 18:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee);
-        }))();
-      }
+      img.onload = function () {
+        // ctx.drawImage(img, 0, 0, img.width, img.height, 0,0,img.width*ratio, img.height*ratio)
+        ctx.drawImage(img, 0, 0, 800, 800);
+      };
     }
   }, {
     key: "render",
@@ -145,9 +104,16 @@ var NewRecipe = /*#__PURE__*/function (_React$Component) {
         name: "recipe",
         accept: "image/png, image/jpeg",
         onChange: this.handleChange
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.state.lines.map(function (line) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, line.text);
-      })));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        src: this.state.result,
+        height: "800",
+        id: "recipeImg",
+        hidden: true
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("canvas", {
+        id: "recipecanvas",
+        width: "800",
+        height: "800"
+      }));
     }
   }]);
 
@@ -172,7 +138,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var _NewRecipe__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewRecipe */ "./client/components/NewRecipe.js");
+/* harmony import */ var _RecipeIntake__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RecipeIntake */ "./client/components/RecipeIntake.js");
 
 
 
@@ -180,2344 +146,12 @@ __webpack_require__.r(__webpack_exports__);
 var Routes = function Routes() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     exact: true,
-    path: "/New",
-    component: _NewRecipe__WEBPACK_IMPORTED_MODULE_1__["default"]
+    path: "/",
+    component: _RecipeIntake__WEBPACK_IMPORTED_MODULE_1__["default"]
   }))));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Routes);
-
-/***/ }),
-
-/***/ "./client/store.js":
-/*!*************************!*\
-  !*** ./client/store.js ***!
-  \*************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var redux_logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js");
-/* harmony import */ var redux_logger__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(redux_logger__WEBPACK_IMPORTED_MODULE_0__);
- //import placeholderReducer from './placeholderReducer'
-//import { ThunkMiddleware } from "redux-thunk";
-
-
-var store = (0,redux__WEBPACK_IMPORTED_MODULE_1__.createStore)( //placeholderReducer,
-(0,redux__WEBPACK_IMPORTED_MODULE_1__.applyMiddleware)( //ThunkMiddleware,
-(0,redux_logger__WEBPACK_IMPORTED_MODULE_0__.createLogger)()));
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/index.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/index.js ***!
-  \*****************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/* global module, require */
-
-module.exports = __webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js")
-
-__webpack_require__(/*! ./load-image-scale */ "./node_modules/blueimp-load-image/js/load-image-scale.js")
-__webpack_require__(/*! ./load-image-meta */ "./node_modules/blueimp-load-image/js/load-image-meta.js")
-__webpack_require__(/*! ./load-image-fetch */ "./node_modules/blueimp-load-image/js/load-image-fetch.js")
-__webpack_require__(/*! ./load-image-exif */ "./node_modules/blueimp-load-image/js/load-image-exif.js")
-__webpack_require__(/*! ./load-image-exif-map */ "./node_modules/blueimp-load-image/js/load-image-exif-map.js")
-__webpack_require__(/*! ./load-image-iptc */ "./node_modules/blueimp-load-image/js/load-image-iptc.js")
-__webpack_require__(/*! ./load-image-iptc-map */ "./node_modules/blueimp-load-image/js/load-image-iptc-map.js")
-__webpack_require__(/*! ./load-image-orientation */ "./node_modules/blueimp-load-image/js/load-image-orientation.js")
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image-exif-map.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image-exif-map.js ***!
-  \*******************************************************************/
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image Exif Map
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2013, Sebastian Tschan
- * https://blueimp.net
- *
- * Exif tags mapping based on
- * https://github.com/jseidelin/exif-js
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, module, require */
-
-;(function (factory) {
-  'use strict'
-  if (true) {
-    // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js"), __webpack_require__(/*! ./load-image-exif */ "./node_modules/blueimp-load-image/js/load-image-exif.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})(function (loadImage) {
-  'use strict'
-
-  var ExifMapProto = loadImage.ExifMap.prototype
-
-  ExifMapProto.tags = {
-    // =================
-    // TIFF tags (IFD0):
-    // =================
-    0x0100: 'ImageWidth',
-    0x0101: 'ImageHeight',
-    0x0102: 'BitsPerSample',
-    0x0103: 'Compression',
-    0x0106: 'PhotometricInterpretation',
-    0x0112: 'Orientation',
-    0x0115: 'SamplesPerPixel',
-    0x011c: 'PlanarConfiguration',
-    0x0212: 'YCbCrSubSampling',
-    0x0213: 'YCbCrPositioning',
-    0x011a: 'XResolution',
-    0x011b: 'YResolution',
-    0x0128: 'ResolutionUnit',
-    0x0111: 'StripOffsets',
-    0x0116: 'RowsPerStrip',
-    0x0117: 'StripByteCounts',
-    0x0201: 'JPEGInterchangeFormat',
-    0x0202: 'JPEGInterchangeFormatLength',
-    0x012d: 'TransferFunction',
-    0x013e: 'WhitePoint',
-    0x013f: 'PrimaryChromaticities',
-    0x0211: 'YCbCrCoefficients',
-    0x0214: 'ReferenceBlackWhite',
-    0x0132: 'DateTime',
-    0x010e: 'ImageDescription',
-    0x010f: 'Make',
-    0x0110: 'Model',
-    0x0131: 'Software',
-    0x013b: 'Artist',
-    0x8298: 'Copyright',
-    0x8769: {
-      // ExifIFDPointer
-      0x9000: 'ExifVersion', // EXIF version
-      0xa000: 'FlashpixVersion', // Flashpix format version
-      0xa001: 'ColorSpace', // Color space information tag
-      0xa002: 'PixelXDimension', // Valid width of meaningful image
-      0xa003: 'PixelYDimension', // Valid height of meaningful image
-      0xa500: 'Gamma',
-      0x9101: 'ComponentsConfiguration', // Information about channels
-      0x9102: 'CompressedBitsPerPixel', // Compressed bits per pixel
-      0x927c: 'MakerNote', // Any desired information written by the manufacturer
-      0x9286: 'UserComment', // Comments by user
-      0xa004: 'RelatedSoundFile', // Name of related sound file
-      0x9003: 'DateTimeOriginal', // Date and time when the original image was generated
-      0x9004: 'DateTimeDigitized', // Date and time when the image was stored digitally
-      0x9290: 'SubSecTime', // Fractions of seconds for DateTime
-      0x9291: 'SubSecTimeOriginal', // Fractions of seconds for DateTimeOriginal
-      0x9292: 'SubSecTimeDigitized', // Fractions of seconds for DateTimeDigitized
-      0x829a: 'ExposureTime', // Exposure time (in seconds)
-      0x829d: 'FNumber',
-      0x8822: 'ExposureProgram', // Exposure program
-      0x8824: 'SpectralSensitivity', // Spectral sensitivity
-      0x8827: 'PhotographicSensitivity', // EXIF 2.3, ISOSpeedRatings in EXIF 2.2
-      0x8828: 'OECF', // Optoelectric conversion factor
-      0x8830: 'SensitivityType',
-      0x8831: 'StandardOutputSensitivity',
-      0x8832: 'RecommendedExposureIndex',
-      0x8833: 'ISOSpeed',
-      0x8834: 'ISOSpeedLatitudeyyy',
-      0x8835: 'ISOSpeedLatitudezzz',
-      0x9201: 'ShutterSpeedValue', // Shutter speed
-      0x9202: 'ApertureValue', // Lens aperture
-      0x9203: 'BrightnessValue', // Value of brightness
-      0x9204: 'ExposureBias', // Exposure bias
-      0x9205: 'MaxApertureValue', // Smallest F number of lens
-      0x9206: 'SubjectDistance', // Distance to subject in meters
-      0x9207: 'MeteringMode', // Metering mode
-      0x9208: 'LightSource', // Kind of light source
-      0x9209: 'Flash', // Flash status
-      0x9214: 'SubjectArea', // Location and area of main subject
-      0x920a: 'FocalLength', // Focal length of the lens in mm
-      0xa20b: 'FlashEnergy', // Strobe energy in BCPS
-      0xa20c: 'SpatialFrequencyResponse',
-      0xa20e: 'FocalPlaneXResolution', // Number of pixels in width direction per FPRUnit
-      0xa20f: 'FocalPlaneYResolution', // Number of pixels in height direction per FPRUnit
-      0xa210: 'FocalPlaneResolutionUnit', // Unit for measuring the focal plane resolution
-      0xa214: 'SubjectLocation', // Location of subject in image
-      0xa215: 'ExposureIndex', // Exposure index selected on camera
-      0xa217: 'SensingMethod', // Image sensor type
-      0xa300: 'FileSource', // Image source (3 == DSC)
-      0xa301: 'SceneType', // Scene type (1 == directly photographed)
-      0xa302: 'CFAPattern', // Color filter array geometric pattern
-      0xa401: 'CustomRendered', // Special processing
-      0xa402: 'ExposureMode', // Exposure mode
-      0xa403: 'WhiteBalance', // 1 = auto white balance, 2 = manual
-      0xa404: 'DigitalZoomRatio', // Digital zoom ratio
-      0xa405: 'FocalLengthIn35mmFilm',
-      0xa406: 'SceneCaptureType', // Type of scene
-      0xa407: 'GainControl', // Degree of overall image gain adjustment
-      0xa408: 'Contrast', // Direction of contrast processing applied by camera
-      0xa409: 'Saturation', // Direction of saturation processing applied by camera
-      0xa40a: 'Sharpness', // Direction of sharpness processing applied by camera
-      0xa40b: 'DeviceSettingDescription',
-      0xa40c: 'SubjectDistanceRange', // Distance to subject
-      0xa420: 'ImageUniqueID', // Identifier assigned uniquely to each image
-      0xa430: 'CameraOwnerName',
-      0xa431: 'BodySerialNumber',
-      0xa432: 'LensSpecification',
-      0xa433: 'LensMake',
-      0xa434: 'LensModel',
-      0xa435: 'LensSerialNumber'
-    },
-    0x8825: {
-      // GPSInfoIFDPointer
-      0x0000: 'GPSVersionID',
-      0x0001: 'GPSLatitudeRef',
-      0x0002: 'GPSLatitude',
-      0x0003: 'GPSLongitudeRef',
-      0x0004: 'GPSLongitude',
-      0x0005: 'GPSAltitudeRef',
-      0x0006: 'GPSAltitude',
-      0x0007: 'GPSTimeStamp',
-      0x0008: 'GPSSatellites',
-      0x0009: 'GPSStatus',
-      0x000a: 'GPSMeasureMode',
-      0x000b: 'GPSDOP',
-      0x000c: 'GPSSpeedRef',
-      0x000d: 'GPSSpeed',
-      0x000e: 'GPSTrackRef',
-      0x000f: 'GPSTrack',
-      0x0010: 'GPSImgDirectionRef',
-      0x0011: 'GPSImgDirection',
-      0x0012: 'GPSMapDatum',
-      0x0013: 'GPSDestLatitudeRef',
-      0x0014: 'GPSDestLatitude',
-      0x0015: 'GPSDestLongitudeRef',
-      0x0016: 'GPSDestLongitude',
-      0x0017: 'GPSDestBearingRef',
-      0x0018: 'GPSDestBearing',
-      0x0019: 'GPSDestDistanceRef',
-      0x001a: 'GPSDestDistance',
-      0x001b: 'GPSProcessingMethod',
-      0x001c: 'GPSAreaInformation',
-      0x001d: 'GPSDateStamp',
-      0x001e: 'GPSDifferential',
-      0x001f: 'GPSHPositioningError'
-    },
-    0xa005: {
-      // InteroperabilityIFDPointer
-      0x0001: 'InteroperabilityIndex'
-    }
-  }
-
-  ExifMapProto.stringValues = {
-    ExposureProgram: {
-      0: 'Undefined',
-      1: 'Manual',
-      2: 'Normal program',
-      3: 'Aperture priority',
-      4: 'Shutter priority',
-      5: 'Creative program',
-      6: 'Action program',
-      7: 'Portrait mode',
-      8: 'Landscape mode'
-    },
-    MeteringMode: {
-      0: 'Unknown',
-      1: 'Average',
-      2: 'CenterWeightedAverage',
-      3: 'Spot',
-      4: 'MultiSpot',
-      5: 'Pattern',
-      6: 'Partial',
-      255: 'Other'
-    },
-    LightSource: {
-      0: 'Unknown',
-      1: 'Daylight',
-      2: 'Fluorescent',
-      3: 'Tungsten (incandescent light)',
-      4: 'Flash',
-      9: 'Fine weather',
-      10: 'Cloudy weather',
-      11: 'Shade',
-      12: 'Daylight fluorescent (D 5700 - 7100K)',
-      13: 'Day white fluorescent (N 4600 - 5400K)',
-      14: 'Cool white fluorescent (W 3900 - 4500K)',
-      15: 'White fluorescent (WW 3200 - 3700K)',
-      17: 'Standard light A',
-      18: 'Standard light B',
-      19: 'Standard light C',
-      20: 'D55',
-      21: 'D65',
-      22: 'D75',
-      23: 'D50',
-      24: 'ISO studio tungsten',
-      255: 'Other'
-    },
-    Flash: {
-      0x0000: 'Flash did not fire',
-      0x0001: 'Flash fired',
-      0x0005: 'Strobe return light not detected',
-      0x0007: 'Strobe return light detected',
-      0x0009: 'Flash fired, compulsory flash mode',
-      0x000d: 'Flash fired, compulsory flash mode, return light not detected',
-      0x000f: 'Flash fired, compulsory flash mode, return light detected',
-      0x0010: 'Flash did not fire, compulsory flash mode',
-      0x0018: 'Flash did not fire, auto mode',
-      0x0019: 'Flash fired, auto mode',
-      0x001d: 'Flash fired, auto mode, return light not detected',
-      0x001f: 'Flash fired, auto mode, return light detected',
-      0x0020: 'No flash function',
-      0x0041: 'Flash fired, red-eye reduction mode',
-      0x0045: 'Flash fired, red-eye reduction mode, return light not detected',
-      0x0047: 'Flash fired, red-eye reduction mode, return light detected',
-      0x0049: 'Flash fired, compulsory flash mode, red-eye reduction mode',
-      0x004d: 'Flash fired, compulsory flash mode, red-eye reduction mode, return light not detected',
-      0x004f: 'Flash fired, compulsory flash mode, red-eye reduction mode, return light detected',
-      0x0059: 'Flash fired, auto mode, red-eye reduction mode',
-      0x005d: 'Flash fired, auto mode, return light not detected, red-eye reduction mode',
-      0x005f: 'Flash fired, auto mode, return light detected, red-eye reduction mode'
-    },
-    SensingMethod: {
-      1: 'Undefined',
-      2: 'One-chip color area sensor',
-      3: 'Two-chip color area sensor',
-      4: 'Three-chip color area sensor',
-      5: 'Color sequential area sensor',
-      7: 'Trilinear sensor',
-      8: 'Color sequential linear sensor'
-    },
-    SceneCaptureType: {
-      0: 'Standard',
-      1: 'Landscape',
-      2: 'Portrait',
-      3: 'Night scene'
-    },
-    SceneType: {
-      1: 'Directly photographed'
-    },
-    CustomRendered: {
-      0: 'Normal process',
-      1: 'Custom process'
-    },
-    WhiteBalance: {
-      0: 'Auto white balance',
-      1: 'Manual white balance'
-    },
-    GainControl: {
-      0: 'None',
-      1: 'Low gain up',
-      2: 'High gain up',
-      3: 'Low gain down',
-      4: 'High gain down'
-    },
-    Contrast: {
-      0: 'Normal',
-      1: 'Soft',
-      2: 'Hard'
-    },
-    Saturation: {
-      0: 'Normal',
-      1: 'Low saturation',
-      2: 'High saturation'
-    },
-    Sharpness: {
-      0: 'Normal',
-      1: 'Soft',
-      2: 'Hard'
-    },
-    SubjectDistanceRange: {
-      0: 'Unknown',
-      1: 'Macro',
-      2: 'Close view',
-      3: 'Distant view'
-    },
-    FileSource: {
-      3: 'DSC'
-    },
-    ComponentsConfiguration: {
-      0: '',
-      1: 'Y',
-      2: 'Cb',
-      3: 'Cr',
-      4: 'R',
-      5: 'G',
-      6: 'B'
-    },
-    Orientation: {
-      1: 'top-left',
-      2: 'top-right',
-      3: 'bottom-right',
-      4: 'bottom-left',
-      5: 'left-top',
-      6: 'right-top',
-      7: 'right-bottom',
-      8: 'left-bottom'
-    }
-  }
-
-  ExifMapProto.getText = function (name) {
-    var value = this.get(name)
-    switch (name) {
-      case 'LightSource':
-      case 'Flash':
-      case 'MeteringMode':
-      case 'ExposureProgram':
-      case 'SensingMethod':
-      case 'SceneCaptureType':
-      case 'SceneType':
-      case 'CustomRendered':
-      case 'WhiteBalance':
-      case 'GainControl':
-      case 'Contrast':
-      case 'Saturation':
-      case 'Sharpness':
-      case 'SubjectDistanceRange':
-      case 'FileSource':
-      case 'Orientation':
-        return this.stringValues[name][value]
-      case 'ExifVersion':
-      case 'FlashpixVersion':
-        if (!value) return
-        return String.fromCharCode(value[0], value[1], value[2], value[3])
-      case 'ComponentsConfiguration':
-        if (!value) return
-        return (
-          this.stringValues[name][value[0]] +
-          this.stringValues[name][value[1]] +
-          this.stringValues[name][value[2]] +
-          this.stringValues[name][value[3]]
-        )
-      case 'GPSVersionID':
-        if (!value) return
-        return value[0] + '.' + value[1] + '.' + value[2] + '.' + value[3]
-    }
-    return String(value)
-  }
-
-  ExifMapProto.getAll = function () {
-    var map = {}
-    var prop
-    var obj
-    var name
-    for (prop in this) {
-      if (Object.prototype.hasOwnProperty.call(this, prop)) {
-        obj = this[prop]
-        if (obj && obj.getAll) {
-          map[this.privateIFDs[prop].name] = obj.getAll()
-        } else {
-          name = this.tags[prop]
-          if (name) map[name] = this.getText(name)
-        }
-      }
-    }
-    return map
-  }
-
-  ExifMapProto.getName = function (tagCode) {
-    var name = this.tags[tagCode]
-    if (typeof name === 'object') return this.privateIFDs[tagCode].name
-    return name
-  }
-
-  // Extend the map of tag names to tag codes:
-  ;(function () {
-    var tags = ExifMapProto.tags
-    var prop
-    var privateIFD
-    var subTags
-    // Map the tag names to tags:
-    for (prop in tags) {
-      if (Object.prototype.hasOwnProperty.call(tags, prop)) {
-        privateIFD = ExifMapProto.privateIFDs[prop]
-        if (privateIFD) {
-          subTags = tags[prop]
-          for (prop in subTags) {
-            if (Object.prototype.hasOwnProperty.call(subTags, prop)) {
-              privateIFD.map[subTags[prop]] = Number(prop)
-            }
-          }
-        } else {
-          ExifMapProto.map[tags[prop]] = Number(prop)
-        }
-      }
-    }
-  })()
-})
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image-exif.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image-exif.js ***!
-  \***************************************************************/
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image Exif Parser
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2013, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, module, require, DataView */
-
-/* eslint-disable no-console */
-
-;(function (factory) {
-  'use strict'
-  if (true) {
-    // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js"), __webpack_require__(/*! ./load-image-meta */ "./node_modules/blueimp-load-image/js/load-image-meta.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})(function (loadImage) {
-  'use strict'
-
-  /**
-   * Exif tag map
-   *
-   * @name ExifMap
-   * @class
-   * @param {number} tagCode Private IFD tag code
-   */
-  function ExifMap(tagCode) {
-    if (tagCode) {
-      Object.defineProperty(this, 'map', {
-        value: this.privateIFDs[tagCode].map
-      })
-      Object.defineProperty(this, 'tags', {
-        value: (this.tags && this.tags[tagCode]) || {}
-      })
-    }
-  }
-
-  ExifMap.prototype.map = {
-    Orientation: 0x0112,
-    Thumbnail: 0x0201,
-    Exif: 0x8769,
-    GPSInfo: 0x8825,
-    Interoperability: 0xa005
-  }
-
-  ExifMap.prototype.privateIFDs = {
-    0x8769: { name: 'Exif', map: {} },
-    0x8825: { name: 'GPSInfo', map: {} },
-    0xa005: { name: 'Interoperability', map: {} }
-  }
-
-  /**
-   * Retrieves exif tag value
-   *
-   * @param {number|string} id Exif tag code or name
-   * @returns {object} Exif tag value
-   */
-  ExifMap.prototype.get = function (id) {
-    return this[id] || this[this.map[id]]
-  }
-
-  /**
-   * Returns the Exif Thumbnail data as Blob.
-   *
-   * @param {DataView} dataView Data view interface
-   * @param {number} offset Thumbnail data offset
-   * @param {number} length Thumbnail data length
-   * @returns {undefined|Blob} Returns the Thumbnail Blob or undefined
-   */
-  function getExifThumbnail(dataView, offset, length) {
-    if (!length || offset + length > dataView.byteLength) {
-      console.log('Invalid Exif data: Invalid thumbnail data.')
-      return
-    }
-    return new Blob([dataView.buffer.slice(offset, offset + length)], {
-      type: 'image/jpeg'
-    })
-  }
-
-  var ExifTagTypes = {
-    // byte, 8-bit unsigned int:
-    1: {
-      getValue: function (dataView, dataOffset) {
-        return dataView.getUint8(dataOffset)
-      },
-      size: 1
-    },
-    // ascii, 8-bit byte:
-    2: {
-      getValue: function (dataView, dataOffset) {
-        return String.fromCharCode(dataView.getUint8(dataOffset))
-      },
-      size: 1,
-      ascii: true
-    },
-    // short, 16 bit int:
-    3: {
-      getValue: function (dataView, dataOffset, littleEndian) {
-        return dataView.getUint16(dataOffset, littleEndian)
-      },
-      size: 2
-    },
-    // long, 32 bit int:
-    4: {
-      getValue: function (dataView, dataOffset, littleEndian) {
-        return dataView.getUint32(dataOffset, littleEndian)
-      },
-      size: 4
-    },
-    // rational = two long values, first is numerator, second is denominator:
-    5: {
-      getValue: function (dataView, dataOffset, littleEndian) {
-        return (
-          dataView.getUint32(dataOffset, littleEndian) /
-          dataView.getUint32(dataOffset + 4, littleEndian)
-        )
-      },
-      size: 8
-    },
-    // slong, 32 bit signed int:
-    9: {
-      getValue: function (dataView, dataOffset, littleEndian) {
-        return dataView.getInt32(dataOffset, littleEndian)
-      },
-      size: 4
-    },
-    // srational, two slongs, first is numerator, second is denominator:
-    10: {
-      getValue: function (dataView, dataOffset, littleEndian) {
-        return (
-          dataView.getInt32(dataOffset, littleEndian) /
-          dataView.getInt32(dataOffset + 4, littleEndian)
-        )
-      },
-      size: 8
-    }
-  }
-  // undefined, 8-bit byte, value depending on field:
-  ExifTagTypes[7] = ExifTagTypes[1]
-
-  /**
-   * Returns Exif tag value.
-   *
-   * @param {DataView} dataView Data view interface
-   * @param {number} tiffOffset TIFF offset
-   * @param {number} offset Tag offset
-   * @param {number} type Tag type
-   * @param {number} length Tag length
-   * @param {boolean} littleEndian Little endian encoding
-   * @returns {object} Tag value
-   */
-  function getExifValue(
-    dataView,
-    tiffOffset,
-    offset,
-    type,
-    length,
-    littleEndian
-  ) {
-    var tagType = ExifTagTypes[type]
-    var tagSize
-    var dataOffset
-    var values
-    var i
-    var str
-    var c
-    if (!tagType) {
-      console.log('Invalid Exif data: Invalid tag type.')
-      return
-    }
-    tagSize = tagType.size * length
-    // Determine if the value is contained in the dataOffset bytes,
-    // or if the value at the dataOffset is a pointer to the actual data:
-    dataOffset =
-      tagSize > 4
-        ? tiffOffset + dataView.getUint32(offset + 8, littleEndian)
-        : offset + 8
-    if (dataOffset + tagSize > dataView.byteLength) {
-      console.log('Invalid Exif data: Invalid data offset.')
-      return
-    }
-    if (length === 1) {
-      return tagType.getValue(dataView, dataOffset, littleEndian)
-    }
-    values = []
-    for (i = 0; i < length; i += 1) {
-      values[i] = tagType.getValue(
-        dataView,
-        dataOffset + i * tagType.size,
-        littleEndian
-      )
-    }
-    if (tagType.ascii) {
-      str = ''
-      // Concatenate the chars:
-      for (i = 0; i < values.length; i += 1) {
-        c = values[i]
-        // Ignore the terminating NULL byte(s):
-        if (c === '\u0000') {
-          break
-        }
-        str += c
-      }
-      return str
-    }
-    return values
-  }
-
-  /**
-   * Parses Exif tags.
-   *
-   * @param {DataView} dataView Data view interface
-   * @param {number} tiffOffset TIFF offset
-   * @param {number} dirOffset Directory offset
-   * @param {boolean} littleEndian Little endian encoding
-   * @param {ExifMap} tags Map to store parsed exif tags
-   * @param {ExifMap} tagOffsets Map to store parsed exif tag offsets
-   * @param {object} includeTags Map of tags to include
-   * @param {object} excludeTags Map of tags to exclude
-   * @returns {number} Next directory offset
-   */
-  function parseExifTags(
-    dataView,
-    tiffOffset,
-    dirOffset,
-    littleEndian,
-    tags,
-    tagOffsets,
-    includeTags,
-    excludeTags
-  ) {
-    var tagsNumber, dirEndOffset, i, tagOffset, tagNumber, tagValue
-    if (dirOffset + 6 > dataView.byteLength) {
-      console.log('Invalid Exif data: Invalid directory offset.')
-      return
-    }
-    tagsNumber = dataView.getUint16(dirOffset, littleEndian)
-    dirEndOffset = dirOffset + 2 + 12 * tagsNumber
-    if (dirEndOffset + 4 > dataView.byteLength) {
-      console.log('Invalid Exif data: Invalid directory size.')
-      return
-    }
-    for (i = 0; i < tagsNumber; i += 1) {
-      tagOffset = dirOffset + 2 + 12 * i
-      tagNumber = dataView.getUint16(tagOffset, littleEndian)
-      if (includeTags && !includeTags[tagNumber]) continue
-      if (excludeTags && excludeTags[tagNumber] === true) continue
-      tagValue = getExifValue(
-        dataView,
-        tiffOffset,
-        tagOffset,
-        dataView.getUint16(tagOffset + 2, littleEndian), // tag type
-        dataView.getUint32(tagOffset + 4, littleEndian), // tag length
-        littleEndian
-      )
-      tags[tagNumber] = tagValue
-      if (tagOffsets) {
-        tagOffsets[tagNumber] = tagOffset
-      }
-    }
-    // Return the offset to the next directory:
-    return dataView.getUint32(dirEndOffset, littleEndian)
-  }
-
-  /**
-   * Parses Private IFD tags.
-   *
-   * @param {object} data Data object to store exif tags and offsets
-   * @param {number} tagCode Private IFD tag code
-   * @param {DataView} dataView Data view interface
-   * @param {number} tiffOffset TIFF offset
-   * @param {boolean} littleEndian Little endian encoding
-   * @param {object} includeTags Map of tags to include
-   * @param {object} excludeTags Map of tags to exclude
-   */
-  function parseExifPrivateIFD(
-    data,
-    tagCode,
-    dataView,
-    tiffOffset,
-    littleEndian,
-    includeTags,
-    excludeTags
-  ) {
-    var dirOffset = data.exif[tagCode]
-    if (dirOffset) {
-      data.exif[tagCode] = new ExifMap(tagCode)
-      if (data.exifOffsets) {
-        data.exifOffsets[tagCode] = new ExifMap(tagCode)
-      }
-      parseExifTags(
-        dataView,
-        tiffOffset,
-        tiffOffset + dirOffset,
-        littleEndian,
-        data.exif[tagCode],
-        data.exifOffsets && data.exifOffsets[tagCode],
-        includeTags && includeTags[tagCode],
-        excludeTags && excludeTags[tagCode]
-      )
-    }
-  }
-
-  loadImage.parseExifData = function (dataView, offset, length, data, options) {
-    if (options.disableExif) {
-      return
-    }
-    var includeTags = options.includeExifTags
-    var excludeTags = options.excludeExifTags || {
-      0x8769: {
-        // ExifIFDPointer
-        0x927c: true // MakerNote
-      }
-    }
-    var tiffOffset = offset + 10
-    var littleEndian
-    var dirOffset
-    var privateIFDs
-    // Check for the ASCII code for "Exif" (0x45786966):
-    if (dataView.getUint32(offset + 4) !== 0x45786966) {
-      // No Exif data, might be XMP data instead
-      return
-    }
-    if (tiffOffset + 8 > dataView.byteLength) {
-      console.log('Invalid Exif data: Invalid segment size.')
-      return
-    }
-    // Check for the two null bytes:
-    if (dataView.getUint16(offset + 8) !== 0x0000) {
-      console.log('Invalid Exif data: Missing byte alignment offset.')
-      return
-    }
-    // Check the byte alignment:
-    switch (dataView.getUint16(tiffOffset)) {
-      case 0x4949:
-        littleEndian = true
-        break
-      case 0x4d4d:
-        littleEndian = false
-        break
-      default:
-        console.log('Invalid Exif data: Invalid byte alignment marker.')
-        return
-    }
-    // Check for the TIFF tag marker (0x002A):
-    if (dataView.getUint16(tiffOffset + 2, littleEndian) !== 0x002a) {
-      console.log('Invalid Exif data: Missing TIFF marker.')
-      return
-    }
-    // Retrieve the directory offset bytes, usually 0x00000008 or 8 decimal:
-    dirOffset = dataView.getUint32(tiffOffset + 4, littleEndian)
-    // Create the exif object to store the tags:
-    data.exif = new ExifMap()
-    if (!options.disableExifOffsets) {
-      data.exifOffsets = new ExifMap()
-      data.exifTiffOffset = tiffOffset
-      data.exifLittleEndian = littleEndian
-    }
-    // Parse the tags of the main image directory and retrieve the
-    // offset to the next directory, usually the thumbnail directory:
-    dirOffset = parseExifTags(
-      dataView,
-      tiffOffset,
-      tiffOffset + dirOffset,
-      littleEndian,
-      data.exif,
-      data.exifOffsets,
-      includeTags,
-      excludeTags
-    )
-    if (dirOffset && !options.disableExifThumbnail) {
-      dirOffset = parseExifTags(
-        dataView,
-        tiffOffset,
-        tiffOffset + dirOffset,
-        littleEndian,
-        data.exif,
-        data.exifOffsets,
-        includeTags,
-        excludeTags
-      )
-      // Check for JPEG Thumbnail offset:
-      if (data.exif[0x0201] && data.exif[0x0202]) {
-        data.exif[0x0201] = getExifThumbnail(
-          dataView,
-          tiffOffset + data.exif[0x0201],
-          data.exif[0x0202] // Thumbnail data length
-        )
-      }
-    }
-    privateIFDs = Object.keys(data.exif.privateIFDs)
-    privateIFDs.forEach(function (tagCode) {
-      parseExifPrivateIFD(
-        data,
-        tagCode,
-        dataView,
-        tiffOffset,
-        littleEndian,
-        includeTags,
-        excludeTags
-      )
-    })
-  }
-
-  // Registers the Exif parser for the APP1 JPEG meta data segment:
-  loadImage.metaDataParsers.jpeg[0xffe1].push(loadImage.parseExifData)
-
-  loadImage.exifWriters = {
-    // Orientation writer:
-    0x0112: function (buffer, data, value) {
-      var view = new DataView(buffer, data.exifOffsets[0x0112] + 8, 2)
-      view.setUint16(0, value, data.exifLittleEndian)
-      return buffer
-    }
-  }
-
-  loadImage.writeExifData = function (buffer, data, id, value) {
-    loadImage.exifWriters[data.exif.map[id]](buffer, data, value)
-  }
-
-  loadImage.ExifMap = ExifMap
-
-  // Adds the following properties to the parseMetaData callback data:
-  // - exif: The parsed Exif tags
-  // - exifOffsets: The parsed Exif tag offsets
-  // - exifTiffOffset: TIFF header offset (used for offset pointers)
-  // - exifLittleEndian: little endian order if true, big endian if false
-
-  // Adds the following options to the parseMetaData method:
-  // - disableExif: Disables Exif parsing when true.
-  // - disableExifThumbnail: Disables parsing of Thumbnail data when true.
-  // - disableExifOffsets: Disables storing Exif tag offsets when true.
-  // - includeExifTags: A map of Exif tags to include for parsing.
-  // - excludeExifTags: A map of Exif tags to exclude from parsing.
-})
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image-fetch.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image-fetch.js ***!
-  \****************************************************************/
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image Fetch
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2017, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, module, require */
-
-;(function (factory) {
-  'use strict'
-  if (true) {
-    // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})(function (loadImage) {
-  'use strict'
-
-  if (typeof fetch !== 'undefined' && typeof Request !== 'undefined') {
-    loadImage.fetchBlob = function (url, callback, options) {
-      fetch(new Request(url, options))
-        .then(function (response) {
-          return response.blob()
-        })
-        .then(callback)
-        .catch(function (err) {
-          callback(null, err)
-        })
-    }
-  } else if (
-    // Check for XHR2 support:
-    typeof XMLHttpRequest !== 'undefined' &&
-    typeof ProgressEvent !== 'undefined'
-  ) {
-    loadImage.fetchBlob = function (url, callback, options) {
-      // eslint-disable-next-line no-param-reassign
-      options = options || {}
-      var req = new XMLHttpRequest()
-      req.open(options.method || 'GET', url)
-      if (options.headers) {
-        Object.keys(options.headers).forEach(function (key) {
-          req.setRequestHeader(key, options.headers[key])
-        })
-      }
-      req.withCredentials = options.credentials === 'include'
-      req.responseType = 'blob'
-      req.onload = function () {
-        callback(req.response)
-      }
-      req.onerror = req.onabort = req.ontimeout = function (err) {
-        callback(null, err)
-      }
-      req.send(options.body)
-    }
-  }
-})
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image-iptc-map.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image-iptc-map.js ***!
-  \*******************************************************************/
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image IPTC Map
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2013, Sebastian Tschan
- * Copyright 2018, Dave Bevan
- *
- * IPTC tags mapping based on
- * https://iptc.org/standards/photo-metadata
- * https://exiftool.org/TagNames/IPTC.html
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, module, require */
-
-;(function (factory) {
-  'use strict'
-  if (true) {
-    // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js"), __webpack_require__(/*! ./load-image-iptc */ "./node_modules/blueimp-load-image/js/load-image-iptc.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})(function (loadImage) {
-  'use strict'
-
-  var IptcMapProto = loadImage.IptcMap.prototype
-
-  IptcMapProto.tags = {
-    0: 'ApplicationRecordVersion',
-    3: 'ObjectTypeReference',
-    4: 'ObjectAttributeReference',
-    5: 'ObjectName',
-    7: 'EditStatus',
-    8: 'EditorialUpdate',
-    10: 'Urgency',
-    12: 'SubjectReference',
-    15: 'Category',
-    20: 'SupplementalCategories',
-    22: 'FixtureIdentifier',
-    25: 'Keywords',
-    26: 'ContentLocationCode',
-    27: 'ContentLocationName',
-    30: 'ReleaseDate',
-    35: 'ReleaseTime',
-    37: 'ExpirationDate',
-    38: 'ExpirationTime',
-    40: 'SpecialInstructions',
-    42: 'ActionAdvised',
-    45: 'ReferenceService',
-    47: 'ReferenceDate',
-    50: 'ReferenceNumber',
-    55: 'DateCreated',
-    60: 'TimeCreated',
-    62: 'DigitalCreationDate',
-    63: 'DigitalCreationTime',
-    65: 'OriginatingProgram',
-    70: 'ProgramVersion',
-    75: 'ObjectCycle',
-    80: 'Byline',
-    85: 'BylineTitle',
-    90: 'City',
-    92: 'Sublocation',
-    95: 'State',
-    100: 'CountryCode',
-    101: 'Country',
-    103: 'OriginalTransmissionReference',
-    105: 'Headline',
-    110: 'Credit',
-    115: 'Source',
-    116: 'CopyrightNotice',
-    118: 'Contact',
-    120: 'Caption',
-    121: 'LocalCaption',
-    122: 'Writer',
-    125: 'RasterizedCaption',
-    130: 'ImageType',
-    131: 'ImageOrientation',
-    135: 'LanguageIdentifier',
-    150: 'AudioType',
-    151: 'AudioSamplingRate',
-    152: 'AudioSamplingResolution',
-    153: 'AudioDuration',
-    154: 'AudioOutcue',
-    184: 'JobID',
-    185: 'MasterDocumentID',
-    186: 'ShortDocumentID',
-    187: 'UniqueDocumentID',
-    188: 'OwnerID',
-    200: 'ObjectPreviewFileFormat',
-    201: 'ObjectPreviewFileVersion',
-    202: 'ObjectPreviewData',
-    221: 'Prefs',
-    225: 'ClassifyState',
-    228: 'SimilarityIndex',
-    230: 'DocumentNotes',
-    231: 'DocumentHistory',
-    232: 'ExifCameraInfo',
-    255: 'CatalogSets'
-  }
-
-  IptcMapProto.stringValues = {
-    10: {
-      0: '0 (reserved)',
-      1: '1 (most urgent)',
-      2: '2',
-      3: '3',
-      4: '4',
-      5: '5 (normal urgency)',
-      6: '6',
-      7: '7',
-      8: '8 (least urgent)',
-      9: '9 (user-defined priority)'
-    },
-    75: {
-      a: 'Morning',
-      b: 'Both Morning and Evening',
-      p: 'Evening'
-    },
-    131: {
-      L: 'Landscape',
-      P: 'Portrait',
-      S: 'Square'
-    }
-  }
-
-  IptcMapProto.getText = function (id) {
-    var value = this.get(id)
-    var tagCode = this.map[id]
-    var stringValue = this.stringValues[tagCode]
-    if (stringValue) return stringValue[value]
-    return String(value)
-  }
-
-  IptcMapProto.getAll = function () {
-    var map = {}
-    var prop
-    var name
-    for (prop in this) {
-      if (Object.prototype.hasOwnProperty.call(this, prop)) {
-        name = this.tags[prop]
-        if (name) map[name] = this.getText(name)
-      }
-    }
-    return map
-  }
-
-  IptcMapProto.getName = function (tagCode) {
-    return this.tags[tagCode]
-  }
-
-  // Extend the map of tag names to tag codes:
-  ;(function () {
-    var tags = IptcMapProto.tags
-    var map = IptcMapProto.map || {}
-    var prop
-    // Map the tag names to tags:
-    for (prop in tags) {
-      if (Object.prototype.hasOwnProperty.call(tags, prop)) {
-        map[tags[prop]] = Number(prop)
-      }
-    }
-  })()
-})
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image-iptc.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image-iptc.js ***!
-  \***************************************************************/
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image IPTC Parser
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2013, Sebastian Tschan
- * Copyright 2018, Dave Bevan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, module, require, DataView */
-
-;(function (factory) {
-  'use strict'
-  if (true) {
-    // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js"), __webpack_require__(/*! ./load-image-meta */ "./node_modules/blueimp-load-image/js/load-image-meta.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})(function (loadImage) {
-  'use strict'
-
-  /**
-   * IPTC tag map
-   *
-   * @name IptcMap
-   * @class
-   */
-  function IptcMap() {}
-
-  IptcMap.prototype.map = {
-    ObjectName: 5
-  }
-
-  IptcMap.prototype.types = {
-    0: 'Uint16', // ApplicationRecordVersion
-    200: 'Uint16', // ObjectPreviewFileFormat
-    201: 'Uint16', // ObjectPreviewFileVersion
-    202: 'binary' // ObjectPreviewData
-  }
-
-  /**
-   * Retrieves IPTC tag value
-   *
-   * @param {number|string} id IPTC tag code or name
-   * @returns {object} IPTC tag value
-   */
-  IptcMap.prototype.get = function (id) {
-    return this[id] || this[this.map[id]]
-  }
-
-  /**
-   * Retrieves string for the given DataView and range
-   *
-   * @param {DataView} dataView Data view interface
-   * @param {number} offset Offset start
-   * @param {number} length Offset length
-   * @returns {string} String value
-   */
-  function getStringValue(dataView, offset, length) {
-    var outstr = ''
-    var end = offset + length
-    for (var n = offset; n < end; n += 1) {
-      outstr += String.fromCharCode(dataView.getUint8(n))
-    }
-    return outstr
-  }
-
-  /**
-   * Retrieves tag value for the given DataView and range
-   *
-   * @param {number} tagCode Private IFD tag code
-   * @param {IptcMap} map IPTC tag map
-   * @param {DataView} dataView Data view interface
-   * @param {number} offset Range start
-   * @param {number} length Range length
-   * @returns {object} Tag value
-   */
-  function getTagValue(tagCode, map, dataView, offset, length) {
-    if (map.types[tagCode] === 'binary') {
-      return new Blob([dataView.buffer.slice(offset, offset + length)])
-    }
-    if (map.types[tagCode] === 'Uint16') {
-      return dataView.getUint16(offset)
-    }
-    return getStringValue(dataView, offset, length)
-  }
-
-  /**
-   * Combines IPTC value with existing ones.
-   *
-   * @param {object} value Existing IPTC field value
-   * @param {object} newValue New IPTC field value
-   * @returns {object} Resulting IPTC field value
-   */
-  function combineTagValues(value, newValue) {
-    if (value === undefined) return newValue
-    if (value instanceof Array) {
-      value.push(newValue)
-      return value
-    }
-    return [value, newValue]
-  }
-
-  /**
-   * Parses IPTC tags.
-   *
-   * @param {DataView} dataView Data view interface
-   * @param {number} segmentOffset Segment offset
-   * @param {number} segmentLength Segment length
-   * @param {object} data Data export object
-   * @param {object} includeTags Map of tags to include
-   * @param {object} excludeTags Map of tags to exclude
-   */
-  function parseIptcTags(
-    dataView,
-    segmentOffset,
-    segmentLength,
-    data,
-    includeTags,
-    excludeTags
-  ) {
-    var value, tagSize, tagCode
-    var segmentEnd = segmentOffset + segmentLength
-    var offset = segmentOffset
-    while (offset < segmentEnd) {
-      if (
-        dataView.getUint8(offset) === 0x1c && // tag marker
-        dataView.getUint8(offset + 1) === 0x02 // record number, only handles v2
-      ) {
-        tagCode = dataView.getUint8(offset + 2)
-        if (
-          (!includeTags || includeTags[tagCode]) &&
-          (!excludeTags || !excludeTags[tagCode])
-        ) {
-          tagSize = dataView.getInt16(offset + 3)
-          value = getTagValue(tagCode, data.iptc, dataView, offset + 5, tagSize)
-          data.iptc[tagCode] = combineTagValues(data.iptc[tagCode], value)
-          if (data.iptcOffsets) {
-            data.iptcOffsets[tagCode] = offset
-          }
-        }
-      }
-      offset += 1
-    }
-  }
-
-  /**
-   * Tests if field segment starts at offset.
-   *
-   * @param {DataView} dataView Data view interface
-   * @param {number} offset Segment offset
-   * @returns {boolean} True if '8BIM<EOT><EOT>' exists at offset
-   */
-  function isSegmentStart(dataView, offset) {
-    return (
-      dataView.getUint32(offset) === 0x3842494d && // Photoshop segment start
-      dataView.getUint16(offset + 4) === 0x0404 // IPTC segment start
-    )
-  }
-
-  /**
-   * Returns header length.
-   *
-   * @param {DataView} dataView Data view interface
-   * @param {number} offset Segment offset
-   * @returns {number} Header length
-   */
-  function getHeaderLength(dataView, offset) {
-    var length = dataView.getUint8(offset + 7)
-    if (length % 2 !== 0) length += 1
-    // Check for pre photoshop 6 format
-    if (length === 0) {
-      // Always 4
-      length = 4
-    }
-    return length
-  }
-
-  loadImage.parseIptcData = function (dataView, offset, length, data, options) {
-    if (options.disableIptc) {
-      return
-    }
-    var markerLength = offset + length
-    while (offset + 8 < markerLength) {
-      if (isSegmentStart(dataView, offset)) {
-        var headerLength = getHeaderLength(dataView, offset)
-        var segmentOffset = offset + 8 + headerLength
-        if (segmentOffset > markerLength) {
-          // eslint-disable-next-line no-console
-          console.log('Invalid IPTC data: Invalid segment offset.')
-          break
-        }
-        var segmentLength = dataView.getUint16(offset + 6 + headerLength)
-        if (offset + segmentLength > markerLength) {
-          // eslint-disable-next-line no-console
-          console.log('Invalid IPTC data: Invalid segment size.')
-          break
-        }
-        // Create the iptc object to store the tags:
-        data.iptc = new IptcMap()
-        if (!options.disableIptcOffsets) {
-          data.iptcOffsets = new IptcMap()
-        }
-        parseIptcTags(
-          dataView,
-          segmentOffset,
-          segmentLength,
-          data,
-          options.includeIptcTags,
-          options.excludeIptcTags || { 202: true } // ObjectPreviewData
-        )
-        return
-      }
-      // eslint-disable-next-line no-param-reassign
-      offset += 1
-    }
-  }
-
-  // Registers this IPTC parser for the APP13 JPEG meta data segment:
-  loadImage.metaDataParsers.jpeg[0xffed].push(loadImage.parseIptcData)
-
-  loadImage.IptcMap = IptcMap
-
-  // Adds the following properties to the parseMetaData callback data:
-  // - iptc: The iptc tags, parsed by the parseIptcData method
-
-  // Adds the following options to the parseMetaData method:
-  // - disableIptc: Disables IPTC parsing when true.
-  // - disableIptcOffsets: Disables storing IPTC tag offsets when true.
-  // - includeIptcTags: A map of IPTC tags to include for parsing.
-  // - excludeIptcTags: A map of IPTC tags to exclude from parsing.
-})
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image-meta.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image-meta.js ***!
-  \***************************************************************/
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image Meta
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2013, Sebastian Tschan
- * https://blueimp.net
- *
- * Image meta data handling implementation
- * based on the help and contribution of
- * Achim Stöhr.
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, module, require, DataView, Uint8Array */
-
-;(function (factory) {
-  'use strict'
-  if (true) {
-    // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})(function (loadImage) {
-  'use strict'
-
-  var hasblobSlice =
-    typeof Blob !== 'undefined' &&
-    (Blob.prototype.slice ||
-      Blob.prototype.webkitSlice ||
-      Blob.prototype.mozSlice)
-
-  loadImage.blobSlice =
-    hasblobSlice &&
-    function () {
-      var slice = this.slice || this.webkitSlice || this.mozSlice
-      return slice.apply(this, arguments)
-    }
-
-  loadImage.metaDataParsers = {
-    jpeg: {
-      0xffe1: [], // APP1 marker
-      0xffed: [] // APP13 marker
-    }
-  }
-
-  // Parses image meta data and calls the callback with an object argument
-  // with the following properties:
-  // * imageHead: The complete image head as ArrayBuffer (Uint8Array for IE10)
-  // The options argument accepts an object and supports the following
-  // properties:
-  // * maxMetaDataSize: Defines the maximum number of bytes to parse.
-  // * disableImageHead: Disables creating the imageHead property.
-  loadImage.parseMetaData = function (file, callback, options, data) {
-    // eslint-disable-next-line no-param-reassign
-    options = options || {}
-    // eslint-disable-next-line no-param-reassign
-    data = data || {}
-    var that = this
-    // 256 KiB should contain all EXIF/ICC/IPTC segments:
-    var maxMetaDataSize = options.maxMetaDataSize || 262144
-    var noMetaData = !(
-      typeof DataView !== 'undefined' &&
-      file &&
-      file.size >= 12 &&
-      file.type === 'image/jpeg' &&
-      loadImage.blobSlice
-    )
-    if (
-      noMetaData ||
-      !loadImage.readFile(
-        loadImage.blobSlice.call(file, 0, maxMetaDataSize),
-        function (e) {
-          if (e.target.error) {
-            // FileReader error
-            // eslint-disable-next-line no-console
-            console.log(e.target.error)
-            callback(data)
-            return
-          }
-          // Note on endianness:
-          // Since the marker and length bytes in JPEG files are always
-          // stored in big endian order, we can leave the endian parameter
-          // of the DataView methods undefined, defaulting to big endian.
-          var buffer = e.target.result
-          var dataView = new DataView(buffer)
-          var offset = 2
-          var maxOffset = dataView.byteLength - 4
-          var headLength = offset
-          var markerBytes
-          var markerLength
-          var parsers
-          var i
-          // Check for the JPEG marker (0xffd8):
-          if (dataView.getUint16(0) === 0xffd8) {
-            while (offset < maxOffset) {
-              markerBytes = dataView.getUint16(offset)
-              // Search for APPn (0xffeN) and COM (0xfffe) markers,
-              // which contain application-specific meta-data like
-              // Exif, ICC and IPTC data and text comments:
-              if (
-                (markerBytes >= 0xffe0 && markerBytes <= 0xffef) ||
-                markerBytes === 0xfffe
-              ) {
-                // The marker bytes (2) are always followed by
-                // the length bytes (2), indicating the length of the
-                // marker segment, which includes the length bytes,
-                // but not the marker bytes, so we add 2:
-                markerLength = dataView.getUint16(offset + 2) + 2
-                if (offset + markerLength > dataView.byteLength) {
-                  // eslint-disable-next-line no-console
-                  console.log('Invalid meta data: Invalid segment size.')
-                  break
-                }
-                parsers = loadImage.metaDataParsers.jpeg[markerBytes]
-                if (parsers && !options.disableMetaDataParsers) {
-                  for (i = 0; i < parsers.length; i += 1) {
-                    parsers[i].call(
-                      that,
-                      dataView,
-                      offset,
-                      markerLength,
-                      data,
-                      options
-                    )
-                  }
-                }
-                offset += markerLength
-                headLength = offset
-              } else {
-                // Not an APPn or COM marker, probably safe to
-                // assume that this is the end of the meta data
-                break
-              }
-            }
-            // Meta length must be longer than JPEG marker (2)
-            // plus APPn marker (2), followed by length bytes (2):
-            if (!options.disableImageHead && headLength > 6) {
-              if (buffer.slice) {
-                data.imageHead = buffer.slice(0, headLength)
-              } else {
-                // Workaround for IE10, which does not yet
-                // support ArrayBuffer.slice:
-                data.imageHead = new Uint8Array(buffer).subarray(0, headLength)
-              }
-            }
-          } else {
-            // eslint-disable-next-line no-console
-            console.log('Invalid JPEG file: Missing JPEG marker.')
-          }
-          callback(data)
-        },
-        'readAsArrayBuffer'
-      )
-    ) {
-      callback(data)
-    }
-  }
-
-  // Replaces the image head of a JPEG blob with the given one.
-  // Calls the callback with the new Blob:
-  loadImage.replaceHead = function (blob, head, callback) {
-    loadImage.parseMetaData(
-      blob,
-      function (data) {
-        callback(
-          new Blob(
-            [head, loadImage.blobSlice.call(blob, data.imageHead.byteLength)],
-            { type: 'image/jpeg' }
-          )
-        )
-      },
-      { maxMetaDataSize: 256, disableMetaDataParsers: true }
-    )
-  }
-
-  var originalTransform = loadImage.transform
-  loadImage.transform = function (img, options, callback, file, data) {
-    if (loadImage.hasMetaOption(options)) {
-      loadImage.parseMetaData(
-        file,
-        function (data) {
-          originalTransform.call(loadImage, img, options, callback, file, data)
-        },
-        options,
-        data
-      )
-    } else {
-      originalTransform.apply(loadImage, arguments)
-    }
-  }
-})
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image-orientation.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image-orientation.js ***!
-  \**********************************************************************/
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image Orientation
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2013, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, module, require */
-
-;(function (factory) {
-  'use strict'
-  if (true) {
-    // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js"), __webpack_require__(/*! ./load-image-scale */ "./node_modules/blueimp-load-image/js/load-image-scale.js"), __webpack_require__(/*! ./load-image-meta */ "./node_modules/blueimp-load-image/js/load-image-meta.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})(function (loadImage) {
-  'use strict'
-
-  var originalHasCanvasOption = loadImage.hasCanvasOption
-  var originalHasMetaOption = loadImage.hasMetaOption
-  var originalTransformCoordinates = loadImage.transformCoordinates
-  var originalGetTransformedOptions = loadImage.getTransformedOptions
-
-  ;(function () {
-    // black 2x1 JPEG, with the following meta information set:
-    // - EXIF Orientation: 6 (Rotated 90° CCW)
-    var testImageURL =
-      'data:image/jpeg;base64,/9j/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAYAAAA' +
-      'AAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA' +
-      'QEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE' +
-      'BAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AABEIAAEAAgMBEQACEQEDEQH/x' +
-      'ABKAAEAAAAAAAAAAAAAAAAAAAALEAEAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAA' +
-      'AAAAAEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8H//2Q=='
-    var img = document.createElement('img')
-    img.onload = function () {
-      // Check if browser supports automatic image orientation:
-      loadImage.orientation = img.width === 1 && img.height === 2
-    }
-    img.src = testImageURL
-  })()
-
-  // Determines if the target image should be a canvas element:
-  loadImage.hasCanvasOption = function (options) {
-    return (
-      (!!options.orientation === true && !loadImage.orientation) ||
-      (options.orientation > 1 && options.orientation < 9) ||
-      originalHasCanvasOption.call(loadImage, options)
-    )
-  }
-
-  // Determines if meta data should be loaded automatically:
-  loadImage.hasMetaOption = function (options) {
-    return (
-      (options && options.orientation === true && !loadImage.orientation) ||
-      originalHasMetaOption.call(loadImage, options)
-    )
-  }
-
-  // Transform image orientation based on
-  // the given EXIF orientation option:
-  loadImage.transformCoordinates = function (canvas, options) {
-    originalTransformCoordinates.call(loadImage, canvas, options)
-    var ctx = canvas.getContext('2d')
-    var width = canvas.width
-    var height = canvas.height
-    var styleWidth = canvas.style.width
-    var styleHeight = canvas.style.height
-    var orientation = options.orientation
-    if (!(orientation > 1 && orientation < 9)) {
-      return
-    }
-    if (orientation > 4) {
-      canvas.width = height
-      canvas.height = width
-      canvas.style.width = styleHeight
-      canvas.style.height = styleWidth
-    }
-    switch (orientation) {
-      case 2:
-        // horizontal flip
-        ctx.translate(width, 0)
-        ctx.scale(-1, 1)
-        break
-      case 3:
-        // 180° rotate left
-        ctx.translate(width, height)
-        ctx.rotate(Math.PI)
-        break
-      case 4:
-        // vertical flip
-        ctx.translate(0, height)
-        ctx.scale(1, -1)
-        break
-      case 5:
-        // vertical flip + 90 rotate right
-        ctx.rotate(0.5 * Math.PI)
-        ctx.scale(1, -1)
-        break
-      case 6:
-        // 90° rotate right
-        ctx.rotate(0.5 * Math.PI)
-        ctx.translate(0, -height)
-        break
-      case 7:
-        // horizontal flip + 90 rotate right
-        ctx.rotate(0.5 * Math.PI)
-        ctx.translate(width, -height)
-        ctx.scale(-1, 1)
-        break
-      case 8:
-        // 90° rotate left
-        ctx.rotate(-0.5 * Math.PI)
-        ctx.translate(-width, 0)
-        break
-    }
-  }
-
-  // Transforms coordinate and dimension options
-  // based on the given orientation option:
-  loadImage.getTransformedOptions = function (img, opts, data) {
-    var options = originalGetTransformedOptions.call(loadImage, img, opts)
-    var orientation = options.orientation
-    var newOptions
-    var i
-    if (orientation === true) {
-      if (loadImage.orientation) {
-        // Browser supports automatic image orientation
-        return options
-      }
-      orientation = data && data.exif && data.exif.get('Orientation')
-    }
-    if (!(orientation > 1 && orientation < 9)) {
-      return options
-    }
-    newOptions = {}
-    for (i in options) {
-      if (Object.prototype.hasOwnProperty.call(options, i)) {
-        newOptions[i] = options[i]
-      }
-    }
-    newOptions.orientation = orientation
-    switch (orientation) {
-      case 2:
-        // horizontal flip
-        newOptions.left = options.right
-        newOptions.right = options.left
-        break
-      case 3:
-        // 180° rotate left
-        newOptions.left = options.right
-        newOptions.top = options.bottom
-        newOptions.right = options.left
-        newOptions.bottom = options.top
-        break
-      case 4:
-        // vertical flip
-        newOptions.top = options.bottom
-        newOptions.bottom = options.top
-        break
-      case 5:
-        // vertical flip + 90 rotate right
-        newOptions.left = options.top
-        newOptions.top = options.left
-        newOptions.right = options.bottom
-        newOptions.bottom = options.right
-        break
-      case 6:
-        // 90° rotate right
-        newOptions.left = options.top
-        newOptions.top = options.right
-        newOptions.right = options.bottom
-        newOptions.bottom = options.left
-        break
-      case 7:
-        // horizontal flip + 90 rotate right
-        newOptions.left = options.bottom
-        newOptions.top = options.right
-        newOptions.right = options.top
-        newOptions.bottom = options.left
-        break
-      case 8:
-        // 90° rotate left
-        newOptions.left = options.bottom
-        newOptions.top = options.left
-        newOptions.right = options.top
-        newOptions.bottom = options.right
-        break
-    }
-    if (newOptions.orientation > 4) {
-      newOptions.maxWidth = options.maxHeight
-      newOptions.maxHeight = options.maxWidth
-      newOptions.minWidth = options.minHeight
-      newOptions.minHeight = options.minWidth
-      newOptions.sourceWidth = options.sourceHeight
-      newOptions.sourceHeight = options.sourceWidth
-    }
-    return newOptions
-  }
-})
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image-scale.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image-scale.js ***!
-  \****************************************************************/
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image Scaling
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2011, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, module, require */
-
-;(function (factory) {
-  'use strict'
-  if (true) {
-    // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./load-image */ "./node_modules/blueimp-load-image/js/load-image.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})(function (loadImage) {
-  'use strict'
-
-  var originalTransform = loadImage.transform
-
-  loadImage.transform = function (img, options, callback, file, data) {
-    originalTransform.call(
-      loadImage,
-      loadImage.scale(img, options, data),
-      options,
-      callback,
-      file,
-      data
-    )
-  }
-
-  // Transform image coordinates, allows to override e.g.
-  // the canvas orientation based on the orientation option,
-  // gets canvas, options passed as arguments:
-  loadImage.transformCoordinates = function () {}
-
-  // Returns transformed options, allows to override e.g.
-  // maxWidth, maxHeight and crop options based on the aspectRatio.
-  // gets img, options passed as arguments:
-  loadImage.getTransformedOptions = function (img, options) {
-    var aspectRatio = options.aspectRatio
-    var newOptions
-    var i
-    var width
-    var height
-    if (!aspectRatio) {
-      return options
-    }
-    newOptions = {}
-    for (i in options) {
-      if (Object.prototype.hasOwnProperty.call(options, i)) {
-        newOptions[i] = options[i]
-      }
-    }
-    newOptions.crop = true
-    width = img.naturalWidth || img.width
-    height = img.naturalHeight || img.height
-    if (width / height > aspectRatio) {
-      newOptions.maxWidth = height * aspectRatio
-      newOptions.maxHeight = height
-    } else {
-      newOptions.maxWidth = width
-      newOptions.maxHeight = width / aspectRatio
-    }
-    return newOptions
-  }
-
-  // Canvas render method, allows to implement a different rendering algorithm:
-  loadImage.renderImageToCanvas = function (
-    canvas,
-    img,
-    sourceX,
-    sourceY,
-    sourceWidth,
-    sourceHeight,
-    destX,
-    destY,
-    destWidth,
-    destHeight,
-    options
-  ) {
-    var ctx = canvas.getContext('2d')
-    if (options.imageSmoothingEnabled === false) {
-      ctx.imageSmoothingEnabled = false
-    } else if (options.imageSmoothingQuality) {
-      ctx.imageSmoothingQuality = options.imageSmoothingQuality
-    }
-    ctx.drawImage(
-      img,
-      sourceX,
-      sourceY,
-      sourceWidth,
-      sourceHeight,
-      destX,
-      destY,
-      destWidth,
-      destHeight
-    )
-    return canvas
-  }
-
-  // Determines if the target image should be a canvas element:
-  loadImage.hasCanvasOption = function (options) {
-    return options.canvas || options.crop || !!options.aspectRatio
-  }
-
-  // Scales and/or crops the given image (img or canvas HTML element)
-  // using the given options.
-  // Returns a canvas object if the browser supports canvas
-  // and the hasCanvasOption method returns true or a canvas
-  // object is passed as image, else the scaled image:
-  loadImage.scale = function (img, options, data) {
-    // eslint-disable-next-line no-param-reassign
-    options = options || {}
-    var canvas = document.createElement('canvas')
-    var useCanvas =
-      img.getContext ||
-      (loadImage.hasCanvasOption(options) && canvas.getContext)
-    var width = img.naturalWidth || img.width
-    var height = img.naturalHeight || img.height
-    var destWidth = width
-    var destHeight = height
-    var maxWidth
-    var maxHeight
-    var minWidth
-    var minHeight
-    var sourceWidth
-    var sourceHeight
-    var sourceX
-    var sourceY
-    var pixelRatio
-    var downsamplingRatio
-    var tmp
-    /**
-     * Scales up image dimensions
-     */
-    function scaleUp() {
-      var scale = Math.max(
-        (minWidth || destWidth) / destWidth,
-        (minHeight || destHeight) / destHeight
-      )
-      if (scale > 1) {
-        destWidth *= scale
-        destHeight *= scale
-      }
-    }
-    /**
-     * Scales down image dimensions
-     */
-    function scaleDown() {
-      var scale = Math.min(
-        (maxWidth || destWidth) / destWidth,
-        (maxHeight || destHeight) / destHeight
-      )
-      if (scale < 1) {
-        destWidth *= scale
-        destHeight *= scale
-      }
-    }
-    if (useCanvas) {
-      // eslint-disable-next-line no-param-reassign
-      options = loadImage.getTransformedOptions(img, options, data)
-      sourceX = options.left || 0
-      sourceY = options.top || 0
-      if (options.sourceWidth) {
-        sourceWidth = options.sourceWidth
-        if (options.right !== undefined && options.left === undefined) {
-          sourceX = width - sourceWidth - options.right
-        }
-      } else {
-        sourceWidth = width - sourceX - (options.right || 0)
-      }
-      if (options.sourceHeight) {
-        sourceHeight = options.sourceHeight
-        if (options.bottom !== undefined && options.top === undefined) {
-          sourceY = height - sourceHeight - options.bottom
-        }
-      } else {
-        sourceHeight = height - sourceY - (options.bottom || 0)
-      }
-      destWidth = sourceWidth
-      destHeight = sourceHeight
-    }
-    maxWidth = options.maxWidth
-    maxHeight = options.maxHeight
-    minWidth = options.minWidth
-    minHeight = options.minHeight
-    if (useCanvas && maxWidth && maxHeight && options.crop) {
-      destWidth = maxWidth
-      destHeight = maxHeight
-      tmp = sourceWidth / sourceHeight - maxWidth / maxHeight
-      if (tmp < 0) {
-        sourceHeight = (maxHeight * sourceWidth) / maxWidth
-        if (options.top === undefined && options.bottom === undefined) {
-          sourceY = (height - sourceHeight) / 2
-        }
-      } else if (tmp > 0) {
-        sourceWidth = (maxWidth * sourceHeight) / maxHeight
-        if (options.left === undefined && options.right === undefined) {
-          sourceX = (width - sourceWidth) / 2
-        }
-      }
-    } else {
-      if (options.contain || options.cover) {
-        minWidth = maxWidth = maxWidth || minWidth
-        minHeight = maxHeight = maxHeight || minHeight
-      }
-      if (options.cover) {
-        scaleDown()
-        scaleUp()
-      } else {
-        scaleUp()
-        scaleDown()
-      }
-    }
-    if (useCanvas) {
-      pixelRatio = options.pixelRatio
-      if (pixelRatio > 1) {
-        canvas.style.width = destWidth + 'px'
-        canvas.style.height = destHeight + 'px'
-        destWidth *= pixelRatio
-        destHeight *= pixelRatio
-        canvas.getContext('2d').scale(pixelRatio, pixelRatio)
-      }
-      downsamplingRatio = options.downsamplingRatio
-      if (
-        downsamplingRatio > 0 &&
-        downsamplingRatio < 1 &&
-        destWidth < sourceWidth &&
-        destHeight < sourceHeight
-      ) {
-        while (sourceWidth * downsamplingRatio > destWidth) {
-          canvas.width = sourceWidth * downsamplingRatio
-          canvas.height = sourceHeight * downsamplingRatio
-          loadImage.renderImageToCanvas(
-            canvas,
-            img,
-            sourceX,
-            sourceY,
-            sourceWidth,
-            sourceHeight,
-            0,
-            0,
-            canvas.width,
-            canvas.height,
-            options
-          )
-          sourceX = 0
-          sourceY = 0
-          sourceWidth = canvas.width
-          sourceHeight = canvas.height
-          // eslint-disable-next-line no-param-reassign
-          img = document.createElement('canvas')
-          img.width = sourceWidth
-          img.height = sourceHeight
-          loadImage.renderImageToCanvas(
-            img,
-            canvas,
-            0,
-            0,
-            sourceWidth,
-            sourceHeight,
-            0,
-            0,
-            sourceWidth,
-            sourceHeight,
-            options
-          )
-        }
-      }
-      canvas.width = destWidth
-      canvas.height = destHeight
-      loadImage.transformCoordinates(canvas, options)
-      return loadImage.renderImageToCanvas(
-        canvas,
-        img,
-        sourceX,
-        sourceY,
-        sourceWidth,
-        sourceHeight,
-        0,
-        0,
-        destWidth,
-        destHeight,
-        options
-      )
-    }
-    img.width = destWidth
-    img.height = destHeight
-    return img
-  }
-})
-
-
-/***/ }),
-
-/***/ "./node_modules/blueimp-load-image/js/load-image.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/blueimp-load-image/js/load-image.js ***!
-  \**********************************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_RESULT__;/*
- * JavaScript Load Image
- * https://github.com/blueimp/JavaScript-Load-Image
- *
- * Copyright 2011, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
- */
-
-/* global define, webkitURL, module */
-
-;(function ($) {
-  'use strict'
-
-  /**
-   * Loads an image for a given File object.
-   * Invokes the callback with an img or optional canvas element
-   * (if supported by the browser) as parameter:.
-   *
-   * @param {File|Blob|string} file File or Blob object or image URL
-   * @param {Function} [callback] Image load event callback
-   * @param {object} [options] Options object
-   * @returns {HTMLImageElement|HTMLCanvasElement|FileReader} image object
-   */
-  function loadImage(file, callback, options) {
-    var img = document.createElement('img')
-    var url
-    /**
-     * Callback for the fetchBlob call.
-     *
-     * @param {Blob} blob Blob object
-     * @param {Error} err Error object
-     */
-    function fetchBlobCallback(blob, err) {
-      if (err) console.log(err) // eslint-disable-line no-console
-      if (blob && loadImage.isInstanceOf('Blob', blob)) {
-        // eslint-disable-next-line no-param-reassign
-        file = blob
-        url = loadImage.createObjectURL(file)
-      } else {
-        url = file
-        if (options && options.crossOrigin) {
-          img.crossOrigin = options.crossOrigin
-        }
-      }
-      img.src = url
-    }
-    img.onerror = function (event) {
-      return loadImage.onerror(img, event, file, url, callback, options)
-    }
-    img.onload = function (event) {
-      return loadImage.onload(img, event, file, url, callback, options)
-    }
-    if (typeof file === 'string') {
-      if (loadImage.hasMetaOption(options)) {
-        loadImage.fetchBlob(file, fetchBlobCallback, options)
-      } else {
-        fetchBlobCallback()
-      }
-      return img
-    } else if (
-      loadImage.isInstanceOf('Blob', file) ||
-      // Files are also Blob instances, but some browsers
-      // (Firefox 3.6) support the File API but not Blobs:
-      loadImage.isInstanceOf('File', file)
-    ) {
-      url = loadImage.createObjectURL(file)
-      if (url) {
-        img.src = url
-        return img
-      }
-      return loadImage.readFile(file, function (e) {
-        var target = e.target
-        if (target && target.result) {
-          img.src = target.result
-        } else if (callback) {
-          callback(e)
-        }
-      })
-    }
-  }
-  // The check for URL.revokeObjectURL fixes an issue with Opera 12,
-  // which provides URL.createObjectURL but doesn't properly implement it:
-  var urlAPI =
-    ($.createObjectURL && $) ||
-    ($.URL && URL.revokeObjectURL && URL) ||
-    ($.webkitURL && webkitURL)
-
-  /**
-   * Helper function to revoke an object URL
-   *
-   * @param {string} url Blob Object URL
-   * @param {object} [options] Options object
-   */
-  function revokeHelper(url, options) {
-    if (url && url.slice(0, 5) === 'blob:' && !(options && options.noRevoke)) {
-      loadImage.revokeObjectURL(url)
-    }
-  }
-
-  // Determines if meta data should be loaded automatically.
-  // Requires the load image meta extension to load meta data.
-  loadImage.hasMetaOption = function (options) {
-    return options && options.meta
-  }
-
-  // If the callback given to this function returns a blob, it is used as image
-  // source instead of the original url and overrides the file argument used in
-  // the onload and onerror event callbacks:
-  loadImage.fetchBlob = function (url, callback) {
-    callback()
-  }
-
-  loadImage.isInstanceOf = function (type, obj) {
-    // Cross-frame instanceof check
-    return Object.prototype.toString.call(obj) === '[object ' + type + ']'
-  }
-
-  loadImage.transform = function (img, options, callback, file, data) {
-    callback(img, data)
-  }
-
-  loadImage.onerror = function (img, event, file, url, callback, options) {
-    revokeHelper(url, options)
-    if (callback) {
-      callback.call(img, event)
-    }
-  }
-
-  loadImage.onload = function (img, event, file, url, callback, options) {
-    revokeHelper(url, options)
-    if (callback) {
-      loadImage.transform(img, options, callback, file, {
-        originalWidth: img.naturalWidth || img.width,
-        originalHeight: img.naturalHeight || img.height
-      })
-    }
-  }
-
-  loadImage.createObjectURL = function (file) {
-    return urlAPI ? urlAPI.createObjectURL(file) : false
-  }
-
-  loadImage.revokeObjectURL = function (url) {
-    return urlAPI ? urlAPI.revokeObjectURL(url) : false
-  }
-
-  // Loads a given File object via FileReader interface,
-  // invokes the callback with the event object (load or error).
-  // The result can be read via event.target.result:
-  loadImage.readFile = function (file, callback, method) {
-    if ($.FileReader) {
-      var fileReader = new FileReader()
-      fileReader.onload = fileReader.onerror = callback
-      // eslint-disable-next-line no-param-reassign
-      method = method || 'readAsDataURL'
-      if (fileReader[method]) {
-        fileReader[method](file)
-        return fileReader
-      }
-    }
-    return false
-  }
-
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-      return loadImage
-    }).call(exports, __webpack_require__, exports, module),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-})((typeof window !== 'undefined' && window) || this)
-
 
 /***/ }),
 
@@ -2532,14 +166,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
 
 
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
 // Exports
@@ -2561,37 +195,55 @@ ___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names
   MIT License http://www.opensource.org/licenses/mit-license.php
   Author Tobias Koppers @sokra
 */
-// css base code, injected by the css-loader
-// eslint-disable-next-line func-names
 module.exports = function (cssWithMappingToString) {
   var list = []; // return the list of modules as css string
 
   list.toString = function toString() {
     return this.map(function (item) {
-      var content = cssWithMappingToString(item);
+      var content = "";
+      var needLayer = typeof item[5] !== "undefined";
+
+      if (item[4]) {
+        content += "@supports (".concat(item[4], ") {");
+      }
 
       if (item[2]) {
-        return "@media ".concat(item[2], " {").concat(content, "}");
+        content += "@media ".concat(item[2], " {");
+      }
+
+      if (needLayer) {
+        content += "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {");
+      }
+
+      content += cssWithMappingToString(item);
+
+      if (needLayer) {
+        content += "}";
+      }
+
+      if (item[2]) {
+        content += "}";
+      }
+
+      if (item[4]) {
+        content += "}";
       }
 
       return content;
     }).join("");
   }; // import a list of modules into the list
-  // eslint-disable-next-line func-names
 
 
-  list.i = function (modules, mediaQuery, dedupe) {
+  list.i = function i(modules, media, dedupe, supports, layer) {
     if (typeof modules === "string") {
-      // eslint-disable-next-line no-param-reassign
-      modules = [[null, modules, ""]];
+      modules = [[null, modules, undefined]];
     }
 
     var alreadyImportedModules = {};
 
     if (dedupe) {
-      for (var i = 0; i < this.length; i++) {
-        // eslint-disable-next-line prefer-destructuring
-        var id = this[i][0];
+      for (var k = 0; k < this.length; k++) {
+        var id = this[k][0];
 
         if (id != null) {
           alreadyImportedModules[id] = true;
@@ -2599,19 +251,37 @@ module.exports = function (cssWithMappingToString) {
       }
     }
 
-    for (var _i = 0; _i < modules.length; _i++) {
-      var item = [].concat(modules[_i]);
+    for (var _k = 0; _k < modules.length; _k++) {
+      var item = [].concat(modules[_k]);
 
       if (dedupe && alreadyImportedModules[item[0]]) {
-        // eslint-disable-next-line no-continue
         continue;
       }
 
-      if (mediaQuery) {
-        if (!item[2]) {
-          item[2] = mediaQuery;
+      if (typeof layer !== "undefined") {
+        if (typeof item[5] === "undefined") {
+          item[5] = layer;
         } else {
-          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+          item[1] = "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {").concat(item[1], "}");
+          item[5] = layer;
+        }
+      }
+
+      if (media) {
+        if (!item[2]) {
+          item[2] = media;
+        } else {
+          item[1] = "@media ".concat(item[2], " {").concat(item[1], "}");
+          item[2] = media;
+        }
+      }
+
+      if (supports) {
+        if (!item[4]) {
+          item[4] = "".concat(supports);
+        } else {
+          item[1] = "@supports (".concat(item[4], ") {").concat(item[1], "}");
+          item[4] = supports;
         }
       }
 
@@ -2624,38 +294,24 @@ module.exports = function (cssWithMappingToString) {
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js":
-/*!************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/runtime/cssWithMappingToString.js ***!
-  \************************************************************************/
+/***/ "./node_modules/css-loader/dist/runtime/sourceMaps.js":
+/*!************************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/sourceMaps.js ***!
+  \************************************************************/
 /***/ ((module) => {
 
 "use strict";
 
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-module.exports = function cssWithMappingToString(item) {
-  var _item = _slicedToArray(item, 4),
-      content = _item[1],
-      cssMapping = _item[3];
+module.exports = function (item) {
+  var content = item[1];
+  var cssMapping = item[3];
 
   if (!cssMapping) {
     return content;
   }
 
   if (typeof btoa === "function") {
-    // eslint-disable-next-line no-undef
     var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(cssMapping))));
     var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
     var sourceMapping = "/*# ".concat(data, " */");
@@ -3624,7 +1280,7 @@ function createMemoryHistory(props) {
 "use strict";
 
 
-var reactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+var reactIs = __webpack_require__(/*! react-is */ "./node_modules/hoist-non-react-statics/node_modules/react-is/index.js");
 
 /**
  * Copyright 2015, Yahoo! Inc.
@@ -3729,33 +1385,210 @@ module.exports = hoistNonReactStatics;
 
 /***/ }),
 
-/***/ "./node_modules/is-electron/index.js":
-/*!*******************************************!*\
-  !*** ./node_modules/is-electron/index.js ***!
-  \*******************************************/
-/***/ ((module) => {
+/***/ "./node_modules/hoist-non-react-statics/node_modules/react-is/cjs/react-is.development.js":
+/*!************************************************************************************************!*\
+  !*** ./node_modules/hoist-non-react-statics/node_modules/react-is/cjs/react-is.development.js ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
 
-// https://github.com/electron/electron/issues/2288
-function isElectron() {
-    // Renderer process
-    if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
-        return true;
-    }
+"use strict";
+/** @license React v16.13.1
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
-    // Main process
-    if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
-        return true;
-    }
 
-    // Detect the user agent when the `nodeIntegration` option is set to true
-    if (typeof navigator === 'object' && typeof navigator.userAgent === 'string' && navigator.userAgent.indexOf('Electron') >= 0) {
-        return true;
-    }
 
-    return false;
+
+
+if (true) {
+  (function() {
+'use strict';
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+// (unstable) APIs that have been removed. Can we remove the symbols?
+
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
 }
 
-module.exports = isElectron;
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+} // AsyncMode is deprecated along with isAsyncMode
+
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.AsyncMode = AsyncMode;
+exports.ConcurrentMode = ConcurrentMode;
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+exports.isValidElementType = isValidElementType;
+exports.typeOf = typeOf;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/hoist-non-react-statics/node_modules/react-is/index.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/hoist-non-react-statics/node_modules/react-is/index.js ***!
+  \*****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/hoist-non-react-statics/node_modules/react-is/cjs/react-is.development.js");
+}
 
 
 /***/ }),
@@ -4199,7 +2032,7 @@ module.exports = checkPropTypes;
 
 
 
-var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/prop-types/node_modules/react-is/index.js");
 var assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
 
 var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
@@ -4799,7 +2632,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
  */
 
 if (true) {
-  var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+  var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/prop-types/node_modules/react-is/index.js");
 
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
@@ -4829,6 +2662,214 @@ if (true) {
 var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
+
+
+/***/ }),
+
+/***/ "./node_modules/prop-types/node_modules/react-is/cjs/react-is.development.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/prop-types/node_modules/react-is/cjs/react-is.development.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+/** @license React v16.13.1
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+
+
+if (true) {
+  (function() {
+'use strict';
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+// (unstable) APIs that have been removed. Can we remove the symbols?
+
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+}
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+} // AsyncMode is deprecated along with isAsyncMode
+
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.AsyncMode = AsyncMode;
+exports.ConcurrentMode = ConcurrentMode;
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+exports.isValidElementType = isValidElementType;
+exports.typeOf = typeOf;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/prop-types/node_modules/react-is/index.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/prop-types/node_modules/react-is/index.js ***!
+  \****************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/prop-types/node_modules/react-is/cjs/react-is.development.js");
+}
 
 
 /***/ }),
@@ -31145,1967 +29186,6 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./node_modules/react-is/cjs/react-is.development.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-/** @license React v16.13.1
- * react-is.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-
-
-if (true) {
-  (function() {
-'use strict';
-
-// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var hasSymbol = typeof Symbol === 'function' && Symbol.for;
-var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
-var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
-var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
-var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
-var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
-var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
-// (unstable) APIs that have been removed. Can we remove the symbols?
-
-var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
-var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
-var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
-var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
-var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
-var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
-var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
-var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
-var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
-var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
-var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
-
-function isValidElementType(type) {
-  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
-}
-
-function typeOf(object) {
-  if (typeof object === 'object' && object !== null) {
-    var $$typeof = object.$$typeof;
-
-    switch ($$typeof) {
-      case REACT_ELEMENT_TYPE:
-        var type = object.type;
-
-        switch (type) {
-          case REACT_ASYNC_MODE_TYPE:
-          case REACT_CONCURRENT_MODE_TYPE:
-          case REACT_FRAGMENT_TYPE:
-          case REACT_PROFILER_TYPE:
-          case REACT_STRICT_MODE_TYPE:
-          case REACT_SUSPENSE_TYPE:
-            return type;
-
-          default:
-            var $$typeofType = type && type.$$typeof;
-
-            switch ($$typeofType) {
-              case REACT_CONTEXT_TYPE:
-              case REACT_FORWARD_REF_TYPE:
-              case REACT_LAZY_TYPE:
-              case REACT_MEMO_TYPE:
-              case REACT_PROVIDER_TYPE:
-                return $$typeofType;
-
-              default:
-                return $$typeof;
-            }
-
-        }
-
-      case REACT_PORTAL_TYPE:
-        return $$typeof;
-    }
-  }
-
-  return undefined;
-} // AsyncMode is deprecated along with isAsyncMode
-
-var AsyncMode = REACT_ASYNC_MODE_TYPE;
-var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-var ContextConsumer = REACT_CONTEXT_TYPE;
-var ContextProvider = REACT_PROVIDER_TYPE;
-var Element = REACT_ELEMENT_TYPE;
-var ForwardRef = REACT_FORWARD_REF_TYPE;
-var Fragment = REACT_FRAGMENT_TYPE;
-var Lazy = REACT_LAZY_TYPE;
-var Memo = REACT_MEMO_TYPE;
-var Portal = REACT_PORTAL_TYPE;
-var Profiler = REACT_PROFILER_TYPE;
-var StrictMode = REACT_STRICT_MODE_TYPE;
-var Suspense = REACT_SUSPENSE_TYPE;
-var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
-
-function isAsyncMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
-    }
-  }
-
-  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
-}
-function isConcurrentMode(object) {
-  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
-}
-function isContextConsumer(object) {
-  return typeOf(object) === REACT_CONTEXT_TYPE;
-}
-function isContextProvider(object) {
-  return typeOf(object) === REACT_PROVIDER_TYPE;
-}
-function isElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-}
-function isForwardRef(object) {
-  return typeOf(object) === REACT_FORWARD_REF_TYPE;
-}
-function isFragment(object) {
-  return typeOf(object) === REACT_FRAGMENT_TYPE;
-}
-function isLazy(object) {
-  return typeOf(object) === REACT_LAZY_TYPE;
-}
-function isMemo(object) {
-  return typeOf(object) === REACT_MEMO_TYPE;
-}
-function isPortal(object) {
-  return typeOf(object) === REACT_PORTAL_TYPE;
-}
-function isProfiler(object) {
-  return typeOf(object) === REACT_PROFILER_TYPE;
-}
-function isStrictMode(object) {
-  return typeOf(object) === REACT_STRICT_MODE_TYPE;
-}
-function isSuspense(object) {
-  return typeOf(object) === REACT_SUSPENSE_TYPE;
-}
-
-exports.AsyncMode = AsyncMode;
-exports.ConcurrentMode = ConcurrentMode;
-exports.ContextConsumer = ContextConsumer;
-exports.ContextProvider = ContextProvider;
-exports.Element = Element;
-exports.ForwardRef = ForwardRef;
-exports.Fragment = Fragment;
-exports.Lazy = Lazy;
-exports.Memo = Memo;
-exports.Portal = Portal;
-exports.Profiler = Profiler;
-exports.StrictMode = StrictMode;
-exports.Suspense = Suspense;
-exports.isAsyncMode = isAsyncMode;
-exports.isConcurrentMode = isConcurrentMode;
-exports.isContextConsumer = isContextConsumer;
-exports.isContextProvider = isContextProvider;
-exports.isElement = isElement;
-exports.isForwardRef = isForwardRef;
-exports.isFragment = isFragment;
-exports.isLazy = isLazy;
-exports.isMemo = isMemo;
-exports.isPortal = isPortal;
-exports.isProfiler = isProfiler;
-exports.isStrictMode = isStrictMode;
-exports.isSuspense = isSuspense;
-exports.isValidElementType = isValidElementType;
-exports.typeOf = typeOf;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/index.js":
-/*!****************************************!*\
-  !*** ./node_modules/react-is/index.js ***!
-  \****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/components/Context.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-redux/es/components/Context.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ReactReduxContext": () => (/* binding */ ReactReduxContext),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var ReactReduxContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext(null);
-
-if (true) {
-  ReactReduxContext.displayName = 'ReactRedux';
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReactReduxContext);
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/components/Provider.js":
-/*!************************************************************!*\
-  !*** ./node_modules/react-redux/es/components/Provider.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Context__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Context */ "./node_modules/react-redux/es/components/Context.js");
-/* harmony import */ var _utils_Subscription__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/Subscription */ "./node_modules/react-redux/es/utils/Subscription.js");
-/* harmony import */ var _utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/useIsomorphicLayoutEffect */ "./node_modules/react-redux/es/utils/useIsomorphicLayoutEffect.js");
-
-
-
-
-
-
-function Provider(_ref) {
-  var store = _ref.store,
-      context = _ref.context,
-      children = _ref.children;
-  var contextValue = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    var subscription = (0,_utils_Subscription__WEBPACK_IMPORTED_MODULE_3__.createSubscription)(store);
-    subscription.onStateChange = subscription.notifyNestedSubs;
-    return {
-      store: store,
-      subscription: subscription
-    };
-  }, [store]);
-  var previousState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    return store.getState();
-  }, [store]);
-  (0,_utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_4__.useIsomorphicLayoutEffect)(function () {
-    var subscription = contextValue.subscription;
-    subscription.trySubscribe();
-
-    if (previousState !== store.getState()) {
-      subscription.notifyNestedSubs();
-    }
-
-    return function () {
-      subscription.tryUnsubscribe();
-      subscription.onStateChange = null;
-    };
-  }, [contextValue, previousState]);
-  var Context = context || _Context__WEBPACK_IMPORTED_MODULE_2__.ReactReduxContext;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Context.Provider, {
-    value: contextValue
-  }, children);
-}
-
-if (true) {
-  Provider.propTypes = {
-    store: prop_types__WEBPACK_IMPORTED_MODULE_1___default().shape({
-      subscribe: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func.isRequired),
-      dispatch: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func.isRequired),
-      getState: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func.isRequired)
-    }),
-    context: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
-    children: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().any)
-  };
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Provider);
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/components/connectAdvanced.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/react-redux/es/components/connectAdvanced.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ connectAdvanced)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
-/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
-/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js");
-/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
-/* harmony import */ var _utils_Subscription__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/Subscription */ "./node_modules/react-redux/es/utils/Subscription.js");
-/* harmony import */ var _utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/useIsomorphicLayoutEffect */ "./node_modules/react-redux/es/utils/useIsomorphicLayoutEffect.js");
-/* harmony import */ var _Context__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Context */ "./node_modules/react-redux/es/components/Context.js");
-
-
-var _excluded = ["getDisplayName", "methodName", "renderCountProp", "shouldHandleStateChanges", "storeKey", "withRef", "forwardRef", "context"],
-    _excluded2 = ["reactReduxForwardedRef"];
-
-
-
-
-
- // Define some constant arrays just to avoid re-creating these
-
-var EMPTY_ARRAY = [];
-var NO_SUBSCRIPTION_ARRAY = [null, null];
-
-var stringifyComponent = function stringifyComponent(Comp) {
-  try {
-    return JSON.stringify(Comp);
-  } catch (err) {
-    return String(Comp);
-  }
-};
-
-function storeStateUpdatesReducer(state, action) {
-  var updateCount = state[1];
-  return [action.payload, updateCount + 1];
-}
-
-function useIsomorphicLayoutEffectWithArgs(effectFunc, effectArgs, dependencies) {
-  (0,_utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_6__.useIsomorphicLayoutEffect)(function () {
-    return effectFunc.apply(void 0, effectArgs);
-  }, dependencies);
-}
-
-function captureWrapperProps(lastWrapperProps, lastChildProps, renderIsScheduled, wrapperProps, actualChildProps, childPropsFromStoreUpdate, notifyNestedSubs) {
-  // We want to capture the wrapper props and child props we used for later comparisons
-  lastWrapperProps.current = wrapperProps;
-  lastChildProps.current = actualChildProps;
-  renderIsScheduled.current = false; // If the render was from a store update, clear out that reference and cascade the subscriber update
-
-  if (childPropsFromStoreUpdate.current) {
-    childPropsFromStoreUpdate.current = null;
-    notifyNestedSubs();
-  }
-}
-
-function subscribeUpdates(shouldHandleStateChanges, store, subscription, childPropsSelector, lastWrapperProps, lastChildProps, renderIsScheduled, childPropsFromStoreUpdate, notifyNestedSubs, forceComponentUpdateDispatch) {
-  // If we're not subscribed to the store, nothing to do here
-  if (!shouldHandleStateChanges) return; // Capture values for checking if and when this component unmounts
-
-  var didUnsubscribe = false;
-  var lastThrownError = null; // We'll run this callback every time a store subscription update propagates to this component
-
-  var checkForUpdates = function checkForUpdates() {
-    if (didUnsubscribe) {
-      // Don't run stale listeners.
-      // Redux doesn't guarantee unsubscriptions happen until next dispatch.
-      return;
-    }
-
-    var latestStoreState = store.getState();
-    var newChildProps, error;
-
-    try {
-      // Actually run the selector with the most recent store state and wrapper props
-      // to determine what the child props should be
-      newChildProps = childPropsSelector(latestStoreState, lastWrapperProps.current);
-    } catch (e) {
-      error = e;
-      lastThrownError = e;
-    }
-
-    if (!error) {
-      lastThrownError = null;
-    } // If the child props haven't changed, nothing to do here - cascade the subscription update
-
-
-    if (newChildProps === lastChildProps.current) {
-      if (!renderIsScheduled.current) {
-        notifyNestedSubs();
-      }
-    } else {
-      // Save references to the new child props.  Note that we track the "child props from store update"
-      // as a ref instead of a useState/useReducer because we need a way to determine if that value has
-      // been processed.  If this went into useState/useReducer, we couldn't clear out the value without
-      // forcing another re-render, which we don't want.
-      lastChildProps.current = newChildProps;
-      childPropsFromStoreUpdate.current = newChildProps;
-      renderIsScheduled.current = true; // If the child props _did_ change (or we caught an error), this wrapper component needs to re-render
-
-      forceComponentUpdateDispatch({
-        type: 'STORE_UPDATED',
-        payload: {
-          error: error
-        }
-      });
-    }
-  }; // Actually subscribe to the nearest connected ancestor (or store)
-
-
-  subscription.onStateChange = checkForUpdates;
-  subscription.trySubscribe(); // Pull data from the store after first render in case the store has
-  // changed since we began.
-
-  checkForUpdates();
-
-  var unsubscribeWrapper = function unsubscribeWrapper() {
-    didUnsubscribe = true;
-    subscription.tryUnsubscribe();
-    subscription.onStateChange = null;
-
-    if (lastThrownError) {
-      // It's possible that we caught an error due to a bad mapState function, but the
-      // parent re-rendered without this component and we're about to unmount.
-      // This shouldn't happen as long as we do top-down subscriptions correctly, but
-      // if we ever do those wrong, this throw will surface the error in our tests.
-      // In that case, throw the error from here so it doesn't get lost.
-      throw lastThrownError;
-    }
-  };
-
-  return unsubscribeWrapper;
-}
-
-var initStateUpdates = function initStateUpdates() {
-  return [null, 0];
-};
-
-function connectAdvanced(
-/*
-  selectorFactory is a func that is responsible for returning the selector function used to
-  compute new props from state, props, and dispatch. For example:
-      export default connectAdvanced((dispatch, options) => (state, props) => ({
-      thing: state.things[props.thingId],
-      saveThing: fields => dispatch(actionCreators.saveThing(props.thingId, fields)),
-    }))(YourComponent)
-    Access to dispatch is provided to the factory so selectorFactories can bind actionCreators
-  outside of their selector as an optimization. Options passed to connectAdvanced are passed to
-  the selectorFactory, along with displayName and WrappedComponent, as the second argument.
-    Note that selectorFactory is responsible for all caching/memoization of inbound and outbound
-  props. Do not use connectAdvanced directly without memoizing results between calls to your
-  selector, otherwise the Connect component will re-render on every state or props change.
-*/
-selectorFactory, // options object:
-_ref) {
-  if (_ref === void 0) {
-    _ref = {};
-  }
-
-  var _ref2 = _ref,
-      _ref2$getDisplayName = _ref2.getDisplayName,
-      getDisplayName = _ref2$getDisplayName === void 0 ? function (name) {
-    return "ConnectAdvanced(" + name + ")";
-  } : _ref2$getDisplayName,
-      _ref2$methodName = _ref2.methodName,
-      methodName = _ref2$methodName === void 0 ? 'connectAdvanced' : _ref2$methodName,
-      _ref2$renderCountProp = _ref2.renderCountProp,
-      renderCountProp = _ref2$renderCountProp === void 0 ? undefined : _ref2$renderCountProp,
-      _ref2$shouldHandleSta = _ref2.shouldHandleStateChanges,
-      shouldHandleStateChanges = _ref2$shouldHandleSta === void 0 ? true : _ref2$shouldHandleSta,
-      _ref2$storeKey = _ref2.storeKey,
-      storeKey = _ref2$storeKey === void 0 ? 'store' : _ref2$storeKey,
-      _ref2$withRef = _ref2.withRef,
-      withRef = _ref2$withRef === void 0 ? false : _ref2$withRef,
-      _ref2$forwardRef = _ref2.forwardRef,
-      forwardRef = _ref2$forwardRef === void 0 ? false : _ref2$forwardRef,
-      _ref2$context = _ref2.context,
-      context = _ref2$context === void 0 ? _Context__WEBPACK_IMPORTED_MODULE_7__.ReactReduxContext : _ref2$context,
-      connectOptions = (0,_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__["default"])(_ref2, _excluded);
-
-  if (true) {
-    if (renderCountProp !== undefined) {
-      throw new Error("renderCountProp is removed. render counting is built into the latest React Dev Tools profiling extension");
-    }
-
-    if (withRef) {
-      throw new Error('withRef is removed. To access the wrapped instance, use a ref on the connected component');
-    }
-
-    var customStoreWarningMessage = 'To use a custom Redux store for specific components, create a custom React context with ' + "React.createContext(), and pass the context object to React Redux's Provider and specific components" + ' like: <Provider context={MyContext}><ConnectedComponent context={MyContext} /></Provider>. ' + 'You may also pass a {context : MyContext} option to connect';
-
-    if (storeKey !== 'store') {
-      throw new Error('storeKey has been removed and does not do anything. ' + customStoreWarningMessage);
-    }
-  }
-
-  var Context = context;
-  return function wrapWithConnect(WrappedComponent) {
-    if ( true && !(0,react_is__WEBPACK_IMPORTED_MODULE_4__.isValidElementType)(WrappedComponent)) {
-      throw new Error("You must pass a component to the function returned by " + (methodName + ". Instead received " + stringifyComponent(WrappedComponent)));
-    }
-
-    var wrappedComponentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
-    var displayName = getDisplayName(wrappedComponentName);
-
-    var selectorFactoryOptions = (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, connectOptions, {
-      getDisplayName: getDisplayName,
-      methodName: methodName,
-      renderCountProp: renderCountProp,
-      shouldHandleStateChanges: shouldHandleStateChanges,
-      storeKey: storeKey,
-      displayName: displayName,
-      wrappedComponentName: wrappedComponentName,
-      WrappedComponent: WrappedComponent
-    });
-
-    var pure = connectOptions.pure;
-
-    function createChildSelector(store) {
-      return selectorFactory(store.dispatch, selectorFactoryOptions);
-    } // If we aren't running in "pure" mode, we don't want to memoize values.
-    // To avoid conditionally calling hooks, we fall back to a tiny wrapper
-    // that just executes the given callback immediately.
-
-
-    var usePureOnlyMemo = pure ? react__WEBPACK_IMPORTED_MODULE_3__.useMemo : function (callback) {
-      return callback();
-    };
-
-    function ConnectFunction(props) {
-      var _useMemo = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(function () {
-        // Distinguish between actual "data" props that were passed to the wrapper component,
-        // and values needed to control behavior (forwarded refs, alternate context instances).
-        // To maintain the wrapperProps object reference, memoize this destructuring.
-        var reactReduxForwardedRef = props.reactReduxForwardedRef,
-            wrapperProps = (0,_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__["default"])(props, _excluded2);
-
-        return [props.context, reactReduxForwardedRef, wrapperProps];
-      }, [props]),
-          propsContext = _useMemo[0],
-          reactReduxForwardedRef = _useMemo[1],
-          wrapperProps = _useMemo[2];
-
-      var ContextToUse = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(function () {
-        // Users may optionally pass in a custom context instance to use instead of our ReactReduxContext.
-        // Memoize the check that determines which context instance we should use.
-        return propsContext && propsContext.Consumer && (0,react_is__WEBPACK_IMPORTED_MODULE_4__.isContextConsumer)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(propsContext.Consumer, null)) ? propsContext : Context;
-      }, [propsContext, Context]); // Retrieve the store and ancestor subscription via context, if available
-
-      var contextValue = (0,react__WEBPACK_IMPORTED_MODULE_3__.useContext)(ContextToUse); // The store _must_ exist as either a prop or in context.
-      // We'll check to see if it _looks_ like a Redux store first.
-      // This allows us to pass through a `store` prop that is just a plain value.
-
-      var didStoreComeFromProps = Boolean(props.store) && Boolean(props.store.getState) && Boolean(props.store.dispatch);
-      var didStoreComeFromContext = Boolean(contextValue) && Boolean(contextValue.store);
-
-      if ( true && !didStoreComeFromProps && !didStoreComeFromContext) {
-        throw new Error("Could not find \"store\" in the context of " + ("\"" + displayName + "\". Either wrap the root component in a <Provider>, ") + "or pass a custom React context provider to <Provider> and the corresponding " + ("React context consumer to " + displayName + " in connect options."));
-      } // Based on the previous check, one of these must be true
-
-
-      var store = didStoreComeFromProps ? props.store : contextValue.store;
-      var childPropsSelector = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(function () {
-        // The child props selector needs the store reference as an input.
-        // Re-create this selector whenever the store changes.
-        return createChildSelector(store);
-      }, [store]);
-
-      var _useMemo2 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(function () {
-        if (!shouldHandleStateChanges) return NO_SUBSCRIPTION_ARRAY; // This Subscription's source should match where store came from: props vs. context. A component
-        // connected to the store via props shouldn't use subscription from context, or vice versa.
-
-        // This Subscription's source should match where store came from: props vs. context. A component
-        // connected to the store via props shouldn't use subscription from context, or vice versa.
-        var subscription = (0,_utils_Subscription__WEBPACK_IMPORTED_MODULE_5__.createSubscription)(store, didStoreComeFromProps ? null : contextValue.subscription); // `notifyNestedSubs` is duplicated to handle the case where the component is unmounted in
-        // the middle of the notification loop, where `subscription` will then be null. This can
-        // probably be avoided if Subscription's listeners logic is changed to not call listeners
-        // that have been unsubscribed in the  middle of the notification loop.
-
-        // `notifyNestedSubs` is duplicated to handle the case where the component is unmounted in
-        // the middle of the notification loop, where `subscription` will then be null. This can
-        // probably be avoided if Subscription's listeners logic is changed to not call listeners
-        // that have been unsubscribed in the  middle of the notification loop.
-        var notifyNestedSubs = subscription.notifyNestedSubs.bind(subscription);
-        return [subscription, notifyNestedSubs];
-      }, [store, didStoreComeFromProps, contextValue]),
-          subscription = _useMemo2[0],
-          notifyNestedSubs = _useMemo2[1]; // Determine what {store, subscription} value should be put into nested context, if necessary,
-      // and memoize that value to avoid unnecessary context updates.
-
-
-      var overriddenContextValue = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(function () {
-        if (didStoreComeFromProps) {
-          // This component is directly subscribed to a store from props.
-          // We don't want descendants reading from this store - pass down whatever
-          // the existing context value is from the nearest connected ancestor.
-          return contextValue;
-        } // Otherwise, put this component's subscription instance into context, so that
-        // connected descendants won't update until after this component is done
-
-
-        return (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, contextValue, {
-          subscription: subscription
-        });
-      }, [didStoreComeFromProps, contextValue, subscription]); // We need to force this wrapper component to re-render whenever a Redux store update
-      // causes a change to the calculated child component props (or we caught an error in mapState)
-
-      var _useReducer = (0,react__WEBPACK_IMPORTED_MODULE_3__.useReducer)(storeStateUpdatesReducer, EMPTY_ARRAY, initStateUpdates),
-          _useReducer$ = _useReducer[0],
-          previousStateUpdateResult = _useReducer$[0],
-          forceComponentUpdateDispatch = _useReducer[1]; // Propagate any mapState/mapDispatch errors upwards
-
-
-      if (previousStateUpdateResult && previousStateUpdateResult.error) {
-        throw previousStateUpdateResult.error;
-      } // Set up refs to coordinate values between the subscription effect and the render logic
-
-
-      var lastChildProps = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)();
-      var lastWrapperProps = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(wrapperProps);
-      var childPropsFromStoreUpdate = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)();
-      var renderIsScheduled = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(false);
-      var actualChildProps = usePureOnlyMemo(function () {
-        // Tricky logic here:
-        // - This render may have been triggered by a Redux store update that produced new child props
-        // - However, we may have gotten new wrapper props after that
-        // If we have new child props, and the same wrapper props, we know we should use the new child props as-is.
-        // But, if we have new wrapper props, those might change the child props, so we have to recalculate things.
-        // So, we'll use the child props from store update only if the wrapper props are the same as last time.
-        if (childPropsFromStoreUpdate.current && wrapperProps === lastWrapperProps.current) {
-          return childPropsFromStoreUpdate.current;
-        } // TODO We're reading the store directly in render() here. Bad idea?
-        // This will likely cause Bad Things (TM) to happen in Concurrent Mode.
-        // Note that we do this because on renders _not_ caused by store updates, we need the latest store state
-        // to determine what the child props should be.
-
-
-        return childPropsSelector(store.getState(), wrapperProps);
-      }, [store, previousStateUpdateResult, wrapperProps]); // We need this to execute synchronously every time we re-render. However, React warns
-      // about useLayoutEffect in SSR, so we try to detect environment and fall back to
-      // just useEffect instead to avoid the warning, since neither will run anyway.
-
-      useIsomorphicLayoutEffectWithArgs(captureWrapperProps, [lastWrapperProps, lastChildProps, renderIsScheduled, wrapperProps, actualChildProps, childPropsFromStoreUpdate, notifyNestedSubs]); // Our re-subscribe logic only runs when the store/subscription setup changes
-
-      useIsomorphicLayoutEffectWithArgs(subscribeUpdates, [shouldHandleStateChanges, store, subscription, childPropsSelector, lastWrapperProps, lastChildProps, renderIsScheduled, childPropsFromStoreUpdate, notifyNestedSubs, forceComponentUpdateDispatch], [store, subscription, childPropsSelector]); // Now that all that's done, we can finally try to actually render the child component.
-      // We memoize the elements for the rendered child component as an optimization.
-
-      var renderedWrappedComponent = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(function () {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(WrappedComponent, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, actualChildProps, {
-          ref: reactReduxForwardedRef
-        }));
-      }, [reactReduxForwardedRef, WrappedComponent, actualChildProps]); // If React sees the exact same element reference as last time, it bails out of re-rendering
-      // that child, same as if it was wrapped in React.memo() or returned false from shouldComponentUpdate.
-
-      var renderedChild = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(function () {
-        if (shouldHandleStateChanges) {
-          // If this component is subscribed to store updates, we need to pass its own
-          // subscription instance down to our descendants. That means rendering the same
-          // Context instance, and putting a different value into the context.
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(ContextToUse.Provider, {
-            value: overriddenContextValue
-          }, renderedWrappedComponent);
-        }
-
-        return renderedWrappedComponent;
-      }, [ContextToUse, renderedWrappedComponent, overriddenContextValue]);
-      return renderedChild;
-    } // If we're in "pure" mode, ensure our wrapper component only re-renders when incoming props have changed.
-
-
-    var Connect = pure ? react__WEBPACK_IMPORTED_MODULE_3__.memo(ConnectFunction) : ConnectFunction;
-    Connect.WrappedComponent = WrappedComponent;
-    Connect.displayName = ConnectFunction.displayName = displayName;
-
-    if (forwardRef) {
-      var forwarded = react__WEBPACK_IMPORTED_MODULE_3__.forwardRef(function forwardConnectRef(props, ref) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(Connect, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
-          reactReduxForwardedRef: ref
-        }));
-      });
-      forwarded.displayName = displayName;
-      forwarded.WrappedComponent = WrappedComponent;
-      return hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2___default()(forwarded, WrappedComponent);
-    }
-
-    return hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2___default()(Connect, WrappedComponent);
-  };
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/connect/connect.js":
-/*!********************************************************!*\
-  !*** ./node_modules/react-redux/es/connect/connect.js ***!
-  \********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createConnect": () => (/* binding */ createConnect),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
-/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
-/* harmony import */ var _components_connectAdvanced__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/connectAdvanced */ "./node_modules/react-redux/es/components/connectAdvanced.js");
-/* harmony import */ var _utils_shallowEqual__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/shallowEqual */ "./node_modules/react-redux/es/utils/shallowEqual.js");
-/* harmony import */ var _mapDispatchToProps__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mapDispatchToProps */ "./node_modules/react-redux/es/connect/mapDispatchToProps.js");
-/* harmony import */ var _mapStateToProps__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./mapStateToProps */ "./node_modules/react-redux/es/connect/mapStateToProps.js");
-/* harmony import */ var _mergeProps__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./mergeProps */ "./node_modules/react-redux/es/connect/mergeProps.js");
-/* harmony import */ var _selectorFactory__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./selectorFactory */ "./node_modules/react-redux/es/connect/selectorFactory.js");
-
-
-var _excluded = ["pure", "areStatesEqual", "areOwnPropsEqual", "areStatePropsEqual", "areMergedPropsEqual"];
-
-
-
-
-
-
-/*
-  connect is a facade over connectAdvanced. It turns its args into a compatible
-  selectorFactory, which has the signature:
-
-    (dispatch, options) => (nextState, nextOwnProps) => nextFinalProps
-  
-  connect passes its args to connectAdvanced as options, which will in turn pass them to
-  selectorFactory each time a Connect component instance is instantiated or hot reloaded.
-
-  selectorFactory returns a final props selector from its mapStateToProps,
-  mapStateToPropsFactories, mapDispatchToProps, mapDispatchToPropsFactories, mergeProps,
-  mergePropsFactories, and pure args.
-
-  The resulting final props selector is called by the Connect component instance whenever
-  it receives new props or store state.
- */
-
-function match(arg, factories, name) {
-  for (var i = factories.length - 1; i >= 0; i--) {
-    var result = factories[i](arg);
-    if (result) return result;
-  }
-
-  return function (dispatch, options) {
-    throw new Error("Invalid value of type " + typeof arg + " for " + name + " argument when connecting component " + options.wrappedComponentName + ".");
-  };
-}
-
-function strictEqual(a, b) {
-  return a === b;
-} // createConnect with default args builds the 'official' connect behavior. Calling it with
-// different options opens up some testing and extensibility scenarios
-
-
-function createConnect(_temp) {
-  var _ref = _temp === void 0 ? {} : _temp,
-      _ref$connectHOC = _ref.connectHOC,
-      connectHOC = _ref$connectHOC === void 0 ? _components_connectAdvanced__WEBPACK_IMPORTED_MODULE_2__["default"] : _ref$connectHOC,
-      _ref$mapStateToPropsF = _ref.mapStateToPropsFactories,
-      mapStateToPropsFactories = _ref$mapStateToPropsF === void 0 ? _mapStateToProps__WEBPACK_IMPORTED_MODULE_5__["default"] : _ref$mapStateToPropsF,
-      _ref$mapDispatchToPro = _ref.mapDispatchToPropsFactories,
-      mapDispatchToPropsFactories = _ref$mapDispatchToPro === void 0 ? _mapDispatchToProps__WEBPACK_IMPORTED_MODULE_4__["default"] : _ref$mapDispatchToPro,
-      _ref$mergePropsFactor = _ref.mergePropsFactories,
-      mergePropsFactories = _ref$mergePropsFactor === void 0 ? _mergeProps__WEBPACK_IMPORTED_MODULE_6__["default"] : _ref$mergePropsFactor,
-      _ref$selectorFactory = _ref.selectorFactory,
-      selectorFactory = _ref$selectorFactory === void 0 ? _selectorFactory__WEBPACK_IMPORTED_MODULE_7__["default"] : _ref$selectorFactory;
-
-  return function connect(mapStateToProps, mapDispatchToProps, mergeProps, _ref2) {
-    if (_ref2 === void 0) {
-      _ref2 = {};
-    }
-
-    var _ref3 = _ref2,
-        _ref3$pure = _ref3.pure,
-        pure = _ref3$pure === void 0 ? true : _ref3$pure,
-        _ref3$areStatesEqual = _ref3.areStatesEqual,
-        areStatesEqual = _ref3$areStatesEqual === void 0 ? strictEqual : _ref3$areStatesEqual,
-        _ref3$areOwnPropsEqua = _ref3.areOwnPropsEqual,
-        areOwnPropsEqual = _ref3$areOwnPropsEqua === void 0 ? _utils_shallowEqual__WEBPACK_IMPORTED_MODULE_3__["default"] : _ref3$areOwnPropsEqua,
-        _ref3$areStatePropsEq = _ref3.areStatePropsEqual,
-        areStatePropsEqual = _ref3$areStatePropsEq === void 0 ? _utils_shallowEqual__WEBPACK_IMPORTED_MODULE_3__["default"] : _ref3$areStatePropsEq,
-        _ref3$areMergedPropsE = _ref3.areMergedPropsEqual,
-        areMergedPropsEqual = _ref3$areMergedPropsE === void 0 ? _utils_shallowEqual__WEBPACK_IMPORTED_MODULE_3__["default"] : _ref3$areMergedPropsE,
-        extraOptions = (0,_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__["default"])(_ref3, _excluded);
-
-    var initMapStateToProps = match(mapStateToProps, mapStateToPropsFactories, 'mapStateToProps');
-    var initMapDispatchToProps = match(mapDispatchToProps, mapDispatchToPropsFactories, 'mapDispatchToProps');
-    var initMergeProps = match(mergeProps, mergePropsFactories, 'mergeProps');
-    return connectHOC(selectorFactory, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
-      // used in error messages
-      methodName: 'connect',
-      // used to compute Connect's displayName from the wrapped component's displayName.
-      getDisplayName: function getDisplayName(name) {
-        return "Connect(" + name + ")";
-      },
-      // if mapStateToProps is falsy, the Connect component doesn't subscribe to store state changes
-      shouldHandleStateChanges: Boolean(mapStateToProps),
-      // passed through to selectorFactory
-      initMapStateToProps: initMapStateToProps,
-      initMapDispatchToProps: initMapDispatchToProps,
-      initMergeProps: initMergeProps,
-      pure: pure,
-      areStatesEqual: areStatesEqual,
-      areOwnPropsEqual: areOwnPropsEqual,
-      areStatePropsEqual: areStatePropsEqual,
-      areMergedPropsEqual: areMergedPropsEqual
-    }, extraOptions));
-  };
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/createConnect());
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/connect/mapDispatchToProps.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/react-redux/es/connect/mapDispatchToProps.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "whenMapDispatchToPropsIsFunction": () => (/* binding */ whenMapDispatchToPropsIsFunction),
-/* harmony export */   "whenMapDispatchToPropsIsMissing": () => (/* binding */ whenMapDispatchToPropsIsMissing),
-/* harmony export */   "whenMapDispatchToPropsIsObject": () => (/* binding */ whenMapDispatchToPropsIsObject),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _utils_bindActionCreators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/bindActionCreators */ "./node_modules/react-redux/es/utils/bindActionCreators.js");
-/* harmony import */ var _wrapMapToProps__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./wrapMapToProps */ "./node_modules/react-redux/es/connect/wrapMapToProps.js");
-
-
-function whenMapDispatchToPropsIsFunction(mapDispatchToProps) {
-  return typeof mapDispatchToProps === 'function' ? (0,_wrapMapToProps__WEBPACK_IMPORTED_MODULE_1__.wrapMapToPropsFunc)(mapDispatchToProps, 'mapDispatchToProps') : undefined;
-}
-function whenMapDispatchToPropsIsMissing(mapDispatchToProps) {
-  return !mapDispatchToProps ? (0,_wrapMapToProps__WEBPACK_IMPORTED_MODULE_1__.wrapMapToPropsConstant)(function (dispatch) {
-    return {
-      dispatch: dispatch
-    };
-  }) : undefined;
-}
-function whenMapDispatchToPropsIsObject(mapDispatchToProps) {
-  return mapDispatchToProps && typeof mapDispatchToProps === 'object' ? (0,_wrapMapToProps__WEBPACK_IMPORTED_MODULE_1__.wrapMapToPropsConstant)(function (dispatch) {
-    return (0,_utils_bindActionCreators__WEBPACK_IMPORTED_MODULE_0__["default"])(mapDispatchToProps, dispatch);
-  }) : undefined;
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ([whenMapDispatchToPropsIsFunction, whenMapDispatchToPropsIsMissing, whenMapDispatchToPropsIsObject]);
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/connect/mapStateToProps.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/react-redux/es/connect/mapStateToProps.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "whenMapStateToPropsIsFunction": () => (/* binding */ whenMapStateToPropsIsFunction),
-/* harmony export */   "whenMapStateToPropsIsMissing": () => (/* binding */ whenMapStateToPropsIsMissing),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wrapMapToProps__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wrapMapToProps */ "./node_modules/react-redux/es/connect/wrapMapToProps.js");
-
-function whenMapStateToPropsIsFunction(mapStateToProps) {
-  return typeof mapStateToProps === 'function' ? (0,_wrapMapToProps__WEBPACK_IMPORTED_MODULE_0__.wrapMapToPropsFunc)(mapStateToProps, 'mapStateToProps') : undefined;
-}
-function whenMapStateToPropsIsMissing(mapStateToProps) {
-  return !mapStateToProps ? (0,_wrapMapToProps__WEBPACK_IMPORTED_MODULE_0__.wrapMapToPropsConstant)(function () {
-    return {};
-  }) : undefined;
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ([whenMapStateToPropsIsFunction, whenMapStateToPropsIsMissing]);
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/connect/mergeProps.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-redux/es/connect/mergeProps.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "defaultMergeProps": () => (/* binding */ defaultMergeProps),
-/* harmony export */   "wrapMergePropsFunc": () => (/* binding */ wrapMergePropsFunc),
-/* harmony export */   "whenMergePropsIsFunction": () => (/* binding */ whenMergePropsIsFunction),
-/* harmony export */   "whenMergePropsIsOmitted": () => (/* binding */ whenMergePropsIsOmitted),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
-/* harmony import */ var _utils_verifyPlainObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/verifyPlainObject */ "./node_modules/react-redux/es/utils/verifyPlainObject.js");
-
-
-function defaultMergeProps(stateProps, dispatchProps, ownProps) {
-  return (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, ownProps, stateProps, dispatchProps);
-}
-function wrapMergePropsFunc(mergeProps) {
-  return function initMergePropsProxy(dispatch, _ref) {
-    var displayName = _ref.displayName,
-        pure = _ref.pure,
-        areMergedPropsEqual = _ref.areMergedPropsEqual;
-    var hasRunOnce = false;
-    var mergedProps;
-    return function mergePropsProxy(stateProps, dispatchProps, ownProps) {
-      var nextMergedProps = mergeProps(stateProps, dispatchProps, ownProps);
-
-      if (hasRunOnce) {
-        if (!pure || !areMergedPropsEqual(nextMergedProps, mergedProps)) mergedProps = nextMergedProps;
-      } else {
-        hasRunOnce = true;
-        mergedProps = nextMergedProps;
-        if (true) (0,_utils_verifyPlainObject__WEBPACK_IMPORTED_MODULE_1__["default"])(mergedProps, displayName, 'mergeProps');
-      }
-
-      return mergedProps;
-    };
-  };
-}
-function whenMergePropsIsFunction(mergeProps) {
-  return typeof mergeProps === 'function' ? wrapMergePropsFunc(mergeProps) : undefined;
-}
-function whenMergePropsIsOmitted(mergeProps) {
-  return !mergeProps ? function () {
-    return defaultMergeProps;
-  } : undefined;
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ([whenMergePropsIsFunction, whenMergePropsIsOmitted]);
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/connect/selectorFactory.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/react-redux/es/connect/selectorFactory.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "impureFinalPropsSelectorFactory": () => (/* binding */ impureFinalPropsSelectorFactory),
-/* harmony export */   "pureFinalPropsSelectorFactory": () => (/* binding */ pureFinalPropsSelectorFactory),
-/* harmony export */   "default": () => (/* binding */ finalPropsSelectorFactory)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
-/* harmony import */ var _verifySubselectors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./verifySubselectors */ "./node_modules/react-redux/es/connect/verifySubselectors.js");
-
-var _excluded = ["initMapStateToProps", "initMapDispatchToProps", "initMergeProps"];
-
-function impureFinalPropsSelectorFactory(mapStateToProps, mapDispatchToProps, mergeProps, dispatch) {
-  return function impureFinalPropsSelector(state, ownProps) {
-    return mergeProps(mapStateToProps(state, ownProps), mapDispatchToProps(dispatch, ownProps), ownProps);
-  };
-}
-function pureFinalPropsSelectorFactory(mapStateToProps, mapDispatchToProps, mergeProps, dispatch, _ref) {
-  var areStatesEqual = _ref.areStatesEqual,
-      areOwnPropsEqual = _ref.areOwnPropsEqual,
-      areStatePropsEqual = _ref.areStatePropsEqual;
-  var hasRunAtLeastOnce = false;
-  var state;
-  var ownProps;
-  var stateProps;
-  var dispatchProps;
-  var mergedProps;
-
-  function handleFirstCall(firstState, firstOwnProps) {
-    state = firstState;
-    ownProps = firstOwnProps;
-    stateProps = mapStateToProps(state, ownProps);
-    dispatchProps = mapDispatchToProps(dispatch, ownProps);
-    mergedProps = mergeProps(stateProps, dispatchProps, ownProps);
-    hasRunAtLeastOnce = true;
-    return mergedProps;
-  }
-
-  function handleNewPropsAndNewState() {
-    stateProps = mapStateToProps(state, ownProps);
-    if (mapDispatchToProps.dependsOnOwnProps) dispatchProps = mapDispatchToProps(dispatch, ownProps);
-    mergedProps = mergeProps(stateProps, dispatchProps, ownProps);
-    return mergedProps;
-  }
-
-  function handleNewProps() {
-    if (mapStateToProps.dependsOnOwnProps) stateProps = mapStateToProps(state, ownProps);
-    if (mapDispatchToProps.dependsOnOwnProps) dispatchProps = mapDispatchToProps(dispatch, ownProps);
-    mergedProps = mergeProps(stateProps, dispatchProps, ownProps);
-    return mergedProps;
-  }
-
-  function handleNewState() {
-    var nextStateProps = mapStateToProps(state, ownProps);
-    var statePropsChanged = !areStatePropsEqual(nextStateProps, stateProps);
-    stateProps = nextStateProps;
-    if (statePropsChanged) mergedProps = mergeProps(stateProps, dispatchProps, ownProps);
-    return mergedProps;
-  }
-
-  function handleSubsequentCalls(nextState, nextOwnProps) {
-    var propsChanged = !areOwnPropsEqual(nextOwnProps, ownProps);
-    var stateChanged = !areStatesEqual(nextState, state);
-    state = nextState;
-    ownProps = nextOwnProps;
-    if (propsChanged && stateChanged) return handleNewPropsAndNewState();
-    if (propsChanged) return handleNewProps();
-    if (stateChanged) return handleNewState();
-    return mergedProps;
-  }
-
-  return function pureFinalPropsSelector(nextState, nextOwnProps) {
-    return hasRunAtLeastOnce ? handleSubsequentCalls(nextState, nextOwnProps) : handleFirstCall(nextState, nextOwnProps);
-  };
-} // TODO: Add more comments
-// If pure is true, the selector returned by selectorFactory will memoize its results,
-// allowing connectAdvanced's shouldComponentUpdate to return false if final
-// props have not changed. If false, the selector will always return a new
-// object and shouldComponentUpdate will always return true.
-
-function finalPropsSelectorFactory(dispatch, _ref2) {
-  var initMapStateToProps = _ref2.initMapStateToProps,
-      initMapDispatchToProps = _ref2.initMapDispatchToProps,
-      initMergeProps = _ref2.initMergeProps,
-      options = (0,_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref2, _excluded);
-
-  var mapStateToProps = initMapStateToProps(dispatch, options);
-  var mapDispatchToProps = initMapDispatchToProps(dispatch, options);
-  var mergeProps = initMergeProps(dispatch, options);
-
-  if (true) {
-    (0,_verifySubselectors__WEBPACK_IMPORTED_MODULE_1__["default"])(mapStateToProps, mapDispatchToProps, mergeProps, options.displayName);
-  }
-
-  var selectorFactory = options.pure ? pureFinalPropsSelectorFactory : impureFinalPropsSelectorFactory;
-  return selectorFactory(mapStateToProps, mapDispatchToProps, mergeProps, dispatch, options);
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/connect/verifySubselectors.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/react-redux/es/connect/verifySubselectors.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ verifySubselectors)
-/* harmony export */ });
-/* harmony import */ var _utils_warning__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/warning */ "./node_modules/react-redux/es/utils/warning.js");
-
-
-function verify(selector, methodName, displayName) {
-  if (!selector) {
-    throw new Error("Unexpected value for " + methodName + " in " + displayName + ".");
-  } else if (methodName === 'mapStateToProps' || methodName === 'mapDispatchToProps') {
-    if (!Object.prototype.hasOwnProperty.call(selector, 'dependsOnOwnProps')) {
-      (0,_utils_warning__WEBPACK_IMPORTED_MODULE_0__["default"])("The selector for " + methodName + " of " + displayName + " did not specify a value for dependsOnOwnProps.");
-    }
-  }
-}
-
-function verifySubselectors(mapStateToProps, mapDispatchToProps, mergeProps, displayName) {
-  verify(mapStateToProps, 'mapStateToProps', displayName);
-  verify(mapDispatchToProps, 'mapDispatchToProps', displayName);
-  verify(mergeProps, 'mergeProps', displayName);
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/connect/wrapMapToProps.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/react-redux/es/connect/wrapMapToProps.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "wrapMapToPropsConstant": () => (/* binding */ wrapMapToPropsConstant),
-/* harmony export */   "getDependsOnOwnProps": () => (/* binding */ getDependsOnOwnProps),
-/* harmony export */   "wrapMapToPropsFunc": () => (/* binding */ wrapMapToPropsFunc)
-/* harmony export */ });
-/* harmony import */ var _utils_verifyPlainObject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/verifyPlainObject */ "./node_modules/react-redux/es/utils/verifyPlainObject.js");
-
-function wrapMapToPropsConstant(getConstant) {
-  return function initConstantSelector(dispatch, options) {
-    var constant = getConstant(dispatch, options);
-
-    function constantSelector() {
-      return constant;
-    }
-
-    constantSelector.dependsOnOwnProps = false;
-    return constantSelector;
-  };
-} // dependsOnOwnProps is used by createMapToPropsProxy to determine whether to pass props as args
-// to the mapToProps function being wrapped. It is also used by makePurePropsSelector to determine
-// whether mapToProps needs to be invoked when props have changed.
-//
-// A length of one signals that mapToProps does not depend on props from the parent component.
-// A length of zero is assumed to mean mapToProps is getting args via arguments or ...args and
-// therefore not reporting its length accurately..
-
-function getDependsOnOwnProps(mapToProps) {
-  return mapToProps.dependsOnOwnProps !== null && mapToProps.dependsOnOwnProps !== undefined ? Boolean(mapToProps.dependsOnOwnProps) : mapToProps.length !== 1;
-} // Used by whenMapStateToPropsIsFunction and whenMapDispatchToPropsIsFunction,
-// this function wraps mapToProps in a proxy function which does several things:
-//
-//  * Detects whether the mapToProps function being called depends on props, which
-//    is used by selectorFactory to decide if it should reinvoke on props changes.
-//
-//  * On first call, handles mapToProps if returns another function, and treats that
-//    new function as the true mapToProps for subsequent calls.
-//
-//  * On first call, verifies the first result is a plain object, in order to warn
-//    the developer that their mapToProps function is not returning a valid result.
-//
-
-function wrapMapToPropsFunc(mapToProps, methodName) {
-  return function initProxySelector(dispatch, _ref) {
-    var displayName = _ref.displayName;
-
-    var proxy = function mapToPropsProxy(stateOrDispatch, ownProps) {
-      return proxy.dependsOnOwnProps ? proxy.mapToProps(stateOrDispatch, ownProps) : proxy.mapToProps(stateOrDispatch);
-    }; // allow detectFactoryAndVerify to get ownProps
-
-
-    proxy.dependsOnOwnProps = true;
-
-    proxy.mapToProps = function detectFactoryAndVerify(stateOrDispatch, ownProps) {
-      proxy.mapToProps = mapToProps;
-      proxy.dependsOnOwnProps = getDependsOnOwnProps(mapToProps);
-      var props = proxy(stateOrDispatch, ownProps);
-
-      if (typeof props === 'function') {
-        proxy.mapToProps = props;
-        proxy.dependsOnOwnProps = getDependsOnOwnProps(props);
-        props = proxy(stateOrDispatch, ownProps);
-      }
-
-      if (true) (0,_utils_verifyPlainObject__WEBPACK_IMPORTED_MODULE_0__["default"])(props, displayName, methodName);
-      return props;
-    };
-
-    return proxy;
-  };
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/exports.js":
-/*!************************************************!*\
-  !*** ./node_modules/react-redux/es/exports.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Provider": () => (/* reexport safe */ _components_Provider__WEBPACK_IMPORTED_MODULE_0__["default"]),
-/* harmony export */   "connectAdvanced": () => (/* reexport safe */ _components_connectAdvanced__WEBPACK_IMPORTED_MODULE_1__["default"]),
-/* harmony export */   "ReactReduxContext": () => (/* reexport safe */ _components_Context__WEBPACK_IMPORTED_MODULE_2__.ReactReduxContext),
-/* harmony export */   "connect": () => (/* reexport safe */ _connect_connect__WEBPACK_IMPORTED_MODULE_3__["default"]),
-/* harmony export */   "useDispatch": () => (/* reexport safe */ _hooks_useDispatch__WEBPACK_IMPORTED_MODULE_4__.useDispatch),
-/* harmony export */   "createDispatchHook": () => (/* reexport safe */ _hooks_useDispatch__WEBPACK_IMPORTED_MODULE_4__.createDispatchHook),
-/* harmony export */   "useSelector": () => (/* reexport safe */ _hooks_useSelector__WEBPACK_IMPORTED_MODULE_5__.useSelector),
-/* harmony export */   "createSelectorHook": () => (/* reexport safe */ _hooks_useSelector__WEBPACK_IMPORTED_MODULE_5__.createSelectorHook),
-/* harmony export */   "useStore": () => (/* reexport safe */ _hooks_useStore__WEBPACK_IMPORTED_MODULE_6__.useStore),
-/* harmony export */   "createStoreHook": () => (/* reexport safe */ _hooks_useStore__WEBPACK_IMPORTED_MODULE_6__.createStoreHook),
-/* harmony export */   "shallowEqual": () => (/* reexport safe */ _utils_shallowEqual__WEBPACK_IMPORTED_MODULE_7__["default"])
-/* harmony export */ });
-/* harmony import */ var _components_Provider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Provider */ "./node_modules/react-redux/es/components/Provider.js");
-/* harmony import */ var _components_connectAdvanced__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/connectAdvanced */ "./node_modules/react-redux/es/components/connectAdvanced.js");
-/* harmony import */ var _components_Context__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Context */ "./node_modules/react-redux/es/components/Context.js");
-/* harmony import */ var _connect_connect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./connect/connect */ "./node_modules/react-redux/es/connect/connect.js");
-/* harmony import */ var _hooks_useDispatch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hooks/useDispatch */ "./node_modules/react-redux/es/hooks/useDispatch.js");
-/* harmony import */ var _hooks_useSelector__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./hooks/useSelector */ "./node_modules/react-redux/es/hooks/useSelector.js");
-/* harmony import */ var _hooks_useStore__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./hooks/useStore */ "./node_modules/react-redux/es/hooks/useStore.js");
-/* harmony import */ var _utils_shallowEqual__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/shallowEqual */ "./node_modules/react-redux/es/utils/shallowEqual.js");
-
-
-
-
-
-
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/hooks/useDispatch.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/react-redux/es/hooks/useDispatch.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createDispatchHook": () => (/* binding */ createDispatchHook),
-/* harmony export */   "useDispatch": () => (/* binding */ useDispatch)
-/* harmony export */ });
-/* harmony import */ var _components_Context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Context */ "./node_modules/react-redux/es/components/Context.js");
-/* harmony import */ var _useStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useStore */ "./node_modules/react-redux/es/hooks/useStore.js");
-
-
-/**
- * Hook factory, which creates a `useDispatch` hook bound to a given context.
- *
- * @param {React.Context} [context=ReactReduxContext] Context passed to your `<Provider>`.
- * @returns {Function} A `useDispatch` hook bound to the specified context.
- */
-
-function createDispatchHook(context) {
-  if (context === void 0) {
-    context = _components_Context__WEBPACK_IMPORTED_MODULE_0__.ReactReduxContext;
-  }
-
-  var useStore = context === _components_Context__WEBPACK_IMPORTED_MODULE_0__.ReactReduxContext ? _useStore__WEBPACK_IMPORTED_MODULE_1__.useStore : (0,_useStore__WEBPACK_IMPORTED_MODULE_1__.createStoreHook)(context);
-  return function useDispatch() {
-    var store = useStore();
-    return store.dispatch;
-  };
-}
-/**
- * A hook to access the redux `dispatch` function.
- *
- * @returns {any|function} redux store's `dispatch` function
- *
- * @example
- *
- * import React, { useCallback } from 'react'
- * import { useDispatch } from 'react-redux'
- *
- * export const CounterComponent = ({ value }) => {
- *   const dispatch = useDispatch()
- *   const increaseCounter = useCallback(() => dispatch({ type: 'increase-counter' }), [])
- *   return (
- *     <div>
- *       <span>{value}</span>
- *       <button onClick={increaseCounter}>Increase counter</button>
- *     </div>
- *   )
- * }
- */
-
-var useDispatch = /*#__PURE__*/createDispatchHook();
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/hooks/useReduxContext.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/react-redux/es/hooks/useReduxContext.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "useReduxContext": () => (/* binding */ useReduxContext)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _components_Context__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Context */ "./node_modules/react-redux/es/components/Context.js");
-
-
-/**
- * A hook to access the value of the `ReactReduxContext`. This is a low-level
- * hook that you should usually not need to call directly.
- *
- * @returns {any} the value of the `ReactReduxContext`
- *
- * @example
- *
- * import React from 'react'
- * import { useReduxContext } from 'react-redux'
- *
- * export const CounterComponent = ({ value }) => {
- *   const { store } = useReduxContext()
- *   return <div>{store.getState()}</div>
- * }
- */
-
-function useReduxContext() {
-  var contextValue = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_components_Context__WEBPACK_IMPORTED_MODULE_1__.ReactReduxContext);
-
-  if ( true && !contextValue) {
-    throw new Error('could not find react-redux context value; please ensure the component is wrapped in a <Provider>');
-  }
-
-  return contextValue;
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/hooks/useSelector.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/react-redux/es/hooks/useSelector.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createSelectorHook": () => (/* binding */ createSelectorHook),
-/* harmony export */   "useSelector": () => (/* binding */ useSelector)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _useReduxContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useReduxContext */ "./node_modules/react-redux/es/hooks/useReduxContext.js");
-/* harmony import */ var _utils_Subscription__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/Subscription */ "./node_modules/react-redux/es/utils/Subscription.js");
-/* harmony import */ var _utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/useIsomorphicLayoutEffect */ "./node_modules/react-redux/es/utils/useIsomorphicLayoutEffect.js");
-/* harmony import */ var _components_Context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Context */ "./node_modules/react-redux/es/components/Context.js");
-
-
-
-
-
-
-var refEquality = function refEquality(a, b) {
-  return a === b;
-};
-
-function useSelectorWithStoreAndSubscription(selector, equalityFn, store, contextSub) {
-  var _useReducer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useReducer)(function (s) {
-    return s + 1;
-  }, 0),
-      forceRender = _useReducer[1];
-
-  var subscription = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    return (0,_utils_Subscription__WEBPACK_IMPORTED_MODULE_2__.createSubscription)(store, contextSub);
-  }, [store, contextSub]);
-  var latestSubscriptionCallbackError = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
-  var latestSelector = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
-  var latestStoreState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
-  var latestSelectedState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
-  var storeState = store.getState();
-  var selectedState;
-
-  try {
-    if (selector !== latestSelector.current || storeState !== latestStoreState.current || latestSubscriptionCallbackError.current) {
-      var newSelectedState = selector(storeState); // ensure latest selected state is reused so that a custom equality function can result in identical references
-
-      if (latestSelectedState.current === undefined || !equalityFn(newSelectedState, latestSelectedState.current)) {
-        selectedState = newSelectedState;
-      } else {
-        selectedState = latestSelectedState.current;
-      }
-    } else {
-      selectedState = latestSelectedState.current;
-    }
-  } catch (err) {
-    if (latestSubscriptionCallbackError.current) {
-      err.message += "\nThe error may be correlated with this previous error:\n" + latestSubscriptionCallbackError.current.stack + "\n\n";
-    }
-
-    throw err;
-  }
-
-  (0,_utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_3__.useIsomorphicLayoutEffect)(function () {
-    latestSelector.current = selector;
-    latestStoreState.current = storeState;
-    latestSelectedState.current = selectedState;
-    latestSubscriptionCallbackError.current = undefined;
-  });
-  (0,_utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_3__.useIsomorphicLayoutEffect)(function () {
-    function checkForUpdates() {
-      try {
-        var newStoreState = store.getState(); // Avoid calling selector multiple times if the store's state has not changed
-
-        if (newStoreState === latestStoreState.current) {
-          return;
-        }
-
-        var _newSelectedState = latestSelector.current(newStoreState);
-
-        if (equalityFn(_newSelectedState, latestSelectedState.current)) {
-          return;
-        }
-
-        latestSelectedState.current = _newSelectedState;
-        latestStoreState.current = newStoreState;
-      } catch (err) {
-        // we ignore all errors here, since when the component
-        // is re-rendered, the selectors are called again, and
-        // will throw again, if neither props nor store state
-        // changed
-        latestSubscriptionCallbackError.current = err;
-      }
-
-      forceRender();
-    }
-
-    subscription.onStateChange = checkForUpdates;
-    subscription.trySubscribe();
-    checkForUpdates();
-    return function () {
-      return subscription.tryUnsubscribe();
-    };
-  }, [store, subscription]);
-  return selectedState;
-}
-/**
- * Hook factory, which creates a `useSelector` hook bound to a given context.
- *
- * @param {React.Context} [context=ReactReduxContext] Context passed to your `<Provider>`.
- * @returns {Function} A `useSelector` hook bound to the specified context.
- */
-
-
-function createSelectorHook(context) {
-  if (context === void 0) {
-    context = _components_Context__WEBPACK_IMPORTED_MODULE_4__.ReactReduxContext;
-  }
-
-  var useReduxContext = context === _components_Context__WEBPACK_IMPORTED_MODULE_4__.ReactReduxContext ? _useReduxContext__WEBPACK_IMPORTED_MODULE_1__.useReduxContext : function () {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(context);
-  };
-  return function useSelector(selector, equalityFn) {
-    if (equalityFn === void 0) {
-      equalityFn = refEquality;
-    }
-
-    if (true) {
-      if (!selector) {
-        throw new Error("You must pass a selector to useSelector");
-      }
-
-      if (typeof selector !== 'function') {
-        throw new Error("You must pass a function as a selector to useSelector");
-      }
-
-      if (typeof equalityFn !== 'function') {
-        throw new Error("You must pass a function as an equality function to useSelector");
-      }
-    }
-
-    var _useReduxContext = useReduxContext(),
-        store = _useReduxContext.store,
-        contextSub = _useReduxContext.subscription;
-
-    var selectedState = useSelectorWithStoreAndSubscription(selector, equalityFn, store, contextSub);
-    (0,react__WEBPACK_IMPORTED_MODULE_0__.useDebugValue)(selectedState);
-    return selectedState;
-  };
-}
-/**
- * A hook to access the redux store's state. This hook takes a selector function
- * as an argument. The selector is called with the store state.
- *
- * This hook takes an optional equality comparison function as the second parameter
- * that allows you to customize the way the selected state is compared to determine
- * whether the component needs to be re-rendered.
- *
- * @param {Function} selector the selector function
- * @param {Function=} equalityFn the function that will be used to determine equality
- *
- * @returns {any} the selected state
- *
- * @example
- *
- * import React from 'react'
- * import { useSelector } from 'react-redux'
- *
- * export const CounterComponent = () => {
- *   const counter = useSelector(state => state.counter)
- *   return <div>{counter}</div>
- * }
- */
-
-var useSelector = /*#__PURE__*/createSelectorHook();
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/hooks/useStore.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/react-redux/es/hooks/useStore.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createStoreHook": () => (/* binding */ createStoreHook),
-/* harmony export */   "useStore": () => (/* binding */ useStore)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _components_Context__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Context */ "./node_modules/react-redux/es/components/Context.js");
-/* harmony import */ var _useReduxContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./useReduxContext */ "./node_modules/react-redux/es/hooks/useReduxContext.js");
-
-
-
-/**
- * Hook factory, which creates a `useStore` hook bound to a given context.
- *
- * @param {React.Context} [context=ReactReduxContext] Context passed to your `<Provider>`.
- * @returns {Function} A `useStore` hook bound to the specified context.
- */
-
-function createStoreHook(context) {
-  if (context === void 0) {
-    context = _components_Context__WEBPACK_IMPORTED_MODULE_1__.ReactReduxContext;
-  }
-
-  var useReduxContext = context === _components_Context__WEBPACK_IMPORTED_MODULE_1__.ReactReduxContext ? _useReduxContext__WEBPACK_IMPORTED_MODULE_2__.useReduxContext : function () {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(context);
-  };
-  return function useStore() {
-    var _useReduxContext = useReduxContext(),
-        store = _useReduxContext.store;
-
-    return store;
-  };
-}
-/**
- * A hook to access the redux store.
- *
- * @returns {any} the redux store
- *
- * @example
- *
- * import React from 'react'
- * import { useStore } from 'react-redux'
- *
- * export const ExampleComponent = () => {
- *   const store = useStore()
- *   return <div>{store.getState()}</div>
- * }
- */
-
-var useStore = /*#__PURE__*/createStoreHook();
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/index.js":
-/*!**********************************************!*\
-  !*** ./node_modules/react-redux/es/index.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Provider": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.Provider),
-/* harmony export */   "ReactReduxContext": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.ReactReduxContext),
-/* harmony export */   "connect": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.connect),
-/* harmony export */   "connectAdvanced": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.connectAdvanced),
-/* harmony export */   "createDispatchHook": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.createDispatchHook),
-/* harmony export */   "createSelectorHook": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.createSelectorHook),
-/* harmony export */   "createStoreHook": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.createStoreHook),
-/* harmony export */   "shallowEqual": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.shallowEqual),
-/* harmony export */   "useDispatch": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.useDispatch),
-/* harmony export */   "useSelector": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.useSelector),
-/* harmony export */   "useStore": () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_0__.useStore),
-/* harmony export */   "batch": () => (/* reexport safe */ _utils_reactBatchedUpdates__WEBPACK_IMPORTED_MODULE_1__.unstable_batchedUpdates)
-/* harmony export */ });
-/* harmony import */ var _exports__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./exports */ "./node_modules/react-redux/es/exports.js");
-/* harmony import */ var _utils_reactBatchedUpdates__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/reactBatchedUpdates */ "./node_modules/react-redux/es/utils/reactBatchedUpdates.js");
-/* harmony import */ var _utils_batch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/batch */ "./node_modules/react-redux/es/utils/batch.js");
-
-
- // Enable batched updates in our subscriptions for use
-// with standard React renderers (ReactDOM, React Native)
-
-(0,_utils_batch__WEBPACK_IMPORTED_MODULE_2__.setBatch)(_utils_reactBatchedUpdates__WEBPACK_IMPORTED_MODULE_1__.unstable_batchedUpdates);
-
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/Subscription.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/Subscription.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createSubscription": () => (/* binding */ createSubscription)
-/* harmony export */ });
-/* harmony import */ var _batch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./batch */ "./node_modules/react-redux/es/utils/batch.js");
- // encapsulates the subscription logic for connecting a component to the redux store, as
-// well as nesting subscriptions of descendant components, so that we can ensure the
-// ancestor components re-render before descendants
-
-function createListenerCollection() {
-  var batch = (0,_batch__WEBPACK_IMPORTED_MODULE_0__.getBatch)();
-  var first = null;
-  var last = null;
-  return {
-    clear: function clear() {
-      first = null;
-      last = null;
-    },
-    notify: function notify() {
-      batch(function () {
-        var listener = first;
-
-        while (listener) {
-          listener.callback();
-          listener = listener.next;
-        }
-      });
-    },
-    get: function get() {
-      var listeners = [];
-      var listener = first;
-
-      while (listener) {
-        listeners.push(listener);
-        listener = listener.next;
-      }
-
-      return listeners;
-    },
-    subscribe: function subscribe(callback) {
-      var isSubscribed = true;
-      var listener = last = {
-        callback: callback,
-        next: null,
-        prev: last
-      };
-
-      if (listener.prev) {
-        listener.prev.next = listener;
-      } else {
-        first = listener;
-      }
-
-      return function unsubscribe() {
-        if (!isSubscribed || first === null) return;
-        isSubscribed = false;
-
-        if (listener.next) {
-          listener.next.prev = listener.prev;
-        } else {
-          last = listener.prev;
-        }
-
-        if (listener.prev) {
-          listener.prev.next = listener.next;
-        } else {
-          first = listener.next;
-        }
-      };
-    }
-  };
-}
-
-var nullListeners = {
-  notify: function notify() {},
-  get: function get() {
-    return [];
-  }
-};
-function createSubscription(store, parentSub) {
-  var unsubscribe;
-  var listeners = nullListeners;
-
-  function addNestedSub(listener) {
-    trySubscribe();
-    return listeners.subscribe(listener);
-  }
-
-  function notifyNestedSubs() {
-    listeners.notify();
-  }
-
-  function handleChangeWrapper() {
-    if (subscription.onStateChange) {
-      subscription.onStateChange();
-    }
-  }
-
-  function isSubscribed() {
-    return Boolean(unsubscribe);
-  }
-
-  function trySubscribe() {
-    if (!unsubscribe) {
-      unsubscribe = parentSub ? parentSub.addNestedSub(handleChangeWrapper) : store.subscribe(handleChangeWrapper);
-      listeners = createListenerCollection();
-    }
-  }
-
-  function tryUnsubscribe() {
-    if (unsubscribe) {
-      unsubscribe();
-      unsubscribe = undefined;
-      listeners.clear();
-      listeners = nullListeners;
-    }
-  }
-
-  var subscription = {
-    addNestedSub: addNestedSub,
-    notifyNestedSubs: notifyNestedSubs,
-    handleChangeWrapper: handleChangeWrapper,
-    isSubscribed: isSubscribed,
-    trySubscribe: trySubscribe,
-    tryUnsubscribe: tryUnsubscribe,
-    getListeners: function getListeners() {
-      return listeners;
-    }
-  };
-  return subscription;
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/batch.js":
-/*!****************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/batch.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "setBatch": () => (/* binding */ setBatch),
-/* harmony export */   "getBatch": () => (/* binding */ getBatch)
-/* harmony export */ });
-// Default to a dummy "batch" implementation that just runs the callback
-function defaultNoopBatch(callback) {
-  callback();
-}
-
-var batch = defaultNoopBatch; // Allow injecting another batching function later
-
-var setBatch = function setBatch(newBatch) {
-  return batch = newBatch;
-}; // Supply a getter just to skip dealing with ESM bindings
-
-var getBatch = function getBatch() {
-  return batch;
-};
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/bindActionCreators.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/bindActionCreators.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ bindActionCreators)
-/* harmony export */ });
-function bindActionCreators(actionCreators, dispatch) {
-  var boundActionCreators = {};
-
-  var _loop = function _loop(key) {
-    var actionCreator = actionCreators[key];
-
-    if (typeof actionCreator === 'function') {
-      boundActionCreators[key] = function () {
-        return dispatch(actionCreator.apply(void 0, arguments));
-      };
-    }
-  };
-
-  for (var key in actionCreators) {
-    _loop(key);
-  }
-
-  return boundActionCreators;
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/isPlainObject.js":
-/*!************************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/isPlainObject.js ***!
-  \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ isPlainObject)
-/* harmony export */ });
-/**
- * @param {any} obj The object to inspect.
- * @returns {boolean} True if the argument appears to be a plain object.
- */
-function isPlainObject(obj) {
-  if (typeof obj !== 'object' || obj === null) return false;
-  var proto = Object.getPrototypeOf(obj);
-  if (proto === null) return true;
-  var baseProto = proto;
-
-  while (Object.getPrototypeOf(baseProto) !== null) {
-    baseProto = Object.getPrototypeOf(baseProto);
-  }
-
-  return proto === baseProto;
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/reactBatchedUpdates.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/reactBatchedUpdates.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "unstable_batchedUpdates": () => (/* reexport safe */ react_dom__WEBPACK_IMPORTED_MODULE_0__.unstable_batchedUpdates)
-/* harmony export */ });
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* eslint-disable import/no-unresolved */
-
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/shallowEqual.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/shallowEqual.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ shallowEqual)
-/* harmony export */ });
-function is(x, y) {
-  if (x === y) {
-    return x !== 0 || y !== 0 || 1 / x === 1 / y;
-  } else {
-    return x !== x && y !== y;
-  }
-}
-
-function shallowEqual(objA, objB) {
-  if (is(objA, objB)) return true;
-
-  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-    return false;
-  }
-
-  var keysA = Object.keys(objA);
-  var keysB = Object.keys(objB);
-  if (keysA.length !== keysB.length) return false;
-
-  for (var i = 0; i < keysA.length; i++) {
-    if (!Object.prototype.hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/useIsomorphicLayoutEffect.js":
-/*!************************************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/useIsomorphicLayoutEffect.js ***!
-  \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "useIsomorphicLayoutEffect": () => (/* binding */ useIsomorphicLayoutEffect)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
- // React currently throws a warning when using useLayoutEffect on the server.
-// To get around it, we can conditionally useEffect on the server (no-op) and
-// useLayoutEffect in the browser. We need useLayoutEffect to ensure the store
-// subscription callback always has the selector from the latest render commit
-// available, otherwise a store update may happen between render and the effect,
-// which may cause missed updates; we also must ensure the store subscription
-// is created synchronously, otherwise a store update may occur before the
-// subscription is created and an inconsistent state may be observed
-
-var useIsomorphicLayoutEffect = typeof window !== 'undefined' && typeof window.document !== 'undefined' && typeof window.document.createElement !== 'undefined' ? react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect : react__WEBPACK_IMPORTED_MODULE_0__.useEffect;
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/verifyPlainObject.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/verifyPlainObject.js ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ verifyPlainObject)
-/* harmony export */ });
-/* harmony import */ var _isPlainObject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./isPlainObject */ "./node_modules/react-redux/es/utils/isPlainObject.js");
-/* harmony import */ var _warning__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./warning */ "./node_modules/react-redux/es/utils/warning.js");
-
-
-function verifyPlainObject(value, displayName, methodName) {
-  if (!(0,_isPlainObject__WEBPACK_IMPORTED_MODULE_0__["default"])(value)) {
-    (0,_warning__WEBPACK_IMPORTED_MODULE_1__["default"])(methodName + "() in " + displayName + " must return a plain object. Instead received " + value + ".");
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/react-redux/es/utils/warning.js":
-/*!******************************************************!*\
-  !*** ./node_modules/react-redux/es/utils/warning.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ warning)
-/* harmony export */ });
-/**
- * Prints a warning in the console if it exists.
- *
- * @param {String} message The warning message.
- * @returns {void}
- */
-function warning(message) {
-  /* eslint-disable no-console */
-  if (typeof console !== 'undefined' && typeof console.error === 'function') {
-    console.error(message);
-  }
-  /* eslint-enable no-console */
-
-
-  try {
-    // This error was thrown as a convenience so that if you enable
-    // "break on all exceptions" in your console,
-    // it would pause the execution at this line.
-    throw new Error(message);
-    /* eslint-disable no-empty */
-  } catch (e) {}
-  /* eslint-enable no-empty */
-
-}
-
-/***/ }),
-
 /***/ "./node_modules/react-router-dom/esm/react-router-dom.js":
 /*!***************************************************************!*\
   !*** ./node_modules/react-router-dom/esm/react-router-dom.js ***!
@@ -33504,7 +29584,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
 /* harmony import */ var path_to_regexp__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! path-to-regexp */ "./node_modules/react-router/node_modules/path-to-regexp/index.js");
 /* harmony import */ var path_to_regexp__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(path_to_regexp__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-is */ "./node_modules/react-router/node_modules/react-is/index.js");
 /* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
 /* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js");
 /* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_8__);
@@ -34693,6 +30773,214 @@ function pathToRegexp (path, keys, options) {
   }
 
   return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-router/node_modules/react-is/cjs/react-is.development.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/react-router/node_modules/react-is/cjs/react-is.development.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+/** @license React v16.13.1
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+
+
+if (true) {
+  (function() {
+'use strict';
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+// (unstable) APIs that have been removed. Can we remove the symbols?
+
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+}
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+} // AsyncMode is deprecated along with isAsyncMode
+
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.AsyncMode = AsyncMode;
+exports.ConcurrentMode = ConcurrentMode;
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+exports.isValidElementType = isValidElementType;
+exports.typeOf = typeOf;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-router/node_modules/react-is/index.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/react-router/node_modules/react-is/index.js ***!
+  \******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-router/node_modules/react-is/cjs/react-is.development.js");
 }
 
 
@@ -37058,1486 +33346,6 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./node_modules/redux-logger/dist/redux-logger.js":
-/*!********************************************************!*\
-  !*** ./node_modules/redux-logger/dist/redux-logger.js ***!
-  \********************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-!function(e,t){ true?t(exports):0}(this,function(e){"use strict";function t(e,t){e.super_=t,e.prototype=Object.create(t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}})}function r(e,t){Object.defineProperty(this,"kind",{value:e,enumerable:!0}),t&&t.length&&Object.defineProperty(this,"path",{value:t,enumerable:!0})}function n(e,t,r){n.super_.call(this,"E",e),Object.defineProperty(this,"lhs",{value:t,enumerable:!0}),Object.defineProperty(this,"rhs",{value:r,enumerable:!0})}function o(e,t){o.super_.call(this,"N",e),Object.defineProperty(this,"rhs",{value:t,enumerable:!0})}function i(e,t){i.super_.call(this,"D",e),Object.defineProperty(this,"lhs",{value:t,enumerable:!0})}function a(e,t,r){a.super_.call(this,"A",e),Object.defineProperty(this,"index",{value:t,enumerable:!0}),Object.defineProperty(this,"item",{value:r,enumerable:!0})}function f(e,t,r){var n=e.slice((r||t)+1||e.length);return e.length=t<0?e.length+t:t,e.push.apply(e,n),e}function u(e){var t="undefined"==typeof e?"undefined":N(e);return"object"!==t?t:e===Math?"math":null===e?"null":Array.isArray(e)?"array":"[object Date]"===Object.prototype.toString.call(e)?"date":"function"==typeof e.toString&&/^\/.*\//.test(e.toString())?"regexp":"object"}function l(e,t,r,c,s,d,p){s=s||[],p=p||[];var g=s.slice(0);if("undefined"!=typeof d){if(c){if("function"==typeof c&&c(g,d))return;if("object"===("undefined"==typeof c?"undefined":N(c))){if(c.prefilter&&c.prefilter(g,d))return;if(c.normalize){var h=c.normalize(g,d,e,t);h&&(e=h[0],t=h[1])}}}g.push(d)}"regexp"===u(e)&&"regexp"===u(t)&&(e=e.toString(),t=t.toString());var y="undefined"==typeof e?"undefined":N(e),v="undefined"==typeof t?"undefined":N(t),b="undefined"!==y||p&&p[p.length-1].lhs&&p[p.length-1].lhs.hasOwnProperty(d),m="undefined"!==v||p&&p[p.length-1].rhs&&p[p.length-1].rhs.hasOwnProperty(d);if(!b&&m)r(new o(g,t));else if(!m&&b)r(new i(g,e));else if(u(e)!==u(t))r(new n(g,e,t));else if("date"===u(e)&&e-t!==0)r(new n(g,e,t));else if("object"===y&&null!==e&&null!==t)if(p.filter(function(t){return t.lhs===e}).length)e!==t&&r(new n(g,e,t));else{if(p.push({lhs:e,rhs:t}),Array.isArray(e)){var w;e.length;for(w=0;w<e.length;w++)w>=t.length?r(new a(g,w,new i(void 0,e[w]))):l(e[w],t[w],r,c,g,w,p);for(;w<t.length;)r(new a(g,w,new o(void 0,t[w++])))}else{var x=Object.keys(e),S=Object.keys(t);x.forEach(function(n,o){var i=S.indexOf(n);i>=0?(l(e[n],t[n],r,c,g,n,p),S=f(S,i)):l(e[n],void 0,r,c,g,n,p)}),S.forEach(function(e){l(void 0,t[e],r,c,g,e,p)})}p.length=p.length-1}else e!==t&&("number"===y&&isNaN(e)&&isNaN(t)||r(new n(g,e,t)))}function c(e,t,r,n){return n=n||[],l(e,t,function(e){e&&n.push(e)},r),n.length?n:void 0}function s(e,t,r){if(r.path&&r.path.length){var n,o=e[t],i=r.path.length-1;for(n=0;n<i;n++)o=o[r.path[n]];switch(r.kind){case"A":s(o[r.path[n]],r.index,r.item);break;case"D":delete o[r.path[n]];break;case"E":case"N":o[r.path[n]]=r.rhs}}else switch(r.kind){case"A":s(e[t],r.index,r.item);break;case"D":e=f(e,t);break;case"E":case"N":e[t]=r.rhs}return e}function d(e,t,r){if(e&&t&&r&&r.kind){for(var n=e,o=-1,i=r.path?r.path.length-1:0;++o<i;)"undefined"==typeof n[r.path[o]]&&(n[r.path[o]]="number"==typeof r.path[o]?[]:{}),n=n[r.path[o]];switch(r.kind){case"A":s(r.path?n[r.path[o]]:n,r.index,r.item);break;case"D":delete n[r.path[o]];break;case"E":case"N":n[r.path[o]]=r.rhs}}}function p(e,t,r){if(r.path&&r.path.length){var n,o=e[t],i=r.path.length-1;for(n=0;n<i;n++)o=o[r.path[n]];switch(r.kind){case"A":p(o[r.path[n]],r.index,r.item);break;case"D":o[r.path[n]]=r.lhs;break;case"E":o[r.path[n]]=r.lhs;break;case"N":delete o[r.path[n]]}}else switch(r.kind){case"A":p(e[t],r.index,r.item);break;case"D":e[t]=r.lhs;break;case"E":e[t]=r.lhs;break;case"N":e=f(e,t)}return e}function g(e,t,r){if(e&&t&&r&&r.kind){var n,o,i=e;for(o=r.path.length-1,n=0;n<o;n++)"undefined"==typeof i[r.path[n]]&&(i[r.path[n]]={}),i=i[r.path[n]];switch(r.kind){case"A":p(i[r.path[n]],r.index,r.item);break;case"D":i[r.path[n]]=r.lhs;break;case"E":i[r.path[n]]=r.lhs;break;case"N":delete i[r.path[n]]}}}function h(e,t,r){if(e&&t){var n=function(n){r&&!r(e,t,n)||d(e,t,n)};l(e,t,n)}}function y(e){return"color: "+F[e].color+"; font-weight: bold"}function v(e){var t=e.kind,r=e.path,n=e.lhs,o=e.rhs,i=e.index,a=e.item;switch(t){case"E":return[r.join("."),n,"→",o];case"N":return[r.join("."),o];case"D":return[r.join(".")];case"A":return[r.join(".")+"["+i+"]",a];default:return[]}}function b(e,t,r,n){var o=c(e,t);try{n?r.groupCollapsed("diff"):r.group("diff")}catch(e){r.log("diff")}o?o.forEach(function(e){var t=e.kind,n=v(e);r.log.apply(r,["%c "+F[t].text,y(t)].concat(P(n)))}):r.log("—— no diff ——");try{r.groupEnd()}catch(e){r.log("—— diff end —— ")}}function m(e,t,r,n){switch("undefined"==typeof e?"undefined":N(e)){case"object":return"function"==typeof e[n]?e[n].apply(e,P(r)):e[n];case"function":return e(t);default:return e}}function w(e){var t=e.timestamp,r=e.duration;return function(e,n,o){var i=["action"];return i.push("%c"+String(e.type)),t&&i.push("%c@ "+n),r&&i.push("%c(in "+o.toFixed(2)+" ms)"),i.join(" ")}}function x(e,t){var r=t.logger,n=t.actionTransformer,o=t.titleFormatter,i=void 0===o?w(t):o,a=t.collapsed,f=t.colors,u=t.level,l=t.diff,c="undefined"==typeof t.titleFormatter;e.forEach(function(o,s){var d=o.started,p=o.startedTime,g=o.action,h=o.prevState,y=o.error,v=o.took,w=o.nextState,x=e[s+1];x&&(w=x.prevState,v=x.started-d);var S=n(g),k="function"==typeof a?a(function(){return w},g,o):a,j=D(p),E=f.title?"color: "+f.title(S)+";":"",A=["color: gray; font-weight: lighter;"];A.push(E),t.timestamp&&A.push("color: gray; font-weight: lighter;"),t.duration&&A.push("color: gray; font-weight: lighter;");var O=i(S,j,v);try{k?f.title&&c?r.groupCollapsed.apply(r,["%c "+O].concat(A)):r.groupCollapsed(O):f.title&&c?r.group.apply(r,["%c "+O].concat(A)):r.group(O)}catch(e){r.log(O)}var N=m(u,S,[h],"prevState"),P=m(u,S,[S],"action"),C=m(u,S,[y,h],"error"),F=m(u,S,[w],"nextState");if(N)if(f.prevState){var L="color: "+f.prevState(h)+"; font-weight: bold";r[N]("%c prev state",L,h)}else r[N]("prev state",h);if(P)if(f.action){var T="color: "+f.action(S)+"; font-weight: bold";r[P]("%c action    ",T,S)}else r[P]("action    ",S);if(y&&C)if(f.error){var M="color: "+f.error(y,h)+"; font-weight: bold;";r[C]("%c error     ",M,y)}else r[C]("error     ",y);if(F)if(f.nextState){var _="color: "+f.nextState(w)+"; font-weight: bold";r[F]("%c next state",_,w)}else r[F]("next state",w);l&&b(h,w,r,k);try{r.groupEnd()}catch(e){r.log("—— log end ——")}})}function S(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=Object.assign({},L,e),r=t.logger,n=t.stateTransformer,o=t.errorTransformer,i=t.predicate,a=t.logErrors,f=t.diffPredicate;if("undefined"==typeof r)return function(){return function(e){return function(t){return e(t)}}};if(e.getState&&e.dispatch)return console.error("[redux-logger] redux-logger not installed. Make sure to pass logger instance as middleware:\n// Logger with default options\nimport { logger } from 'redux-logger'\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n)\n// Or you can create your own logger with custom options http://bit.ly/redux-logger-options\nimport createLogger from 'redux-logger'\nconst logger = createLogger({\n  // ...options\n});\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n)\n"),function(){return function(e){return function(t){return e(t)}}};var u=[];return function(e){var r=e.getState;return function(e){return function(l){if("function"==typeof i&&!i(r,l))return e(l);var c={};u.push(c),c.started=O.now(),c.startedTime=new Date,c.prevState=n(r()),c.action=l;var s=void 0;if(a)try{s=e(l)}catch(e){c.error=o(e)}else s=e(l);c.took=O.now()-c.started,c.nextState=n(r());var d=t.diff&&"function"==typeof f?f(r,l):t.diff;if(x(u,Object.assign({},t,{diff:d})),u.length=0,c.error)throw c.error;return s}}}}var k,j,E=function(e,t){return new Array(t+1).join(e)},A=function(e,t){return E("0",t-e.toString().length)+e},D=function(e){return A(e.getHours(),2)+":"+A(e.getMinutes(),2)+":"+A(e.getSeconds(),2)+"."+A(e.getMilliseconds(),3)},O="undefined"!=typeof performance&&null!==performance&&"function"==typeof performance.now?performance:Date,N="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},P=function(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)},C=[];k="object"===("undefined"==typeof __webpack_require__.g?"undefined":N(__webpack_require__.g))&&__webpack_require__.g?__webpack_require__.g:"undefined"!=typeof window?window:{},j=k.DeepDiff,j&&C.push(function(){"undefined"!=typeof j&&k.DeepDiff===c&&(k.DeepDiff=j,j=void 0)}),t(n,r),t(o,r),t(i,r),t(a,r),Object.defineProperties(c,{diff:{value:c,enumerable:!0},observableDiff:{value:l,enumerable:!0},applyDiff:{value:h,enumerable:!0},applyChange:{value:d,enumerable:!0},revertChange:{value:g,enumerable:!0},isConflict:{value:function(){return"undefined"!=typeof j},enumerable:!0},noConflict:{value:function(){return C&&(C.forEach(function(e){e()}),C=null),c},enumerable:!0}});var F={E:{color:"#2196F3",text:"CHANGED:"},N:{color:"#4CAF50",text:"ADDED:"},D:{color:"#F44336",text:"DELETED:"},A:{color:"#2196F3",text:"ARRAY:"}},L={level:"log",logger:console,logErrors:!0,collapsed:void 0,predicate:void 0,duration:!1,timestamp:!0,stateTransformer:function(e){return e},actionTransformer:function(e){return e},errorTransformer:function(e){return e},colors:{title:function(){return"inherit"},prevState:function(){return"#9E9E9E"},action:function(){return"#03A9F4"},nextState:function(){return"#4CAF50"},error:function(){return"#F20404"}},diff:!1,diffPredicate:void 0,transformer:void 0},T=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.dispatch,r=e.getState;return"function"==typeof t||"function"==typeof r?S()({dispatch:t,getState:r}):void console.error("\n[redux-logger v3] BREAKING CHANGE\n[redux-logger v3] Since 3.0.0 redux-logger exports by default logger with default settings.\n[redux-logger v3] Change\n[redux-logger v3] import createLogger from 'redux-logger'\n[redux-logger v3] to\n[redux-logger v3] import { createLogger } from 'redux-logger'\n")};e.defaults=L,e.createLogger=S,e.logger=T,e.default=T,Object.defineProperty(e,"__esModule",{value:!0})});
-
-
-/***/ }),
-
-/***/ "./node_modules/redux/es/redux.js":
-/*!****************************************!*\
-  !*** ./node_modules/redux/es/redux.js ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "__DO_NOT_USE__ActionTypes": () => (/* binding */ ActionTypes),
-/* harmony export */   "applyMiddleware": () => (/* binding */ applyMiddleware),
-/* harmony export */   "bindActionCreators": () => (/* binding */ bindActionCreators),
-/* harmony export */   "combineReducers": () => (/* binding */ combineReducers),
-/* harmony export */   "compose": () => (/* binding */ compose),
-/* harmony export */   "createStore": () => (/* binding */ createStore)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js");
-
-
-/**
- * Adapted from React: https://github.com/facebook/react/blob/master/packages/shared/formatProdErrorMessage.js
- *
- * Do not require this module directly! Use normal throw error calls. These messages will be replaced with error codes
- * during build.
- * @param {number} code
- */
-function formatProdErrorMessage(code) {
-  return "Minified Redux error #" + code + "; visit https://redux.js.org/Errors?code=" + code + " for the full message or " + 'use the non-minified dev environment for full errors. ';
-}
-
-// Inlined version of the `symbol-observable` polyfill
-var $$observable = (function () {
-  return typeof Symbol === 'function' && Symbol.observable || '@@observable';
-})();
-
-/**
- * These are private action types reserved by Redux.
- * For any unknown actions, you must return the current state.
- * If the current state is undefined, you must return the initial state.
- * Do not reference these action types directly in your code.
- */
-var randomString = function randomString() {
-  return Math.random().toString(36).substring(7).split('').join('.');
-};
-
-var ActionTypes = {
-  INIT: "@@redux/INIT" + randomString(),
-  REPLACE: "@@redux/REPLACE" + randomString(),
-  PROBE_UNKNOWN_ACTION: function PROBE_UNKNOWN_ACTION() {
-    return "@@redux/PROBE_UNKNOWN_ACTION" + randomString();
-  }
-};
-
-/**
- * @param {any} obj The object to inspect.
- * @returns {boolean} True if the argument appears to be a plain object.
- */
-function isPlainObject(obj) {
-  if (typeof obj !== 'object' || obj === null) return false;
-  var proto = obj;
-
-  while (Object.getPrototypeOf(proto) !== null) {
-    proto = Object.getPrototypeOf(proto);
-  }
-
-  return Object.getPrototypeOf(obj) === proto;
-}
-
-// Inlined / shortened version of `kindOf` from https://github.com/jonschlinkert/kind-of
-function miniKindOf(val) {
-  if (val === void 0) return 'undefined';
-  if (val === null) return 'null';
-  var type = typeof val;
-
-  switch (type) {
-    case 'boolean':
-    case 'string':
-    case 'number':
-    case 'symbol':
-    case 'function':
-      {
-        return type;
-      }
-  }
-
-  if (Array.isArray(val)) return 'array';
-  if (isDate(val)) return 'date';
-  if (isError(val)) return 'error';
-  var constructorName = ctorName(val);
-
-  switch (constructorName) {
-    case 'Symbol':
-    case 'Promise':
-    case 'WeakMap':
-    case 'WeakSet':
-    case 'Map':
-    case 'Set':
-      return constructorName;
-  } // other
-
-
-  return type.slice(8, -1).toLowerCase().replace(/\s/g, '');
-}
-
-function ctorName(val) {
-  return typeof val.constructor === 'function' ? val.constructor.name : null;
-}
-
-function isError(val) {
-  return val instanceof Error || typeof val.message === 'string' && val.constructor && typeof val.constructor.stackTraceLimit === 'number';
-}
-
-function isDate(val) {
-  if (val instanceof Date) return true;
-  return typeof val.toDateString === 'function' && typeof val.getDate === 'function' && typeof val.setDate === 'function';
-}
-
-function kindOf(val) {
-  var typeOfVal = typeof val;
-
-  if (true) {
-    typeOfVal = miniKindOf(val);
-  }
-
-  return typeOfVal;
-}
-
-/**
- * Creates a Redux store that holds the state tree.
- * The only way to change the data in the store is to call `dispatch()` on it.
- *
- * There should only be a single store in your app. To specify how different
- * parts of the state tree respond to actions, you may combine several reducers
- * into a single reducer function by using `combineReducers`.
- *
- * @param {Function} reducer A function that returns the next state tree, given
- * the current state tree and the action to handle.
- *
- * @param {any} [preloadedState] The initial state. You may optionally specify it
- * to hydrate the state from the server in universal apps, or to restore a
- * previously serialized user session.
- * If you use `combineReducers` to produce the root reducer function, this must be
- * an object with the same shape as `combineReducers` keys.
- *
- * @param {Function} [enhancer] The store enhancer. You may optionally specify it
- * to enhance the store with third-party capabilities such as middleware,
- * time travel, persistence, etc. The only store enhancer that ships with Redux
- * is `applyMiddleware()`.
- *
- * @returns {Store} A Redux store that lets you read the state, dispatch actions
- * and subscribe to changes.
- */
-
-function createStore(reducer, preloadedState, enhancer) {
-  var _ref2;
-
-  if (typeof preloadedState === 'function' && typeof enhancer === 'function' || typeof enhancer === 'function' && typeof arguments[3] === 'function') {
-    throw new Error( false ? 0 : 'It looks like you are passing several store enhancers to ' + 'createStore(). This is not supported. Instead, compose them ' + 'together to a single function. See https://redux.js.org/tutorials/fundamentals/part-4-store#creating-a-store-with-enhancers for an example.');
-  }
-
-  if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
-    enhancer = preloadedState;
-    preloadedState = undefined;
-  }
-
-  if (typeof enhancer !== 'undefined') {
-    if (typeof enhancer !== 'function') {
-      throw new Error( false ? 0 : "Expected the enhancer to be a function. Instead, received: '" + kindOf(enhancer) + "'");
-    }
-
-    return enhancer(createStore)(reducer, preloadedState);
-  }
-
-  if (typeof reducer !== 'function') {
-    throw new Error( false ? 0 : "Expected the root reducer to be a function. Instead, received: '" + kindOf(reducer) + "'");
-  }
-
-  var currentReducer = reducer;
-  var currentState = preloadedState;
-  var currentListeners = [];
-  var nextListeners = currentListeners;
-  var isDispatching = false;
-  /**
-   * This makes a shallow copy of currentListeners so we can use
-   * nextListeners as a temporary list while dispatching.
-   *
-   * This prevents any bugs around consumers calling
-   * subscribe/unsubscribe in the middle of a dispatch.
-   */
-
-  function ensureCanMutateNextListeners() {
-    if (nextListeners === currentListeners) {
-      nextListeners = currentListeners.slice();
-    }
-  }
-  /**
-   * Reads the state tree managed by the store.
-   *
-   * @returns {any} The current state tree of your application.
-   */
-
-
-  function getState() {
-    if (isDispatching) {
-      throw new Error( false ? 0 : 'You may not call store.getState() while the reducer is executing. ' + 'The reducer has already received the state as an argument. ' + 'Pass it down from the top reducer instead of reading it from the store.');
-    }
-
-    return currentState;
-  }
-  /**
-   * Adds a change listener. It will be called any time an action is dispatched,
-   * and some part of the state tree may potentially have changed. You may then
-   * call `getState()` to read the current state tree inside the callback.
-   *
-   * You may call `dispatch()` from a change listener, with the following
-   * caveats:
-   *
-   * 1. The subscriptions are snapshotted just before every `dispatch()` call.
-   * If you subscribe or unsubscribe while the listeners are being invoked, this
-   * will not have any effect on the `dispatch()` that is currently in progress.
-   * However, the next `dispatch()` call, whether nested or not, will use a more
-   * recent snapshot of the subscription list.
-   *
-   * 2. The listener should not expect to see all state changes, as the state
-   * might have been updated multiple times during a nested `dispatch()` before
-   * the listener is called. It is, however, guaranteed that all subscribers
-   * registered before the `dispatch()` started will be called with the latest
-   * state by the time it exits.
-   *
-   * @param {Function} listener A callback to be invoked on every dispatch.
-   * @returns {Function} A function to remove this change listener.
-   */
-
-
-  function subscribe(listener) {
-    if (typeof listener !== 'function') {
-      throw new Error( false ? 0 : "Expected the listener to be a function. Instead, received: '" + kindOf(listener) + "'");
-    }
-
-    if (isDispatching) {
-      throw new Error( false ? 0 : 'You may not call store.subscribe() while the reducer is executing. ' + 'If you would like to be notified after the store has been updated, subscribe from a ' + 'component and invoke store.getState() in the callback to access the latest state. ' + 'See https://redux.js.org/api/store#subscribelistener for more details.');
-    }
-
-    var isSubscribed = true;
-    ensureCanMutateNextListeners();
-    nextListeners.push(listener);
-    return function unsubscribe() {
-      if (!isSubscribed) {
-        return;
-      }
-
-      if (isDispatching) {
-        throw new Error( false ? 0 : 'You may not unsubscribe from a store listener while the reducer is executing. ' + 'See https://redux.js.org/api/store#subscribelistener for more details.');
-      }
-
-      isSubscribed = false;
-      ensureCanMutateNextListeners();
-      var index = nextListeners.indexOf(listener);
-      nextListeners.splice(index, 1);
-      currentListeners = null;
-    };
-  }
-  /**
-   * Dispatches an action. It is the only way to trigger a state change.
-   *
-   * The `reducer` function, used to create the store, will be called with the
-   * current state tree and the given `action`. Its return value will
-   * be considered the **next** state of the tree, and the change listeners
-   * will be notified.
-   *
-   * The base implementation only supports plain object actions. If you want to
-   * dispatch a Promise, an Observable, a thunk, or something else, you need to
-   * wrap your store creating function into the corresponding middleware. For
-   * example, see the documentation for the `redux-thunk` package. Even the
-   * middleware will eventually dispatch plain object actions using this method.
-   *
-   * @param {Object} action A plain object representing “what changed”. It is
-   * a good idea to keep actions serializable so you can record and replay user
-   * sessions, or use the time travelling `redux-devtools`. An action must have
-   * a `type` property which may not be `undefined`. It is a good idea to use
-   * string constants for action types.
-   *
-   * @returns {Object} For convenience, the same action object you dispatched.
-   *
-   * Note that, if you use a custom middleware, it may wrap `dispatch()` to
-   * return something else (for example, a Promise you can await).
-   */
-
-
-  function dispatch(action) {
-    if (!isPlainObject(action)) {
-      throw new Error( false ? 0 : "Actions must be plain objects. Instead, the actual type was: '" + kindOf(action) + "'. You may need to add middleware to your store setup to handle dispatching other values, such as 'redux-thunk' to handle dispatching functions. See https://redux.js.org/tutorials/fundamentals/part-4-store#middleware and https://redux.js.org/tutorials/fundamentals/part-6-async-logic#using-the-redux-thunk-middleware for examples.");
-    }
-
-    if (typeof action.type === 'undefined') {
-      throw new Error( false ? 0 : 'Actions may not have an undefined "type" property. You may have misspelled an action type string constant.');
-    }
-
-    if (isDispatching) {
-      throw new Error( false ? 0 : 'Reducers may not dispatch actions.');
-    }
-
-    try {
-      isDispatching = true;
-      currentState = currentReducer(currentState, action);
-    } finally {
-      isDispatching = false;
-    }
-
-    var listeners = currentListeners = nextListeners;
-
-    for (var i = 0; i < listeners.length; i++) {
-      var listener = listeners[i];
-      listener();
-    }
-
-    return action;
-  }
-  /**
-   * Replaces the reducer currently used by the store to calculate the state.
-   *
-   * You might need this if your app implements code splitting and you want to
-   * load some of the reducers dynamically. You might also need this if you
-   * implement a hot reloading mechanism for Redux.
-   *
-   * @param {Function} nextReducer The reducer for the store to use instead.
-   * @returns {void}
-   */
-
-
-  function replaceReducer(nextReducer) {
-    if (typeof nextReducer !== 'function') {
-      throw new Error( false ? 0 : "Expected the nextReducer to be a function. Instead, received: '" + kindOf(nextReducer));
-    }
-
-    currentReducer = nextReducer; // This action has a similiar effect to ActionTypes.INIT.
-    // Any reducers that existed in both the new and old rootReducer
-    // will receive the previous state. This effectively populates
-    // the new state tree with any relevant data from the old one.
-
-    dispatch({
-      type: ActionTypes.REPLACE
-    });
-  }
-  /**
-   * Interoperability point for observable/reactive libraries.
-   * @returns {observable} A minimal observable of state changes.
-   * For more information, see the observable proposal:
-   * https://github.com/tc39/proposal-observable
-   */
-
-
-  function observable() {
-    var _ref;
-
-    var outerSubscribe = subscribe;
-    return _ref = {
-      /**
-       * The minimal observable subscription method.
-       * @param {Object} observer Any object that can be used as an observer.
-       * The observer object should have a `next` method.
-       * @returns {subscription} An object with an `unsubscribe` method that can
-       * be used to unsubscribe the observable from the store, and prevent further
-       * emission of values from the observable.
-       */
-      subscribe: function subscribe(observer) {
-        if (typeof observer !== 'object' || observer === null) {
-          throw new Error( false ? 0 : "Expected the observer to be an object. Instead, received: '" + kindOf(observer) + "'");
-        }
-
-        function observeState() {
-          if (observer.next) {
-            observer.next(getState());
-          }
-        }
-
-        observeState();
-        var unsubscribe = outerSubscribe(observeState);
-        return {
-          unsubscribe: unsubscribe
-        };
-      }
-    }, _ref[$$observable] = function () {
-      return this;
-    }, _ref;
-  } // When a store is created, an "INIT" action is dispatched so that every
-  // reducer returns their initial state. This effectively populates
-  // the initial state tree.
-
-
-  dispatch({
-    type: ActionTypes.INIT
-  });
-  return _ref2 = {
-    dispatch: dispatch,
-    subscribe: subscribe,
-    getState: getState,
-    replaceReducer: replaceReducer
-  }, _ref2[$$observable] = observable, _ref2;
-}
-
-/**
- * Prints a warning in the console if it exists.
- *
- * @param {String} message The warning message.
- * @returns {void}
- */
-function warning(message) {
-  /* eslint-disable no-console */
-  if (typeof console !== 'undefined' && typeof console.error === 'function') {
-    console.error(message);
-  }
-  /* eslint-enable no-console */
-
-
-  try {
-    // This error was thrown as a convenience so that if you enable
-    // "break on all exceptions" in your console,
-    // it would pause the execution at this line.
-    throw new Error(message);
-  } catch (e) {} // eslint-disable-line no-empty
-
-}
-
-function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, unexpectedKeyCache) {
-  var reducerKeys = Object.keys(reducers);
-  var argumentName = action && action.type === ActionTypes.INIT ? 'preloadedState argument passed to createStore' : 'previous state received by the reducer';
-
-  if (reducerKeys.length === 0) {
-    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
-  }
-
-  if (!isPlainObject(inputState)) {
-    return "The " + argumentName + " has unexpected type of \"" + kindOf(inputState) + "\". Expected argument to be an object with the following " + ("keys: \"" + reducerKeys.join('", "') + "\"");
-  }
-
-  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
-    return !reducers.hasOwnProperty(key) && !unexpectedKeyCache[key];
-  });
-  unexpectedKeys.forEach(function (key) {
-    unexpectedKeyCache[key] = true;
-  });
-  if (action && action.type === ActionTypes.REPLACE) return;
-
-  if (unexpectedKeys.length > 0) {
-    return "Unexpected " + (unexpectedKeys.length > 1 ? 'keys' : 'key') + " " + ("\"" + unexpectedKeys.join('", "') + "\" found in " + argumentName + ". ") + "Expected to find one of the known reducer keys instead: " + ("\"" + reducerKeys.join('", "') + "\". Unexpected keys will be ignored.");
-  }
-}
-
-function assertReducerShape(reducers) {
-  Object.keys(reducers).forEach(function (key) {
-    var reducer = reducers[key];
-    var initialState = reducer(undefined, {
-      type: ActionTypes.INIT
-    });
-
-    if (typeof initialState === 'undefined') {
-      throw new Error( false ? 0 : "The slice reducer for key \"" + key + "\" returned undefined during initialization. " + "If the state passed to the reducer is undefined, you must " + "explicitly return the initial state. The initial state may " + "not be undefined. If you don't want to set a value for this reducer, " + "you can use null instead of undefined.");
-    }
-
-    if (typeof reducer(undefined, {
-      type: ActionTypes.PROBE_UNKNOWN_ACTION()
-    }) === 'undefined') {
-      throw new Error( false ? 0 : "The slice reducer for key \"" + key + "\" returned undefined when probed with a random type. " + ("Don't try to handle '" + ActionTypes.INIT + "' or other actions in \"redux/*\" ") + "namespace. They are considered private. Instead, you must return the " + "current state for any unknown actions, unless it is undefined, " + "in which case you must return the initial state, regardless of the " + "action type. The initial state may not be undefined, but can be null.");
-    }
-  });
-}
-/**
- * Turns an object whose values are different reducer functions, into a single
- * reducer function. It will call every child reducer, and gather their results
- * into a single state object, whose keys correspond to the keys of the passed
- * reducer functions.
- *
- * @param {Object} reducers An object whose values correspond to different
- * reducer functions that need to be combined into one. One handy way to obtain
- * it is to use ES6 `import * as reducers` syntax. The reducers may never return
- * undefined for any action. Instead, they should return their initial state
- * if the state passed to them was undefined, and the current state for any
- * unrecognized action.
- *
- * @returns {Function} A reducer function that invokes every reducer inside the
- * passed object, and builds a state object with the same shape.
- */
-
-
-function combineReducers(reducers) {
-  var reducerKeys = Object.keys(reducers);
-  var finalReducers = {};
-
-  for (var i = 0; i < reducerKeys.length; i++) {
-    var key = reducerKeys[i];
-
-    if (true) {
-      if (typeof reducers[key] === 'undefined') {
-        warning("No reducer provided for key \"" + key + "\"");
-      }
-    }
-
-    if (typeof reducers[key] === 'function') {
-      finalReducers[key] = reducers[key];
-    }
-  }
-
-  var finalReducerKeys = Object.keys(finalReducers); // This is used to make sure we don't warn about the same
-  // keys multiple times.
-
-  var unexpectedKeyCache;
-
-  if (true) {
-    unexpectedKeyCache = {};
-  }
-
-  var shapeAssertionError;
-
-  try {
-    assertReducerShape(finalReducers);
-  } catch (e) {
-    shapeAssertionError = e;
-  }
-
-  return function combination(state, action) {
-    if (state === void 0) {
-      state = {};
-    }
-
-    if (shapeAssertionError) {
-      throw shapeAssertionError;
-    }
-
-    if (true) {
-      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
-
-      if (warningMessage) {
-        warning(warningMessage);
-      }
-    }
-
-    var hasChanged = false;
-    var nextState = {};
-
-    for (var _i = 0; _i < finalReducerKeys.length; _i++) {
-      var _key = finalReducerKeys[_i];
-      var reducer = finalReducers[_key];
-      var previousStateForKey = state[_key];
-      var nextStateForKey = reducer(previousStateForKey, action);
-
-      if (typeof nextStateForKey === 'undefined') {
-        var actionType = action && action.type;
-        throw new Error( false ? 0 : "When called with an action of type " + (actionType ? "\"" + String(actionType) + "\"" : '(unknown type)') + ", the slice reducer for key \"" + _key + "\" returned undefined. " + "To ignore an action, you must explicitly return the previous state. " + "If you want this reducer to hold no value, you can return null instead of undefined.");
-      }
-
-      nextState[_key] = nextStateForKey;
-      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
-    }
-
-    hasChanged = hasChanged || finalReducerKeys.length !== Object.keys(state).length;
-    return hasChanged ? nextState : state;
-  };
-}
-
-function bindActionCreator(actionCreator, dispatch) {
-  return function () {
-    return dispatch(actionCreator.apply(this, arguments));
-  };
-}
-/**
- * Turns an object whose values are action creators, into an object with the
- * same keys, but with every function wrapped into a `dispatch` call so they
- * may be invoked directly. This is just a convenience method, as you can call
- * `store.dispatch(MyActionCreators.doSomething())` yourself just fine.
- *
- * For convenience, you can also pass an action creator as the first argument,
- * and get a dispatch wrapped function in return.
- *
- * @param {Function|Object} actionCreators An object whose values are action
- * creator functions. One handy way to obtain it is to use ES6 `import * as`
- * syntax. You may also pass a single function.
- *
- * @param {Function} dispatch The `dispatch` function available on your Redux
- * store.
- *
- * @returns {Function|Object} The object mimicking the original object, but with
- * every action creator wrapped into the `dispatch` call. If you passed a
- * function as `actionCreators`, the return value will also be a single
- * function.
- */
-
-
-function bindActionCreators(actionCreators, dispatch) {
-  if (typeof actionCreators === 'function') {
-    return bindActionCreator(actionCreators, dispatch);
-  }
-
-  if (typeof actionCreators !== 'object' || actionCreators === null) {
-    throw new Error( false ? 0 : "bindActionCreators expected an object or a function, but instead received: '" + kindOf(actionCreators) + "'. " + "Did you write \"import ActionCreators from\" instead of \"import * as ActionCreators from\"?");
-  }
-
-  var boundActionCreators = {};
-
-  for (var key in actionCreators) {
-    var actionCreator = actionCreators[key];
-
-    if (typeof actionCreator === 'function') {
-      boundActionCreators[key] = bindActionCreator(actionCreator, dispatch);
-    }
-  }
-
-  return boundActionCreators;
-}
-
-/**
- * Composes single-argument functions from right to left. The rightmost
- * function can take multiple arguments as it provides the signature for
- * the resulting composite function.
- *
- * @param {...Function} funcs The functions to compose.
- * @returns {Function} A function obtained by composing the argument functions
- * from right to left. For example, compose(f, g, h) is identical to doing
- * (...args) => f(g(h(...args))).
- */
-function compose() {
-  for (var _len = arguments.length, funcs = new Array(_len), _key = 0; _key < _len; _key++) {
-    funcs[_key] = arguments[_key];
-  }
-
-  if (funcs.length === 0) {
-    return function (arg) {
-      return arg;
-    };
-  }
-
-  if (funcs.length === 1) {
-    return funcs[0];
-  }
-
-  return funcs.reduce(function (a, b) {
-    return function () {
-      return a(b.apply(void 0, arguments));
-    };
-  });
-}
-
-/**
- * Creates a store enhancer that applies middleware to the dispatch method
- * of the Redux store. This is handy for a variety of tasks, such as expressing
- * asynchronous actions in a concise manner, or logging every action payload.
- *
- * See `redux-thunk` package as an example of the Redux middleware.
- *
- * Because middleware is potentially asynchronous, this should be the first
- * store enhancer in the composition chain.
- *
- * Note that each middleware will be given the `dispatch` and `getState` functions
- * as named arguments.
- *
- * @param {...Function} middlewares The middleware chain to be applied.
- * @returns {Function} A store enhancer applying the middleware.
- */
-
-function applyMiddleware() {
-  for (var _len = arguments.length, middlewares = new Array(_len), _key = 0; _key < _len; _key++) {
-    middlewares[_key] = arguments[_key];
-  }
-
-  return function (createStore) {
-    return function () {
-      var store = createStore.apply(void 0, arguments);
-
-      var _dispatch = function dispatch() {
-        throw new Error( false ? 0 : 'Dispatching while constructing your middleware is not allowed. ' + 'Other middleware would not be applied to this dispatch.');
-      };
-
-      var middlewareAPI = {
-        getState: store.getState,
-        dispatch: function dispatch() {
-          return _dispatch.apply(void 0, arguments);
-        }
-      };
-      var chain = middlewares.map(function (middleware) {
-        return middleware(middlewareAPI);
-      });
-      _dispatch = compose.apply(void 0, chain)(store.dispatch);
-      return (0,_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__["default"])((0,_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__["default"])({}, store), {}, {
-        dispatch: _dispatch
-      });
-    };
-  };
-}
-
-/*
- * This is a dummy function to check if the function name has been altered by minification.
- * If the function has been minified and NODE_ENV !== 'production', warn the user.
- */
-
-function isCrushed() {}
-
-if ( true && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
-  warning('You are currently using minified code outside of NODE_ENV === "production". ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or setting mode to production in webpack (https://webpack.js.org/concepts/mode/) ' + 'to ensure you have the correct code for your production build.');
-}
-
-
-
-
-/***/ }),
-
-/***/ "./node_modules/regenerator-runtime/runtime.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/regenerator-runtime/runtime.js ***!
-  \*****************************************************/
-/***/ ((module) => {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var runtime = (function (exports) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function define(obj, key, value) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-    return obj[key];
-  }
-  try {
-    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
-    define({}, "");
-  } catch (err) {
-    define = function(obj, key, value) {
-      return obj[key] = value;
-    };
-  }
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  exports.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  define(IteratorPrototype, iteratorSymbol, function () {
-    return this;
-  });
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = GeneratorFunctionPrototype;
-  define(Gp, "constructor", GeneratorFunctionPrototype);
-  define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
-  GeneratorFunction.displayName = define(
-    GeneratorFunctionPrototype,
-    toStringTagSymbol,
-    "GeneratorFunction"
-  );
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      define(prototype, method, function(arg) {
-        return this._invoke(method, arg);
-      });
-    });
-  }
-
-  exports.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  exports.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      define(genFun, toStringTagSymbol, "GeneratorFunction");
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  exports.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator, PromiseImpl) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return PromiseImpl.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return PromiseImpl.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
-    return this;
-  });
-  exports.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-    if (PromiseImpl === void 0) PromiseImpl = Promise;
-
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList),
-      PromiseImpl
-    );
-
-    return exports.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        // Note: ["return"] must be used for ES3 parsing compatibility.
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  define(Gp, toStringTagSymbol, "Generator");
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  define(Gp, iteratorSymbol, function() {
-    return this;
-  });
-
-  define(Gp, "toString", function() {
-    return "[object Generator]";
-  });
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  exports.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  exports.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-
-  // Regardless of whether this script is executing as a CommonJS module
-  // or not, return the runtime object so that we can declare the variable
-  // regeneratorRuntime in the outer scope, which allows this module to be
-  // injected easily by `bin/regenerator --include-runtime script.js`.
-  return exports;
-
-}(
-  // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-   true ? module.exports : 0
-));
-
-try {
-  regeneratorRuntime = runtime;
-} catch (accidentalStrictMode) {
-  // This module should not be running in strict mode, so the above
-  // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, in modern engines
-  // we can explicitly access globalThis. In older engines we can escape
-  // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
-  // the proper solution is to fix the accidental strict mode problem. If
-  // you've misconfigured your bundler to force strict mode and applied a
-  // CSP to forbid Function, and you're not willing to fix either of those
-  // problems, please detail your unique predicament in a GitHub issue.
-  if (typeof globalThis === "object") {
-    globalThis.regeneratorRuntime = runtime;
-  } else {
-    Function("r", "regeneratorRuntime = r")(runtime);
-  }
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/resolve-pathname/esm/resolve-pathname.js":
 /*!***************************************************************!*\
   !*** ./node_modules/resolve-pathname/esm/resolve-pathname.js ***!
@@ -38624,63 +33432,6 @@ function resolvePathname(to, from) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (resolvePathname);
-
-
-/***/ }),
-
-/***/ "./node_modules/resolve-url/resolve-url.js":
-/*!*************************************************!*\
-  !*** ./node_modules/resolve-url/resolve-url.js ***!
-  \*************************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;// Copyright 2014 Simon Lydell
-// X11 (“MIT”) Licensed. (See LICENSE.)
-
-void (function(root, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-		__WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
-  } else {}
-}(this, function() {
-
-  function resolveUrl(/* ...urls */) {
-    var numUrls = arguments.length
-
-    if (numUrls === 0) {
-      throw new Error("resolveUrl requires at least one argument; got none.")
-    }
-
-    var base = document.createElement("base")
-    base.href = arguments[0]
-
-    if (numUrls === 1) {
-      return base.href
-    }
-
-    var head = document.getElementsByTagName("head")[0]
-    head.insertBefore(base, head.firstChild)
-
-    var a = document.createElement("a")
-    var resolved
-
-    for (var index = 1; index < numUrls; index++) {
-      a.href = arguments[index]
-      resolved = a.href
-      base.href = resolved
-    }
-
-    head.removeChild(base)
-
-    return resolved
-  }
-
-  return resolveUrl
-
-}));
 
 
 /***/ }),
@@ -39796,13 +34547,13 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 "use strict";
 
 
-var stylesInDom = [];
+var stylesInDOM = [];
 
 function getIndexByIdentifier(identifier) {
   var result = -1;
 
-  for (var i = 0; i < stylesInDom.length; i++) {
-    if (stylesInDom[i].identifier === identifier) {
+  for (var i = 0; i < stylesInDOM.length; i++) {
+    if (stylesInDOM[i].identifier === identifier) {
       result = i;
       break;
     }
@@ -39821,20 +34572,24 @@ function modulesToDom(list, options) {
     var count = idCountMap[id] || 0;
     var identifier = "".concat(id, " ").concat(count);
     idCountMap[id] = count + 1;
-    var index = getIndexByIdentifier(identifier);
+    var indexByIdentifier = getIndexByIdentifier(identifier);
     var obj = {
       css: item[1],
       media: item[2],
-      sourceMap: item[3]
+      sourceMap: item[3],
+      supports: item[4],
+      layer: item[5]
     };
 
-    if (index !== -1) {
-      stylesInDom[index].references++;
-      stylesInDom[index].updater(obj);
+    if (indexByIdentifier !== -1) {
+      stylesInDOM[indexByIdentifier].references++;
+      stylesInDOM[indexByIdentifier].updater(obj);
     } else {
-      stylesInDom.push({
+      var updater = addElementStyle(obj, options);
+      options.byIndex = i;
+      stylesInDOM.splice(i, 0, {
         identifier: identifier,
-        updater: addStyle(obj, options),
+        updater: updater,
         references: 1
       });
     }
@@ -39845,12 +34600,13 @@ function modulesToDom(list, options) {
   return identifiers;
 }
 
-function addStyle(obj, options) {
+function addElementStyle(obj, options) {
   var api = options.domAPI(options);
   api.update(obj);
-  return function updateStyle(newObj) {
+
+  var updater = function updater(newObj) {
     if (newObj) {
-      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap && newObj.supports === obj.supports && newObj.layer === obj.layer) {
         return;
       }
 
@@ -39859,6 +34615,8 @@ function addStyle(obj, options) {
       api.remove();
     }
   };
+
+  return updater;
 }
 
 module.exports = function (list, options) {
@@ -39871,7 +34629,7 @@ module.exports = function (list, options) {
     for (var i = 0; i < lastIdentifiers.length; i++) {
       var identifier = lastIdentifiers[i];
       var index = getIndexByIdentifier(identifier);
-      stylesInDom[index].references--;
+      stylesInDOM[index].references--;
     }
 
     var newLastIdentifiers = modulesToDom(newList, options);
@@ -39881,10 +34639,10 @@ module.exports = function (list, options) {
 
       var _index = getIndexByIdentifier(_identifier);
 
-      if (stylesInDom[_index].references === 0) {
-        stylesInDom[_index].updater();
+      if (stylesInDOM[_index].references === 0) {
+        stylesInDOM[_index].updater();
 
-        stylesInDom.splice(_index, 1);
+        stylesInDOM.splice(_index, 1);
       }
     }
 
@@ -39954,10 +34712,10 @@ module.exports = insertBySelector;
 
 /* istanbul ignore next  */
 function insertStyleElement(options) {
-  var style = document.createElement("style");
-  options.setAttributes(style, options.attributes);
-  options.insert(style);
-  return style;
+  var element = document.createElement("style");
+  options.setAttributes(element, options.attributes);
+  options.insert(element, options.options);
+  return element;
 }
 
 module.exports = insertStyleElement;
@@ -39974,11 +34732,11 @@ module.exports = insertStyleElement;
 
 
 /* istanbul ignore next  */
-function setAttributesWithoutAttributes(style) {
+function setAttributesWithoutAttributes(styleElement) {
   var nonce =  true ? __webpack_require__.nc : 0;
 
   if (nonce) {
-    style.setAttribute("nonce", nonce);
+    styleElement.setAttribute("nonce", nonce);
   }
 }
 
@@ -39996,16 +34754,38 @@ module.exports = setAttributesWithoutAttributes;
 
 
 /* istanbul ignore next  */
-function apply(style, options, obj) {
-  var css = obj.css;
-  var media = obj.media;
-  var sourceMap = obj.sourceMap;
+function apply(styleElement, options, obj) {
+  var css = "";
 
-  if (media) {
-    style.setAttribute("media", media);
-  } else {
-    style.removeAttribute("media");
+  if (obj.supports) {
+    css += "@supports (".concat(obj.supports, ") {");
   }
+
+  if (obj.media) {
+    css += "@media ".concat(obj.media, " {");
+  }
+
+  var needLayer = typeof obj.layer !== "undefined";
+
+  if (needLayer) {
+    css += "@layer".concat(obj.layer.length > 0 ? " ".concat(obj.layer) : "", " {");
+  }
+
+  css += obj.css;
+
+  if (needLayer) {
+    css += "}";
+  }
+
+  if (obj.media) {
+    css += "}";
+  }
+
+  if (obj.supports) {
+    css += "}";
+  }
+
+  var sourceMap = obj.sourceMap;
 
   if (sourceMap && typeof btoa !== "undefined") {
     css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
@@ -40014,28 +34794,28 @@ function apply(style, options, obj) {
   /* istanbul ignore if  */
 
 
-  options.styleTagTransform(css, style);
+  options.styleTagTransform(css, styleElement, options.options);
 }
 
-function removeStyleElement(style) {
+function removeStyleElement(styleElement) {
   // istanbul ignore if
-  if (style.parentNode === null) {
+  if (styleElement.parentNode === null) {
     return false;
   }
 
-  style.parentNode.removeChild(style);
+  styleElement.parentNode.removeChild(styleElement);
 }
 /* istanbul ignore next  */
 
 
 function domAPI(options) {
-  var style = options.insertStyleElement(options);
+  var styleElement = options.insertStyleElement(options);
   return {
     update: function update(obj) {
-      apply(style, options, obj);
+      apply(styleElement, options, obj);
     },
     remove: function remove() {
-      removeStyleElement(style);
+      removeStyleElement(styleElement);
     }
   };
 }
@@ -40054,1135 +34834,19 @@ module.exports = domAPI;
 
 
 /* istanbul ignore next  */
-function styleTagTransform(css, style) {
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
+function styleTagTransform(css, styleElement) {
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css;
   } else {
-    while (style.firstChild) {
-      style.removeChild(style.firstChild);
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild);
     }
 
-    style.appendChild(document.createTextNode(css));
+    styleElement.appendChild(document.createTextNode(css));
   }
 }
 
 module.exports = styleTagTransform;
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/Tesseract.js":
-/*!****************************************************!*\
-  !*** ./node_modules/tesseract.js/src/Tesseract.js ***!
-  \****************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const createWorker = __webpack_require__(/*! ./createWorker */ "./node_modules/tesseract.js/src/createWorker.js");
-
-const recognize = async (image, langs, options) => {
-  const worker = createWorker(options);
-  await worker.load();
-  await worker.loadLanguage(langs);
-  await worker.initialize(langs);
-  return worker.recognize(image)
-    .finally(async () => {
-      await worker.terminate();
-    });
-};
-
-const detect = async (image, options) => {
-  const worker = createWorker(options);
-  await worker.load();
-  await worker.loadLanguage('osd');
-  await worker.initialize('osd');
-  return worker.detect(image)
-    .finally(async () => {
-      await worker.terminate();
-    });
-};
-
-module.exports = {
-  recognize,
-  detect,
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/constants/OEM.js":
-/*!********************************************************!*\
-  !*** ./node_modules/tesseract.js/src/constants/OEM.js ***!
-  \********************************************************/
-/***/ ((module) => {
-
-/*
- * OEM = OCR Engine Mode, and there are 4 possible modes.
- *
- * By default tesseract.js uses LSTM_ONLY mode.
- *
- */
-module.exports = {
-  TESSERACT_ONLY: 0,
-  LSTM_ONLY: 1,
-  TESSERACT_LSTM_COMBINED: 2,
-  DEFAULT: 3,
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/constants/PSM.js":
-/*!********************************************************!*\
-  !*** ./node_modules/tesseract.js/src/constants/PSM.js ***!
-  \********************************************************/
-/***/ ((module) => {
-
-/*
- * PSM = Page Segmentation Mode
- */
-module.exports = {
-  OSD_ONLY: '0',
-  AUTO_OSD: '1',
-  AUTO_ONLY: '2',
-  AUTO: '3',
-  SINGLE_COLUMN: '4',
-  SINGLE_BLOCK_VERT_TEXT: '5',
-  SINGLE_BLOCK: '6',
-  SINGLE_LINE: '7',
-  SINGLE_WORD: '8',
-  CIRCLE_WORD: '9',
-  SINGLE_CHAR: '10',
-  SPARSE_TEXT: '11',
-  SPARSE_TEXT_OSD: '12',
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/constants/config.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/tesseract.js/src/constants/config.js ***!
-  \***********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const OEM = __webpack_require__(/*! ./OEM */ "./node_modules/tesseract.js/src/constants/OEM.js");
-
-module.exports = {
-  defaultOEM: OEM.DEFAULT,
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/constants/defaultOptions.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/constants/defaultOptions.js ***!
-  \*******************************************************************/
-/***/ ((module) => {
-
-module.exports = {
-  /*
-   * default path for downloading *.traineddata
-   */
-  langPath: 'https://tessdata.projectnaptha.com/4.0.0',
-  /*
-   * Use BlobURL for worker script by default
-   * TODO: remove this option
-   *
-   */
-  workerBlobURL: true,
-  logger: () => {},
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/constants/languages.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/constants/languages.js ***!
-  \**************************************************************/
-/***/ ((module) => {
-
-/*
- * languages with existing tesseract traineddata
- * https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016
- */
-
-/**
- * @typedef {object} Languages
- * @property {string} AFR Afrikaans
- * @property {string} AMH Amharic
- * @property {string} ARA Arabic
- * @property {string} ASM Assamese
- * @property {string} AZE Azerbaijani
- * @property {string} AZE_CYRL Azerbaijani - Cyrillic
- * @property {string} BEL Belarusian
- * @property {string} BEN Bengali
- * @property {string} BOD Tibetan
- * @property {string} BOS Bosnian
- * @property {string} BUL Bulgarian
- * @property {string} CAT Catalan; Valencian
- * @property {string} CEB Cebuano
- * @property {string} CES Czech
- * @property {string} CHI_SIM Chinese - Simplified
- * @property {string} CHI_TRA Chinese - Traditional
- * @property {string} CHR Cherokee
- * @property {string} CYM Welsh
- * @property {string} DAN Danish
- * @property {string} DEU German
- * @property {string} DZO Dzongkha
- * @property {string} ELL Greek, Modern (1453-)
- * @property {string} ENG English
- * @property {string} ENM English, Middle (1100-1500)
- * @property {string} EPO Esperanto
- * @property {string} EST Estonian
- * @property {string} EUS Basque
- * @property {string} FAS Persian
- * @property {string} FIN Finnish
- * @property {string} FRA French
- * @property {string} FRK German Fraktur
- * @property {string} FRM French, Middle (ca. 1400-1600)
- * @property {string} GLE Irish
- * @property {string} GLG Galician
- * @property {string} GRC Greek, Ancient (-1453)
- * @property {string} GUJ Gujarati
- * @property {string} HAT Haitian; Haitian Creole
- * @property {string} HEB Hebrew
- * @property {string} HIN Hindi
- * @property {string} HRV Croatian
- * @property {string} HUN Hungarian
- * @property {string} IKU Inuktitut
- * @property {string} IND Indonesian
- * @property {string} ISL Icelandic
- * @property {string} ITA Italian
- * @property {string} ITA_OLD Italian - Old
- * @property {string} JAV Javanese
- * @property {string} JPN Japanese
- * @property {string} KAN Kannada
- * @property {string} KAT Georgian
- * @property {string} KAT_OLD Georgian - Old
- * @property {string} KAZ Kazakh
- * @property {string} KHM Central Khmer
- * @property {string} KIR Kirghiz; Kyrgyz
- * @property {string} KOR Korean
- * @property {string} KUR Kurdish
- * @property {string} LAO Lao
- * @property {string} LAT Latin
- * @property {string} LAV Latvian
- * @property {string} LIT Lithuanian
- * @property {string} MAL Malayalam
- * @property {string} MAR Marathi
- * @property {string} MKD Macedonian
- * @property {string} MLT Maltese
- * @property {string} MSA Malay
- * @property {string} MYA Burmese
- * @property {string} NEP Nepali
- * @property {string} NLD Dutch; Flemish
- * @property {string} NOR Norwegian
- * @property {string} ORI Oriya
- * @property {string} PAN Panjabi; Punjabi
- * @property {string} POL Polish
- * @property {string} POR Portuguese
- * @property {string} PUS Pushto; Pashto
- * @property {string} RON Romanian; Moldavian; Moldovan
- * @property {string} RUS Russian
- * @property {string} SAN Sanskrit
- * @property {string} SIN Sinhala; Sinhalese
- * @property {string} SLK Slovak
- * @property {string} SLV Slovenian
- * @property {string} SPA Spanish; Castilian
- * @property {string} SPA_OLD Spanish; Castilian - Old
- * @property {string} SQI Albanian
- * @property {string} SRP Serbian
- * @property {string} SRP_LATN Serbian - Latin
- * @property {string} SWA Swahili
- * @property {string} SWE Swedish
- * @property {string} SYR Syriac
- * @property {string} TAM Tamil
- * @property {string} TEL Telugu
- * @property {string} TGK Tajik
- * @property {string} TGL Tagalog
- * @property {string} THA Thai
- * @property {string} TIR Tigrinya
- * @property {string} TUR Turkish
- * @property {string} UIG Uighur; Uyghur
- * @property {string} UKR Ukrainian
- * @property {string} URD Urdu
- * @property {string} UZB Uzbek
- * @property {string} UZB_CYRL Uzbek - Cyrillic
- * @property {string} VIE Vietnamese
- * @property {string} YID Yiddish
- */
-
-/**
-  * @type {Languages}
-  */
-module.exports = {
-  AFR: 'afr',
-  AMH: 'amh',
-  ARA: 'ara',
-  ASM: 'asm',
-  AZE: 'aze',
-  AZE_CYRL: 'aze_cyrl',
-  BEL: 'bel',
-  BEN: 'ben',
-  BOD: 'bod',
-  BOS: 'bos',
-  BUL: 'bul',
-  CAT: 'cat',
-  CEB: 'ceb',
-  CES: 'ces',
-  CHI_SIM: 'chi_sim',
-  CHI_TRA: 'chi_tra',
-  CHR: 'chr',
-  CYM: 'cym',
-  DAN: 'dan',
-  DEU: 'deu',
-  DZO: 'dzo',
-  ELL: 'ell',
-  ENG: 'eng',
-  ENM: 'enm',
-  EPO: 'epo',
-  EST: 'est',
-  EUS: 'eus',
-  FAS: 'fas',
-  FIN: 'fin',
-  FRA: 'fra',
-  FRK: 'frk',
-  FRM: 'frm',
-  GLE: 'gle',
-  GLG: 'glg',
-  GRC: 'grc',
-  GUJ: 'guj',
-  HAT: 'hat',
-  HEB: 'heb',
-  HIN: 'hin',
-  HRV: 'hrv',
-  HUN: 'hun',
-  IKU: 'iku',
-  IND: 'ind',
-  ISL: 'isl',
-  ITA: 'ita',
-  ITA_OLD: 'ita_old',
-  JAV: 'jav',
-  JPN: 'jpn',
-  KAN: 'kan',
-  KAT: 'kat',
-  KAT_OLD: 'kat_old',
-  KAZ: 'kaz',
-  KHM: 'khm',
-  KIR: 'kir',
-  KOR: 'kor',
-  KUR: 'kur',
-  LAO: 'lao',
-  LAT: 'lat',
-  LAV: 'lav',
-  LIT: 'lit',
-  MAL: 'mal',
-  MAR: 'mar',
-  MKD: 'mkd',
-  MLT: 'mlt',
-  MSA: 'msa',
-  MYA: 'mya',
-  NEP: 'nep',
-  NLD: 'nld',
-  NOR: 'nor',
-  ORI: 'ori',
-  PAN: 'pan',
-  POL: 'pol',
-  POR: 'por',
-  PUS: 'pus',
-  RON: 'ron',
-  RUS: 'rus',
-  SAN: 'san',
-  SIN: 'sin',
-  SLK: 'slk',
-  SLV: 'slv',
-  SPA: 'spa',
-  SPA_OLD: 'spa_old',
-  SQI: 'sqi',
-  SRP: 'srp',
-  SRP_LATN: 'srp_latn',
-  SWA: 'swa',
-  SWE: 'swe',
-  SYR: 'syr',
-  TAM: 'tam',
-  TEL: 'tel',
-  TGK: 'tgk',
-  TGL: 'tgl',
-  THA: 'tha',
-  TIR: 'tir',
-  TUR: 'tur',
-  UIG: 'uig',
-  UKR: 'ukr',
-  URD: 'urd',
-  UZB: 'uzb',
-  UZB_CYRL: 'uzb_cyrl',
-  VIE: 'vie',
-  YID: 'yid',
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/createJob.js":
-/*!****************************************************!*\
-  !*** ./node_modules/tesseract.js/src/createJob.js ***!
-  \****************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const getId = __webpack_require__(/*! ./utils/getId */ "./node_modules/tesseract.js/src/utils/getId.js");
-
-let jobCounter = 0;
-
-module.exports = ({
-  id: _id,
-  action,
-  payload = {},
-}) => {
-  let id = _id;
-  if (typeof id === 'undefined') {
-    id = getId('Job', jobCounter);
-    jobCounter += 1;
-  }
-
-  return {
-    id,
-    action,
-    payload,
-  };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/createScheduler.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/tesseract.js/src/createScheduler.js ***!
-  \**********************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-const createJob = __webpack_require__(/*! ./createJob */ "./node_modules/tesseract.js/src/createJob.js");
-const { log } = __webpack_require__(/*! ./utils/log */ "./node_modules/tesseract.js/src/utils/log.js");
-const getId = __webpack_require__(/*! ./utils/getId */ "./node_modules/tesseract.js/src/utils/getId.js");
-
-let schedulerCounter = 0;
-
-module.exports = () => {
-  const id = getId('Scheduler', schedulerCounter);
-  const workers = {};
-  const runningWorkers = {};
-  let jobQueue = [];
-
-  schedulerCounter += 1;
-
-  const getQueueLen = () => jobQueue.length;
-  const getNumWorkers = () => Object.keys(workers).length;
-
-  const dequeue = () => {
-    if (jobQueue.length !== 0) {
-      const wIds = Object.keys(workers);
-      for (let i = 0; i < wIds.length; i += 1) {
-        if (typeof runningWorkers[wIds[i]] === 'undefined') {
-          jobQueue[0](workers[wIds[i]]);
-          break;
-        }
-      }
-    }
-  };
-
-  const queue = (action, payload) => (
-    new Promise((resolve, reject) => {
-      const job = createJob({ action, payload });
-      jobQueue.push(async (w) => {
-        jobQueue.shift();
-        runningWorkers[w.id] = job;
-        try {
-          resolve(await w[action].apply(this, [...payload, job.id]));
-        } catch (err) {
-          reject(err);
-        } finally {
-          delete runningWorkers[w.id];
-          dequeue();
-        }
-      });
-      log(`[${id}]: Add ${job.id} to JobQueue`);
-      log(`[${id}]: JobQueue length=${jobQueue.length}`);
-      dequeue();
-    })
-  );
-
-  const addWorker = (w) => {
-    workers[w.id] = w;
-    log(`[${id}]: Add ${w.id}`);
-    log(`[${id}]: Number of workers=${getNumWorkers()}`);
-    dequeue();
-    return w.id;
-  };
-
-  const addJob = async (action, ...payload) => {
-    if (getNumWorkers() === 0) {
-      throw Error(`[${id}]: You need to have at least one worker before adding jobs`);
-    }
-    return queue(action, payload);
-  };
-
-  const terminate = async () => {
-    Object.keys(workers).forEach(async (wid) => {
-      await workers[wid].terminate();
-    });
-    jobQueue = [];
-  };
-
-  return {
-    addWorker,
-    addJob,
-    terminate,
-    getQueueLen,
-    getNumWorkers,
-  };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/createWorker.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/tesseract.js/src/createWorker.js ***!
-  \*******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const resolvePaths = __webpack_require__(/*! ./utils/resolvePaths */ "./node_modules/tesseract.js/src/utils/resolvePaths.js");
-const circularize = __webpack_require__(/*! ./utils/circularize */ "./node_modules/tesseract.js/src/utils/circularize.js");
-const createJob = __webpack_require__(/*! ./createJob */ "./node_modules/tesseract.js/src/createJob.js");
-const { log } = __webpack_require__(/*! ./utils/log */ "./node_modules/tesseract.js/src/utils/log.js");
-const getId = __webpack_require__(/*! ./utils/getId */ "./node_modules/tesseract.js/src/utils/getId.js");
-const { defaultOEM } = __webpack_require__(/*! ./constants/config */ "./node_modules/tesseract.js/src/constants/config.js");
-const {
-  defaultOptions,
-  spawnWorker,
-  terminateWorker,
-  onMessage,
-  loadImage,
-  send,
-} = __webpack_require__(/*! ./worker/node */ "./node_modules/tesseract.js/src/worker/browser/index.js");
-
-let workerCounter = 0;
-
-module.exports = (_options = {}) => {
-  const id = getId('Worker', workerCounter);
-  const {
-    logger,
-    errorHandler,
-    ...options
-  } = resolvePaths({
-    ...defaultOptions,
-    ..._options,
-  });
-  const resolves = {};
-  const rejects = {};
-  let worker = spawnWorker(options);
-
-  workerCounter += 1;
-
-  const setResolve = (action, res) => {
-    resolves[action] = res;
-  };
-
-  const setReject = (action, rej) => {
-    rejects[action] = rej;
-  };
-
-  const startJob = ({ id: jobId, action, payload }) => (
-    new Promise((resolve, reject) => {
-      log(`[${id}]: Start ${jobId}, action=${action}`);
-      setResolve(action, resolve);
-      setReject(action, reject);
-      send(worker, {
-        workerId: id,
-        jobId,
-        action,
-        payload,
-      });
-    })
-  );
-
-  const load = (jobId) => (
-    startJob(createJob({
-      id: jobId, action: 'load', payload: { options },
-    }))
-  );
-
-  const writeText = (path, text, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'FS',
-      payload: { method: 'writeFile', args: [path, text] },
-    }))
-  );
-
-  const readText = (path, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'FS',
-      payload: { method: 'readFile', args: [path, { encoding: 'utf8' }] },
-    }))
-  );
-
-  const removeFile = (path, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'FS',
-      payload: { method: 'unlink', args: [path] },
-    }))
-  );
-
-  const FS = (method, args, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'FS',
-      payload: { method, args },
-    }))
-  );
-
-  const loadLanguage = (langs = 'eng', jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'loadLanguage',
-      payload: { langs, options },
-    }))
-  );
-
-  const initialize = (langs = 'eng', oem = defaultOEM, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'initialize',
-      payload: { langs, oem },
-    }))
-  );
-
-  const setParameters = (params = {}, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'setParameters',
-      payload: { params },
-    }))
-  );
-
-  const recognize = async (image, opts = {}, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'recognize',
-      payload: { image: await loadImage(image), options: opts },
-    }))
-  );
-
-  const getPDF = (title = 'Tesseract OCR Result', textonly = false, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'getPDF',
-      payload: { title, textonly },
-    }))
-  );
-
-  const detect = async (image, jobId) => (
-    startJob(createJob({
-      id: jobId,
-      action: 'detect',
-      payload: { image: await loadImage(image) },
-    }))
-  );
-
-  const terminate = async () => {
-    if (worker !== null) {
-      /*
-      await startJob(createJob({
-        id: jobId,
-        action: 'terminate',
-      }));
-      */
-      terminateWorker(worker);
-      worker = null;
-    }
-    return Promise.resolve();
-  };
-
-  onMessage(worker, ({
-    workerId, jobId, status, action, data,
-  }) => {
-    if (status === 'resolve') {
-      log(`[${workerId}]: Complete ${jobId}`);
-      let d = data;
-      if (action === 'recognize') {
-        d = circularize(data);
-      } else if (action === 'getPDF') {
-        d = Array.from({ ...data, length: Object.keys(data).length });
-      }
-      resolves[action]({ jobId, data: d });
-    } else if (status === 'reject') {
-      rejects[action](data);
-      if (errorHandler) {
-        errorHandler(data);
-      } else {
-        throw Error(data);
-      }
-    } else if (status === 'progress') {
-      logger({ ...data, userJobId: jobId });
-    }
-  });
-
-  return {
-    id,
-    worker,
-    setResolve,
-    setReject,
-    load,
-    writeText,
-    readText,
-    removeFile,
-    FS,
-    loadLanguage,
-    initialize,
-    setParameters,
-    recognize,
-    getPDF,
-    detect,
-    terminate,
-  };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/index.js":
-/*!************************************************!*\
-  !*** ./node_modules/tesseract.js/src/index.js ***!
-  \************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/**
- *
- * Entry point for tesseract.js, should be the entry when bundling.
- *
- * @fileoverview entry point for tesseract.js
- * @author Kevin Kwok <antimatter15@gmail.com>
- * @author Guillermo Webster <gui@mit.edu>
- * @author Jerome Wu <jeromewus@gmail.com>
- */
-__webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
-const createScheduler = __webpack_require__(/*! ./createScheduler */ "./node_modules/tesseract.js/src/createScheduler.js");
-const createWorker = __webpack_require__(/*! ./createWorker */ "./node_modules/tesseract.js/src/createWorker.js");
-const Tesseract = __webpack_require__(/*! ./Tesseract */ "./node_modules/tesseract.js/src/Tesseract.js");
-const languages = __webpack_require__(/*! ./constants/languages */ "./node_modules/tesseract.js/src/constants/languages.js");
-const OEM = __webpack_require__(/*! ./constants/OEM */ "./node_modules/tesseract.js/src/constants/OEM.js");
-const PSM = __webpack_require__(/*! ./constants/PSM */ "./node_modules/tesseract.js/src/constants/PSM.js");
-const { setLogging } = __webpack_require__(/*! ./utils/log */ "./node_modules/tesseract.js/src/utils/log.js");
-
-module.exports = {
-  languages,
-  OEM,
-  PSM,
-  createScheduler,
-  createWorker,
-  setLogging,
-  ...Tesseract,
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/utils/circularize.js":
-/*!************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/utils/circularize.js ***!
-  \************************************************************/
-/***/ ((module) => {
-
-/**
- * In the recognition result of tesseract, there
- * is a deep JSON object for details, it has around
- *
- * The result of dump.js is a big JSON tree
- * which can be easily serialized (for instance
- * to be sent from a webworker to the main app
- * or through Node's IPC), but we want
- * a (circular) DOM-like interface for walking
- * through the data.
- *
- * @fileoverview DOM-like interface for walking through data
- * @author Kevin Kwok <antimatter15@gmail.com>
- * @author Guillermo Webster <gui@mit.edu>
- * @author Jerome Wu <jeromewus@gmail.com>
- */
-
-module.exports = (page) => {
-  const blocks = [];
-  const paragraphs = [];
-  const lines = [];
-  const words = [];
-  const symbols = [];
-
-  page.blocks.forEach((block) => {
-    block.paragraphs.forEach((paragraph) => {
-      paragraph.lines.forEach((line) => {
-        line.words.forEach((word) => {
-          word.symbols.forEach((sym) => {
-            symbols.push({
-              ...sym, page, block, paragraph, line, word,
-            });
-          });
-          words.push({
-            ...word, page, block, paragraph, line,
-          });
-        });
-        lines.push({
-          ...line, page, block, paragraph,
-        });
-      });
-      paragraphs.push({
-        ...paragraph, page, block,
-      });
-    });
-    blocks.push({
-      ...block, page,
-    });
-  });
-
-  return {
-    ...page, blocks, paragraphs, lines, words, symbols,
-  };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/utils/getEnvironment.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/utils/getEnvironment.js ***!
-  \***************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const isElectron = __webpack_require__(/*! is-electron */ "./node_modules/is-electron/index.js");
-
-module.exports = (key) => {
-  const env = {};
-
-  if (typeof WorkerGlobalScope !== 'undefined') {
-    env.type = 'webworker';
-  } else if (isElectron()) {
-    env.type = 'electron';
-  } else if (typeof window === 'object') {
-    env.type = 'browser';
-  } else if (typeof process === 'object' && "function" === 'function') {
-    env.type = 'node';
-  }
-
-  if (typeof key === 'undefined') {
-    return env;
-  }
-
-  return env[key];
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/utils/getId.js":
-/*!******************************************************!*\
-  !*** ./node_modules/tesseract.js/src/utils/getId.js ***!
-  \******************************************************/
-/***/ ((module) => {
-
-module.exports = (prefix, cnt) => (
-  `${prefix}-${cnt}-${Math.random().toString(16).slice(3, 8)}`
-);
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/utils/log.js":
-/*!****************************************************!*\
-  !*** ./node_modules/tesseract.js/src/utils/log.js ***!
-  \****************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-let logging = false;
-
-exports.logging = logging;
-
-exports.setLogging = (_logging) => {
-  logging = _logging;
-};
-
-exports.log = (...args) => (logging ? console.log.apply(this, args) : null);
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/utils/resolvePaths.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/utils/resolvePaths.js ***!
-  \*************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const isBrowser = __webpack_require__(/*! ./getEnvironment */ "./node_modules/tesseract.js/src/utils/getEnvironment.js")('type') === 'browser';
-const resolveURL = isBrowser ? __webpack_require__(/*! resolve-url */ "./node_modules/resolve-url/resolve-url.js") : s => s; // eslint-disable-line
-
-module.exports = (options) => {
-  const opts = { ...options };
-  ['corePath', 'workerPath', 'langPath'].forEach((key) => {
-    if (typeof options[key] !== 'undefined') {
-      opts[key] = resolveURL(opts[key]);
-    }
-  });
-  return opts;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/worker/browser/defaultOptions.js":
-/*!************************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/worker/browser/defaultOptions.js ***!
-  \************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const resolveURL = __webpack_require__(/*! resolve-url */ "./node_modules/resolve-url/resolve-url.js");
-const { version, dependencies } = __webpack_require__(/*! ../../../package.json */ "./node_modules/tesseract.js/package.json");
-const defaultOptions = __webpack_require__(/*! ../../constants/defaultOptions */ "./node_modules/tesseract.js/src/constants/defaultOptions.js");
-
-/*
- * Default options for browser worker
- */
-module.exports = {
-  ...defaultOptions,
-  workerPath: (typeof process !== 'undefined' && process.env.TESS_ENV === 'development')
-    ? resolveURL(`/dist/worker.dev.js?nocache=${Math.random().toString(36).slice(3)}`)
-    : `https://unpkg.com/tesseract.js@v${version}/dist/worker.min.js`,
-  /*
-   * If browser doesn't support WebAssembly,
-   * load ASM version instead
-   */
-  corePath: `https://unpkg.com/tesseract.js-core@v${dependencies['tesseract.js-core'].substring(1)}/tesseract-core.${typeof WebAssembly === 'object' ? 'wasm' : 'asm'}.js`,
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/worker/browser/index.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/worker/browser/index.js ***!
-  \***************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/**
- *
- * Tesseract Worker adapter for browser
- *
- * @fileoverview Tesseract Worker adapter for browser
- * @author Kevin Kwok <antimatter15@gmail.com>
- * @author Guillermo Webster <gui@mit.edu>
- * @author Jerome Wu <jeromewus@gmail.com>
- */
-const defaultOptions = __webpack_require__(/*! ./defaultOptions */ "./node_modules/tesseract.js/src/worker/browser/defaultOptions.js");
-const spawnWorker = __webpack_require__(/*! ./spawnWorker */ "./node_modules/tesseract.js/src/worker/browser/spawnWorker.js");
-const terminateWorker = __webpack_require__(/*! ./terminateWorker */ "./node_modules/tesseract.js/src/worker/browser/terminateWorker.js");
-const onMessage = __webpack_require__(/*! ./onMessage */ "./node_modules/tesseract.js/src/worker/browser/onMessage.js");
-const send = __webpack_require__(/*! ./send */ "./node_modules/tesseract.js/src/worker/browser/send.js");
-const loadImage = __webpack_require__(/*! ./loadImage */ "./node_modules/tesseract.js/src/worker/browser/loadImage.js");
-
-module.exports = {
-  defaultOptions,
-  spawnWorker,
-  terminateWorker,
-  onMessage,
-  send,
-  loadImage,
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/worker/browser/loadImage.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/worker/browser/loadImage.js ***!
-  \*******************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const resolveURL = __webpack_require__(/*! resolve-url */ "./node_modules/resolve-url/resolve-url.js");
-const blueimpLoadImage = __webpack_require__(/*! blueimp-load-image */ "./node_modules/blueimp-load-image/js/index.js");
-
-/**
- * readFromBlobOrFile
- *
- * @name readFromBlobOrFile
- * @function
- * @access private
- */
-const readFromBlobOrFile = (blob) => (
-  new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-    fileReader.onerror = ({ target: { error: { code } } }) => {
-      reject(Error(`File could not be read! Code=${code}`));
-    };
-    fileReader.readAsArrayBuffer(blob);
-  })
-);
-
-const fixOrientationFromUrlOrBlobOrFile = (blob) => (
-  new Promise((resolve) => {
-    blueimpLoadImage(
-      blob,
-      (img) => img.toBlob(resolve),
-      {
-        orientation: true,
-        canvas: true,
-      },
-    );
-  })
-);
-
-/**
- * loadImage
- *
- * @name loadImage
- * @function load image from different source
- * @access private
- */
-const loadImage = async (image) => {
-  let data = image;
-  if (typeof image === 'undefined') {
-    return 'undefined';
-  }
-
-  if (typeof image === 'string') {
-    if (image.endsWith('.pbm')) {
-      const resp = await fetch(resolveURL(image));
-      data = await resp.arrayBuffer();
-    } else {
-      let img = image;
-      // If not Base64 Image
-      if (!/data:image\/([a-zA-Z]*);base64,([^"]*)/.test(image)) {
-        img = resolveURL(image);
-      }
-      data = await readFromBlobOrFile(
-        await fixOrientationFromUrlOrBlobOrFile(img),
-      );
-    }
-  } else if (image instanceof HTMLElement) {
-    if (image.tagName === 'IMG') {
-      data = await loadImage(image.src);
-    }
-    if (image.tagName === 'VIDEO') {
-      data = await loadImage(image.poster);
-    }
-    if (image.tagName === 'CANVAS') {
-      await new Promise((resolve) => {
-        image.toBlob(async (blob) => {
-          data = await readFromBlobOrFile(blob);
-          resolve();
-        });
-      });
-    }
-  } else if (image instanceof File || image instanceof Blob) {
-    let img = image;
-    if (!image.name.endsWith('.pbm')) {
-      img = await fixOrientationFromUrlOrBlobOrFile(img);
-    }
-    data = await readFromBlobOrFile(img);
-  }
-
-  return new Uint8Array(data);
-};
-
-module.exports = loadImage;
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/worker/browser/onMessage.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/worker/browser/onMessage.js ***!
-  \*******************************************************************/
-/***/ ((module) => {
-
-module.exports = (worker, handler) => {
-  worker.onmessage = ({ data }) => { // eslint-disable-line
-    handler(data);
-  };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/worker/browser/send.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/worker/browser/send.js ***!
-  \**************************************************************/
-/***/ ((module) => {
-
-/**
- * send
- *
- * @name send
- * @function send packet to worker and create a job
- * @access public
- */
-module.exports = async (worker, packet) => {
-  worker.postMessage(packet);
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/worker/browser/spawnWorker.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/worker/browser/spawnWorker.js ***!
-  \*********************************************************************/
-/***/ ((module) => {
-
-/**
- * spawnWorker
- *
- * @name spawnWorker
- * @function create a new Worker in browser
- * @access public
- */
-module.exports = ({ workerPath, workerBlobURL }) => {
-  let worker;
-  if (Blob && URL && workerBlobURL) {
-    const blob = new Blob([`importScripts("${workerPath}");`], {
-      type: 'application/javascript',
-    });
-    worker = new Worker(URL.createObjectURL(blob));
-  } else {
-    worker = new Worker(workerPath);
-  }
-
-  return worker;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/src/worker/browser/terminateWorker.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/tesseract.js/src/worker/browser/terminateWorker.js ***!
-  \*************************************************************************/
-/***/ ((module) => {
-
-/**
- * terminateWorker
- *
- * @name terminateWorker
- * @function terminate worker
- * @access public
- */
-module.exports = (worker) => {
-  worker.terminate();
-};
-
 
 /***/ }),
 
@@ -41195,7 +34859,7 @@ module.exports = (worker) => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ invariant)
 /* harmony export */ });
 var isProduction = "development" === 'production';
 var prefix = 'Invariant failed';
@@ -41206,10 +34870,12 @@ function invariant(condition, message) {
     if (isProduction) {
         throw new Error(prefix);
     }
-    throw new Error(prefix + ": " + (message || ''));
+    var provided = typeof message === 'function' ? message() : message;
+    var value = provided ? prefix + ": " + provided : prefix;
+    throw new Error(value);
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (invariant);
+
 
 
 /***/ }),
@@ -41300,34 +34966,6 @@ function valueEqual(a, b) {
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _defineProperty)
-/* harmony export */ });
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime/helpers/esm/extends.js":
 /*!************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
@@ -41380,60 +35018,6 @@ function _inheritsLoose(subClass, superClass) {
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js ***!
-  \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _objectSpread2)
-/* harmony export */ });
-/* harmony import */ var _defineProperty_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./defineProperty.js */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
-
-
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-
-    if (enumerableOnly) {
-      symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-    }
-
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        (0,_defineProperty_js__WEBPACK_IMPORTED_MODULE_0__["default"])(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js":
 /*!*********************************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js ***!
@@ -41482,17 +35066,6 @@ function _setPrototypeOf(o, p) {
   return _setPrototypeOf(o, p);
 }
 
-/***/ }),
-
-/***/ "./node_modules/tesseract.js/package.json":
-/*!************************************************!*\
-  !*** ./node_modules/tesseract.js/package.json ***!
-  \************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = JSON.parse('{"_args":[["tesseract.js@2.1.5","/Users/petermyer/FullStack/async/RecipeApp"]],"_from":"tesseract.js@2.1.5","_id":"tesseract.js@2.1.5","_inBundle":false,"_integrity":"sha512-7CIS3SWr7TXpeaH9+HS7iUtVbCfPFYOO3p6rkRAkdtsOtrbz6496x59na6SCbFAIaZulQxy8BjwSu3qL3AoDRg==","_location":"/tesseract.js","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"tesseract.js@2.1.5","name":"tesseract.js","escapedName":"tesseract.js","rawSpec":"2.1.5","saveSpec":null,"fetchSpec":"2.1.5"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/tesseract.js/-/tesseract.js-2.1.5.tgz","_spec":"2.1.5","_where":"/Users/petermyer/FullStack/async/RecipeApp","author":"","browser":{"./src/worker/node/index.js":"./src/worker/browser/index.js"},"bugs":{"url":"https://github.com/naptha/tesseract.js/issues"},"collective":{"type":"opencollective","url":"https://opencollective.com/tesseractjs"},"contributors":[{"name":"jeromewu"}],"dependencies":{"blueimp-load-image":"^3.0.0","bmp-js":"^0.1.0","file-type":"^12.4.1","idb-keyval":"^3.2.0","is-electron":"^2.2.0","is-url":"^1.2.4","jpeg-autorotate":"^7.1.1","node-fetch":"^2.6.0","opencollective-postinstall":"^2.0.2","regenerator-runtime":"^0.13.3","resolve-url":"^0.2.1","tesseract.js-core":"^2.2.0","zlibjs":"^0.3.1"},"description":"Pure Javascript Multilingual OCR","devDependencies":{"@babel/core":"^7.7.7","@babel/preset-env":"^7.7.7","acorn":"^6.4.0","babel-loader":"^8.1.0","cors":"^2.8.5","eslint":"^7.2.0","eslint-config-airbnb-base":"^14.2.0","eslint-plugin-import":"^2.22.1","expect.js":"^0.3.1","express":"^4.17.1","mocha":"^8.1.3","mocha-headless-chrome":"^2.0.3","npm-run-all":"^4.1.5","nyc":"^15.1.0","rimraf":"^2.7.1","wait-on":"^3.3.0","webpack":"^4.44.2","webpack-bundle-analyzer":"^3.6.0","webpack-cli":"^3.3.12","webpack-dev-middleware":"^3.7.2"},"homepage":"https://github.com/naptha/tesseract.js","jsdelivr":"dist/tesseract.min.js","license":"Apache-2.0","main":"src/index.js","name":"tesseract.js","repository":{"type":"git","url":"git+https://github.com/naptha/tesseract.js.git"},"scripts":{"build":"rimraf dist && webpack --config scripts/webpack.config.prod.js","lint":"eslint src","lint:fix":"eslint --fix src","postinstall":"opencollective-postinstall || true","prepublishOnly":"npm run build","profile:tesseract":"webpack-bundle-analyzer dist/tesseract-stats.json","profile:worker":"webpack-bundle-analyzer dist/worker-stats.json","start":"node scripts/server.js","test":"npm-run-all -p -r start test:all","test:all":"npm-run-all wait test:browser:* test:node:all","test:browser-tpl":"mocha-headless-chrome -a incognito -a no-sandbox -a disable-setuid-sandbox -a disable-logging -t 300000","test:browser:FS":"npm run test:browser-tpl -- -f ./tests/FS.test.html","test:browser:detect":"npm run test:browser-tpl -- -f ./tests/detect.test.html","test:browser:recognize":"npm run test:browser-tpl -- -f ./tests/recognize.test.html","test:browser:scheduler":"npm run test:browser-tpl -- -f ./tests/scheduler.test.html","test:node":"nyc mocha --exit --bail --require ./scripts/test-helper.js","test:node:all":"npm run test:node -- ./tests/*.test.js","wait":"rimraf dist && wait-on http://localhost:3000/dist/tesseract.dev.js"},"types":"src/index.d.ts","unpkg":"dist/tesseract.min.js","version":"2.1.5"}');
-
 /***/ })
 
 /******/ 	});
@@ -41515,7 +35088,7 @@ module.exports = JSON.parse('{"_args":[["tesseract.js@2.1.5","/Users/petermyer/F
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -41585,19 +35158,13 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store */ "./client/store.js");
-/* harmony import */ var _components_Routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Routes */ "./client/components/Routes.js");
-/* harmony import */ var _public_style_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../public/style.css */ "./public/style.css");
+/* harmony import */ var _components_Routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Routes */ "./client/components/Routes.js");
+/* harmony import */ var _public_style_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../public/style.css */ "./public/style.css");
 
 
 
 
-
-
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__.Provider, {
-  store: _store__WEBPACK_IMPORTED_MODULE_3__["default"]
-}, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Routes__WEBPACK_IMPORTED_MODULE_4__["default"], null)), document.getElementById("app"));
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Routes__WEBPACK_IMPORTED_MODULE_2__["default"], null), document.getElementById("app"));
 })();
 
 /******/ })()

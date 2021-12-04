@@ -1,22 +1,19 @@
 {
-  "name": "boilerplate",
+  "name": "recipereader",
   "version": "1.0.0",
-  "description": "project skeleton for development",
+  "description": "read recipes and generate nutrition label",
   "main": "index.js",
   "browser": {
     "fs": false
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node main.js",
     "start2": "webpack -w & nodemon main.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
-    "brain.js": "^2.0.0-beta.2",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
@@ -30,7 +27,6 @@
     "redux": "^4.1.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^6.6.5",
     "stream": "0.0.2",
     "tesseract.js": "^2.1.5"
   },
@@ -40,6 +36,7 @@
     "@babel/preset-react": "^7.14.5",
     "babel-loader": "^8.2.2",
     "css-loader": "^6.2.0",
+    "nodemon": "^2.0.15",
     "style-loader": "^3.2.1",
     "webpack": "^5.52.1",
     "webpack-cli": "^4.8.0"
