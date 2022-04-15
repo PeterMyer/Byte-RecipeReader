@@ -1,0 +1,12 @@
+
+img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
+
+.image-container{
+  height: 600px;
+  width: 600px;
+  border: 1px solid blue;
+  position: relative
+
+}
