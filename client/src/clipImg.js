@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 
 class NewRecipe extends React.Component {
@@ -6,7 +6,7 @@ class NewRecipe extends React.Component {
     super();
     this.state = {
       loaded: false,
-      result: "",
+      result: "Waiting on recipe",
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -27,9 +27,10 @@ class NewRecipe extends React.Component {
     reader.readAsDataURL(file);
   }
 
+  componentDidUpdate() {
+    let img = document.getElementById("recipeImg");
+    }
     render() {
-      const loaded = this.state.loaded
-      const recipe = this.state.result
       return (
         <div>
           <p>
@@ -43,7 +44,7 @@ class NewRecipe extends React.Component {
             />
           </p>
           <div className="image-container">
-             {loaded ? <img src={recipe} id="recipeImg"></img>:  "Waiting on recipe"}
+            <img src={this.state.result} id="recipeImg"></img>
           </div>
         </div>
       );
