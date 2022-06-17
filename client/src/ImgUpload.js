@@ -7,6 +7,7 @@ class NewRecipe extends React.Component {
     this.state = {
       loaded: false,
       result: "",
+      form: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -16,8 +17,11 @@ class NewRecipe extends React.Component {
     const file = event.target.files[0];
     var reader = new FileReader();
 
+    const data = new FormData()
+    data.append("uploaded_file", file)
+
     reader.onload = function (e) {
-      this.setState({ result: e.target.result, loaded: true });
+      this.setState({ result: e.target.result, loaded: true , form: data});
       this.forceUpdate();
     }.bind(this);
 
@@ -26,11 +30,13 @@ class NewRecipe extends React.Component {
     };
 
     reader.readAsDataURL(file);
+
   }
 
   handleSubmit(event) {
     event.preventDefault()
-    apiService.uploads.saveImage(this.state.result)
+
+    apiService.uploads.saveImage(this.state.form)
   }
 
 
@@ -42,16 +48,16 @@ class NewRecipe extends React.Component {
           <div className="image-container">
              {loaded ? <img src={recipe} id="recipeImg"></img>:  "Waiting on recipe"}
 
-          <form encType="multipart/form-data">
+          <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
             <label for="recipe">Upload a new recipe </label>
             <input
               type="file"
               id="recipe"
-              name="recipe"
+              name="uploaded_file"
               accept="image/png, image/jpeg"
               onChange={this.handleChange}
             />
-            <button type="submit" onClick={this.handleSubmit}> Save Image</button>
+            <button type="submit"> Save Image</button>
           </form>
           </div>
         </div>

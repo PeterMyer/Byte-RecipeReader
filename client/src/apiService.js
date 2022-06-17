@@ -9,9 +9,12 @@ export default {
   uploads: {
    saveImage:  async (payload) => {
     try {
-         let response = await apiClient.post('/uploads', 'hi')
-         console.log('this works')
-         return response
+      let response = await apiClient.post('/uploads', payload, {
+        headers:{
+          "Content-Type": "multipart/form-data"
+        }
+      })
+       return response
   } catch(error){
         console.log(error)
       }
