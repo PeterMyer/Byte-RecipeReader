@@ -1,5 +1,5 @@
 import React from "react";
-
+import apiService from "./apiService";
 
 class NewRecipe extends React.Component {
   constructor() {
@@ -9,6 +9,7 @@ class NewRecipe extends React.Component {
       result: "",
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
@@ -27,12 +28,21 @@ class NewRecipe extends React.Component {
     reader.readAsDataURL(file);
   }
 
+  handleSubmit(event) {
+    event.preventDefault()
+    apiService.uploads.saveImage(this.state.result)
+  }
+
+
     render() {
       const loaded = this.state.loaded
       const recipe = this.state.result
       return (
         <div>
-          <p>
+          <div className="image-container">
+             {loaded ? <img src={recipe} id="recipeImg"></img>:  "Waiting on recipe"}
+
+          <form encType="multipart/form-data">
             <label for="recipe">Upload a new recipe </label>
             <input
               type="file"
@@ -41,9 +51,8 @@ class NewRecipe extends React.Component {
               accept="image/png, image/jpeg"
               onChange={this.handleChange}
             />
-          </p>
-          <div className="image-container">
-             {loaded ? <img src={recipe} id="recipeImg"></img>:  "Waiting on recipe"}
+            <button type="submit" onClick={this.handleSubmit}> Save Image</button>
+          </form>
           </div>
         </div>
       );
