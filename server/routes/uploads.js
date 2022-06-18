@@ -37,5 +37,14 @@ router.post('/', upload.single('uploaded_file'), (req, res)=> {
     res.status(204).end()
 });
 
+router.get('/', async (req,res)=>{
+  try {
+    const allImages = await Image.findAll();
+    res.json(allImages);
+} catch (err) {
+    console.log(err);
+}
+});
+
 
 module.exports = router;

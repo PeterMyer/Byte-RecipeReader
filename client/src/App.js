@@ -1,11 +1,15 @@
 
 import './App.css';
-import NewRecipe from './ImgUpload'
+import { Link } from "react-router-dom";
+
+
 
 function App() {
   return (
     <div>
-      <NewRecipe/>
+      <h1>Recipe Reader!</h1>
+      <Link to="/upload">Upload New Recipes</Link> |{" "}
+      <Link to="/files">Your Files</Link>
     </div>
 
   );

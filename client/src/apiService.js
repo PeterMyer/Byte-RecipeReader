@@ -6,7 +6,7 @@ const apiClient = axios.create({
 })
 
 export default {
-  uploads: {
+  upload: {
    saveImage:  async (payload) => {
     try {
       let response = await apiClient.post('/uploads', payload, {
@@ -19,4 +19,15 @@ export default {
         console.log(error)
       }
     }
-  }}
+  },
+  import: {
+    retrieveImage: async () => {
+      try {
+        let response = await apiClient.get('/uploads')
+        return response
+      } catch (error){
+        console.log(error)
+      }
+    }
+  }
+}

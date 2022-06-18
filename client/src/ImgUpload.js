@@ -1,5 +1,6 @@
 import React from "react";
 import apiService from "./apiService";
+import {Link} from "react-router-dom"
 
 class NewRecipe extends React.Component {
   constructor() {
@@ -36,7 +37,7 @@ class NewRecipe extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
 
-    apiService.uploads.saveImage(this.state.form)
+    apiService.upload.saveImage(this.state.form)
   }
 
 
@@ -60,6 +61,8 @@ class NewRecipe extends React.Component {
             <button type="submit"> Save Image</button>
           </form>
           </div>
+          <Link to="/">Home</Link>|{" "}
+          <Link to="/files">Your Files </Link>
         </div>
       );
     }
