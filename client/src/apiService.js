@@ -23,8 +23,8 @@ export default {
   import: {
     retrieveImage: async () => {
       try {
-        let response = await apiClient.get('/uploads')
-        return response
+        let {data} = await apiClient.get('/uploads')
+        return data
       } catch (error){
         console.log(error)
       }

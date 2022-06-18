@@ -8,11 +8,11 @@ const {
 var multer = require('multer')
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/');
+    cb(null, './images');
   },
   filename: async (req, file, cb, )=> {
     const ext = path.extname(file.originalname)
-    const filepath = `images/${file.originalname}${ext}`
+    const filepath = `/${file.originalname}${ext}`
 
       try {
         const savedImage = await Image.create({
