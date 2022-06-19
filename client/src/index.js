@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import UserImages from "./images"
 import NewRecipe from "./ImgUpload"
+import Editor from "./editor"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +16,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="files" element={<UserImages />} />
         <Route path="upload" element={<NewRecipe />} />
+        <Route path="edit" element ={<Editor/>}/>
      </Routes>
     </Router>
   </React.StrictMode>

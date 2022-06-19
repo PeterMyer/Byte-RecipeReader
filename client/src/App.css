@@ -41,3 +41,8 @@
 max-height: 500px;
 max-width: 500px
 }
+
+.img-container{
+  display: block;
+  max-width: 100%;
+}
