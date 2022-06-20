@@ -6,24 +6,29 @@ import apiService from "./apiService";
 import {blobCreationFromURL} from './helperFunctions'
 
 
+
+
+
 function Editor() {
   const {state} = useLocation()
-  const [imagePath, setImagePath] = useState(state.filePath)
   const [imgData, setImageData] = useState(state.imgData)
   const [cropData, setCropData] = useState("#");
   const [cropper, setCropper] = useState(<any/>);
 
  const getCropData = async () => {
     if (typeof cropper !== "undefined") {
-      setCropData(cropper.getCroppedCanvas().toDataURL())
-      console.log(cropData)
+      setCropData(cropper.getCroppedCanvas().toDataURL('image/jpeg'))
 
       let cropperBlob = blobCreationFromURL(cropData)
-      console.log('cropperBlob',cropperBlob)
+      console.log('cropperBlolb',cropperBlob)
+
+      let blobFile = new File([cropperBlob], 'test.jpeg', { type: 'image/jpeg' });
+
+      console.log('blobFile',blobFile)
+
       const data = new FormData()
-      data.append("uploaded_file", cropperBlob)
+      data.append("uploaded_file", blobFile)
       apiService.upload.saveImage(data)
-      ;
     }
   };
 

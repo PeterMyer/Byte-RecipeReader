@@ -17,6 +17,9 @@ class UserImages extends React.Component {
     this.setState({images:imgs})
     }
 
+
+
+
   render() {
     const retrievedImages = this.state.images
     return(
@@ -29,6 +32,7 @@ class UserImages extends React.Component {
           return(
             <div>
               <RenderImage filePath={image.filepath} />
+
         </div>
           )
         })
