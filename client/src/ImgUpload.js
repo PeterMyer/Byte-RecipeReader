@@ -36,7 +36,6 @@ class NewRecipe extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-
     apiService.upload.saveImage(this.state.form)
   }
 

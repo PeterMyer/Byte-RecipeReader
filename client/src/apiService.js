@@ -8,6 +8,7 @@ const apiClient = axios.create({
 export default {
   upload: {
    saveImage:  async (payload) => {
+    console.log(payload)
     try {
       let response = await apiClient.post('/uploads', payload, {
         headers:{
@@ -21,13 +22,31 @@ export default {
     }
   },
   import: {
-    retrieveImage: async () => {
+    retrieveFilePaths: async () => {
       try {
         let {data} = await apiClient.get('/uploads')
         return data
       } catch (error){
         console.log(error)
       }
+    },
+    retrieveFile:  async(fileName)=>{
+    try{
+      let response = await apiClient.get(
+        `/images${fileName}`,
+        { responseType: 'blob'}
+        )
+      console.log(response)
+      let resBlob = response.data
+      let objectURL = URL.createObjectURL(resBlob);
+      // let myImage = new Image();
+      // myImage.src = objectURL;
+      return objectURL
     }
+    catch(error){
+      console.log(error)
+    }
+
+  }
   }
 }

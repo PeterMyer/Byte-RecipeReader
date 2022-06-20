@@ -1,21 +1,56 @@
-import React, {useState, useEffect} from "react";
-import Cropper from 'cropperjs';
-import 'cropperjs/dist/cropper.css';
+import React, {useState, useEffect, useRef} from "react";
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 import { useLocation } from 'react-router-dom';
+import apiService from "./apiService";
+import {blobCreationFromURL} from './helperFunctions'
+
 
 function Editor() {
   const {state} = useLocation()
   const [imagePath, setImagePath] = useState(state.filePath)
+  const [imgData, setImageData] = useState(state.imgData)
+  const [cropData, setCropData] = useState("#");
+  const [cropper, setCropper] = useState(<any/>);
 
-  useEffect(()=>{
-  let htmlimage = document.getElementById("recipeImg");
-  let cropper = new Cropper(htmlimage)})
+ const getCropData = async () => {
+    if (typeof cropper !== "undefined") {
+      setCropData(cropper.getCroppedCanvas().toDataURL())
+      console.log(cropData)
+
+      let cropperBlob = blobCreationFromURL(cropData)
+      console.log('cropperBlob',cropperBlob)
+      const data = new FormData()
+      data.append("uploaded_file", cropperBlob)
+      apiService.upload.saveImage(data)
+      ;
+    }
+  };
 
     return(
       <div className = "editor">
         <div>Edit Image</div>
-        <div className="image-container">
-          <img id="recipeImg" src={imagePath} alt="null"/>
+        <Cropper
+          style={{ height: 400, width: "100%" }}
+          zoomTo={0.5}
+          initialAspectRatio={1}
+          src={imgData}
+          viewMode={1}
+          minCropBoxHeight={10}
+          minCropBoxWidth={10}
+          background={true}
+          responsive={true}
+          autoCropArea={1}
+          checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+          onInitialized={(instance) => {
+            setCropper(instance);
+          }}
+          guides={true}
+        />
+        <div>
+          <button onClick = {getCropData} >
+              Crop
+          </button>
         </div>
       </div>
     )

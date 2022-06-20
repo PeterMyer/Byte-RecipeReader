@@ -1,6 +1,7 @@
 import React from "react";
 import apiService from "./apiService";
 import { Link } from "react-router-dom";
+import RenderImage from "./RenderImage"
 
 
 class UserImages extends React.Component {
@@ -12,10 +13,9 @@ class UserImages extends React.Component {
   }
 
   componentDidMount = async() => {
-    let imgs = await apiService.import.retrieveImage()
+    let imgs = await apiService.import.retrieveFilePaths()
     this.setState({images:imgs})
     }
-
 
   render() {
     const retrievedImages = this.state.images
@@ -26,27 +26,9 @@ class UserImages extends React.Component {
         <div>
          {retrievedImages !== null ?
          retrievedImages.map((image)=>{
-          const imgFile = document.createElement('img')
-          let serverImgSrc = 'http://localhost:3001/images'
-          imgFile.src = serverImgSrc+image.filepath
           return(
-            <div class = "imgContainer">
-              <img
-              src={imgFile.src}
-              height="250"
-              width="250"
-              alt="null"/>
-              <Link to={"/edit"} state= {{filePath:imgFile.src}}>
-                <button>
-                  Edit
-                </button>
-              </Link>
-              <button>
-                Use
-              </button>
-              <button>
-                Delete
-              </button>
+            <div>
+              <RenderImage filePath={image.filepath} />
         </div>
           )
         })
