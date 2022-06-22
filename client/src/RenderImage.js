@@ -32,9 +32,13 @@ export default function RenderImage(props) {
           Edit
         </button>
       </Link>
-      <button>
-        Use
-      </button>
+      <Link
+        to={"/read"}
+        state= {{imgData}}>
+        <button>
+          Read this Img
+        </button>
+      </Link>
       <button>
         Delete
       </button>

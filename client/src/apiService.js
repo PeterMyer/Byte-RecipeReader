@@ -32,13 +32,10 @@ export default {
     },
     retrieveFile:  async(fileName)=>{
     try{
-      console.log(fileName)
       let response = await apiClient.get(`/images${fileName}`,
       { responseType: 'blob'})
       let resBlob = response.data
-      console.log('resblob',resBlob)
       let objectURL = URL.createObjectURL(resBlob);
-      console.log('objectURL',objectURL)
       let myImage = new Image();
       myImage.src = objectURL;
       return objectURL

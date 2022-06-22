@@ -7,6 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import UserImages from "./images"
 import NewRecipe from "./ImgUpload"
 import Editor from "./editor"
+import TesseractWorker from "./TesseractWorker"
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,6 +19,7 @@ root.render(
         <Route path="files" element={<UserImages />} />
         <Route path="upload" element={<NewRecipe />} />
         <Route path="edit" element ={<Editor/>}/>
+        <Route path="read" element ={<TesseractWorker/>}/>
      </Routes>
     </Router>
   </React.StrictMode>

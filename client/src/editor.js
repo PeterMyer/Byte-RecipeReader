@@ -5,10 +5,6 @@ import { useLocation } from 'react-router-dom';
 import apiService from "./apiService";
 import {blobCreationFromURL} from './helperFunctions'
 
-
-
-
-
 function Editor() {
   const {state} = useLocation()
   const [imgData, setImageData] = useState(state.imgData)
