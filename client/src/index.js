@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import UserImages from "./images"
 import NewRecipe from "./ImgUpload"
 import Editor from "./editor"
+import RecipeEditor from "./RecipeEditor"
 import TesseractWorker from "./TesseractWorker"
 
 
@@ -20,6 +21,7 @@ root.render(
         <Route path="upload" element={<NewRecipe />} />
         <Route path="edit" element ={<Editor/>}/>
         <Route path="read" element ={<TesseractWorker/>}/>
+        <Route path="editRecipe" element = {<RecipeEditor/>}/>
      </Routes>
     </Router>
   </React.StrictMode>

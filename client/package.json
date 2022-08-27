@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "buffer": "^6.0.3",
+    "draft-js": "^0.11.7",
     "multer": "^1.4.5-lts.1",
     "react": "^18.1.0",
     "react-cropper": "^2.1.8",

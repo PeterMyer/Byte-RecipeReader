@@ -7,7 +7,7 @@ function App() {
     <div>
       <h1>Recipe Reader!</h1>
       <Link to="/upload">Upload New Recipes</Link> |{" "}
-      <Link to="/images">Your Files</Link>
+      <Link to="/files">Your Files</Link>
     </div>
 
   );
