@@ -1,6 +1,7 @@
 import { createWorker } from "tesseract.js";
 import { useEffect, useState} from "react";
 import { useLocation } from 'react-router-dom';
+import RecipeEditor from "./RecipeEditor";
 
 
 export default function TesseractWorker(){
@@ -10,7 +11,6 @@ const [imgText, setImgText] = useState("")
 const [imgLines, setImgLines] = useState("")
 
 useEffect(()=> {
-  console.log("useEffect")
   CreateTesseractWorker()
 },[])
 
@@ -24,12 +24,10 @@ const CreateTesseractWorker = () =>{
       preserve_interword_spaces: 1,
     });
     const result = await worker.recognize(imgData);
-    console.log(result.data.text);
 
     setImgText(result.data.text)
     setImgLines(result.data.lines)
 
-    console.log(imgData)
     await worker.terminate();
 
   })();
@@ -37,12 +35,11 @@ const CreateTesseractWorker = () =>{
 
 
 if(imgText != ""){
-  console.log(imgText)
   return(
-    <div>
-      {imgText}
+      <div>
+        <RecipeEditor readImgText={imgText} />
     </div>
-  )
+    )
 }else{
   return(
     <div>Reading IMG...</div>
