@@ -19,6 +19,20 @@ export default {
   } catch(error){
         console.log(error)
       }
+    },
+    classifyText: async (payload) =>{
+      try {
+        let response = await apiClient.post('/classification', {
+          headers:{
+            'Content-Type' : 'json'
+          },
+          data:payload
+        })
+         return response
+        } catch(error){
+          console.log(error)
+        }
+
     }
   },
   import: {
