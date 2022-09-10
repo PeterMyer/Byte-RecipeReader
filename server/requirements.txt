@@ -1,0 +1,5 @@
+keras==2.9.0
+keras_contrib==2.0.8
+nltk==3.7
+pandas==1.4.3
+python_crfsuite==0.9.8
