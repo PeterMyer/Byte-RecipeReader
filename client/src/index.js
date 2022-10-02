@@ -9,7 +9,7 @@ import NewRecipe from "./ImgUpload"
 import Editor from "./editor"
 import RecipeEditor from "./RecipeEditor"
 import TesseractWorker from "./TesseractWorker"
-
+import UserRecipes from "./UserRecipes"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -22,6 +22,7 @@ root.render(
         <Route path="edit" element ={<Editor/>}/>
         <Route path="read" element ={<TesseractWorker/>}/>
         <Route path="editRecipe" element = {<RecipeEditor/>}/>
+        <Route path="recipes" element = {<UserRecipes/>}/>
      </Routes>
     </Router>
   </React.StrictMode>
