@@ -24,7 +24,6 @@ export default function RecipeEditor(props){
             
         }
 
-
     return(
         <div>
             <Editor

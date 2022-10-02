@@ -9,6 +9,8 @@ var usersRouter = require('./routes/users');
 var uploadsRouter = require('./routes/uploads')
 let fileSystemRouter = require('./routes/fileSystem')
 let classificationRouter = require('./routes/classification')
+let recipesRouter = require('./routes/recipes')
+
 
 var app = express();
 app.use(cors())
@@ -41,8 +43,7 @@ app.use('/users', usersRouter);
 app.use('/uploads', uploadsRouter)
 app.use('/images', fileSystemRouter)
 app.use('/classification', classificationRouter)
-
-
+app.use('/recipes', recipesRouter)
 
 
 // catch 404 and forward to error handler

@@ -6,9 +6,25 @@ const apiClient = axios.create({
 })
 
 export default {
+  recipes:{
+    create: async(payload)=>{
+    try {
+      
+    } catch(error){
+      console.log(error)
+    }
+    },
+    getAll: async(payload)=>{
+      try {
+        let response = await apiClient.get('/recipes', payload)
+        return response
+      } catch(error){
+        console.log(error)
+      }
+    }
+  },
   upload: {
    saveImage:  async (payload) => {
-    console.log(payload)
     try {
       let response = await apiClient.post('/uploads', payload, {
         headers:{
