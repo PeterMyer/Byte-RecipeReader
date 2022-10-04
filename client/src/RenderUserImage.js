@@ -12,9 +12,7 @@ export default function RenderImage(props) {
   },[])
 
   const fetchData = async (filePath) =>{
-    console.log('filePath', filePath)
       let response = await apiService.import.retrieveFile(filePath)
-      console.log(response)
       setImgData(response)
   }
 
