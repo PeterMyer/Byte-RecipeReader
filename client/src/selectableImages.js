@@ -1,10 +1,9 @@
 import React from "react";
 import apiService from "./apiService";
-import { Link } from "react-router-dom";
-import RenderImage from "./RenderUserImage"
+import RenderSelectableImage from "./RenderSelectableImg";
 
 
-class UserImages extends React.Component {
+class SelectableImages extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -17,32 +16,28 @@ class UserImages extends React.Component {
     this.setState({images:imgs})
     }
 
+
   render() {
     const retrievedImages = this.state.images
     return(
       <div>
-    <div>
-     <div>Your Images</div>
+        Selectable Images
         <div>
          {retrievedImages !== null ?
          retrievedImages.map((image)=>{
           return(
             <div>
-              <RenderImage filePath={image.filepath} />
+              <RenderSelectableImage filePath={image.filepath} />
             </div>
           )
         })
         :
         <div>
-          No Images
+          You have no images
         </div>}
       </div>
-
-     <Link to="/">Home</Link>|{" "}
-     <Link to="/upload">Upload New Files </Link> |{" "}
-    </div>
     </div>
   )}}
 
 
-export default UserImages
+export default SelectableImages
