@@ -8,7 +8,7 @@ export default function  IngredientsBasket (){
     let setIngredientsBasketState = data.setIngredientsBasketState
 
     const [{ isOver }, dropRef] = useDrop({
-        accept: 'img',
+        accept: 'imgData',
         drop: (item) => setIngredientsBasketState((IngredientsBasketState) => 
                             !IngredientsBasketState.includes(item) ? [...IngredientsBasketState, item] : IngredientsBasketState),
         collect: (monitor) => ({
@@ -18,7 +18,8 @@ export default function  IngredientsBasket (){
     return (
         <React.Fragment>
             <div  ref={dropRef}>
-                Ingredients
+                Ingredients 
+                {/* Will become {name} */}
                 <div className = "basket">
                     {IngredientsBasketState.map(img=>   
                     <img

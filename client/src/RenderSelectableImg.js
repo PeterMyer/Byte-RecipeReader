@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDrag } from 'react-dnd'
 
 export default function RenderSelectableImage(props) {
-  const imgData = props.filePath
-  // console.log('render selectable', imgData)
+  const imgData = props.imgData
 
   const [{isDragging}, dragRef] = useDrag(()=>({
-    type: 'img',
+    type: 'imgData',
     item: {imgData},
     collect: (monitor)=>({
         isDragging: !!monitor.isDragging()
@@ -16,7 +15,7 @@ export default function RenderSelectableImage(props) {
   return(
     <div class = "imgContainer" ref={dragRef}>
         <img
-        src={imgData}
+        src={imgData.imgBlob}
         height="150"
         width="150"
         alt="null"

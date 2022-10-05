@@ -13,9 +13,12 @@ export default function SelectableImages () {
         <div>
          {retrievedImages !== null ?
          retrievedImages.map((image)=>{
+          console.log('retrievedImages',retrievedImages)
           return(
             <div>
-              <RenderSelectableImage filePath={image} />
+              <div>
+              <RenderSelectableImage imgData={image} />
+              </div>
             </div>)
           })
           :

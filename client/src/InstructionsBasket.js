@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useDrop } from 'react-dnd';
 import { Context } from './CreateRecipeImages';
+import RenderSelectableImage from "./RenderSelectableImg";
 
 
 export default function  InstructionsBasket (){
@@ -9,7 +10,7 @@ export default function  InstructionsBasket (){
     let setInstructionsBasketState = data.setInstructionsBasketState
 
     const [{ isOver }, dropRef] = useDrop({
-        accept: 'img',
+        accept: 'imgData',
         drop: (item) => setInstructionsBasketState((InstructionsBasketState) => 
                             !InstructionsBasketState.includes(item) ? [...InstructionsBasketState, item] : InstructionsBasketState),
         collect: (monitor) => ({
@@ -21,13 +22,12 @@ export default function  InstructionsBasket (){
             <div ref={dropRef}>
                 Instructions
                 <div className = "basket">
-                    {InstructionsBasketState.map(img=>   
-                    <img
-                        src= {img.imgData}
-                        height="150"
-                        width="150"
-                        alt="null"
-                        />)}
+                    {InstructionsBasketState.map((img)=> { 
+                        return( 
+                            <div>
+                                <RenderSelectableImage imgData={img.imgData} />
+                            </div>
+                        )})}
                     {isOver && <div>Drop Here!</div>}
                 </div>
             </div>

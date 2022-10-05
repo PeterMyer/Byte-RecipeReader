@@ -4,8 +4,9 @@ import { useDrop } from 'react-dnd';
 import React, { useState } from 'react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import SelectableImages from "./SelectableImages"
-import InstructionsBasket from "./InstructionsBasket" 
-import IngredientsBasket from "./IngredientsBasket" 
+// import InstructionsBasket from "./InstructionsBasket" 
+// import IngredientsBasket from "./IngredientsBasket" 
+import Basket from "./ImgBasket"
 import { useEffect, createContext } from 'react';
 import apiService from './apiService';
 
@@ -14,8 +15,9 @@ export const Context = React.createContext()
 export default function CreateRecipeImages(){
     const [filePathData, setFilePathData] = useState(null)
     const [ImgData, setImgData] = useState({})
-    const [IngredientsBasketState, setIngredientsBasketState] = useState([])
-    const [InstructionsBasketState, setInstructionsBasketState] = useState([])
+    // const [IngredientsBasketState, setIngredientsBasketState] = useState([])
+    // const [InstructionsBasketState, setInstructionsBasketState] = useState([])
+    const [basketState, setBasketState] =useState([])
 
     useEffect(()=> {
         const fetchImgs = async()=>{
@@ -23,31 +25,37 @@ export default function CreateRecipeImages(){
             setFilePathData(filePaths)
             let newImgData = filePaths.map(async(file)=>{ 
                 let response = await apiService.import.retrieveFile(file.filepath)
-                 return [[file.filepath],response]
+                 return [['id', file.id],['fileName',file.filepath],['imgBlob',response],['location','selection']]
             })
             let result = await Promise.all(newImgData)
-            let resultObj = Object.fromEntries(result)
-            setImgData({...ImgData,...resultObj})
+            let resultOjbCollection = []
+            console.log('result',result)
+            
+            result.forEach(array =>{
+                let resultObj = Object.fromEntries(array)
+                resultOjbCollection.push(resultObj)
+            })
+            console.log('resultObjCollect', resultOjbCollection)
+            setImgData(resultOjbCollection)
         }
 
         fetchImgs()
     },[])
 
-    
-
     return(
         <div >
             <Context.Provider value = {{
                 ImgData,setImgData, 
-                IngredientsBasketState,setIngredientsBasketState,
-                InstructionsBasketState, setInstructionsBasketState 
+                basketState, setBasketState
                 }}>
                 <DndProvider backend={HTML5Backend}>
                     <div id="recipeBuilder">
             `           <div>
                             <div>Preview</div>
-                            <div><InstructionsBasket/></div>
-                            <div><IngredientsBasket/></div>
+                            Ingredients
+                            <div title="Ingredients"><Basket/></div>
+                            Instructions
+                            <div title="Instructions"><Basket/></div>
                         </div>
                         <div>
                             <div><SelectableImages/></div>
