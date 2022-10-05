@@ -1,28 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useDrop } from 'react-dnd';
+import { Context } from './CreateRecipeImages';
 
 export default function  IngredientsBasket (){
-    const [basket, setBasket] = useState([])
+    const data = useContext(Context);
+    let IngredientsBasketState = data.IngredientsBasketState
+    let setIngredientsBasketState = data.setIngredientsBasketState
+
     const [{ isOver }, dropRef] = useDrop({
         accept: 'img',
-        drop: (item) => setBasket((basket) => 
-                            !basket.includes(item) ? [...basket, item] : basket),
+        drop: (item) => setIngredientsBasketState((IngredientsBasketState) => 
+                            !IngredientsBasketState.includes(item) ? [...IngredientsBasketState, item] : IngredientsBasketState),
         collect: (monitor) => ({
             isOver: monitor.isOver()
         })
     })
     return (
         <React.Fragment>
-            <div className='basket' ref={dropRef}>
+            <div  ref={dropRef}>
                 Ingredients
-                {basket.map(img=>   
-                <img
-                    src= {img.imgData}
-                    height="150"
-                    width="150"
-                    alt="null"
-                    />)}
-                {isOver && <div>Drop Here!</div>}
+                <div className = "basket">
+                    {IngredientsBasketState.map(img=>   
+                    <img
+                        src= {img.imgData}
+                        height="150"
+                        width="150"
+                        alt="null"
+                        />)}
+                    {isOver && <div>Drop Here!</div>}
+                </div>
             </div>
         </React.Fragment>
     )

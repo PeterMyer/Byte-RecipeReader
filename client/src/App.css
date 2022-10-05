@@ -46,3 +46,17 @@ max-width: 500px
   display: block;
   max-width: 100%;
 }
+
+
+#recipeBuilder{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+}
+
+.basket{
+  border-style: solid;
+  height: 250px;
+  width:500px
+}

@@ -1,24 +1,12 @@
 import React from "react";
-import apiService from "./apiService";
 import RenderSelectableImage from "./RenderSelectableImg";
+import {useContext, } from 'react'
+import { Context } from "./CreateRecipeImages";
 
+export default function SelectableImages () {
+    const data = useContext(Context);
+    let retrievedImages = Object.values(data.ImgData)
 
-class SelectableImages extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-     images: null
-    }
-  }
-
-  componentDidMount = async() => {
-    let imgs = await apiService.import.retrieveFilePaths()
-    this.setState({images:imgs})
-    }
-
-
-  render() {
-    const retrievedImages = this.state.images
     return(
       <div>
         Selectable Images
@@ -27,17 +15,13 @@ class SelectableImages extends React.Component {
          retrievedImages.map((image)=>{
           return(
             <div>
-              <RenderSelectableImage filePath={image.filepath} />
-            </div>
-          )
-        })
-        :
-        <div>
-          You have no images
-        </div>}
+              <RenderSelectableImage filePath={image} />
+            </div>)
+          })
+          :
+          <div>
+            You have no images
+          </div>}
+        </div>
       </div>
-    </div>
-  )}}
-
-
-export default SelectableImages
+  )}
