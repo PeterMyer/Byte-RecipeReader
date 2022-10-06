@@ -1,11 +1,8 @@
 
 import { DndProvider } from 'react-dnd'
-import { useDrop } from 'react-dnd';
 import React, { useState } from 'react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import SelectableImages from "./SelectableImages"
-// import InstructionsBasket from "./InstructionsBasket" 
-// import IngredientsBasket from "./IngredientsBasket" 
 import Basket from "./ImgBasket"
 import { useEffect, createContext } from 'react';
 import apiService from './apiService';
@@ -15,8 +12,6 @@ export const Context = React.createContext()
 export default function CreateRecipeImages(){
     const [filePathData, setFilePathData] = useState(null)
     const [ImgData, setImgData] = useState({})
-    // const [IngredientsBasketState, setIngredientsBasketState] = useState([])
-    // const [InstructionsBasketState, setInstructionsBasketState] = useState([])
     const [basketState, setBasketState] =useState([])
 
     useEffect(()=> {
@@ -36,7 +31,6 @@ export default function CreateRecipeImages(){
             })
             setImgData({...ImgData,...resultOjbCollection})
         }
-
         fetchImgs()
     },[])
 

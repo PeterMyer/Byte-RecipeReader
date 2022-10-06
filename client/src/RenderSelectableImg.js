@@ -18,10 +18,11 @@ export default function RenderSelectableImage(props) {
         // item.location = dropResult.location
         setBasketState((basketState) =>
           basketState.map(obj =>{ 
+            console.log('basketState',basketState)
             if(obj.id===item.id){
               return {...obj, location:  dropResult.location}
             }
-          return obj}
+            return obj}
         ))
       }
     },

@@ -17,6 +17,23 @@ export default function  Basket ({title}){
             isOver: monitor.isOver()
         }),
     })
+
+    const moveItemHandler = (dragIndex, hoverIndex) => {
+        const dragItem = basketState[dragIndex]
+
+        if(dragItem){
+            setBasketState((prevState=>{
+                const coppiedStateArray = [...prevState]
+
+                const prevItem = coppiedStateArray.splice(hoverIndex, 1, dragIndex);
+
+                coppiedStateArray.splice(dragIndex, 1, prevItem[0]);
+
+                return coppiedStateArray
+            }))
+        }
+    }
+
     return (
             <div  ref={dropRef}>
                 {title}
