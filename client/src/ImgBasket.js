@@ -10,26 +10,25 @@ export default function  Basket ({title}){
 
     const [{ isOver }, dropRef] = useDrop({
         accept: 'imgData',
-        drop: (item) => setBasketState((basketState) => 
+        drop: (item) => (setBasketState((basketState) => 
                             !basketState.includes(item) ? [...basketState, item] : basketState),
+                         {location: title}),
         collect: (monitor) => ({
             isOver: monitor.isOver()
-        })
+        }),
     })
     return (
-        <React.Fragment>
             <div  ref={dropRef}>
+                {title}
                 <div className = "basket" >
-                    {title}
-                    {basketState.map(img=> { 
+                    {basketState.filter((img)=>img.location===title).map(img=> { 
                         return( 
                             <div>
-                                <RenderSelectableImage imgData={img.imgData} />
+                                <RenderSelectableImage key={img.id} imgData={img} />
                             </div>
                         )})}
                     {isOver && <div>Drop Here!</div>}
                 </div>
             </div>
-        </React.Fragment>
     )
 }

@@ -15,6 +15,8 @@ export default function  IngredientsBasket (){
             isOver: monitor.isOver()
         })
     })
+
+
     return (
         <React.Fragment>
             <div  ref={dropRef}>

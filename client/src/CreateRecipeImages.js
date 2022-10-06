@@ -28,15 +28,13 @@ export default function CreateRecipeImages(){
                  return [['id', file.id],['fileName',file.filepath],['imgBlob',response],['location','selection']]
             })
             let result = await Promise.all(newImgData)
-            let resultOjbCollection = []
-            console.log('result',result)
+            let resultOjbCollection = {}
             
             result.forEach(array =>{
                 let resultObj = Object.fromEntries(array)
-                resultOjbCollection.push(resultObj)
+                resultOjbCollection = {...resultOjbCollection, ...{[resultObj.id]:resultObj}}
             })
-            console.log('resultObjCollect', resultOjbCollection)
-            setImgData(resultOjbCollection)
+            setImgData({...ImgData,...resultOjbCollection})
         }
 
         fetchImgs()
@@ -52,10 +50,8 @@ export default function CreateRecipeImages(){
                     <div id="recipeBuilder">
             `           <div>
                             <div>Preview</div>
-                            Ingredients
-                            <div title="Ingredients"><Basket/></div>
-                            Instructions
-                            <div title="Instructions"><Basket/></div>
+                            <Basket title="Ingredients"/>
+                            <Basket title="Instructions"/>
                         </div>
                         <div>
                             <div><SelectableImages/></div>
