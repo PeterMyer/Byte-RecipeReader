@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { useDrag } from 'react-dnd'
 import { Context } from "./CreateRecipeImages";
 
-export default function RenderSelectableImage(props) {
-  const ImgData = props.imgData
+export default function RenderSelectableImage(props, {index}) {
+  const imgData = props.imgData
   const data = useContext(Context)
   const basketState = data.basketState
   const setBasketState = data.setBasketState
@@ -11,14 +11,13 @@ export default function RenderSelectableImage(props) {
 
   const [{isDragging}, dragRef] = useDrag(()=>({
     type: 'imgData',
-    item: ImgData,
+    item: {index,...imgData},
     end:(item, monitor)=>{
       const dropResult = monitor.getDropResult()
       if(dropResult && item.location !== dropResult.location){
         // item.location = dropResult.location
         setBasketState((basketState) =>
           basketState.map(obj =>{ 
-            console.log('basketState',basketState)
             if(obj.id===item.id){
               return {...obj, location:  dropResult.location}
             }
@@ -28,13 +27,16 @@ export default function RenderSelectableImage(props) {
     },
     collect: (monitor)=>({
         isDragging: !!monitor.isDragging()
+    }),
+    canDrag: (monitor)=>({
+
     })
-}),[ImgData])
+}),[imgData])
 
   return(
     <div class = "imgContainer" ref={dragRef}>
         <img
-        src={ImgData.imgBlob}
+        src={imgData.imgBlob}
         height="150"
         width="150"
         alt="null"

@@ -1,4 +1,4 @@
-import React, { useState, useContext, Fragment } from 'react'
+import React, { useState, useContext, Fragment, useEffect } from 'react'
 import { useDrop } from 'react-dnd';
 import { Context } from './CreateRecipeImages';
 import RenderSelectableImage from './RenderSelectableImg'
@@ -10,8 +10,8 @@ export default function  Basket ({title}){
 
     const [{ isOver }, dropRef] = useDrop({
         accept: 'imgData',
-        drop: (item) => (setBasketState((basketState) => 
-                            !basketState.includes(item) ? [...basketState, item] : basketState),
+        drop: (item) => (setBasketState((basketState ) => 
+                        !basketState.map(item=>item.id).includes(item.id) ? [...basketState, item] : basketState),
                          {location: title}),
         collect: (monitor) => ({
             isOver: monitor.isOver()
@@ -38,10 +38,15 @@ export default function  Basket ({title}){
             <div  ref={dropRef}>
                 {title}
                 <div className = "basket" >
-                    {basketState.filter((img)=>img.location===title).map(img=> { 
+                    {basketState.filter((img)=>img.location===title).map((img,index)=> { 
                         return( 
                             <div>
-                                <RenderSelectableImage key={img.id} imgData={img} />
+                                <RenderSelectableImage 
+                                key={img.id} 
+                                imgData={img}
+                                index = {index}
+                                moveItemHandler= {moveItemHandler}
+                                />
                             </div>
                         )})}
                     {isOver && <div>Drop Here!</div>}

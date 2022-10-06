@@ -13,6 +13,7 @@ export default function CreateRecipeImages(){
     const [filePathData, setFilePathData] = useState(null)
     const [ImgData, setImgData] = useState({})
     const [basketState, setBasketState] =useState([])
+    const [basketIdSet, setBasketIdSet] = useState(new Set())
 
     useEffect(()=> {
         const fetchImgs = async()=>{
@@ -20,7 +21,7 @@ export default function CreateRecipeImages(){
             setFilePathData(filePaths)
             let newImgData = filePaths.map(async(file)=>{ 
                 let response = await apiService.import.retrieveFile(file.filepath)
-                 return [['id', file.id],['fileName',file.filepath],['imgBlob',response],['location','selection']]
+                 return [['id', file.id],['fileName',file.filepath],['imgBlob',response],['location','Selections']]
             })
             let result = await Promise.all(newImgData)
             let resultOjbCollection = {}
@@ -38,7 +39,8 @@ export default function CreateRecipeImages(){
         <div >
             <Context.Provider value = {{
                 ImgData,setImgData, 
-                basketState, setBasketState
+                basketState, setBasketState,
+                basketIdSet, setBasketIdSet
                 }}>
                 <DndProvider backend={HTML5Backend}>
                     <div id="recipeBuilder">
@@ -48,7 +50,7 @@ export default function CreateRecipeImages(){
                             <Basket title="Instructions"/>
                         </div>
                         <div>
-                            <div><SelectableImages/></div>
+                            <div><SelectableImages title="Selections"/></div>
                         </div>
                     </div>
                 </DndProvider>`
