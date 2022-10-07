@@ -11,7 +11,6 @@ const [imgText, setImgText] = useState("")
 const [imgLines, setImgLines] = useState("")
 
 useEffect(()=> {
-  console.log("useEffect")
   CreateTesseractWorker()
 },[])
 

@@ -11,7 +11,7 @@ import RecipeEditor from "./RecipeEditor"
 import TesseractWorker from "./TesseractWorker"
 import UserRecipes from "./UserRecipes"
 import RecipeForm from './RecipeForm';
-import CreateRecipeImages from './CreateRecipeImages';
+import CreateRecipeImages from './RecipeBuilder/RecipeBuilder';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
