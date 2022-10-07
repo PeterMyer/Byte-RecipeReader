@@ -2,27 +2,26 @@
 import { DndProvider } from 'react-dnd'
 import React, { useState } from 'react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import SelectableImages from "./SelectableImages"
-import Basket from "./ImgBasket"
+import UserImages from "./UserImages"
+import Basket from "./DropBasket"
 import { useEffect, createContext } from 'react';
-import apiService from './apiService';
+import apiService from '../apiService';
 
 export const Context = React.createContext()
 
 export default function CreateRecipeImages(){
-    const [filePathData, setFilePathData] = useState(null)
     const [ImgData, setImgData] = useState({})
     const [basketState, setBasketState] =useState([])
-    const [basketIdSet, setBasketIdSet] = useState(new Set())
 
     useEffect(()=> {
         const fetchImgs = async()=>{
             let filePaths =  await apiService.import.retrieveFilePaths()
-            setFilePathData(filePaths)
+
             let newImgData = filePaths.map(async(file)=>{ 
                 let response = await apiService.import.retrieveFile(file.filepath)
                  return [['id', file.id],['fileName',file.filepath],['imgBlob',response],['location','Selections']]
             })
+
             let result = await Promise.all(newImgData)
             let resultOjbCollection = {}
             
@@ -40,17 +39,16 @@ export default function CreateRecipeImages(){
             <Context.Provider value = {{
                 ImgData,setImgData, 
                 basketState, setBasketState,
-                basketIdSet, setBasketIdSet
                 }}>
                 <DndProvider backend={HTML5Backend}>
                     <div id="recipeBuilder">
             `           <div>
-                            <div>Preview</div>
                             <Basket title="Ingredients"/>
                             <Basket title="Instructions"/>
+                            <button>Submit</button>
                         </div>
                         <div>
-                            <div><SelectableImages title="Selections"/></div>
+                            <div><UserImages title="Selections"/></div>
                         </div>
                     </div>
                 </DndProvider>`

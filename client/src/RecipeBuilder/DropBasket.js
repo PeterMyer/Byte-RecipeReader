@@ -1,7 +1,7 @@
-import React, { useState, useContext, Fragment, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { useDrop } from 'react-dnd';
-import { Context } from './CreateRecipeImages';
-import RenderSelectableImage from './RenderSelectableImg'
+import { Context } from './RecipeBuilder';
+import RenderImage from './RenderImg'
 
 export default function  Basket ({title}){
     const data = useContext(Context);
@@ -12,27 +12,11 @@ export default function  Basket ({title}){
         accept: 'imgData',
         drop: (item) => (setBasketState((basketState ) => 
                         !basketState.map(item=>item.id).includes(item.id) ? [...basketState, item] : basketState),
-                         {location: title}),
+                        {location: title}),
         collect: (monitor) => ({
             isOver: monitor.isOver()
         }),
     })
-
-    const moveItemHandler = (dragIndex, hoverIndex) => {
-        const dragItem = basketState[dragIndex]
-
-        if(dragItem){
-            setBasketState((prevState=>{
-                const coppiedStateArray = [...prevState]
-
-                const prevItem = coppiedStateArray.splice(hoverIndex, 1, dragIndex);
-
-                coppiedStateArray.splice(dragIndex, 1, prevItem[0]);
-
-                return coppiedStateArray
-            }))
-        }
-    }
 
     return (
             <div  ref={dropRef}>
@@ -41,11 +25,10 @@ export default function  Basket ({title}){
                     {basketState.filter((img)=>img.location===title).map((img,index)=> { 
                         return( 
                             <div>
-                                <RenderSelectableImage 
+                                <RenderImage 
                                 key={img.id} 
                                 imgData={img}
                                 index = {index}
-                                moveItemHandler= {moveItemHandler}
                                 />
                             </div>
                         )})}
