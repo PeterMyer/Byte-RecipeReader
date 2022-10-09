@@ -6,6 +6,7 @@ import UserImages from "./UserImages"
 import Basket from "./DropBasket"
 import { useEffect, createContext } from 'react';
 import apiService from '../apiService';
+import {Link} from "react-router-dom"
 
 export const Context = React.createContext()
 
@@ -34,6 +35,8 @@ export default function CreateRecipeImages(){
         fetchImgs()
     },[])
 
+
+
     return(
         <div >
             <Context.Provider value = {{
@@ -45,7 +48,13 @@ export default function CreateRecipeImages(){
             `           <div>
                             <Basket title="Ingredients"/>
                             <Basket title="Instructions"/>
-                            <button>Submit</button>
+                                <Link
+                                    to={"/readMany"}
+                                    state= {{basketState}}>
+                                    <button>
+                                        Read this Img
+                                    </button>
+                                </Link>
                         </div>
                         <div>
                             <div><UserImages title="Selections"/></div>

@@ -31,14 +31,12 @@ class NewRecipe extends React.Component {
     };
 
     reader.readAsDataURL(file);
-
   }
 
   handleSubmit(event) {
     event.preventDefault()
     apiService.upload.saveImage(this.state.form)
   }
-
 
     render() {
       const loaded = this.state.loaded

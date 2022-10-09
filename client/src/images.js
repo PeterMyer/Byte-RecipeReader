@@ -28,7 +28,7 @@ class UserImages extends React.Component {
          retrievedImages.map((image)=>{
           return(
             <div>
-              <RenderImage filePath={image.filepath} />
+              <RenderImage filePath={image.filepath} imgMetaData = {image} />
             </div>
           )
         })

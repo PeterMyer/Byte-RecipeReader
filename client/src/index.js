@@ -6,12 +6,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import UserImages from "./images"
 import NewRecipe from "./ImgUpload"
-import Editor from "./editor"
+import ImgCropper from "./ImgCropper"
 import RecipeEditor from "./RecipeEditor"
 import TesseractWorker from "./TesseractWorker"
 import UserRecipes from "./UserRecipes"
 import RecipeForm from './RecipeForm';
 import CreateRecipeImages from './RecipeBuilder/RecipeBuilder';
+import TesseractScheduler from './TesseractScheduler';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,7 +22,8 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="files" element={<UserImages />} />
         <Route path="upload" element={<NewRecipe />} />
-        <Route path="edit" element ={<Editor/>}/>
+        <Route path="edit" element ={<ImgCropper/>}/>
+        <Route path="readMany" element ={<TesseractScheduler/>}/>
         <Route path="read" element ={<TesseractWorker/>}/>
         <Route path="editRecipe" element = {<RecipeEditor/>}/>
         <Route path="recipes" element = {<UserRecipes/>}/>

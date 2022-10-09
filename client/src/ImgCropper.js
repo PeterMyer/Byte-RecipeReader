@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import apiService from "./apiService";
 import {blobCreationFromURL} from './helperFunctions'
 
-function Editor() {
+function ImgCropper() {
   const {state} = useLocation()
   const [imgData, setImageData] = useState(state.imgData)
   const [cropData, setCropData] = useState("#");
@@ -13,14 +13,12 @@ function Editor() {
 
  const getCropData = async () => {
     if (typeof cropper !== "undefined") {
+      console.log('imgData', imgData)
       setCropData(cropper.getCroppedCanvas().toDataURL('image/jpeg'))
 
       let cropperBlob = blobCreationFromURL(cropData)
-      console.log('cropperBlolb',cropperBlob)
 
-      let blobFile = new File([cropperBlob], 'test.jpeg', { type: 'image/jpeg' });
-
-      console.log('blobFile',blobFile)
+      let blobFile = new File([cropperBlob], imgData.filepath , { type: 'image/jpeg' });
 
       const data = new FormData()
       data.append("uploaded_file", blobFile)
@@ -35,7 +33,7 @@ function Editor() {
           style={{ height: 400, width: "100%" }}
           zoomTo={0.5}
           initialAspectRatio={1}
-          src={imgData}
+          src={imgData.imgBlob}
           viewMode={1}
           minCropBoxHeight={10}
           minCropBoxWidth={10}
@@ -57,8 +55,5 @@ function Editor() {
     )
   }
 
-
-
-
-export default Editor
+export default ImgCropper
 
