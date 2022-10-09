@@ -37,16 +37,27 @@ export default function TesseractScheduler(){
 
             const results = await Promise.all(imgBasket.map((img) => {
                 let result = scheduler.addJob('recognize',img.imgBlob)
-                return result}))
-                console.log(results)
+                return result
+                }))
+
             setImgText(results)
+            setImageBasket((imgBasket=>{
+                let newBasket = []
+                for(let i = 0; i<imgBasket.length; i++){
+                    let obj = imgBasket[i]
+                    let OcrResult = results[i]
+                    obj = {...obj, OcrResult}
+                    newBasket.push(obj)
+                    return newBasket
+            }}))
+
             await scheduler.terminate();
             })()}
 
     if(imgText !== ""){
         return(
             <div>
-                <VerifyImgText readImgText={imgText} />
+                <VerifyImgText readImgText={imgBasket} />
             </div>
             )
         }else{
