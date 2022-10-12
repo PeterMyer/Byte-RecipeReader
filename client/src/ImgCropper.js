@@ -13,7 +13,6 @@ function ImgCropper() {
 
  const getCropData = async () => {
     if (typeof cropper !== "undefined") {
-      console.log('imgData', imgData)
       setCropData(cropper.getCroppedCanvas().toDataURL('image/jpeg'))
 
       let cropperBlob = blobCreationFromURL(cropData)

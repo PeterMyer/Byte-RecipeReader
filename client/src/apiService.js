@@ -67,7 +67,6 @@ export default {
     retrieveFilePaths: async () => {
       try {
         let {data} = await apiClient.get('/uploads')
-        console.log(data)
         return data
       } catch (error){
         console.log(error)

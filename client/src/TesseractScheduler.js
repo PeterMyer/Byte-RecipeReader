@@ -1,5 +1,6 @@
 import { createWorker, createScheduler } from 'tesseract.js'
 import { useLocation } from 'react-router-dom';
+import { createBrowserHistory } from "history";
 import { useEffect, useState } from 'react'
 import RecipeEditor from './RecipeEditor';
 import VerifyImgText from './VerifyImgTxt'
@@ -9,9 +10,9 @@ export default function TesseractScheduler(){
     const {state} = useLocation()
     const [imgBasket, setImageBasket] = useState(state.basketState)
     const [imgText, setImgText] = useState("")
+    let history = createBrowserHistory();
 
     useEffect(()=>{
-        console.log(imgBasket)
         CreateTesseractScheduler()
     },[])
 
@@ -48,10 +49,16 @@ export default function TesseractScheduler(){
                     let OcrResult = results[i]
                     obj = {...obj, OcrResult}
                     newBasket.push(obj)
-                    return newBasket
-            }}))
+                    
+                }
+                return newBasket}))
 
             await scheduler.terminate();
+
+            history.push({ 
+                pathname: '/verifyText',
+                state: imgBasket
+               })
             })()}
 
     if(imgText !== ""){

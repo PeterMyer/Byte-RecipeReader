@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { createBrowserHistory } from "history";
 import reportWebVitals from './reportWebVitals';
 import UserImages from "./images"
 import NewRecipe from "./ImgUpload"
@@ -13,11 +14,16 @@ import UserRecipes from "./UserRecipes"
 import RecipeForm from './RecipeForm';
 import CreateRecipeImages from './RecipeBuilder/RecipeBuilder';
 import TesseractScheduler from './TesseractScheduler';
+import VerifyTextEditor from './VerifyRecipeTextEditor'
+
+
+const historyInstance = createBrowserHistory();   
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Router>
+    <Router history = {historyInstance}>
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="files" element={<UserImages />} />
@@ -27,8 +33,9 @@ root.render(
         <Route path="read" element ={<TesseractWorker/>}/>
         <Route path="editRecipe" element = {<RecipeEditor/>}/>
         <Route path="recipes" element = {<UserRecipes/>}/>
-        <Route path="recipeform" element = {<RecipeForm/>}/>
+        <Route path="recipeForm" element = {<RecipeForm/>}/>
         <Route path="newRecipeImages" element = {<CreateRecipeImages/>}/>
+        <Route path="verifyText" element ={<VerifyTextEditor/>}/>
      </Routes>
     </Router>
   </React.StrictMode>

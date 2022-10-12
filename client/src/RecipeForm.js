@@ -1,5 +1,17 @@
 
+import {useState} from 'react'
+import { useLocation } from 'react-router-dom';
+
 export default function RecipeForm(){
+    const {state} = useLocation()
+    const [recipeData, setRecipeData] = useState(state.recipeData)
+
+    let rawIngredients = recipeData.filter((obj)=>obj.location === 'Ingredients')
+    .map((obj)=>{return obj.recipeEditorContent.blocks
+        .map((block)=>{return block.text })})
+
+    let ingredients = rawIngredients.join("<br />")
+
     return(
     <div>
         <form>
@@ -11,19 +23,24 @@ export default function RecipeForm(){
                 />
             </div>
             <div>
-                <input
+                <input 
                     type="text"
                     name="servings"
                     placeholder="Servings"/>
-                <input
+                <textarea
                     type="text"
+                    rows = "30"
+                    columns = "50"
                     name="instructions"
                     placeholder="Instructions"
                 />
-                <input
+                <textarea
                     type="text"
+                    rows = "30"
+                    columns = "50"
                     name="ingredients"
                     placeholder="Ingredients"
+                    value ={ingredients}
                 />
                 <input
                 type="text"
