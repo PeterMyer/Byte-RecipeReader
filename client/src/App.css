@@ -63,3 +63,31 @@ max-width: 500px
   flex-direction: row;
 
 }
+
+.recipeSegment{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.verifyTextBox{
+  border-style: solid;
+  border-width: 1px;
+  width:500px;
+}
+
+.recipeImg{
+  width: 500px;
+  height: 500px
+}
+
+#acceptText{
+  max-height: 500px;
+  max-width: 500px;
+  text-align: center;
+  background-color: #c0c0c0;
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:100;
+}

@@ -6,7 +6,6 @@ export default function Recipes(){
 
     const getRecipes = async () =>{
           let response = await apiService.recipes.getAll()
-          console.log(response)
           setRecipes(response)
       }
 

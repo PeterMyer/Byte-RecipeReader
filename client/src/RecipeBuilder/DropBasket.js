@@ -10,8 +10,11 @@ export default function  Basket ({title}){
 
     const [{ isOver }, dropRef] = useDrop({
         accept: 'imgData',
+        //Drop function includes filter to remove imgs which have been dragged out of the basket
         drop: (item) => (setBasketState((basketState ) => 
-                        !basketState.map(item=>item.id).includes(item.id) ? [...basketState, item] : basketState),
+                        !basketState.map(item=>item.id).includes(item.id) ? 
+                        [...basketState.filter((img)=>img.location==="Ingredients"||img.location==="Instructions"), item] 
+                        : basketState),
                         {location: title}),
         collect: (monitor) => ({
             isOver: monitor.isOver()
