@@ -1,4 +1,4 @@
-import {Editor, EditorState, ContentState} from 'draft-js'
+import {Editor, EditorState, ContentState, convertToRaw} from 'draft-js'
 import React, { useContext , useEffect,useRef} from 'react'
 import {Context} from './VerifyImgTxt'
 
@@ -11,12 +11,13 @@ export default function VerifyTextEditor(props){
 
     const updateEditorState =()=>{
         const localEditorObj = {[recipeId]:editorState}
+        console.log(convertToRaw(editorState.getCurrentContent()))
         setParentEditorState({...parentEditorState,...localEditorObj})
     }
-    
+
     useEffect(()=>{
         updateEditorState()
-    },[])
+    },[editorState])
 
     return(
         <div className = 'verifyTextBox'>

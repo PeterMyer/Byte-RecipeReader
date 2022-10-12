@@ -15,12 +15,13 @@ export default function VerifyImgText(props){
 
 
     const handleAccept=()=>{
+        console.log(recipeData)
         recipeData.map((recipeObj)=>{
             recipeObj.recipeEditorContent = convertToRaw(parentEditorState[recipeObj.id].getCurrentContent())
 
         })
         console.log(recipeData)
-        navigate('/recipeForm',{state: {'recipeData':recipeData}}
+        navigate('/editRecipeForm',{state: {'recipeData':recipeData}}
            )
     }
 

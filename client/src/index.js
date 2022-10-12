@@ -11,7 +11,7 @@ import ImgCropper from "./ImgCropper"
 import RecipeEditor from "./RecipeEditor"
 import TesseractWorker from "./TesseractWorker"
 import UserRecipes from "./UserRecipes"
-import RecipeForm from './RecipeForm';
+import EditRecipeForm from './EditRecipeForm';
 import CreateRecipeImages from './RecipeBuilder/RecipeBuilder';
 import TesseractScheduler from './TesseractScheduler';
 import VerifyTextEditor from './VerifyRecipeTextEditor'
@@ -33,7 +33,7 @@ root.render(
         <Route path="read" element ={<TesseractWorker/>}/>
         <Route path="editRecipe" element = {<RecipeEditor/>}/>
         <Route path="recipes" element = {<UserRecipes/>}/>
-        <Route path="recipeForm" element = {<RecipeForm/>}/>
+        <Route path="EditRecipeForm" element = {<EditRecipeForm/>}/>
         <Route path="newRecipeImages" element = {<CreateRecipeImages/>}/>
         <Route path="verifyText" element ={<VerifyTextEditor/>}/>
      </Routes>
