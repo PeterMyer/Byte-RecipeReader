@@ -9,11 +9,9 @@ export default {
   recipes:{
     create: async(payload)=>{
     try { let response = await axios.post('/recipes', payload)
-      
     } catch(error){
       console.log(error)
-    }
-    },
+    }},
     getAll: async(payload)=>{
       try {
         let response = await apiClient.get('/recipes', payload)

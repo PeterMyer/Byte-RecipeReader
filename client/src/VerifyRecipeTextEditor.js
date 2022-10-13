@@ -11,7 +11,6 @@ export default function VerifyTextEditor(props){
 
     const updateEditorState =()=>{
         const localEditorObj = {[recipeId]:editorState}
-        console.log(convertToRaw(editorState.getCurrentContent()))
         setParentEditorState({...parentEditorState,...localEditorObj})
     }
 

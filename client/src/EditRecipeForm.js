@@ -2,7 +2,7 @@
 import {useState} from 'react'
 import { useLocation } from 'react-router-dom';
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { Editor,EditorState, createWithContent,convertFromRaw, ContentState } from "draft-js";
+import { Editor,EditorState, createWithContent,convertFromRaw, ContentState, convertToRaw} from "draft-js";
 import RecipeEditor from './EditRecipeInstrucEditor'
 
 
@@ -20,7 +20,6 @@ export default function RecipeForm(){
     const { register, handleSubmit,control, watch, formState: { errors } } = useForm({
         defaultValues:{
             DraftJs: EditorState.createWithContent(convertFromRaw(editorContent[0])),
-            // DraftJs: EditorState.createEmpty(),
             Ingredients: rawIngredients[0].map((ingredient)=> {return({value:ingredient})})
         }
     });
@@ -29,7 +28,17 @@ export default function RecipeForm(){
         name: "Ingredients", // unique name for your Field Array
       });
       
-    const onSubmit = data => console.log();
+    const onSubmit = data => {
+        console.log(data)
+        let recipePayload = {
+            name: data.recipeName,
+            servings: data.servings,
+            Ingredients: JSON.stringify(data.Ingredients),
+            Instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
+            nutrition: data.nutrition
+        }
+        console.log(recipePayload)
+    };
 
 
     return(
@@ -37,7 +46,6 @@ export default function RecipeForm(){
         {/* {console.log(EditorState.createWithContent(convertFromRaw(editorContent[0])))} */}
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-                hello
                 <input
                     {...register("recipeName")}
                     type="text"
@@ -50,6 +58,7 @@ export default function RecipeForm(){
                     type="text"
                     placeholder="Servings"/>
                 <div>
+                <label>Ingredients</label>
                 {fields.map((field,index)=>{
                     return(
                     <input
@@ -62,7 +71,7 @@ export default function RecipeForm(){
                 <button onClick={()=> append({value:""})}>Add Ingredient</button>
                 </div>
                 <section>
-                    <label>DraftJS</label>
+                    <label>Instructions</label>
                     <RecipeEditor control = {control}/>
                 </section>
                 <input
@@ -70,6 +79,7 @@ export default function RecipeForm(){
                 type="text"
                 placeholder="Nutrition"/>
             </div>
+            <input type="submit" value="Save Recipe"/>
         </form>
     </div>
 )}
