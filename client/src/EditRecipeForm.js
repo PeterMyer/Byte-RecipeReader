@@ -4,6 +4,8 @@ import { useLocation } from 'react-router-dom';
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Editor,EditorState, createWithContent,convertFromRaw, ContentState, convertToRaw} from "draft-js";
 import RecipeEditor from './EditRecipeInstrucEditor'
+import apiService from "./apiService";
+
 
 
 export default function RecipeForm(){
@@ -28,16 +30,18 @@ export default function RecipeForm(){
         name: "Ingredients", // unique name for your Field Array
       });
       
-    const onSubmit = data => {
+    const onSubmit = async (data) => {
         console.log(data)
         let recipePayload = {
             name: data.recipeName,
             servings: data.servings,
-            Ingredients: JSON.stringify(data.Ingredients),
-            Instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
+            ingredients: JSON.stringify(data.Ingredients.map((ingredient)=>ingredient.value)),
+            instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
             nutrition: data.nutrition
         }
-        console.log(recipePayload)
+        // console.log('newInput',recipePayload)
+        let response = await apiService.recipe.create(recipePayload)
+        console.log(response)
     };
 
 
