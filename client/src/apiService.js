@@ -1,19 +1,19 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios"
 
+
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001'
 })
 
 export default {
-  recipes:{
+  recipe:{
     create: async(payload)=>{
-    try { let response = await axios.post('/recipes', payload)
-      
+    try { let response = await apiClient.post('/recipes', payload )
+    console.log('response', response)
     } catch(error){
       console.log(error)
-    }
-    },
+    }},
     getAll: async(payload)=>{
       try {
         let response = await apiClient.get('/recipes', payload)

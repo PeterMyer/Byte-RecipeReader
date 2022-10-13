@@ -12,14 +12,16 @@ export default function RecipeEditor(props){
 
         let input = JSON.stringify(splitContent)
 
-        let response = await apiService.upload.classifyText(input)
+        console.log('original input', input)
 
-        for(let i=0; i<response.data[0].length; i++){
-            if(response.data[0][i].length>0){
-                let ingredient = response.data[0][i][0]['name']
-                let info = apiService.upload.searchUSDA(ingredient)
-                console.log(ingredient,info)
-            }}
+        // let response = await apiService.upload.classifyText(input)
+
+        // for(let i=0; i<response.data[0].length; i++){
+        //     if(response.data[0][i].length>0){
+        //         let ingredient = response.data[0][i][0]['name']
+        //         let info = apiService.upload.searchUSDA(ingredient)
+        //         console.log(ingredient,info)
+        //     }}
             
         }
 
