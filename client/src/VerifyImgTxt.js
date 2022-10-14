@@ -15,7 +15,17 @@ export default function VerifyImgText(props){
 
 
     const handleAccept=()=>{
-        console.log(recipeData)
+        //PENDING UPDATE FOR ALIGNING WITH INPUT FROM RECIPE DISPLAY
+        // recipeData.ingredients = recipeData.filter((obj)=>obj.location === 'Ingredients')
+        // .map((obj)=>{return convertToRaw(parentEditorState[obj.id].getCurrentContent()).blocks
+        // .map((block)=>{return block.text })})
+
+        // recipeData.instructions = recipeData.filter((obj)=>obj.location === 'Instructions').map((obj)=>{
+        //     return convertToRaw(parentEditorState[obj.id].getCurrentContent())
+
+        // })
+
+
         recipeData.map((recipeObj)=>{
             recipeObj.recipeEditorContent = convertToRaw(parentEditorState[recipeObj.id].getCurrentContent())
 

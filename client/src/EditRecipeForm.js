@@ -5,12 +5,14 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Editor,EditorState, createWithContent,convertFromRaw, ContentState, convertToRaw} from "draft-js";
 import RecipeEditor from './EditRecipeInstrucEditor'
 import apiService from "./apiService";
-
+import { useNavigate } from "react-router-dom";
 
 
 export default function RecipeForm(){
     const {state} = useLocation()
     const [recipeData, setRecipeData] = useState(state.recipeData)
+    const navigate = useNavigate();
+
 
     let rawIngredients = recipeData.filter((obj)=>obj.location === 'Ingredients')
     .map((obj)=>{return obj.recipeEditorContent.blocks
@@ -31,7 +33,6 @@ export default function RecipeForm(){
       });
       
     const onSubmit = async (data) => {
-        console.log(data)
         let recipePayload = {
             name: data.recipeName,
             servings: data.servings,
@@ -39,15 +40,13 @@ export default function RecipeForm(){
             instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
             nutrition: data.nutrition
         }
-        // console.log('newInput',recipePayload)
         let response = await apiService.recipe.create(recipePayload)
-        console.log(response)
+        navigate(`/recipe/${response.data.id}`)
     };
 
 
     return(
     <div>
-        {/* {console.log(EditorState.createWithContent(convertFromRaw(editorContent[0])))} */}
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <input
@@ -83,7 +82,8 @@ export default function RecipeForm(){
                 type="text"
                 placeholder="Nutrition"/>
             </div>
-            <input type="submit" value="Save Recipe"/>
+            <input type="submit" 
+            value="Save Recipe"/>
         </form>
     </div>
 )}

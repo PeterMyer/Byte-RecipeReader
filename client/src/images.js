@@ -21,8 +21,8 @@ class UserImages extends React.Component {
     const retrievedImages = this.state.images
     return(
       <div>
-    <div>
-     <div>Your Images</div>
+        <div>
+        <div>Your Images</div>
         <div>
          {retrievedImages !== null ?
          retrievedImages.map((image)=>{

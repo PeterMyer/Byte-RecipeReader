@@ -15,6 +15,7 @@ import EditRecipeForm from './EditRecipeForm';
 import CreateRecipeImages from './RecipeBuilder/RecipeBuilder';
 import TesseractScheduler from './TesseractScheduler';
 import VerifyTextEditor from './VerifyRecipeTextEditor'
+import DisplayUserRecipe from './DisplayUserRecipe';
 
 
 const historyInstance = createBrowserHistory();   
@@ -36,6 +37,7 @@ root.render(
         <Route path="EditRecipeForm" element = {<EditRecipeForm/>}/>
         <Route path="newRecipeImages" element = {<CreateRecipeImages/>}/>
         <Route path="verifyText" element ={<VerifyTextEditor/>}/>
+        <Route exact path="recipe/:id" element = {<DisplayUserRecipe/>}/>
      </Routes>
     </Router>
   </React.StrictMode>
