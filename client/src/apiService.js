@@ -9,14 +9,23 @@ const apiClient = axios.create({
 export default {
   recipe:{
     create: async(payload)=>{
-    try { let response = await apiClient.post('/recipes', payload )
-    console.log('response', response)
-    } catch(error){
-      console.log(error)
-    }},
+      try { let response = await apiClient.post('/recipes', payload )
+        return response
+
+      } catch(error){
+        console.log(error)
+      }},
     getAll: async(payload)=>{
       try {
         let response = await apiClient.get('/recipes', payload)
+        return response
+      } catch(error){
+        console.log(error)
+      }
+    },
+    retrieveRecipe: async(id)=>{
+      try{
+        let response = await apiClient.get(`/recipes/${id}`)
         return response
       } catch(error){
         console.log(error)
