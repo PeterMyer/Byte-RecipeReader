@@ -9,8 +9,8 @@ export default function UserImages () {
 
     return(
       <div>
-        Your Images
-        <div>
+        Available Images
+        <div className = "recipebuilder_availableImages">
          {userImages !== null ?
          userImages.map((image)=>{
           return(

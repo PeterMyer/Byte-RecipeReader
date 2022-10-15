@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import apiService from "./apiService";
+import apiService from "../Utilities/apiService";
 import { Link } from "react-router-dom";
 
-export default function RenderImage(props) {
+export default function RenderSingleImage(props) {
   const filePath = props.filePath
   const imgMetaData  = props.imgMetaData
   const [imgData, setImgData] = useState(<any/>)
@@ -27,10 +27,10 @@ export default function RenderImage(props) {
         to={"/edit"}
         state= {{imgData}}>
         <button>
-          Edit
+          Crop
         </button>
       </Link>
-      <Link
+      {/* <Link
         to={"/read"}
         state= {{imgData}}>
         <button>
@@ -39,7 +39,7 @@ export default function RenderImage(props) {
       </Link>
       <button>
         Delete
-      </button>
+      </button> */}
     </div>
   )
 }
