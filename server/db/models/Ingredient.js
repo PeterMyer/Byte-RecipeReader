@@ -12,20 +12,20 @@ const Ingredient = db.define('ingredient',{
   },
   quantity:{
     type:Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    defaultValue: "1"
   },
   unit:{
     type:Sequelize.STRING,
-    allowNull: false
   },
   comment:{
     type:Sequelize.STRING,
     allowNull: true
   },
-  // originText:{
-  //   type:Sequelize.STRING,
-  //   allowNull: false
-  // }
+  originalText:{
+    type:Sequelize.STRING,
+    allowNull: false
+  }
   }
 )
 

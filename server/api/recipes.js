@@ -16,6 +16,28 @@ router.get('/', async(req,res,next)=>{
     }
 })
 
+router.get('/:id', async(req, res, next)=>{
+    try{
+        const recipe = await Recipe.findByPk(req.params.id,{
+            include: [
+                {
+                    model: Ingredient,
+                    attributes: ['id','quantity','unit','comment','originalText'],
+                    include:[{
+                        model: Component,
+                        attributes: ['id','name']
+                    }]
+                }
+            ]
+        })
+        // console.log('recipe', recipe)
+        res.json(recipe);
+    }
+    catch(error){
+        next(error)
+    }
+})
+
 // POST api/recipes/
 router.post('/' ,ParseIngredient, async(req,res,next)=>{
     // console.log(req.body);
@@ -28,25 +50,22 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             source: req.body.source,
         })
         // console.log('recipe', recipe);
-        // console.log('parsedIngredients', parsedIngredients);
-
+        console.log('parsedIngredients', parsedIngredients);
         await Promise.all(
-            parsedIngredients[0].map(async (item)=>{
-                console.log('item',item)
+            parsedIngredients.map(async (item)=>{
+                console.log('item',item[0])
                 let [component, componentCreated] = await Component.findOrCreate({
                     where:{
-                        name: item.name
+                        name: item[0].name
                     }})
 
-                console.log('component:', component.id)
-
-                return await Ingredient.create({
+                await Ingredient.create({
                     componentId: component.id,
                     recipeId: recipe.id,
-                    quantity: item.qty,
-                    unit: item.unit,
-                    comment: item.comment,
-                    // originText: item.input
+                    quantity: item[0].qty,
+                    unit: item[0].unit,
+                    comment: item[0].comment,
+                    originalText: item[0].input
                 })
             })
         )
@@ -54,22 +73,18 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             include: [
                 {
                     model: Ingredient,
-                    attributes: ['id','quantity','unit','comment'],
+                    attributes: ['id','quantity','unit','comment','originalText'],
                     include:[{
                         model: Component,
                         attributes: ['id','name']
                     }]
                 }
-                
             ]
         })
-        console.log('Recipe', createdRecipe)
         res.json(createdRecipe)
     }catch(error){
         next(error)
     }
  })
-
 //  router.post('/', createNewRecipe)
-
  module.exports = router;
