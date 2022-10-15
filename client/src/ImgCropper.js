@@ -2,8 +2,8 @@ import React, {useState, useEffect, useRef} from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { useLocation } from 'react-router-dom';
-import apiService from "./apiService";
-import {blobCreationFromURL} from './helperFunctions'
+import apiService from "./Utilities/apiService";
+import {blobCreationFromURL} from './Utilities/helperFunctions'
 
 function ImgCropper() {
   const {state} = useLocation()

@@ -3,8 +3,8 @@ import {useState} from 'react'
 import { useLocation } from 'react-router-dom';
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Editor,EditorState, createWithContent,convertFromRaw, ContentState, convertToRaw} from "draft-js";
-import RecipeEditor from './EditRecipeInstrucEditor'
-import apiService from "./apiService";
+import RecipeEditor from '../EditRecipeInstrucEditor'
+import apiService from "../Utilities/apiService";
 import { useNavigate } from "react-router-dom";
 
 

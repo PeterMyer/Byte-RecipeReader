@@ -1,6 +1,5 @@
 import React from "react";
-import apiService from "./apiService";
-import {Link} from "react-router-dom"
+import apiService from "../Utilities/apiService";
 
 class NewRecipe extends React.Component {
   constructor() {
@@ -44,10 +43,10 @@ class NewRecipe extends React.Component {
       return (
         <div>
           <div className="image-container">
-             {loaded ? <img src={recipe} id="recipeImg"></img>:  "Waiting on recipe"}
+             {loaded ? <img src={recipe} id="recipeImg"></img>:  "Waiting on image"}
 
           <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
-            <label for="recipe">Upload a new recipe </label>
+            <label for="recipe">Upload a new Image File </label>
             <input
               type="file"
               id="recipe"
@@ -58,8 +57,6 @@ class NewRecipe extends React.Component {
             <button type="submit"> Save Image</button>
           </form>
           </div>
-          <Link to="/">Home</Link>|{" "}
-          <Link to="/files">Your Files </Link>
         </div>
       );
     }
