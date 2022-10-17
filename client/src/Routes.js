@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './Home'
 import UserImages from './Images/DisplayImagesGrid';
 import NewRecipe from "./Images/ImgUpload"
-import ImgCropper from './ImgCropper';
+import ImgCropper from './Images/ImgCropper';
 import TesseractScheduler from './TesseractScheduler';
 import TesseractWorker from './TesseractWorker';
 import RecipeEditor from './RecipeEditor';

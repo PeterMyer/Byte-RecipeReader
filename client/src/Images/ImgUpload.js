@@ -1,58 +1,56 @@
-import React from "react";
+import React, {useState} from "react";
 import apiService from "../Utilities/apiService";
+import { useNavigate } from "react-router-dom";
 
-class NewRecipe extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      loaded: false,
-      result: "",
-      form: null
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
 
-  handleChange(event) {
-    const file = event.target.files[0];
+
+export default function NewRecipe (props) {
+ const [loaded, setLoaded] = useState(false)
+ const [result, setResult] = useState("")
+ const [form, setForm] = useState(null)
+ const navigate = useNavigate();
+ const setShow = props.setShow
+ const setUpload = props.setUpload
+ const setImages = props.setImages
+ const images = props.images
+
+  
+  const handleChange=(e)=> {
+    const file = e.target.files[0];
     var reader = new FileReader();
 
     const data = new FormData()
     data.append("uploaded_file", file)
 
     reader.onload = function (e) {
-      this.setState({ result: e.target.result, loaded: true , form: data});
-      this.forceUpdate();
-    }.bind(this);
+      setResult(e.target.result)
+      setForm(data)
+      setLoaded(true)}
 
     reader.onerror = function () {
       console.log("error:", reader.error);
     };
-
     reader.readAsDataURL(file);
   }
 
-  handleSubmit(event) {
-    event.preventDefault()
-    apiService.upload.saveImage(this.state.form)
+  const handleSubmit= async(e) => {
+    e.preventDefault()
+    let response = await apiService.upload.saveImage(form)
+    let updatedState = [...images,...response.data.result]
+    setImages(Object.assign(updatedState))
+    setShow(false)
   }
-
-    render() {
-      const loaded = this.state.loaded
-      const recipe = this.state.result
       return (
         <div>
-          <div className="image-container">
-             {loaded ? <img src={recipe} id="recipeImg"></img>:  "Waiting on image"}
-
-          <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
-            <label for="recipe">Upload a new Image File </label>
+          <div className = "modal-img-container">
+             {loaded ? <img src={result} id="img" alt ="recipeImg"></img>:  "Waiting on image"}
+          <form encType="multipart/form-data" onSubmit={handleSubmit}>
             <input
               type="file"
               id="recipe"
               name="uploaded_file"
               accept="image/png, image/jpeg"
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
             <button type="submit"> Save Image</button>
           </form>
@@ -60,6 +58,4 @@ class NewRecipe extends React.Component {
         </div>
       );
     }
-  }
 
-  export default NewRecipe
