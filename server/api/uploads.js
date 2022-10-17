@@ -1,5 +1,7 @@
 var express = require("express");
+const { v4: uuidv4 } = require("uuid")
 var router = express.Router();
+const fs = require('fs')
 const path = require('path')
 const {
   models: { Image },
@@ -12,14 +14,13 @@ const storage = multer.diskStorage({
   },
   filename: async (req, file, cb, )=> {
     const ext = path.extname(file.originalname)
-    const filepath = `/${file.originalname}${ext}`
-
+    const filepath = `/${uuidv4()}${ext}`
       try {
         const savedImage = await Image.create({
           filepath: filepath
         });
+        req.imgData = savedImage
         cb(null, filepath);
-        console.log('saved Image:', savedImage)
       } catch (err){
         console.log('Save Image Error:', err)
       }
@@ -28,14 +29,12 @@ const storage = multer.diskStorage({
 )
 var upload = multer({ storage });
 
-
-
 router.post('/', upload.single('uploaded_file'), (req, res)=> {
-
-    console.log(req.body) // form fields
-    console.log(req.file) // form files
-    res.status(204).end()
+    res.json({
+      result:[req.imgData],
+    }).status(204).end()
 });
+
 
 router.get('/', async (req,res)=>{
   try {
@@ -46,6 +45,23 @@ router.get('/', async (req,res)=>{
 }
 });
 
-
+router.delete('/:id', async (req,res, next)=>{
+  try { 
+    let image = await Image.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    console.log('req body', req.body)
+    let filePath = "./images"+req.body.filePath
+    console.log(filePath)
+    fs.unlink(filePath, (err) => {
+      if (err) throw err;
+      console.log('path/file.txt was deleted')})
+    res.json(image)
+} catch (err) {
+    console.log(err);
+}
+});
 
 module.exports = router;

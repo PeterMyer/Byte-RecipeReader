@@ -11,7 +11,6 @@ export default {
     create: async(payload)=>{
       try { let response = await apiClient.post('/recipes', payload )
         return response
-
       } catch(error){
         console.log(error)
       }},
@@ -32,10 +31,11 @@ export default {
       }
     }
   },
+
   upload: {
    saveImage:  async (payload) => {
     try {
-      let response = await apiClient.post('/uploads', payload, {
+      let response = await apiClient.post(`/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
         }
@@ -45,6 +45,16 @@ export default {
         console.log(error)
       }
     },
+    deleteImage: async (payload) => {
+      try {
+        let response = await apiClient.delete(`/uploads/${payload.id}`,{data:payload})
+          console.log('response',response)
+          return response
+      } catch(error) {
+          console.log(error)
+      }
+    },
+
     classifyText: async (payload) =>{
       try {
         let response = await apiClient.post('/classification', {

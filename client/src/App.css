@@ -101,6 +101,24 @@
   max-width: 500px
 }
 
+.imagesHeader{
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  padding: 10px
+}
+
+.imagesHeader button{
+  padding: 10px;
+  background-color : #35a956;
+  color: white;
+  text-decoration: none;
+  margin: 10px 30px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
 .imagesContainer{
   display:flex;
   flex-flow: row wrap;
@@ -113,9 +131,72 @@
   flex-direction: column;
 }
 
+.imgCardButtonContainer{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.imgCardButton{
+  border: none;
+  cursor: pointer;
+  background-color: white;
+  font-size: 20px;
+  color:grey;
+  width:35px;
+  padding: 7px 5px; /* Some padding */
+}
+
+.imgCardButton:hover {
+  color: darkgreen;
+}
+
 .img-container{
   display: block;
   max-width: 100%;
+}
+
+.modal{
+  position:fixed;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  background-color: rgba(0,0,0,0.5);
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  width: 500px;
+  background-color: #fff;
+}
+
+.modal-header, modal-footer{
+  display:flex;
+  justify-content: flex-end;
+  padding: 10px
+}
+
+.modal-header button{
+  display: flex;
+  margin: 5px;
+}
+
+.modal-title {
+  margin: 0
+}
+
+.modal-body {
+  padding: 10px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee
+}
+
+.modal-img-container img{
+  max-width: 100%;
+  object-fit: contain
 }
 
 
@@ -124,6 +205,7 @@
   flex-direction: row;
   justify-content: space-around;
 }
+
 
 .recipebuilder_availableImages{
   display:flex;
@@ -153,8 +235,9 @@
 }
 
 .recipeImg{
-  width: 500px;
-  height: 500px
+  max-width: 500px;
+  object-fit: contain
+
 }
 
 #acceptText{

@@ -1,35 +1,57 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import apiService from "../Utilities/apiService";
-import { Link } from "react-router-dom";
 import RenderSingleImage from "./RenderSingleImage"
+import ImgModal from './ImgModal'
 
-class UserImages extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-     images: null
-    }
-  }
+export default function UserImages () {
+  const [images, setImages] = useState(null)
+  const [show, setShow] = useState(false)
+  const [upload, setUpload] = useState(false)
 
-  componentDidMount = async() => {
+  const getImages = async() => {
     let imgs = await apiService.import.retrieveFilePaths()
-    this.setState({images:imgs})
+    setImages(imgs)
     }
 
-  render() {
-    const retrievedImages = this.state.images
+    useEffect(()=>{
+      getImages()
+    },[])
+
+    const handleUpload = async()=>{
+      setUpload(true)
+      setShow(true)}
+
     return(
       <section>
-        <div>
+        <div className="imagesHeader">
           <h1>Your Images</h1>
-          <Link to="/upload">Upload New Image</Link> 
+          <button onClick={()=> handleUpload()}>Add Image</button>
+          <ImgModal 
+            onClose={() => setShow(false)} 
+            upload = {upload}
+            show={show}
+            setShow={setShow}
+            setUpload={setUpload}
+            images = {images}
+            setImages = {setImages}
+          />
         </div>
+
+        
         <div className="imagesContainer">
-          {retrievedImages !== null ?
-          retrievedImages.map((image)=>{
+          {images !== null ?
+          images.map((image)=>{
             return(
               <div>
-                <RenderSingleImage filePath={image.filepath} imgMetaData = {image} />
+                <RenderSingleImage 
+                  key = {image.id}
+                  onDelete ={()=> setImages()}
+                  filePath={image.filepath} 
+                  imgMetaData = {image}
+                  images = {images}
+                  setImages = {setImages}
+          
+                />
               </div>
             )
           })
@@ -39,7 +61,4 @@ class UserImages extends React.Component {
           </div>}
       </div>
     </section>
-  )}}
-
-
-export default UserImages
+  )}
