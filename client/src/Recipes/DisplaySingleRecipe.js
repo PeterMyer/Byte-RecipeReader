@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react"
-import { useParams , useLocation } from "react-router-dom";
+import { useParams , useLocation, useNavigate } from "react-router-dom";
 import apiService from "../Utilities/apiService";
 import { Editor, convertFromRaw, createWithContent, EditorState } from "draft-js";
 
 export default function DisplayUserRecipe(){
     const [recipeData, setRecipeData] = useState(null)
     const { id } = useParams()
+    const navigate = useNavigate();
+
 
     useEffect(()=>{
         fetchRecipe(id)
@@ -16,31 +18,46 @@ export default function DisplayUserRecipe(){
         setRecipeData({...recipe.data})
     }
 
+    const handleEdit =()=>{
+        const recipeObj = {
+            id: id,
+            name: recipeData.name,
+            servings: recipeData.servings,
+            instructions: recipeData.instructions,
+            source: recipeData.source,
+            ingredients: recipeData.ingredients
+        }
+        navigate(`/editRecipeForm/${id}`,{state: {'recipeData':recipeObj}})
+    }
+
     return(
-        <article>
+        <article className = 'recipe-page-single'>
             {recipeData !==null?
-                <div>
-                    <h1>{recipeData.name}</h1>
-                    <div>
-                        <div>Servings</div>
-                        <div>{recipeData.servings}</div>
+                <div className = 'recipe-display-container'>
+                    <div className="recipe-display-header">
+                        <h1>{recipeData.name}</h1>
+                        <button onClick={(handleEdit)} id="edit-button"><i class="fa-regular fa-pen-to-square"></i></button>
                     </div>
-                    <div>
+                    <section>
+                        <strong>Servings</strong>
+                        <div>{recipeData.servings}</div>
+                    </section>
+                    <section>
                         <h2>Ingredients</h2>
-                        <ul>
+                        <ul id="recipie-display-ingredient-list">
                             {recipeData.ingredients.map(
                                 (ingredient)=>{
                                         return(
-                                            <li>{ingredient.originalText}</li>)})}
+                                            <li>{ingredient.userText.text}</li>)})}
                         </ul>
-                    </div>
-                    <div>
+                    </section>
+                    <section>
                         <h2>Instructions</h2>
                         <Editor 
                         editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(recipeData.instructions)))}
                         readOnly= "true"/>
-                    </div>
-                    <h2>Nutrition</h2>
+                    </section>
+                    {/* <h2>Nutrition</h2> */}
                 </div>
             :
                 <div>

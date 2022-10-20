@@ -3,13 +3,12 @@ import Home from './Home'
 import UserImages from './Images/DisplayImagesGrid';
 import NewRecipe from "./Images/ImgUpload"
 import ImgCropper from './Images/ImgCropper';
-import TesseractScheduler from './TesseractScheduler';
-import TesseractWorker from './TesseractWorker';
-import RecipeEditor from './RecipeEditor';
+import TesseractScheduler from './ReadImage/TesseractScheduler';
+import RecipeForm from './Recipes/EditRecipeForm'
 import UserRecipes from "./Recipes/DisplayRecipesGrid"
-import EditRecipeForm from './Recipes/EditRecipeForm'
+import NewRecipeForm from './Recipes/NewRecipeForm'
 import CreateRecipeImages from './RecipeBuilder/RecipeBuilder';
-import VerifyTextEditor from './VerifyRecipeTextEditor';
+import VerifyTextEditor from './ReadImage/VerifyRecipeTextEditor';
 import DisplayUserRecipe from './Recipes/DisplaySingleRecipe';
 
 
@@ -22,10 +21,9 @@ export default function AppRoutes(){
             <Route path="upload" element={<NewRecipe />} />
             <Route path="edit" element ={<ImgCropper/>}/>
             <Route path="readMany" element ={<TesseractScheduler/>}/>
-            <Route path="read" element ={<TesseractWorker/>}/>
-            <Route path="editRecipe" element = {<RecipeEditor/>}/>
             <Route path="recipes" element = {<UserRecipes/>}/>
-            <Route path="EditRecipeForm" element = {<EditRecipeForm/>}/>
+            <Route path="newRecipeForm" element = {<NewRecipeForm/>}/>
+            <Route path="editRecipeForm/:id" element = {<RecipeForm/>}/>
             <Route path="newRecipeImages" element = {<CreateRecipeImages/>}/>
             <Route path="verifyText" element ={<VerifyTextEditor/>}/>
             <Route exact path="recipe/:id" element = {<DisplayUserRecipe/>}/>

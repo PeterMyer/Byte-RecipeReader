@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../Utilities/apiService";
-import { Link } from "react-router-dom";
 import ImgModal from './ImgModal'
 
 
@@ -29,34 +28,33 @@ export default function RenderSingleImage(props) {
 
   return(
  <div class = "imgContainer">
-    <img
-      src={imgData.imgBlob}
-      height="250"
-      width="250"
-      alt="null"/>
+    <button 
+    onClick={()=> setShow(true)}
+    className = "imgcardButton_ModalOpen">
+      <img
+        src={imgData.imgBlob}
+        height="250"
+        width="250"
+        alt="null"/>
+    </button>
       <div className = "imgCardButtonContainer">
-        <button onClick={()=> setShow(true)}
-          title = "expand"
-          className ="imgCardButton">
-          <i className="fa-solid fa-up-right-and-down-left-from-center"></i>
-        </button>
-          <ImgModal 
-            onClose={() => setShow(false)} 
-            show={show}
-            imgSrc = {imgData}
-            useCase ="default"
-            edit ={edit}
-            setEdit = {setEdit}
-            images = {images}
-            setImages = {setImages}
-            setShow = {setShow}
-          />
+        <ImgModal 
+          onClose={() => setShow(false)} 
+          show={show}
+          imgSrc = {imgData}
+          useCase ="default"
+          edit ={edit}
+          setEdit = {setEdit}
+          images = {images}
+          setImages = {setImages}
+          setShow = {setShow}
+        />
         <button onClick={()=> handleDelete()}
           title ="delete"
           className = "imgCardButton">
           <i class="fa-solid fa-trash"></i>
-      </button>
+        </button>
       </div>
-    </div>
+  </div>
   )
 }

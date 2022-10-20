@@ -10,21 +10,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function RecipeForm(){
     const {state} = useLocation()
-    const [name, setName] = useState(state?state.recipeData.name: null)
-    const [servings, setServings] = useState(state?state.recipeData.servings: null)
-    const [source, setSource] = useState(state?state.recipeData.source: null)
     const [ingredients, setIngredients] = useState(state?state.recipeData.ingredients:null)
     const [instructions, setInstructions] = useState(state? state.recipeData.instructions:null)
     const navigate = useNavigate();
 
-    
-    const { register, handleSubmit, control, formState: { errors } } = useForm({
+    const { register, handleSubmit,control, watch, formState: { errors } } = useForm({
         defaultValues:{
-            recipeName: name? name: null,
-            servings:servings? servings:null,
-            source: source? source: null,
-            DraftJs: instructions ? EditorState.createWithContent(convertFromRaw(JSON.parse(instructions))) : EditorState.createEmpty(),
-            Ingredients: ingredients?ingredients.map((ingredient)=> {return({value:ingredient.originalText})}):null
+            DraftJs: instructions ? EditorState.createWithContent(convertFromRaw(instructions)) : EditorState.createEmpty(),
+            Ingredients: ingredients?ingredients[0].map((ingredient)=> {return({value:ingredient})}):null
         }
     });
 
@@ -37,13 +30,12 @@ export default function RecipeForm(){
         let recipePayload = {
             name: data.recipeName,
             servings: data.servings,
-            source: data.source,
             ingredients: JSON.stringify(data.Ingredients.map((ingredient)=>ingredient.value)),
             instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
             nutrition: data.nutrition
         }
-        console.log('payload',recipePayload.ingredients)
-        // let response = await apiService.recipe.update(recipePayload)
+        let response = await apiService.recipe.create(recipePayload)
+        console.log('response',response)
         // navigate(`/recipe/${response.data.id}`)
     };
 
@@ -51,7 +43,7 @@ export default function RecipeForm(){
     <div className = "recipeform-container">
         <div className = "recipeform-outside-box">
         <form className = "recipeform" onSubmit={handleSubmit(onSubmit)}>
-            <h1> Edit Recipe </h1>
+            <h1> Create A New Recipe </h1>
             <section className ="recipeform-section">
                 <label className = "recipeform-input-label"><strong>Recipe Name</strong>
                     <div className = "recipeform-input-container" >
@@ -84,16 +76,11 @@ export default function RecipeForm(){
                                 type = "text"
                                 placeholder = "Ingredient"
                                 className = "recipeform-input-field-ingredients"
-                            /><button 
-                                type="button"
-                                className = "recipeform-input-hiddenbutton" 
+                            /><button type="button" className = "recipeform-input-hiddenbutton" 
                                 onClick={()=>remove(index)}><i class="fa-solid fa-circle-xmark"></i></button>
                         </div>)}
-                    )}
-                    <button
-                    type="button"
-                    id = "addButton" 
-                    onClick={()=> append({value:""})}><i class="fa-solid fa-circle-plus"></i></button>
+                )}
+                <button type="button" id = "addButton" onClick={()=> append({value:""})}><i class="fa-solid fa-circle-plus"></i></button>
                 </label>
             </section>
             <section className ="recipeform-section">
@@ -102,9 +89,8 @@ export default function RecipeForm(){
                 </label>
             </section>
             <section className ="recipeform-section"x>
-                <button 
-                id="save-recipe" type="submit" 
-                value="Save Recipe">Save Recipe</button>
+            <button id="save-recipe" type="submit" 
+            value="Save Recipe">Save Recipe</button>
             </section>
         </form>
         </div>

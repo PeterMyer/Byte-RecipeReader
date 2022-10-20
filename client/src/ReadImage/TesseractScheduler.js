@@ -2,7 +2,6 @@ import { createWorker, createScheduler } from 'tesseract.js'
 import { useLocation } from 'react-router-dom';
 import { createBrowserHistory } from "history";
 import { useEffect, useState } from 'react'
-import RecipeEditor from './RecipeEditor';
 import VerifyImgText from './VerifyImgTxt'
 
 
@@ -11,6 +10,9 @@ export default function TesseractScheduler(){
     const [imgBasket, setImageBasket] = useState(state.basketState)
     const [imgText, setImgText] = useState("")
     let history = createBrowserHistory();
+    const [progLog1, setProgLog1] = useState(0);
+    const [statusLog1, setStatusLog1] = useState("");
+    const [progLog2, setProgLog2] = useState(0);
 
     useEffect(()=>{
         CreateTesseractScheduler()
@@ -18,8 +20,19 @@ export default function TesseractScheduler(){
 
     const CreateTesseractScheduler = ()=>{
         const scheduler = createScheduler();
-        const worker1 = createWorker();
-        const worker2 = createWorker();
+        const worker1 = createWorker({
+            logger: (m) => {
+                setProgLog1(m.progress)
+                setStatusLog1(m.status)
+            },
+          });
+        const worker2 = createWorker(
+            {
+                logger: (m) => {
+                    setProgLog2(m.progress)
+                },
+              }
+          );
         (async() =>{
             await worker1.load();
             await worker2.load();
@@ -69,6 +82,15 @@ export default function TesseractScheduler(){
             )
         }else{
         return(
-            <div>Reading IMG...</div>
+            <div className = "progress_page" >
+                <h2>Reading Image</h2>
+                <div className = "tesseract-progress-container">
+                    <h2 id = "tesseract-progress-status">Status: </h2>
+                    <strong>{statusLog1} </strong>
+                    <div classNiame = "tesseract-progressbar-container">
+                    <progress id="tesseract-progressbar" value = {progLog1+progLog2} max="2"/> 
+                </div>
+                </div>
+            </div>
         )}
 }

@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useDrag, useDrop } from 'react-dnd'
 import { Context } from "./RecipeBuilder";
+import Modal from './RecipeBuilderModal'
 
 export default function RenderSelectableImage({imgData, index}) {
   const data = useContext(Context)
   const basketState = data.basketState
   const setBasketState = data.setBasketState
+  const [show, setShow] = useState(false)
 
   const ref = useRef(null)
 
@@ -73,12 +75,19 @@ dragRef(dropRef(ref))
 
   return(
     <div  class = "imgContainer" ref={ref}>
-        <img
-        src={imgData.imgBlob}
-        height="150"
-        width="150"
-        alt="null"
-        />
+        <button className = "imgcardButton_ModalOpen" onClick={()=> setShow(true)}>
+          <img
+          src={imgData.imgBlob}
+          height="150"
+          width="150"
+          alt="null"
+          />
+        </button >
+         <Modal
+          show={show}
+          imgSrc = {imgData.imgBlob}
+          onClose={() => setShow(false)} 
+         />
     </div>
   )
 }
