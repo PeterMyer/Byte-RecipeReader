@@ -22,7 +22,6 @@ function ImgCropper(props) {
       const data = new FormData()
       data.append("uploaded_file", blobFile)
       let response = await apiService.upload.saveImage(data)
-      console.log(response)
       let updatedState = [...images,...response.data.result]
       setImages(Object.assign(updatedState))
       setShow(false)

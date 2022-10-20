@@ -1,16 +1,12 @@
 import React, {useState} from "react";
 import apiService from "../Utilities/apiService";
-import { useNavigate } from "react-router-dom";
-
 
 
 export default function NewRecipe (props) {
  const [loaded, setLoaded] = useState(false)
  const [result, setResult] = useState("")
  const [form, setForm] = useState(null)
- const navigate = useNavigate();
  const setShow = props.setShow
- const setUpload = props.setUpload
  const setImages = props.setImages
  const images = props.images
 
@@ -52,7 +48,7 @@ export default function NewRecipe (props) {
               accept="image/png, image/jpeg"
               onChange={handleChange}
             />
-            <button type="submit"> Save Image</button>
+            {loaded ?<button type="submit"> Save Image</button>: null}
           </form>
           </div>
         </div>

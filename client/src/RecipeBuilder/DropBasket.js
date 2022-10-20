@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useDrop } from 'react-dnd';
 import { Context } from './RecipeBuilder';
-import RenderImage from './RenderImg'
+import RenderImage from './DraggableImg'
 
 export default function  Basket ({title}){
     const data = useContext(Context);
@@ -23,7 +23,7 @@ export default function  Basket ({title}){
 
     return (
             <div  ref={dropRef}>
-                {title}
+                <h2>{title}</h2>
                 <div className = "basket" >
                     {basketState.filter((img)=>img.location===title).map((img,index)=> { 
                         return( 

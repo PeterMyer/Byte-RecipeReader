@@ -144,7 +144,7 @@
   font-size: 20px;
   color:grey;
   width:35px;
-  padding: 7px 5px; /* Some padding */
+  padding: 7px 5px;
 }
 
 .imgCardButton:hover {
@@ -199,6 +199,12 @@
   object-fit: contain
 }
 
+.imgcardButton_ModalOpen{
+  background: none;
+  border: none;
+  cursor: pointer;
+
+}
 
 #recipeBuilder{
   display:flex;
@@ -206,12 +212,25 @@
   justify-content: space-around;
 }
 
+.recipebuilder-userimages{
+  display: flex;
+  max-width: 40%;
+  max-height: 650px;
+  flex-direction: column;
+  align-items: center;
+}
 
 .recipebuilder_availableImages{
   display:flex;
+  max-height: 100%;
   flex-flow: row wrap;
-  justify-content: space-around;
-  gap: 10px
+  justify-content: center;
+  overflow: scroll;
+  background-color: lightgrey;
+  padding: 10px;
+  border:1px;
+  border-style: solid;
+  border-color: darkgrey;
 }
 
 .basket{
@@ -222,34 +241,285 @@
   flex-direction: row;
 }
 
+
+.recipeSegment-container{
+  display:flex;
+  align-items: center;
+  flex-direction: column
+
+}
+
 .recipeSegment{
   display:flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+  background-color: lightgrey;
+  width: 80%;
+  padding: 20px;
+  border-radius: 6px;
+  margin: 5px
 }
 
 .verifyTextBox{
   border-style: solid;
   border-width: 1px;
   width:500px;
+  background-color: white;
 }
 
 .recipeImg{
-  max-width: 500px;
-  object-fit: contain
-
+  max-width: 400px;
+  max-height: 100%
 }
 
-#acceptText{
-  max-height: 500px;
-  max-width: 500px;
+#acceptTextButton{
   text-align: center;
-  background-color: #c0c0c0;
+  background-color: darkgreen;
   position:fixed;
-  top:0;
-  width:100%;
+  top:100px;
+  left: 47%;
   z-index:100;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  margin: 10px 30px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold
 }
+
+.progress_page{
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tesseract-progress-container{
+  width:80%;
+  box-shadow: 0px 10px 50px #d7d9de;
+  text-align: center;
+  padding: 20px;
+  background:#f5f5f5
+}
+
+
+#tesseract-progressbar {
+  background-color: #f3f3f3;
+  border: 0;
+  height: 18px;
+  border-radius: 9px;
+  color: lightblue;
+  width: 70%;
+  border: none;
+  transition: all 0.5s
+
+}
+#tesseract-progressbar::-webkit-progress-bar {
+  background-color: #f3f3f3;
+  border: 0;
+  height: 18px;
+  border-radius: 9px;
+  color: lightblue;
+  width: 70%;
+  border: none;
+  transition: all 0.5s;
+
+}
+#tesseract-progressbar::-webkit-progress-value {
+  border: 0;
+  height: 18px;
+  border-radius: 9px;
+  color: lightblue;
+  background-color: lightblue;;
+  width: 70%;
+  border: none;
+  transition: all 0.5s;
+
+}
+#tesseract-progressbar::-moz-progress-bar {
+  background-color: #f3f3f3;
+  border: 0;
+  height: 18px;
+  border-radius: 9px;
+  color: lightblue;
+  width: 70%;
+  border: none;
+  transition: all 0.5s;
+}
+
+.recipeform-container{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recipeform-outside-box{
+  display:block;
+  width:60%;
+  border-style: solid;
+  border-width: 1px;
+  border-color:lightgray;
+  padding: 10px;
+  box-shadow: 0px 10px 25px #d7d9de;
+}
+
+.recipeform{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recipeform-section{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  border-style: solid;
+  width: 90%;
+  border-width: 1px;
+  border-color:lightgray;
+  border-left: none;
+  border-right: none;
+  border-bottom:none;
+  gap: 30px;
+  padding: 10px
+}
+
+#ingredient{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  margin: 10px;
+  max-width: 100%;
+}
+
+.recipeform-input-label{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recipeform-input-container{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  width:100%;
+  margin: 3px;
+  left: 2%;
+  height: 35px;
+}
+
+.recipeform-input-container:hover .recipeform-input-hiddenbutton{
+  display: block;
+  visibility: visible;  
+  color: lightcoral;
+  background-color: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: large;
+}
+
+.recipeform-input-container:hover .recipeform-input-hiddenbutton:hover{
+  display: block;
+  color: darkred;
+}
+
+.recipeform-input-field-ingredients{
+  width: 400px;
+  min-width: 150px;
+}
+
+#addButton{
+  color:green;
+  background-color: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: large;
+  align-self: flex-start;
+}
+
+#addButton:hover{
+  color:darkgreen;
+}
+
+.recipeform-input-field{
+  max-width: 200px;
+  margin: 2px;
+}
+
+.recipeform-input-hiddenbutton{
+  visibility: hidden;  
+  position: relative;
+  left: 5px
+}
+
+.recipeform-input-instructions-container{
+  border: solid;
+  border-color: lightgray;
+  max-width: 80%;
+  resize: none
+}
+#save-recipe{
+  text-align: center;
+  background-color: darkgreen;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  margin: 10px 30px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold
+}
+
+.recipe-page-single{
+  display: flex;
+  justify-content: center;
+  
+}
+
+.recipe-display-container{
+  display:flex; 
+  flex-direction: column;
+  align-items: left;
+  width: 60%;
+  border-style: solid;
+  border-width: 1px;
+  border-color:lightgray;
+  padding: 10px;
+  box-shadow: 0px 10px 25px #d7d9de;
+}
+
+.recipe-display-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#edit-button{
+  padding: 10px;
+  background-color : white;
+  color:  #35a956;
+  text-decoration: none;
+  margin: 10px 30px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: large
+}
+
+
+#edit-button:hover{
+  color:darkgreen;
+}
+.recipe-display-container h1{
+  text-align: start
+}
+
 
 .main-content-container {
   margin-top: 100px; /* Add a top margin to avoid content overlay */

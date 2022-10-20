@@ -29,6 +29,22 @@ export default {
       } catch(error){
         console.log(error)
       }
+    }, 
+    update: async(id, payload)=>{
+      try{
+        let response = await apiClient.put(`/recipes/${id}`, payload)
+        return response
+
+      }catch(error){
+        console.log(error)
+      }
+    },
+    delete: async(id)=>{
+      try{
+
+      } catch(error){
+        console.log(error)
+      }
     }
   },
 

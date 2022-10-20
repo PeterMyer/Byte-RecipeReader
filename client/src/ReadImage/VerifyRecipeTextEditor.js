@@ -1,5 +1,5 @@
-import {Editor, EditorState, ContentState, convertToRaw} from 'draft-js'
-import React, { useContext , useEffect,useRef} from 'react'
+import {Editor, EditorState, ContentState} from 'draft-js'
+import React, { useContext , useEffect} from 'react'
 import {Context} from './VerifyImgTxt'
 
 export default function VerifyTextEditor(props){
