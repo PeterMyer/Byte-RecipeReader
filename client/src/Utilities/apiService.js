@@ -25,6 +25,7 @@ export default {
     retrieveRecipe: async(id)=>{
       try{
         let response = await apiClient.get(`/recipes/${id}`)
+        console.log('response',response)
         return response
       } catch(error){
         console.log(error)

@@ -24,10 +24,10 @@ export default function RecipeForm(){
             servings:servings? servings:null,
             source: source? source: null,
             DraftJs: instructions ? EditorState.createWithContent(convertFromRaw(JSON.parse(instructions))) : EditorState.createEmpty(),
-            Ingredients: ingredients?ingredients.map((ingredient)=> {return({value:ingredient.originalText})}):null
+            Ingredients: ingredients?ingredients.map((ingredient)=> {return({value:ingredient.recipeIngredient.text, id:ingredient.id})}):null
         }
     });
-
+    // ingredients?ingredients.map((ingredient)=> {return({value:ingredient.userText.text, id:ingredient.id})}):null
     const { fields, append, remove } = useFieldArray({
         control, // control props comes from useForm (optional: if you are using FormContext)
         name: "Ingredients", // unique name for your Field Array
@@ -38,11 +38,11 @@ export default function RecipeForm(){
             name: data.recipeName,
             servings: data.servings,
             source: data.source,
-            ingredients: JSON.stringify(data.Ingredients.map((ingredient)=>ingredient.value)),
+            ingredients: data.Ingredients.map((ingredient)=>({value:ingredient.value ,id: ingredient.id})),
             instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
             nutrition: data.nutrition
         }
-        console.log('payload',recipePayload.ingredients)
+        console.log('payload',recipePayload)
         // let response = await apiService.recipe.update(recipePayload)
         // navigate(`/recipe/${response.data.id}`)
     };

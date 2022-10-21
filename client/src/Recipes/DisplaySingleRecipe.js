@@ -48,7 +48,7 @@ export default function DisplayUserRecipe(){
                             {recipeData.ingredients.map(
                                 (ingredient)=>{
                                         return(
-                                            <li>{ingredient.userText.text}</li>)})}
+                                            <li>{ingredient.recipeIngredient.text}</li>)})}
                         </ul>
                     </section>
                     <section>
