@@ -3,13 +3,29 @@ const Image = require('./models/Image')
 const Recipe = require('./models/Recipe')
 const Component = require('./models/Component')
 const Ingredient = require('./models/Ingredient')
+const MeasurementQuantity = require('./models/MeasurementQuantity')
+const MeasurementUnit = require('./models/MeasurementUnit')
+const RecipeComment = require('./models/RecipeComment')
+const RecipeIngredient = require('./models/RecipeIngredient')
 
-Recipe.hasMany(Ingredient, { foreignKey: 'recipeId'})
-Ingredient.belongsTo(Recipe,{ foreignKey: 'recipeId'})
+Recipe.belongsToMany(Ingredient, { through: RecipeIngredient });
+Ingredient.belongsToMany(Recipe, { through: RecipeIngredient});
+Recipe.hasMany(RecipeIngredient);
+RecipeIngredient.belongsTo(Recipe);
+Ingredient.hasMany(RecipeIngredient);
+RecipeIngredient.belongsTo(Ingredient);
 
 Ingredient.belongsTo(Component,{foreignKey: 'componentId'})
 Component.hasMany(Ingredient,{foreignKey: 'componentId'})
 
+Ingredient.belongsTo(MeasurementQuantity,{foreignKey: 'measurementQuantityId'})
+MeasurementQuantity.hasMany(Ingredient,{foreignKey: 'measurementQuantityId'})
+
+Ingredient.belongsTo(MeasurementUnit,{foreignKey: 'measurementUnitId'})
+MeasurementUnit.hasMany(Ingredient,{foreignKey: 'measurementUnitId'})
+
+Ingredient.belongsTo(RecipeComment,{foreignKey: 'recipeCommentId'})
+RecipeComment.hasMany(Ingredient,{foreignKey: 'recipeCommentId'})
 
 module.exports = {
   db,
@@ -17,6 +33,10 @@ module.exports = {
     Image,
     Recipe,
     Component,
-    Ingredient
+    Ingredient,
+    MeasurementQuantity,
+    MeasurementUnit,
+    RecipeComment,
+    RecipeIngredient
   }
   }

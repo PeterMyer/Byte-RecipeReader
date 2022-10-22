@@ -1,6 +1,10 @@
 const PythonShell = require('python-shell').PythonShell;
 
 const ParseIngredient= async(req, res, next)=>{
+    if(!req.body.ingredients){
+        console.log('no new ingredients')
+        next()
+    } else {
     let options = {
         mode:'json',
         scriptPath: './classification_service',
@@ -16,7 +20,6 @@ const ParseIngredient= async(req, res, next)=>{
         // res.json(results).status(204)
         next()
     })
-    // next()
-}
+}}
 
 module.exports = ParseIngredient

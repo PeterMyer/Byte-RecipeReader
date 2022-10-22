@@ -6,6 +6,7 @@ const Recipe = db.define('recipe',{
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true
+    
   },
   name:{
     type: Sequelize.STRING,
@@ -13,7 +14,7 @@ const Recipe = db.define('recipe',{
   },
   servings:{
     type: Sequelize.INTEGER,
-    allowNull: false,
+    allowNull: true,
     defaultValue: 1
   },
   instructions:{
@@ -23,8 +24,11 @@ const Recipe = db.define('recipe',{
   source:{
     type: Sequelize.STRING,
     allowNull:true
-  }
-  }
+  },
+  profileId:{
+    type: Sequelize.INTEGER,
+    allowNull: true
+  }}
 )
 
 module.exports = Recipe;

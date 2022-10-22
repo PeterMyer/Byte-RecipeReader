@@ -36,7 +36,7 @@ export default function RecipeForm(){
         }
         let response = await apiService.recipe.create(recipePayload)
         console.log('response',response)
-        // navigate(`/recipe/${response.data.id}`)
+        navigate(`/recipe/${response.data.id}`)
     };
 
     return(
