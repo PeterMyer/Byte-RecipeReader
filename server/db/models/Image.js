@@ -7,7 +7,9 @@ const Image = db.define('image',{
     allownull: false,
     validate:{
       notEmpty: true,
-    }
+    },
+    unique: true
+
   }
 })
 

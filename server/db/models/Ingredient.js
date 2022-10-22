@@ -2,31 +2,27 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Ingredient = db.define('ingredient',{
+  id:{
+    type: Sequelize.UUID,
+    primaryKey: true,
+    defaultValue: Sequelize.DataTypes.UUIDV4
+  },
+  normText: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
   componentId:{
     type:Sequelize.INTEGER,
-    allowNull: false
   },
-  recipeId:{
+  measurementQuantityId:{
     type:Sequelize.INTEGER,
-    allowNull: false
   },
-  quantity:{
-    type:Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "1"
+  measurementUnitId:{
+    type:Sequelize.INTEGER,
   },
-  unit:{
-    type:Sequelize.STRING,
-  },
-  comment:{
-    type:Sequelize.STRING,
-    allowNull: true
-  },
-  originalText:{
-    type:Sequelize.STRING,
-    allowNull: false
-  }
-  }
+  recipeCommentId:{
+    type:Sequelize.INTEGER,
+  }}
 )
 
 module.exports = Ingredient;

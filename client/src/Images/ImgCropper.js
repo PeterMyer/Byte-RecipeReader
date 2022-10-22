@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState} from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import apiService from "../Utilities/apiService";
 import {blobCreationFromURL} from '../Utilities/helperFunctions'
 
 function ImgCropper(props) {
-  const [imgData, setImageData] = useState(props.imgData)
+  const [imgData ] = useState(props.imgData)
   const [cropData, setCropData] = useState("#");
   const [cropper, setCropper] = useState(null);
   const images = props.images
