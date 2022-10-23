@@ -5,9 +5,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var routerIndex = require('./api/index');
+require('dotenv').config();
+
 
 var app = express();
 app.use(cors())
+
 
 //Allow cross site scripting for server
 app.use(function (req, res, next) {

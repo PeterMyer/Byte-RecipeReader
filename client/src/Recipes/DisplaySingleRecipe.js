@@ -30,6 +30,11 @@ export default function DisplayUserRecipe(){
         navigate(`/editRecipeForm/${id}`,{state: {'recipeData':recipeObj}})
     }
 
+    const getNurition=async(id)=>{
+        let nutrition = await apiService.nutrition.search(id)
+        console.log('nutrition',nutrition)
+    }
+
     return(
         <article className = 'recipe-page-single'>
             {recipeData !==null?
@@ -57,7 +62,8 @@ export default function DisplayUserRecipe(){
                         editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(recipeData.instructions)))}
                         readOnly= "true"/>
                     </section>
-                    {/* <h2>Nutrition</h2> */}
+                    <h2>Nutrition</h2>
+                    <button onClick={()=>getNurition(id)}>Get Nutrition</button>
                 </div>
             :
                 <div>

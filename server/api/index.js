@@ -13,6 +13,6 @@ router.use('/classifcation', require('./classification'))
 router.use('/recipes', require('./recipes'))
 // router.use('/ingredients', require('./ingredients'))
 // router.use('/components', require('./components'))
-
+router.use('/nutrition', require('./nutrition'))
 
 module.exports = router;

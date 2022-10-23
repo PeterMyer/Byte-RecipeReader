@@ -1,7 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios"
 
-
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001'
 })
@@ -85,19 +84,19 @@ export default {
           console.log(error)
         }
     },
-    searchUSDA: async(ingredient)=>{
-      try {
-      // let headers= {'api_key': process.env.REACT_APP_USDA_API_KEY}
-      let params = {'query': ingredient}
-      let response = await apiClient.post(
-      `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.REACT_APP_USDA_API_KEY}`,
-      params
-      )
-      return response
-      } catch(error){
-        console.log(error)
-      }
-    }
+    // searchUSDA: async(ingredient)=>{
+    //   try {
+    //   // let headers= {'api_key': process.env.REACT_APP_USDA_API_KEY}
+    //   let params = {'query': ingredient}
+    //   let response = await apiClient.post(
+    //   `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.REACT_APP_USDA_API_KEY}`,
+    //   params
+    //   )
+    //   return response
+    //   } catch(error){
+    //     console.log(error)
+    //   }
+    // }
   },
   import: {
     retrieveFilePaths: async () => {
@@ -122,7 +121,12 @@ export default {
     catch(error){
       console.log(error)
     }
-
-  }
+  }},
+  nutrition:{
+    search: async(id)=>{
+      console.log('id',id)
+      let response = await apiClient.post(`/nutrition/${id}`)
+      console.log('response',response)
+    }
   }
 }

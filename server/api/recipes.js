@@ -142,7 +142,6 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
         const updatedIngredients = req.body.changedFormat? req.body.changedFormat: []
         const deletedIngredients = req.body.deletedIngredients? req.body.deletedIngredients: []
 
-
         //Update Recipe
         await Recipe.update({
             name: req.body.name,
@@ -150,7 +149,6 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             instructions: req.body.instructions,
             source: req.body.source,
         },{where:{id:req.params.id}})
-
 
         //Add New Ingredients
         if(parsedIngredients.length>0){
