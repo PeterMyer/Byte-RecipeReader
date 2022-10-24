@@ -13,7 +13,6 @@ router.post('/', (req, res)=> {
     PythonShell.run('python_utils.py', options, function (err, results) {
         if (err) 
             throw err;
-    // console.log('results: %j', results)
     res.json(results).status(204).end()
 })})
 

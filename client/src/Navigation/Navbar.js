@@ -9,7 +9,7 @@ export default function NavBar(){
               <img 
                 id = "navbar-icon"
                 alt = "defeaultImg"
-                src = "RRIcon.png"/>
+                src = {process.env.PUBLIC_URL + "/RRIcon.png"}/>
             </Link>
           </div>
           <div id = "navbar-options">

@@ -24,7 +24,6 @@ export default {
     retrieveRecipe: async(id)=>{
       try{
         let response = await apiClient.get(`/recipes/${id}`)
-        console.log('response',response)
         return response
       } catch(error){
         console.log(error)
@@ -41,7 +40,18 @@ export default {
     },
     delete: async(id)=>{
       try{
-
+        let response = await apiClient.delete(`/recipes/${id}`)
+        return response
+      } catch(error){
+        console.log(error)
+      }
+    },
+    saveNutrition: async (id, payload)=>{
+      try{ 
+        console.log(payload)
+        let response = await apiClient.post(`/recipes/${id}/nutrition`, payload)
+        console.log(response)
+        return response
       } catch(error){
         console.log(error)
       }
@@ -124,9 +134,12 @@ export default {
   }},
   nutrition:{
     search: async(id)=>{
-      console.log('id',id)
       let response = await apiClient.post(`/nutrition/${id}`)
-      console.log('response',response)
+      return response
+    },
+    retrieve: async(id)=>{
+      let response = await apiClient.get(`/nutrition/${id}`)
+      return response
     }
   }
 }

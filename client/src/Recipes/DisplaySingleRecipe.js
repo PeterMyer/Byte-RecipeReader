@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams , useLocation, useNavigate } from "react-router-dom";
 import apiService from "../Utilities/apiService";
 import { Editor, convertFromRaw, createWithContent, EditorState } from "draft-js";
+import NutritionContainer from "../Nutrition/NutritionContainer";
 
 export default function DisplayUserRecipe(){
     const [recipeData, setRecipeData] = useState(null)
@@ -30,9 +31,9 @@ export default function DisplayUserRecipe(){
         navigate(`/editRecipeForm/${id}`,{state: {'recipeData':recipeObj}})
     }
 
-    const getNurition=async(id)=>{
-        let nutrition = await apiService.nutrition.search(id)
-        console.log('nutrition',nutrition)
+    const handleDelete =async()=>{
+        let result = await apiService.recipe.delete(id)
+        navigate(`/recipes`)
     }
 
     return(
@@ -41,7 +42,10 @@ export default function DisplayUserRecipe(){
                 <div className = 'recipe-display-container'>
                     <div className="recipe-display-header">
                         <h1>{recipeData.name}</h1>
+                        <div className="recipe-display-header-buttons">
                         <button onClick={(handleEdit)} id="edit-button"><i class="fa-regular fa-pen-to-square"></i></button>
+                        <button onClick={(handleDelete)} id="edit-button"><i class="fa-solid fa-trash"></i></button>
+                        </div>
                     </div>
                     <section>
                         <strong>Servings</strong>
@@ -63,7 +67,7 @@ export default function DisplayUserRecipe(){
                         readOnly= "true"/>
                     </section>
                     <h2>Nutrition</h2>
-                    <button onClick={()=>getNurition(id)}>Get Nutrition</button>
+                    <NutritionContainer id={id} ingredients={recipeData.ingredients} servings={recipeData.servings}/>
                 </div>
             :
                 <div>
