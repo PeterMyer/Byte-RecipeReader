@@ -499,6 +499,11 @@
   flex-direction: row;
   justify-content: space-between;
 }
+.recipe-display-header-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
 
 #edit-button{
   padding: 10px;
@@ -519,6 +524,23 @@
 .recipe-display-container h1{
   text-align: start
 }
+
+.nutrient-display{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 50%;}
+
+
+.nutrient-name{
+  display: flex;
+  justify-content: flex-start;}
+  
+.nutrient-value{
+  display: flex;
+  justify-content: center;}
+  
+  
 
 
 .main-content-container {

@@ -52,12 +52,10 @@ router.delete('/:id', async (req,res, next)=>{
         id: req.params.id
       }
     })
-    console.log('req body', req.body)
     let filePath = "./images"+req.body.filePath
-    console.log(filePath)
     fs.unlink(filePath, (err) => {
       if (err) throw err;
-      console.log('path/file.txt was deleted')})
+      console.log('file was deleted')})
     res.json(image)
 } catch (err) {
     console.log(err);

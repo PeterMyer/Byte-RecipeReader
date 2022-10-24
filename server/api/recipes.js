@@ -2,7 +2,7 @@ const router = require('express').Router();
 const ParseIngredient = require('../classification_service/ParseIngredient')
 
 const {
-    models: { Recipe, Component, Ingredient,MeasurementQuantity,MeasurementUnit,RecipeComment,UserText, RecipeIngredient },
+    models: { Recipe, Component, Ingredient,MeasurementQuantity,MeasurementUnit,RecipeComment, RecipeIngredient,RecipeNutrition },
   } = require('../db/index');
 
 router.get('/', async(req,res,next)=>{
@@ -30,7 +30,7 @@ router.get('/:id', async(req, res, next)=>{
                         attributes: ['id','qtyAmount']},
                         {
                         model: MeasurementUnit,
-                        attributes: ['id','unitDescription']},
+                        attributes: ['id','unitDescription','unitGrams']},
                         {
                         model: RecipeComment,
                         attributes: ['id','commentText']},
@@ -38,7 +38,6 @@ router.get('/:id', async(req, res, next)=>{
                 }
             ]
         })
-        console.log('recipe', recipe)
         res.json(recipe);
     }
     catch(error){
@@ -48,7 +47,6 @@ router.get('/:id', async(req, res, next)=>{
 
 // POST api/recipes/
 router.post('/' ,ParseIngredient, async(req,res,next)=>{
-    // console.log(req.body);
     try {
         const parsedIngredients = req.parsedIngredients[0].filter(item=>item.length>0)
         
@@ -58,8 +56,6 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             instructions: req.body.instructions,
             source: req.body.source,
         })
-        // console.log('recipe', recipe);
-        console.log('parsedIngredients', parsedIngredients);
         await Promise.all(
             parsedIngredients.map(async (item)=>{
                 const {
@@ -70,6 +66,12 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
                     input = null
                     } = item[0]
 
+
+                if(qty.includes('/')){
+                    let splitFraction = qty.split('/')
+                    qty = parseInt(splitFraction[0],10)/parseInt(splitFraction[1],10)
+                }
+                
                 let [component, componentCreated] = await Component.findOrCreate({
                     where:{
                         name: name
@@ -82,7 +84,7 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
 
                 let [itemUnit, itemUnitCreated] = await MeasurementUnit.findOrCreate({
                     where:{
-                        unitDescription: unit
+                        unitDescription: unit.toLowerCase()
                     }})
 
                 let [itemComment, itemCommentCreated] = await RecipeComment.findOrCreate({
@@ -142,7 +144,6 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
         const updatedIngredients = req.body.changedFormat? req.body.changedFormat: []
         const deletedIngredients = req.body.deletedIngredients? req.body.deletedIngredients: []
 
-
         //Update Recipe
         await Recipe.update({
             name: req.body.name,
@@ -150,7 +151,6 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             instructions: req.body.instructions,
             source: req.body.source,
         },{where:{id:req.params.id}})
-
 
         //Add New Ingredients
         if(parsedIngredients.length>0){
@@ -163,6 +163,11 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
                     comment = null,
                     input = null
                     } = item[0]
+
+                if(qty.includes('/')){
+                    let splitFraction = qty.split('/')
+                    qty = parseInt(splitFraction[0],10)/parseInt(splitFraction[1],10)
+                }
 
                 let [component, componentCreated] = await Component.findOrCreate({
                     where:{
@@ -253,5 +258,42 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
         next(error)
     }
  })
+
+ router.post(`/:id/nutrition`, async(req, res, next)=>{
+    try{
+        const nutrition = await RecipeNutrition.create({
+            recipeId: req.params.id, 
+            nutritionData: req.body.nutrition
+            })
+        res.json(nutrition)
+    }catch(error){
+        next(error)
+    }})
+
+router.delete('/:id', async(req,res,next)=>{
+    try{
+        const recipe = await Recipe.destroy({
+            where:{
+                id: req.params.id
+            }
+        })
+
+        await RecipeIngredient.destroy({
+                where:{
+                    recipeId: req.params.id
+                }
+        })
+
+        await RecipeNutrition.destroy({
+            where:{
+                recipeId: req.params.id
+            }
+        }) 
+        res.send(recipe)
+    }catch(error){
+        console.log(error)
+        next(error)
+    }
+})
 //  router.post('/', createNewRecipe)
  module.exports = router;

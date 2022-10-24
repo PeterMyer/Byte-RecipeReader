@@ -6,7 +6,11 @@ const Component = db.define('measurementUnit',{
     type: Sequelize.STRING,
     allowNull: true,
     unique: true
-  }
+  },
+    unitGrams:{
+      type:Sequelize.REAL,
+      allowNull:true
+    }
 })
 
 module.exports = Component;

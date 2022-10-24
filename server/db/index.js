@@ -7,6 +7,7 @@ const MeasurementQuantity = require('./models/MeasurementQuantity')
 const MeasurementUnit = require('./models/MeasurementUnit')
 const RecipeComment = require('./models/RecipeComment')
 const RecipeIngredient = require('./models/RecipeIngredient')
+const RecipeNutrition = require('./models/recipeNutrition')
 
 Recipe.belongsToMany(Ingredient, { through: RecipeIngredient });
 Ingredient.belongsToMany(Recipe, { through: RecipeIngredient});
@@ -27,6 +28,9 @@ MeasurementUnit.hasMany(Ingredient,{foreignKey: 'measurementUnitId'})
 Ingredient.belongsTo(RecipeComment,{foreignKey: 'recipeCommentId'})
 RecipeComment.hasMany(Ingredient,{foreignKey: 'recipeCommentId'})
 
+Recipe.hasOne(RecipeNutrition,{foreignKey: 'recipeId'})
+RecipeNutrition.belongsTo(Recipe,{foreignKey: 'recipeId'})
+
 module.exports = {
   db,
   models:{
@@ -37,6 +41,7 @@ module.exports = {
     MeasurementQuantity,
     MeasurementUnit,
     RecipeComment,
-    RecipeIngredient
+    RecipeIngredient,
+    RecipeNutrition
   }
   }

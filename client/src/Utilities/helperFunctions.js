@@ -54,3 +54,34 @@ export function partitionIngredients(recipeDataIngredients, editFormIngredients)
   }
   return {newIngredient, formatChanges,toDelete}
 }
+
+export function splitFraction(qty){
+  if(qty.includes('/')){
+    let splitFraction = qty.split('/')
+    qty = parseInt(splitFraction[0],10)/parseInt(splitFraction[1],10)
+  }
+  return qty
+}
+
+export function calculateIngredientNutrition(ingredient, nutritionObj, defaultWeight, servings, recipeNutrition,setRecipeNutrition){
+  let calculatedRecipeNutrition = recipeNutrition
+  let calculatedNutrition = {}
+  const quantity = ingredient.measurementQuantity.qtyAmount? splitFraction(ingredient.measurementQuantity.qtyAmount):1
+  let unitGramWeight = ingredient.measurementUnit.unitGrams? ingredient.measurementUnit.unitGrams :defaultWeight
+  // console.log('ingredient:',ingredient.normText)
+
+  for(let nutrient in nutritionObj){
+    let scaledGramWeight = unitGramWeight*quantity
+    calculatedNutrition[nutrient] = ((scaledGramWeight/100)*nutritionObj[nutrient])/servings 
+    // console.log('recipe Nutrition addition:',nutrient,':',recipeNutrition[nutrient])
+    // console.log('post Nutrition addition:',nutrient,':',recipeNutrition[nutrient])
+  }
+
+  for(let nutrient in calculatedNutrition){
+    calculatedRecipeNutrition[nutrient] += calculatedNutrition[nutrient]
+  }
+  // console.log('Calculated Ingredient Nutrition',calculatedNutrition)
+  // console.log('Current Recipe Nutrition',recipeNutrition)
+
+
+}
