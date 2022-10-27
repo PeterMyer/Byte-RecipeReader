@@ -4,7 +4,7 @@ const path = require('path')
 
 router.get('/:filename', async (req,res)=>{
   try {
-    res.send(200);
+    res.sendStatus(200);
 } catch (err) {
     console.log(err);
 }

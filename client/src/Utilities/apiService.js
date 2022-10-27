@@ -61,11 +61,13 @@ export default {
   upload: {
    saveImage:  async (payload) => {
     try {
+      console.log(payload)
       let response = await apiClient.post(`/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
         }
       })
+      console.log('response')
        return response
   } catch(error){
         console.log(error)
@@ -125,6 +127,8 @@ export default {
       let objectURL = URL.createObjectURL(resBlob);
       let myImage = new Image();
       myImage.src = objectURL;
+      console.log('response',myImage)
+
       return objectURL
 
     }
