@@ -6,9 +6,12 @@ import {EditorState, createWithContent,convertFromRaw, convertToRaw} from "draft
 import RecipeEditor from './RecipeInstrucEditor'
 import apiService from "../Utilities/apiService";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from '@auth0/auth0-react';
+
 
 
 export default function RecipeForm(){
+    const { user } = useAuth0();
     const {state} = useLocation()
     const [ingredients, setIngredients] = useState(state?state.recipeData.ingredients:null)
     const [instructions, setInstructions] = useState(state? state.recipeData.instructions:null)
@@ -32,7 +35,8 @@ export default function RecipeForm(){
             servings: data.servings,
             ingredients: JSON.stringify(data.Ingredients.map((ingredient)=>ingredient.value)),
             instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
-            nutrition: data.nutrition
+            nutrition: data.nutrition,
+            userId: user.sub
         }
         let response = await apiService.recipe.create(recipePayload)
         console.log('response',response)

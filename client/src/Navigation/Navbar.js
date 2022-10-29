@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import AuthenticationButton from "../Auth/AuthenticationButton"
 
 export default function NavBar(){
     return(
@@ -16,6 +17,7 @@ export default function NavBar(){
             <Link to="/recipes">Recipes</Link> 
             <Link to="/files">Images</Link> 
             <Link to="/newRecipeImages">Create Recipe</Link> 
+            <AuthenticationButton/>
           </div>
         </nav>
       </>)

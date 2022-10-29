@@ -2,14 +2,19 @@ import React, {useState, useEffect} from "react";
 import apiService from "../Utilities/apiService";
 import RenderSingleImage from "./RenderSingleImage"
 import ImgModal from './ImgModal'
+import { useAuth0 } from '@auth0/auth0-react';
+
 
 export default function UserImages () {
   const [images, setImages] = useState(null)
   const [show, setShow] = useState(false)
   const [upload, setUpload] = useState(false)
+  const { user } = useAuth0();
+
 
   const getImages = async() => {
-    let imgs = await apiService.import.retrieveFilePaths()
+    console.log(user.sub)
+    let imgs = await apiService.import.retrieveFilePaths(user.sub)
     setImages(imgs)
     }
 
