@@ -7,7 +7,7 @@ const ParseIngredient= async(req, res, next)=>{
     } else {
     let options = {
         mode:'json',
-        scriptPath: './classification_service',
+        scriptPath: './server/classification_service',
         pythonPath: '/opt/homebrew/bin/python',
         pythonOptions: ['-u'],
         args: [req.body.ingredients]
@@ -19,7 +19,7 @@ const ParseIngredient= async(req, res, next)=>{
         // console.log('results',results)
         // res.json(results).status(204)
         next()
-    })
+    }) 
 }}
 
 module.exports = ParseIngredient

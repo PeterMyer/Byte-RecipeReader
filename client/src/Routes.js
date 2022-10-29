@@ -13,7 +13,6 @@ import CreateRecipeImages from './RecipeBuilder/RecipeBuilder';
 import VerifyTextEditor from './ReadImage/VerifyRecipeTextEditor';
 import DisplayUserRecipe from './Recipes/DisplaySingleRecipe';
 import ProtectedRoute from './Auth/protected-route';
-import User from './User'
 import {Loading} from './Auth/Loading';
 
 
@@ -28,6 +27,7 @@ export default function AppRoutes(){
     <div className = 'main-content-container'>
         <Routes>
             <Route path="/" element={<Home />} />
+
             <Route 
                 path="/files" 
                 element={<ProtectedRoute component={UserImages}/>} />  

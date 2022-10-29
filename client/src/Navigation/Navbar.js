@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom"
 import AuthenticationButton from "../Auth/AuthenticationButton"
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 export default function NavBar(){
     return(
@@ -20,6 +22,6 @@ export default function NavBar(){
             <AuthenticationButton/>
           </div>
         </nav>
-      </>)
-
+      </>
+      )
 }
