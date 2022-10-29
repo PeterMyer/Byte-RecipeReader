@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import apiService from "../Utilities/apiService";
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 export default function NewRecipe (props) {
  const [loaded, setLoaded] = useState(false)
  const [result, setResult] = useState("")
  const [form, setForm] = useState(null)
+ const { user } = useAuth0();
  const setShow = props.setShow
  const setImages = props.setImages
  const images = props.images
@@ -14,7 +16,6 @@ export default function NewRecipe (props) {
   const handleChange=(e)=> {
     const file = e.target.files[0];
     var reader = new FileReader();
-
     const data = new FormData()
     data.append("uploaded_file", file)
 
@@ -31,7 +32,8 @@ export default function NewRecipe (props) {
 
   const handleSubmit= async(e) => {
     e.preventDefault()
-    let response = await apiService.upload.saveImage(form)
+    let userId = user.sub
+    let response = await apiService.upload.saveImage(form, userId)
     let updatedState = [...images,...response.data.result]
     setImages(Object.assign(updatedState))
     setShow(false)

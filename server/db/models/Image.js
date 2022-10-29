@@ -9,7 +9,10 @@ const Image = db.define('image',{
       notEmpty: true,
     },
     unique: true
-
+  },
+  userId:{
+    type: Sequelize.TEXT,
+    allownull: false
   }
 })
 

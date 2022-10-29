@@ -10,14 +10,17 @@ const {
 var multer = require('multer')
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './images');
+    cb(null, './server/images');
   },
   filename: async (req, file, cb, )=> {
+    console.log(req.query)
+    let {userId} = req.query;
     const ext = path.extname(file.originalname)
     const filepath = `/${uuidv4()}${ext}`
       try {
         const savedImage = await Image.create({
-          filepath: filepath
+          filepath: filepath,
+          userId: userId
         });
         req.imgData = savedImage
         cb(null, filepath);
@@ -38,7 +41,13 @@ router.post('/', upload.single('uploaded_file'), (req, res)=> {
 
 router.get('/', async (req,res)=>{
   try {
-    const allImages = await Image.findAll();
+   let {userId} = req.query;
+
+    const allImages = await Image.findAll({
+      where:{
+        userId: userId
+      }
+    });
     res.json(allImages);
 } catch (err) {
     console.log(err);
@@ -52,7 +61,7 @@ router.delete('/:id', async (req,res, next)=>{
         id: req.params.id
       }
     })
-    let filePath = "./images"+req.body.filePath
+    let filePath = "./server/images"+req.body.filePath
     fs.unlink(filePath, (err) => {
       if (err) throw err;
       console.log('file was deleted')})

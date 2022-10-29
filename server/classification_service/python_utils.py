@@ -20,7 +20,7 @@ recipe_data = json.loads(data)
 # print(recipe_data)
 
 tagger = pycrfsuite.Tagger() #USED
-tagger.open('classification_service/trained_model')
+tagger.open('./server/classification_service/trained_model')
 
 tokenizer = PunktSentenceTokenizer() #Used
 

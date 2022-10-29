@@ -15,7 +15,10 @@ export default {
       }},
     getAll: async(payload)=>{
       try {
-        let response = await apiClient.get('/recipes', payload)
+        let response = await apiClient.get('/recipes',{
+          params: {userId: payload}
+        })
+        console.log(response)
         return response
       } catch(error){
         console.log(error)
@@ -26,7 +29,7 @@ export default {
         let response = await apiClient.get(`/recipes/${id}`)
         return response
       } catch(error){
-        console.log(error)
+          console.log(error)
       }
     }, 
     update: async(id, payload)=>{
@@ -34,7 +37,7 @@ export default {
         let response = await apiClient.put(`/recipes/${id}`, payload)
         return response
 
-      }catch(error){
+      } catch (error){
         console.log(error)
       }
     },
@@ -53,21 +56,23 @@ export default {
         console.log(response)
         return response
       } catch(error){
-        console.log(error)
+          console.log(error)
       }
     }
   },
 
   upload: {
-   saveImage:  async (payload) => {
+   saveImage:  async (payload,userId) => {
     try {
+      console.log('userId')
       let response = await apiClient.post(`/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
-        }
+        },
+        params:{userId:userId}
       })
        return response
-  } catch(error){
+    } catch(error){
         console.log(error)
       }
     },
@@ -80,7 +85,6 @@ export default {
           console.log(error)
       }
     },
-
     classifyText: async (payload) =>{
       try {
         let response = await apiClient.post('/classification', {
@@ -88,7 +92,7 @@ export default {
             'Content-Type' : 'json'
           },
           data:payload
-        })
+          })
          return response
         } catch(error){
           console.log(error)
@@ -109,24 +113,26 @@ export default {
     // }
   },
   import: {
-    retrieveFilePaths: async () => {
+    retrieveFilePaths: async (userId) => {
       try {
-        let {data} = await apiClient.get('/uploads')
+        let {data} = await apiClient.get('/uploads',{params:{userId:userId}})
+        console.log('data',data)
         return data
       } catch (error){
         console.log(error)
       }
     },
     retrieveFile:  async(fileName)=>{
-    try{
+    try {
       let response = await apiClient.get(`/images${fileName}`,
       { responseType: 'blob'})
       let resBlob = response.data
       let objectURL = URL.createObjectURL(resBlob);
       let myImage = new Image();
       myImage.src = objectURL;
+      console.log('response',myImage)
+      
       return objectURL
-
     }
     catch(error){
       console.log(error)

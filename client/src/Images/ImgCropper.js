@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import { useAuth0 } from '@auth0/auth0-react';
+
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import apiService from "../Utilities/apiService";
@@ -8,6 +10,8 @@ function ImgCropper(props) {
   const [imgData ] = useState(props.imgData)
   const [cropData, setCropData] = useState("#");
   const [cropper, setCropper] = useState(null);
+  const { user } = useAuth0();
+
   const images = props.images
   const setImages = props.setImages
   const setShow = props.setShow
@@ -21,7 +25,7 @@ function ImgCropper(props) {
       let blobFile = new File([cropperBlob], imgData.filepath , { type: 'image/jpeg' });
       const data = new FormData()
       data.append("uploaded_file", blobFile)
-      let response = await apiService.upload.saveImage(data)
+      let response = await apiService.upload.saveImage(data,user.sub)
       let updatedState = [...images,...response.data.result]
       setImages(Object.assign(updatedState))
       setShow(false)

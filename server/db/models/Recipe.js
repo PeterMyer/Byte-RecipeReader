@@ -28,6 +28,10 @@ const Recipe = db.define('recipe',{
   profileId:{
     type: Sequelize.INTEGER,
     allowNull: true
+  },
+  userId:{
+    type: Sequelize.TEXT,
+    allowNull:false
   }}
 )
 

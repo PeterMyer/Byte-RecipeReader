@@ -7,7 +7,14 @@ const {
 
 router.get('/', async(req,res,next)=>{
     try{
-        const recipe = await Recipe.findAll()
+        let {userId} = req.query;
+        const recipe = await Recipe.findAll(
+            {
+                where:{
+                    userId:userId
+                }
+            }
+        )
         res.json(recipe)
     }
     catch(error){
@@ -55,6 +62,7 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             servings: req.body.servings,
             instructions: req.body.instructions,
             source: req.body.source,
+            userId: req.body.userId
         })
         await Promise.all(
             parsedIngredients.map(async (item)=>{
