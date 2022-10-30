@@ -4,32 +4,12 @@ var cors = require('cors')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-// const { expressjwt: expressJwt } = require('express-jwt');
-// jwks = require('jwks-rsa');
 
 require('dotenv').config();
 
 var app = express();
 app.use(cors())
 
-//setting up jwt for Auth0 
-// var jwtCheck = expressJwt({
-//   secret: jwks.expressJwtSecret({
-//       cache: true,
-//       rateLimit: true,
-//       jwksRequestsPerMinute: 5,
-//       jwksUri: 'https://dev-y3c8dp4tuvq4d5da.us.auth0.com/.well-known/jwks.json'
-// }),
-// audience: 'https://byte-recide-reader.com',
-// issuer: 'https://dev-y3c8dp4tuvq4d5da.us.auth0.com/',
-// algorithms: ['RS256']
-// });
-
-// app.use(jwtCheck);
-
-// app.get('/authorized', function (req, res) {
-//   res.send('Secured Resource');
-// });
 
 //Allow cross site scripting for server
 app.use(function (req, res, next) {
@@ -64,6 +44,10 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+app.get('*',(req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+})
 
 // error handler
 app.use(function(err, req, res, next) {
