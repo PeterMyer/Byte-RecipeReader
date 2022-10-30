@@ -36,7 +36,7 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));}
 
 
 app.use('/api', require('./api'));
-app.use('/images', express.static('server/images'))
+app.use('/images', express.static('server/tmp'))
 
 // app.get('/', (req, res) => {
 //   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));

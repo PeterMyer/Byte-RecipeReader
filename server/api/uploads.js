@@ -10,7 +10,7 @@ const {
 var multer = require('multer')
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './server/images');
+    cb(null, './server/tmp');
   },
   filename: async (req, file, cb, )=> {
     console.log(req.query)
@@ -61,7 +61,7 @@ router.delete('/:id', async (req,res, next)=>{
         id: req.params.id
       }
     })
-    let filePath = "./server/images"+req.body.filePath
+    let filePath = "./server/tmp"+req.body.filePath
     fs.unlink(filePath, (err) => {
       if (err) throw err;
       console.log('file was deleted')})
