@@ -50,14 +50,15 @@ app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({ limit: '50mb',extended: true }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.resolve(__dirname, '../client/build')));
-app.use('/images', express.static('server/images'))
 
-app.use('/api', require('./api/index'));
+app.use('/images', express.static('server/images'))
+app.use('/api', require('./api'));
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
+
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
