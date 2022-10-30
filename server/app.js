@@ -29,8 +29,10 @@ app.use(express.json({limit: '50mb'}));
 
 app.use(express.urlencoded({ limit: '50mb',extended: true }));
 app.use(cookieParser());
+
 // app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+if (process.env.NODE_ENV === 'production') {
+app.use(express.static(path.resolve(__dirname, '../client/build')));}
 
 
 app.use('/api', require('./api'));
