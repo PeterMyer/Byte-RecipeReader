@@ -7,7 +7,6 @@ var logger = require('morgan');
 // const { expressjwt: expressJwt } = require('express-jwt');
 // jwks = require('jwks-rsa');
 
-var routerIndex = require('./api/index');
 require('dotenv').config();
 
 var app = express();
@@ -50,10 +49,15 @@ app.use(express.json({limit: '50mb'}));
 
 app.use(express.urlencoded({ limit: '50mb',extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use('/images', express.static('server/images'))
 
-app.use('/', routerIndex);
+app.use('/api', require('./api/index'));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
