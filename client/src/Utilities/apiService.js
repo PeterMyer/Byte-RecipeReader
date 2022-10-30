@@ -8,14 +8,14 @@ const apiClient = axios.create({
 export default {
   recipe:{
     create: async(payload)=>{
-      try { let response = await apiClient.post('/recipes', payload )
+      try { let response = await apiClient.post('/api/recipes', payload )
         return response
       } catch(error){
         console.log(error)
       }},
     getAll: async(payload)=>{
       try {
-        let response = await apiClient.get('/recipes',{
+        let response = await apiClient.get('/api/recipes',{
           params: {userId: payload}
         })
         console.log(response)
@@ -26,7 +26,7 @@ export default {
     },
     retrieveRecipe: async(id)=>{
       try{
-        let response = await apiClient.get(`/recipes/${id}`)
+        let response = await apiClient.get(`/api/recipes/${id}`)
         return response
       } catch(error){
           console.log(error)
@@ -34,7 +34,7 @@ export default {
     }, 
     update: async(id, payload)=>{
       try{
-        let response = await apiClient.put(`/recipes/${id}`, payload)
+        let response = await apiClient.put(`/api/recipes/${id}`, payload)
         return response
 
       } catch (error){
@@ -43,7 +43,7 @@ export default {
     },
     delete: async(id)=>{
       try{
-        let response = await apiClient.delete(`/recipes/${id}`)
+        let response = await apiClient.delete(`/api/recipes/${id}`)
         return response
       } catch(error){
         console.log(error)
@@ -52,7 +52,7 @@ export default {
     saveNutrition: async (id, payload)=>{
       try{ 
         console.log(payload)
-        let response = await apiClient.post(`/recipes/${id}/nutrition`, payload)
+        let response = await apiClient.post(`/api/recipes/${id}/nutrition`, payload)
         console.log(response)
         return response
       } catch(error){
@@ -65,7 +65,7 @@ export default {
    saveImage:  async (payload,userId) => {
     try {
       console.log('userId')
-      let response = await apiClient.post(`/uploads/`, payload, {
+      let response = await apiClient.post(`/api/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
         },
@@ -78,7 +78,7 @@ export default {
     },
     deleteImage: async (payload) => {
       try {
-        let response = await apiClient.delete(`/uploads/${payload.id}`,{data:payload})
+        let response = await apiClient.delete(`/api/uploads/${payload.id}`,{data:payload})
           console.log('response',response)
           return response
       } catch(error) {
@@ -87,7 +87,7 @@ export default {
     },
     classifyText: async (payload) =>{
       try {
-        let response = await apiClient.post('/classification', {
+        let response = await apiClient.post('/api/classification', {
           headers:{
             'Content-Type' : 'json'
           },
@@ -115,7 +115,7 @@ export default {
   import: {
     retrieveFilePaths: async (userId) => {
       try {
-        let {data} = await apiClient.get('/uploads',{params:{userId:userId}})
+        let {data} = await apiClient.get('/api/uploads',{params:{userId:userId}})
         console.log('data',data)
         return data
       } catch (error){
@@ -140,11 +140,11 @@ export default {
   }},
   nutrition:{
     search: async(id)=>{
-      let response = await apiClient.post(`/nutrition/${id}`)
+      let response = await apiClient.post(`/api/nutrition/${id}`)
       return response
     },
     retrieve: async(id)=>{
-      let response = await apiClient.get(`/nutrition/${id}`)
+      let response = await apiClient.get(`/api/nutrition/${id}`)
       return response
     }
   }
