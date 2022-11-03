@@ -51,7 +51,7 @@ app.use(express.urlencoded({ limit: '50mb',extended: true }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.resolve(__dirname, '../client/build')));
-app.use('/images', express.static('server/images'))
+app.use('/images', express.static('./server/images'))
 
 app.use('/api', require('./api/index'));
 
