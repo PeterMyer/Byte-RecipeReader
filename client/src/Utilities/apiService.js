@@ -1,5 +1,12 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios"
+const S3 = require('aws-sdk/clients/s3');
+const s3 = new S3(({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,              // accessKeyId that is stored in .env file
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+  region: 'us-east-2'
+}));
+
 
 export default {
   recipe:{
@@ -112,7 +119,6 @@ export default {
     retrieveFilePaths: async (userId) => {
       try {
         let {data} = await axios.get('/api/uploads',{params:{userId:userId}})
-        console.log('data',data)
         return data
       } catch (error){
         console.log(error)
@@ -120,15 +126,17 @@ export default {
     },
     retrieveFile:  async(fileName)=>{
     try {
-      let response = await axios.get(`/images${fileName}`,
-      { responseType: 'blob'})
-      let resBlob = response.data
-      let objectURL = URL.createObjectURL(resBlob);
-      let myImage = new Image();
-      myImage.src = objectURL;
-      console.log('response',myImage)
-      
-      return objectURL
+      const params = {
+        Bucket: process.env.REACT_APP_S3_BUCKET_NAME,
+        Key: fileName
+      }
+      s3.getObject(params, function(err, data) {
+        if (err) {
+          console.log(err, err.stack)
+        }else  {   
+          console.log('aws data',data)
+          return data}}
+        )
     }
     catch(error){
       console.log(error)
