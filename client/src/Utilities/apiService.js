@@ -129,24 +129,24 @@ export default {
         console.log(error)
       }
     },
-    retrieveFile:  async(fileName)=>{
+    retrieveFile:  async(filePath)=>{
     try {
-      console.log('bucket:',process.env.REACT_APP_S3_BUCKET_NAME)
-      console.log('file:',fileName)
-      console.log('key:',process.env.REACT_APP_AWS_ACCESS_KEY_ID)
-      console.log('s_key:',process.env.REACT_APP_AWS_SECRET_ACCESS_KEY)
+      // console.log('bucket:',process.env.REACT_APP_S3_BUCKET_NAME)
+      // console.log('file:',fileName)
+      // console.log('key:',process.env.REACT_APP_AWS_ACCESS_KEY_ID)
+      // console.log('s_key:',process.env.REACT_APP_AWS_SECRET_ACCESS_KEY)
 
-      const params = {
-        Bucket: process.env.REACT_APP_S3_BUCKET_NAME,
-        Key: fileName
-      }
-      s3.getObject(params, function(err, data) {
-        if (err) {
-          console.log(err, err.stack)
-        }else  {   
-          console.log('aws data',data)
-          return data}}
-        )
+      // const params = {
+      //   Bucket: process.env.REACT_APP_S3_BUCKET_NAME,
+      //   Key: fileName
+      // }
+      // s3.getObject(params, function(err, data) {
+      //   if (err) {
+      //     console.log(err, err.stack)
+      //   }else  {   
+      //     console.log('aws data',data)
+      //     return data}}
+      //   )
 
       // let response = await apiClient.get(`/images${fileName}`,
       // { responseType: 'blob'})
@@ -156,6 +156,17 @@ export default {
       // myImage.src = objectURL;
       // console.log('response',myImage)
       // return objectURL
+
+      let response = await fetch(filePath,
+        {
+          cache: 'no-cache',
+        })
+      let resBlob = await response.blob()
+      let objectURL = URL.createObjectURL(resBlob);
+      let myImage = new Image();
+      myImage.src = objectURL;
+      console.log('response',myImage)
+      return objectURL
     }
     catch(error){
       console.log(error)
