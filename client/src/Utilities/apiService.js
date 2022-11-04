@@ -2,8 +2,8 @@
 import axios from "axios"
 const S3 = require('aws-sdk/clients/s3');
 const s3 = new S3(({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,             
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,             
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
   region: 'us-east-2'
 }));
 
@@ -115,7 +115,7 @@ export default {
     retrieveFile:  async(fileName)=>{
     try {
       const params = {
-        Bucket: process.env.S3_BUCKET_NAME,
+        Bucket: process.env.REACT_APP_S3_BUCKET_NAME,
         Key: fileName
       }
       s3.getObject(params, function(err, data) {
