@@ -112,19 +112,17 @@ export default {
         console.log(error)
       }
     },
-    retrieveFile:  async(fileName)=>{
+    retrieveFile:  async(filePath)=>{
     try {
-      const params = {
-        Bucket: process.env.REACT_APP_S3_BUCKET_NAME,
-        Key: fileName
-      }
-      s3.getObject(params, function(err, data) {
-        if (err) {
-          console.log(err, err.stack)
-        }else  {   
-          console.log('aws data',data)
-          return data}}
-        )
+      let response = await fetch(filePath,
+        {
+          cache: 'no-cache',
+        })
+      let resBlob = await response.blob()
+      let objectURL = URL.createObjectURL(resBlob);
+      let myImage = new Image();
+      myImage.src = objectURL;
+      return objectURL
     }
     catch(error){
       console.log(error)

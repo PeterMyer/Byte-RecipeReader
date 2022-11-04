@@ -17,9 +17,9 @@ export default function RenderSingleImage(props) {
   },[])
 
   const fetchData = async (filePath) =>{
-      // let response = await apiService.import.retrieveFile(filePath)
-      console.log('aws response', filePath)
-      setImgData({...imgMetaData, 'imgBlob': filePath})
+      let response = await apiService.import.retrieveFile(filePath)
+      console.log('aws response', response)
+      setImgData({...imgMetaData, 'imgBlob': response})
   }
 
   const handleDelete = async ()=>{
