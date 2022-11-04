@@ -13,6 +13,9 @@ const Image = db.define('image',{
   userId:{
     type: Sequelize.TEXT,
     allownull: false
+  },
+  fileName:{
+    type: Sequelize.STRING
   }
 })
 
