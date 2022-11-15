@@ -48,7 +48,7 @@ export default function CreateRecipeImages(){
                     }}>
                     <DndProvider backend={HTML5Backend}>
                         <div id="recipeBuilder">
-                           <div className = "recipeBuilder-dropBaskets">
+                           <div className = "recipeBuilder-drop">
                                 <Basket title="Ingredients"/>
                                 <Basket title="Instructions"/>
                                     <Link
