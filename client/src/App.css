@@ -101,6 +101,16 @@
   max-width: 500px
 }
 
+.userImagesPage{
+  display: flex;
+  flex-direction: row;
+}
+
+.userImagesContent{
+  display: flex;
+  flex-direction: column;
+}
+
 .imagesHeader{
   display: flex;
   flex-direction: row;
@@ -209,7 +219,19 @@
 #recipeBuilder{
   display:flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
+}
+
+.recipeBuilder-dropBaskets{
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.recipebuilder-page-content{
+  display:flex;
+  flex-direction: column;
+  flex: 1
 }
 
 .recipebuilder-userimages{
@@ -218,6 +240,7 @@
   max-height: 650px;
   flex-direction: column;
   align-items: center;
+  margin-left: 10%
 }
 
 .recipebuilder_availableImages{
@@ -249,6 +272,11 @@
 
 }
 
+.verify-text-header{
+  display: flex;
+  flex-direction: row;
+}
+
 .recipeSegment{
   display:flex;
   flex-direction: row;
@@ -263,7 +291,7 @@
 .verifyTextBox{
   border-style: solid;
   border-width: 1px;
-  width:500px;
+  width:450px;
   background-color: white;
 }
 
@@ -275,14 +303,14 @@
 #acceptTextButton{
   text-align: center;
   background-color: darkgreen;
-  position:fixed;
+  position:sticky;
   top:100px;
-  left: 47%;
+  left: 50%;
   z-index:100;
   padding: 10px;
   color: white;
   text-decoration: none;
-  margin: 10px 30px;
+  margin: 15px 30px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
@@ -347,6 +375,17 @@
   width: 70%;
   border: none;
   transition: all 0.5s;
+}
+
+.verify-recipe{
+  display: flex;
+  flex-direction: column;
+  flex: 1
+}
+
+.verify-text-page{
+  display: flex;
+  flex-direction: row;
 }
 
 .recipeform-container{
@@ -540,9 +579,85 @@
   display: flex;
   justify-content: center;}
   
-  
-
-
 .main-content-container {
   margin-top: 100px; /* Add a top margin to avoid content overlay */
+}
+
+/* The sidebar menu */
+.sidebar {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0;
+  left: 0;
+  background-color: lightgrey; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+}
+
+/* The sidebar links */
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: darkgrey;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* The button used to open the sidebar */
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: lightgray;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .5s; /* If you want a transition effect */
+  padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+/* @media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+} */
+
+.sidebar-header{
+  text-align: center;
+  margin: 2px;
+}
+
+.sidebar-content{
+  padding: 10px;
+}
+
+.RecipeBuilderPage{
+  display:flex;
+  flex-direction: row;
 }

@@ -1,10 +1,9 @@
 
-
- 
-export default function Home(){
+ export default function Home(){
     return(
         <>
-        <h1>Welcome To Recipe Reader</h1>
+            <h1>Welcome To Byte</h1>
+            <h2>Recipe Reader</h2>
         </>
     )
 }

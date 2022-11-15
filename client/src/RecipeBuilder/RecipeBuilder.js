@@ -7,9 +7,7 @@ import Basket from "./DropBasket"
 import apiService from '../Utilities/apiService';
 import {Link} from "react-router-dom"
 import { useAuth0 } from '@auth0/auth0-react';
-
-
-// import UserImages from '../Images/DisplayImagesGrid'
+import RecipeBuilderSidebar from "../Sidebar/RecipeBuilderSidebar"
 
 export const Context = React.createContext()
 
@@ -17,7 +15,6 @@ export default function CreateRecipeImages(){
     const [ImgData, setImgData] = useState({})
     const [basketState, setBasketState] =useState([])
     const { user } = useAuth0();
-
 
     useEffect(()=> {
         const fetchImgs = async()=>{
@@ -41,29 +38,32 @@ export default function CreateRecipeImages(){
     },[])
 
     return(
-        <div >
-            <h1>Create Recipe</h1>
-            <Context.Provider value = {{
-                ImgData,setImgData, 
-                basketState, setBasketState,
-                }}>
-                <DndProvider backend={HTML5Backend}>
-                    <div id="recipeBuilder">
-            `           <div>
-                            <Basket title="Ingredients"/>
-                            <Basket title="Instructions"/>
-                                <Link
-                                    to={"/readMany"}
-                                    state= {{basketState}}>
-                                    <button>
-                                        Build
-                                    </button>
-                                </Link>
+        <section className="RecipeBuilderPage" >
+            <RecipeBuilderSidebar/>
+            <div className= "recipebuilder-page-content">
+                <h1>Create Recipe</h1>
+                <Context.Provider value = {{
+                    ImgData,setImgData, 
+                    basketState, setBasketState,
+                    }}>
+                    <DndProvider backend={HTML5Backend}>
+                        <div id="recipeBuilder">
+                           <div className = "recipeBuilder-dropBaskets">
+                                <Basket title="Ingredients"/>
+                                <Basket title="Instructions"/>
+                                    <Link
+                                        to={"/readMany"}
+                                        state= {{basketState}}>
+                                        <button>
+                                            Build
+                                        </button>
+                                    </Link>
+                            </div>
+                            <UserImages title="Selections"/>
                         </div>
-                        <UserImages title="Selections"/>
-                    </div>
-                </DndProvider>`
-            </Context.Provider>
-        </div>
+                    </DndProvider>
+                </Context.Provider>
+            </div>
+        </section>
     )
 }

@@ -3,6 +3,7 @@ import React, { useState, createContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import { convertToRaw} from 'draft-js';
 import {parseEditorContentStates} from '../Utilities/helperFunctions'
+import VerifySidebar from "../Sidebar/VerifySideBar";
 
 export const Context = React.createContext()
 
@@ -21,16 +22,17 @@ export default function VerifyImgText(props){
         navigate('/newRecipeForm',{state: {'recipeData':parsedContent}})
     }
 
-
     return(
-        <div className = "verify-recipe">
-            <Context.Provider value = {{
+        <div className = "verify-text-page">
+            <VerifySidebar/>
+            <div className = "verify-recipe">
+                <Context.Provider value = {{
                 parentEditorState,setParentEditorState
                 }}>
-                <header > 
+                <div className = "verify-text-header">
+                    <h1>Verify Recipe Results</h1>
                     <button id="acceptTextButton" onClick={(handleAccept)}>Accept Results</button>
-                </header>
-                <h1>Verify Recipe Results</h1>
+                </div>
                 <h2>Instructions</h2>
                 <div className = "recipeSegment-container">
                     {recipeData.filter((imgObj)=>imgObj.location==="Instructions").map((imgObj)=>{
@@ -54,6 +56,7 @@ export default function VerifyImgText(props){
                             </div>)})}
                 </div>
             </Context.Provider>
+        </div>
         </div>
     )
 }
