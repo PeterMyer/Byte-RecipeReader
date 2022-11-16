@@ -18,7 +18,6 @@ export default function RenderSingleImage(props) {
 
   const fetchData = async (filePath) =>{
       let response = await apiService.import.retrieveFile(filePath)
-      console.log('response', response)
       setImgData({...imgMetaData, 'imgBlob': response})
   }
 

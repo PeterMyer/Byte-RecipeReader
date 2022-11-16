@@ -2,27 +2,23 @@
 import axios from "axios"
 const S3 = require('aws-sdk/clients/s3');
 const s3 = new S3(({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,              // accessKeyId that is stored in .env file
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,             
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
   region: 'us-east-2'
 }));
 
 
-const apiClient = axios.create({
-  baseURL: 'http://localhost:3001'
-})
-
 export default {
   recipe:{
     create: async(payload)=>{
-      try { let response = await apiClient.post('/api/recipes', payload )
+      try { let response = await axios.post('/api/recipes', payload )
         return response
       } catch(error){
         console.log(error)
       }},
     getAll: async(payload)=>{
       try {
-        let response = await apiClient.get('/api/recipes',{
+        let response = await axios.get('/api/recipes',{
           params: {userId: payload}
         })
         console.log(response)
@@ -33,7 +29,7 @@ export default {
     },
     retrieveRecipe: async(id)=>{
       try{
-        let response = await apiClient.get(`/api/recipes/${id}`)
+        let response = await axios.get(`/api/recipes/${id}`)
         return response
       } catch(error){
           console.log(error)
@@ -41,7 +37,7 @@ export default {
     }, 
     update: async(id, payload)=>{
       try{
-        let response = await apiClient.put(`/api/recipes/${id}`, payload)
+        let response = await axios.put(`/api/recipes/${id}`, payload)
         return response
 
       } catch (error){
@@ -50,7 +46,7 @@ export default {
     },
     delete: async(id)=>{
       try{
-        let response = await apiClient.delete(`/api/recipes/${id}`)
+        let response = await axios.delete(`/api/recipes/${id}`)
         return response
       } catch(error){
         console.log(error)
@@ -58,9 +54,7 @@ export default {
     },
     saveNutrition: async (id, payload)=>{
       try{ 
-        console.log(payload)
-        let response = await apiClient.post(`/api/recipes/${id}/nutrition`, payload)
-        console.log(response)
+        let response = await axios.post(`/api/recipes/${id}/nutrition`, payload)
         return response
       } catch(error){
           console.log(error)
@@ -71,8 +65,7 @@ export default {
   upload: {
    saveImage:  async (payload,userId) => {
     try {
-      console.log('userId')
-      let response = await apiClient.post(`/api/uploads/`, payload, {
+      let response = await axios.post(`/api/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
         },
@@ -85,7 +78,7 @@ export default {
     },
     deleteImage: async (payload) => {
       try {
-        let response = await apiClient.delete(`/api/uploads/${payload.id}`,{data:payload})
+        let response = await axios.delete(`/api/uploads/${payload.id}`,{data:payload})
           console.log('response',response)
           return response
       } catch(error) {
@@ -94,7 +87,7 @@ export default {
     },
     classifyText: async (payload) =>{
       try {
-        let response = await apiClient.post('/api/classification', {
+        let response = await axios.post('/api/classification', {
           headers:{
             'Content-Type' : 'json'
           },
@@ -104,26 +97,12 @@ export default {
         } catch(error){
           console.log(error)
         }
-    },
-    // searchUSDA: async(ingredient)=>{
-    //   try {
-    //   // let headers= {'api_key': process.env.REACT_APP_USDA_API_KEY}
-    //   let params = {'query': ingredient}
-    //   let response = await apiClient.post(
-    //   `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.REACT_APP_USDA_API_KEY}`,
-    //   params
-    //   )
-    //   return response
-    //   } catch(error){
-    //     console.log(error)
-    //   }
-    // }
+    }
   },
   import: {
     retrieveFilePaths: async (userId) => {
       try {
-        let {data} = await apiClient.get('/api/uploads',{params:{userId:userId}})
-        console.log('filePaths',data)
+        let {data} = await axios.get('/api/uploads',{params:{userId:userId}})
         return data
       } catch (error){
         console.log(error)
@@ -131,32 +110,6 @@ export default {
     },
     retrieveFile:  async(filePath)=>{
     try {
-      // console.log('bucket:',process.env.REACT_APP_S3_BUCKET_NAME)
-      // console.log('file:',fileName)
-      // console.log('key:',process.env.REACT_APP_AWS_ACCESS_KEY_ID)
-      // console.log('s_key:',process.env.REACT_APP_AWS_SECRET_ACCESS_KEY)
-
-      // const params = {
-      //   Bucket: process.env.REACT_APP_S3_BUCKET_NAME,
-      //   Key: fileName
-      // }
-      // s3.getObject(params, function(err, data) {
-      //   if (err) {
-      //     console.log(err, err.stack)
-      //   }else  {   
-      //     console.log('aws data',data)
-      //     return data}}
-      //   )
-
-      // let response = await apiClient.get(`/images${fileName}`,
-      // { responseType: 'blob'})
-      // let resBlob = response.data
-      // let objectURL = URL.createObjectURL(resBlob);
-      // let myImage = new Image();
-      // myImage.src = objectURL;
-      // console.log('response',myImage)
-      // return objectURL
-
       let response = await fetch(filePath,
         {
           cache: 'no-cache',
@@ -165,7 +118,6 @@ export default {
       let objectURL = URL.createObjectURL(resBlob);
       let myImage = new Image();
       myImage.src = objectURL;
-      console.log('response',myImage)
       return objectURL
     }
     catch(error){
@@ -174,11 +126,11 @@ export default {
   }},
   nutrition:{
     search: async(id)=>{
-      let response = await apiClient.post(`/api/nutrition/${id}`)
+      let response = await axios.post(`/api/nutrition/${id}`)
       return response
     },
     retrieve: async(id)=>{
-      let response = await apiClient.get(`/api/nutrition/${id}`)
+      let response = await axios.get(`/api/nutrition/${id}`)
       return response
     }
   }

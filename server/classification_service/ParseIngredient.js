@@ -8,7 +8,7 @@ const ParseIngredient= async(req, res, next)=>{
     let options = {
         mode:'json',
         scriptPath: './server/classification_service',
-        pythonPath: '/opt/homebrew/bin/python',
+        // pythonPath: '/opt/homebrew/bin/python',
         pythonOptions: ['-u'],
         args: [req.body.ingredients]
     }
