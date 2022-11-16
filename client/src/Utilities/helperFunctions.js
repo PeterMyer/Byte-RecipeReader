@@ -4,7 +4,8 @@
   // ref: https://www.geeksforgeeks.org/how-to-convert-data-uri-to-file-then-append-to-formdata/
 
 export function blobCreationFromURL(inputURI) {
-  var byteString = atob(inputURI.split(',')[1]);
+  console.log(inputURI)
+  var byteString = window.atob(inputURI.split(',')[1]);
   var mimeString = inputURI.split(',')[0].split(':')[1].split(';')[0]
   var ab = new ArrayBuffer(byteString.length);
   var ia = new Uint8Array(ab);

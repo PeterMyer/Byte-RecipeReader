@@ -14,7 +14,6 @@ export default function UserImages () {
 
 
   const getImages = async() => {
-    console.log(user.sub)
     let imgs = await apiService.import.retrieveFilePaths(user.sub)
     setImages(imgs)
     }
