@@ -263,6 +263,8 @@ padding: 5px;
 .recipebuilder_availableImages{
   display:flex;
   max-height: 100%;
+  min-height: 50%;
+  width: 100%;
   flex-flow: row wrap;
   justify-content: center;
   overflow: scroll;
@@ -275,10 +277,11 @@ padding: 5px;
 
 .basket{
   border-style: solid;
-  height: 250px;
+  min-height: 200px;
   width:500px;
   display:flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 
@@ -349,7 +352,6 @@ padding: 5px;
   background:#f5f5f5
 }
 
-
 #tesseract-progressbar {
   background-color: #f3f3f3;
   border: 0;
@@ -381,8 +383,8 @@ padding: 5px;
   width: 70%;
   border: none;
   transition: all 0.5s;
-
 }
+
 #tesseract-progressbar::-moz-progress-bar {
   background-color: #f3f3f3;
   border: 0;
@@ -586,7 +588,6 @@ padding: 5px;
   flex-direction: row;
   justify-content: space-between;
   max-width: 50%;}
-
 
 .nutrient-name{
   display: flex;

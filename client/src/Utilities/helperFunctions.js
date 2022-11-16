@@ -1,10 +1,10 @@
 
+import {EditorState,ContentState} from 'draft-js'
 
 // Create Blob file from URL
   // ref: https://www.geeksforgeeks.org/how-to-convert-data-uri-to-file-then-append-to-formdata/
 
 export function blobCreationFromURL(inputURI) {
-  console.log(inputURI)
   var byteString = window.atob(inputURI.split(',')[1]);
   var mimeString = inputURI.split(',')[0].split(':')[1].split(';')[0]
   var ab = new ArrayBuffer(byteString.length);
@@ -83,6 +83,18 @@ export function calculateIngredientNutrition(ingredient, nutritionObj, defaultWe
   }
   // console.log('Calculated Ingredient Nutrition',calculatedNutrition)
   // console.log('Current Recipe Nutrition',recipeNutrition)
+}
 
+export function createParentEditorState(recipeData){
+  let editorStateObj = {}
 
+  recipeData.forEach((recipeObj)=>{
+    const recipeId = recipeObj.id
+    const editorState = EditorState.createWithContent(ContentState.createFromText(recipeObj.OcrResult.data.text))
+    const localEditorObj = {[recipeId]:editorState}
+
+    editorStateObj= {...editorStateObj,...localEditorObj}
+  })
+
+  return editorStateObj
 }

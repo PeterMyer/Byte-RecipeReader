@@ -58,9 +58,7 @@ export default {
     },
     saveNutrition: async (id, payload)=>{
       try{ 
-        console.log(payload)
         let response = await apiClient.post(`/api/recipes/${id}/nutrition`, payload)
-        console.log(response)
         return response
       } catch(error){
           console.log(error)
@@ -71,7 +69,6 @@ export default {
   upload: {
    saveImage:  async (payload,userId) => {
     try {
-      console.log('userId')
       let response = await apiClient.post(`/api/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
@@ -86,7 +83,6 @@ export default {
     deleteImage: async (payload) => {
       try {
         let response = await apiClient.delete(`/api/uploads/${payload.id}`,{data:payload})
-          console.log('response',response)
           return response
       } catch(error) {
           console.log(error)
@@ -105,19 +101,6 @@ export default {
           console.log(error)
         }
     },
-    // searchUSDA: async(ingredient)=>{
-    //   try {
-    //   // let headers= {'api_key': process.env.REACT_APP_USDA_API_KEY}
-    //   let params = {'query': ingredient}
-    //   let response = await apiClient.post(
-    //   `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.REACT_APP_USDA_API_KEY}`,
-    //   params
-    //   )
-    //   return response
-    //   } catch(error){
-    //     console.log(error)
-    //   }
-    // }
   },
   import: {
     retrieveFilePaths: async (userId) => {
@@ -131,32 +114,6 @@ export default {
     },
     retrieveFile:  async(filePath)=>{
     try {
-      // console.log('bucket:',process.env.REACT_APP_S3_BUCKET_NAME)
-      // console.log('file:',fileName)
-      // console.log('key:',process.env.REACT_APP_AWS_ACCESS_KEY_ID)
-      // console.log('s_key:',process.env.REACT_APP_AWS_SECRET_ACCESS_KEY)
-
-      // const params = {
-      //   Bucket: process.env.REACT_APP_S3_BUCKET_NAME,
-      //   Key: fileName
-      // }
-      // s3.getObject(params, function(err, data) {
-      //   if (err) {
-      //     console.log(err, err.stack)
-      //   }else  {   
-      //     console.log('aws data',data)
-      //     return data}}
-      //   )
-
-      // let response = await apiClient.get(`/images${fileName}`,
-      // { responseType: 'blob'})
-      // let resBlob = response.data
-      // let objectURL = URL.createObjectURL(resBlob);
-      // let myImage = new Image();
-      // myImage.src = objectURL;
-      // console.log('response',myImage)
-      // return objectURL
-
       let response = await fetch(filePath,
         {
           cache: 'no-cache',
@@ -165,7 +122,6 @@ export default {
       let objectURL = URL.createObjectURL(resBlob);
       let myImage = new Image();
       myImage.src = objectURL;
-      console.log('response',myImage)
       return objectURL
     }
     catch(error){
