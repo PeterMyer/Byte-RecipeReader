@@ -8,7 +8,7 @@ import {blobCreationFromURL} from '../Utilities/helperFunctions'
 
 function ImgCropper(props) {
   const [imgData ] = useState(props.imgData)
-  const [cropData, setCropData] = useState("#");
+  const [cropData, setCropData] = useState(null);
   const [cropper, setCropper] = useState(null);
   const { user } = useAuth0();
 
@@ -18,14 +18,14 @@ function ImgCropper(props) {
 
  const getCropData = async () => {
     if (cropper !== null) {
-      console.log("here")
-      setCropData(cropper.getCroppedCanvas().toDataURL('image/jpeg'))
+      const croppedImg = cropper.getCroppedCanvas().toDataURL('image/jpeg')
+      setCropData(croppedImg)
 
-      let cropperBlob = blobCreationFromURL(cropData)
+      let cropperBlob = blobCreationFromURL(croppedImg)
       let blobFile = new File([cropperBlob], imgData.filepath , { type: 'image/jpeg' });
       const data = new FormData()
       data.append("uploaded_file", blobFile)
-      let response = await apiService.upload.saveImage(data,user.sub)
+      let response = await apiService.upload.saveImage(data, user.sub)
       let updatedState = [...images,...response.data.result]
       setImages(Object.assign(updatedState))
       setShow(false)
@@ -59,7 +59,6 @@ function ImgCropper(props) {
           {cropper === null ? null: (<button onClick={()=>cropper.setDragMode("crop")} > Crop </button>)}
           {cropper === null ? null: (<button onClick={()=>cropper.zoom(0.1)} > Zoom In </button>)}
           {cropper === null ? null: (<button onClick={()=>cropper.zoom(-0.1)} > Zoom Out </button>)}
-
         </div>
       </div>
     )
