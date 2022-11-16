@@ -54,9 +54,7 @@ export default {
     },
     saveNutrition: async (id, payload)=>{
       try{ 
-        console.log(payload)
         let response = await axios.post(`/api/recipes/${id}/nutrition`, payload)
-        console.log(response)
         return response
       } catch(error){
           console.log(error)
@@ -67,7 +65,6 @@ export default {
   upload: {
    saveImage:  async (payload,userId) => {
     try {
-      console.log('userId')
       let response = await axios.post(`/api/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
@@ -106,7 +103,6 @@ export default {
     retrieveFilePaths: async (userId) => {
       try {
         let {data} = await axios.get('/api/uploads',{params:{userId:userId}})
-        console.log('filePaths',data)
         return data
       } catch (error){
         console.log(error)

@@ -3,6 +3,7 @@ import apiService from "../Utilities/apiService";
 import RenderSingleImage from "./RenderSingleImage"
 import ImgModal from './ImgModal'
 import { useAuth0 } from '@auth0/auth0-react';
+import Sidebar from "../Sidebar/ImagesSidebar";
 
 
 export default function UserImages () {
@@ -13,7 +14,6 @@ export default function UserImages () {
 
 
   const getImages = async() => {
-    console.log(user.sub)
     let imgs = await apiService.import.retrieveFilePaths(user.sub)
     setImages(imgs)
     }
@@ -27,8 +27,10 @@ export default function UserImages () {
       setShow(true)}
 
     return(
-      <section>
-        <div className="imagesHeader">
+      <section className = "userImagesPage">
+        <Sidebar/>
+        <div className = "userImagesContent">
+          <div className="imagesHeader">
           <h1>Your Images</h1>
           <button onClick={()=> handleUpload()}>Add Image</button>
           <ImgModal 
@@ -64,6 +66,7 @@ export default function UserImages () {
           <div>
             No Images
           </div>}
+      </div>
       </div>
     </section>
   )}

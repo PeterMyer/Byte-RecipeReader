@@ -8,7 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 
 export default function DisplayRecipes(){
-    const [recipes, setRecipes] = useState(null)
+    const [recipes, setRecipes] = useState([])
     const { user } = useAuth0();
 
 
@@ -34,7 +34,7 @@ export default function DisplayRecipes(){
         <section>
             <h1>Your Recipes</h1>
             <div className = "allRecipesContainer" >
-                {recipes !==null ? 
+                {recipes.length !==0 ? 
                     recipes.map((recipe)=>{
                         return(
                             <div className = "singleRecipeContainer" >
@@ -51,7 +51,7 @@ export default function DisplayRecipes(){
                             )
                     }):
                 <div>
-                    No Recipes
+                    You have no recipes! To get started go to the Images page and upload pictures of your favorite recipe ingredients and instructions!
                 </div>
                 }
             </div>
