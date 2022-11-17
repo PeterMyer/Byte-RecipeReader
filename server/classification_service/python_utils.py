@@ -77,6 +77,7 @@ def format_ingredient_output(tagger_output, display=False): #USED
     for token, tag in tagger_output:
     # turn B-NAME/123 back into "name"
         tag = re.sub(r'^[BI]\-', "", tag).lower() #Good
+        token = utils.unclump(token)
 
         # ---- DISPLAY ----
         # build a structure which groups each token by its tag, so we can

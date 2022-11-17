@@ -9,12 +9,12 @@ export default function VerifyTextEditor(props){
     const parentEditorState = data.parentEditorState
     const recipeId = props.recipeId
 
-    const updateEditorState =()=>{
-        const localEditorObj = {[recipeId]:editorState}
-        setParentEditorState({...parentEditorState,...localEditorObj})
-    }
 
     useEffect(()=>{
+        const updateEditorState = ()=>{
+            const localEditorObj = {[recipeId]:editorState}
+            setParentEditorState({...parentEditorState,...localEditorObj})
+        }
         updateEditorState()
     },[editorState])
 

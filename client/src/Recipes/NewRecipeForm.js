@@ -33,13 +33,12 @@ export default function RecipeForm(){
         let recipePayload = {
             name: data.recipeName,
             servings: data.servings,
-            ingredients: JSON.stringify(data.Ingredients.map((ingredient)=>ingredient.value)),
+            ingredients: JSON.stringify(data.Ingredients.map((ingredient)=>ingredient.value.toLowerCase())),
             instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
             nutrition: data.nutrition,
             userId: user.sub
         }
         let response = await apiService.recipe.create(recipePayload)
-        console.log('response',response)
         navigate(`/recipe/${response.data.id}`)
     };
 

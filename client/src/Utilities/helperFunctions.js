@@ -1,10 +1,10 @@
 
+import {EditorState,ContentState} from 'draft-js'
 
 // Create Blob file from URL
   // ref: https://www.geeksforgeeks.org/how-to-convert-data-uri-to-file-then-append-to-formdata/
 
 export function blobCreationFromURL(inputURI) {
-  console.log(inputURI)
   var byteString = window.atob(inputURI.split(',')[1]);
   var mimeString = inputURI.split(',')[0].split(':')[1].split(';')[0]
   var ab = new ArrayBuffer(byteString.length);
@@ -64,25 +64,52 @@ export function splitFraction(qty){
   return qty
 }
 
+export function splitMixedNumber(qty){
+  let splitNumber = qty.split(' ')
+  let wholeNum = parseInt(splitNumber[0])
+  let fraction = splitFraction(splitNumber[1])
+  qty = wholeNum + fraction
+  return qty
+}
+
+export function handleQuantityInts(qty){
+  if(qty.includes(' ')){
+    qty = splitMixedNumber(qty)
+    return qty
+  } else if (qty.includes('/')){
+    qty = splitFraction(qty)
+    return qty
+  } else {
+  return qty}
+}
+
 export function calculateIngredientNutrition(ingredient, nutritionObj, defaultWeight, servings, recipeNutrition,setRecipeNutrition){
   let calculatedRecipeNutrition = recipeNutrition
   let calculatedNutrition = {}
-  const quantity = ingredient.measurementQuantity.qtyAmount? splitFraction(ingredient.measurementQuantity.qtyAmount):1
+
+  const quantity = ingredient.measurementQuantity.qtyAmount? handleQuantityInts(ingredient.measurementQuantity.qtyAmount):1
   let unitGramWeight = ingredient.measurementUnit.unitGrams? ingredient.measurementUnit.unitGrams :defaultWeight
-  // console.log('ingredient:',ingredient.normText)
 
   for(let nutrient in nutritionObj){
     let scaledGramWeight = unitGramWeight*quantity
     calculatedNutrition[nutrient] = ((scaledGramWeight/100)*nutritionObj[nutrient])/servings 
-    // console.log('recipe Nutrition addition:',nutrient,':',recipeNutrition[nutrient])
-    // console.log('post Nutrition addition:',nutrient,':',recipeNutrition[nutrient])
   }
 
   for(let nutrient in calculatedNutrition){
     calculatedRecipeNutrition[nutrient] += calculatedNutrition[nutrient]
   }
-  // console.log('Calculated Ingredient Nutrition',calculatedNutrition)
-  // console.log('Current Recipe Nutrition',recipeNutrition)
+}
 
+export function createParentEditorState(recipeData){
+  let editorStateObj = {}
 
+  recipeData.forEach((recipeObj)=>{
+    const recipeId = recipeObj.id
+    const editorState = EditorState.createWithContent(ContentState.createFromText(recipeObj.OcrResult.data.text))
+    const localEditorObj = {[recipeId]:editorState}
+
+    editorStateObj= {...editorStateObj,...localEditorObj}
+  })
+
+  return editorStateObj
 }

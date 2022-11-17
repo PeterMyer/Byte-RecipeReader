@@ -54,7 +54,6 @@ export default function RecipeForm(){
             deletedIngredients: [...toDelete,...deleted],
             changedFormat: formatChanges,
         }
-        console.log('recipePayload', recipePayload)
         let response = await apiService.recipe.update(id,recipePayload)
         navigate(`/recipe/${response.data.id}`)
     };
