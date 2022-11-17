@@ -66,19 +66,18 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
         })
         await Promise.all(
             parsedIngredients.map(async (item)=>{
-                const {
+                let {
                     name = null,
                     qty=null,
                     unit = null,
                     comment = null,
-                    input = null
+                    input = "no input"
                     } = item[0]
 
-
-                if(qty.includes('/')){
-                    let splitFraction = qty.split('/')
-                    qty = parseInt(splitFraction[0],10)/parseInt(splitFraction[1],10)
-                }
+                // if(qty && qty.includes('/')){
+                //     let splitFraction = qty.split('/')
+                //     qty = parseInt(splitFraction[0],10)/parseInt(splitFraction[1],10)
+                // }
                 
                 let [component, componentCreated] = await Component.findOrCreate({
                     where:{
@@ -92,7 +91,7 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
 
                 let [itemUnit, itemUnitCreated] = await MeasurementUnit.findOrCreate({
                     where:{
-                        unitDescription: unit.toLowerCase()
+                        unitDescription: unit
                     }})
 
                 let [itemComment, itemCommentCreated] = await RecipeComment.findOrCreate({
@@ -164,18 +163,15 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
         if(parsedIngredients.length>0){
         await Promise.all(
             parsedIngredients.map(async (item)=>{
-                const {
+                let {
                     name = null,
                     qty=null,
                     unit = null,
                     comment = null,
-                    input = null
+                    input = "no input"
                     } = item[0]
-
-                if(qty.includes('/')){
-                    let splitFraction = qty.split('/')
-                    qty = parseInt(splitFraction[0],10)/parseInt(splitFraction[1],10)
-                }
+                
+                 console.log('item:',item)   
 
                 let [component, componentCreated] = await Component.findOrCreate({
                     where:{
