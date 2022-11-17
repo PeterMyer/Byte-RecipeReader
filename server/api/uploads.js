@@ -26,8 +26,8 @@ const storage = multer.memoryStorage({
 const upload = multer({ storage: storage });
 
 const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,             
-    secretAccessKey: process.env.AWS_ACCESS_KEY_SECRET,
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,             
+    secretAccessKey: process.env.REACT_APP_AWS_ACCESS_KEY_SECRET,
     region: 'us-east-2'
 })
 
@@ -39,7 +39,7 @@ router.post('/', upload.single('uploaded_file'), async(req, res) => {
 
 
         const params = {
-            Bucket: process.env.S3_BUCKET_NAME,   
+            Bucket: process.env.REACT_APP_S3_BUCKET_NAME,   
             Key: newFilepath,           
             Body:req.file.buffer,                   
             ACL:"public-read-write",                 
