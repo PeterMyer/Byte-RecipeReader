@@ -20,7 +20,7 @@
                 <div className="landingPage-icon-row">
                     <div className="landingPage-icon-container">
                         <h3>Parse Text From Images</h3>
-                        <img width = "250px" src="magnifyIcon.png"/>
+                        <img width = "250px" src="MagnifyIcon.png"/>
                     </div>
                     <div className="landingPage-icon-container">
                         <h3>Generate <br/> Recipe and Nutrition Info</h3>
