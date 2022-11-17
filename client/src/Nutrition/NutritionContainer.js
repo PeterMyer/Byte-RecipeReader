@@ -78,6 +78,12 @@ export default function NutritionContainer(props){
             {nutritionData?ingredients.map((ingredient,index)=>{
                 let ingredientNutrition = {}
                 let selectedFood = nutritionData[index].foods[0]
+                let defaultGramWeight = selectedFood.foodMeasures.length > 0 ?
+                    selectedFood.foodMeasures[selectedFood.foodMeasures.length-1].gramWeight: 
+                    0
+                console.log("ingredient",ingredient)
+
+                console.log("selectedFood",selectedFood)
                 return(
                     <>
                         {Object.values(selectedFood.foodNutrients)
@@ -101,7 +107,7 @@ export default function NutritionContainer(props){
                         {calculateIngredientNutrition(
                             ingredient,
                             ingredientNutrition,
-                            selectedFood.foodMeasures[selectedFood.foodMeasures.length-1].gramWeight,
+                            defaultGramWeight,
                             servings,
                             recipeNutrition
                             )}

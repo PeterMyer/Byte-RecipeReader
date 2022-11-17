@@ -64,11 +64,30 @@ export function splitFraction(qty){
   return qty
 }
 
+export function splitMixedNumber(qty){
+  let splitNumber = qty.split(' ')
+  let wholeNum = parseInt(splitNumber[0])
+  let fraction = splitFraction(splitNumber[1])
+  qty = wholeNum + fraction
+  return qty
+}
+
+export function handleQuantityInts(qty){
+  if(qty.includes(' ')){
+    qty = splitMixedNumber(qty)
+    return qty
+  } else if (qty.includes('/')){
+    qty = splitFraction(qty)
+    return qty
+  } else {
+  return qty}
+}
+
 export function calculateIngredientNutrition(ingredient, nutritionObj, defaultWeight, servings, recipeNutrition,setRecipeNutrition){
   let calculatedRecipeNutrition = recipeNutrition
   let calculatedNutrition = {}
-  
-  const quantity = ingredient.measurementQuantity.qtyAmount? splitFraction(ingredient.measurementQuantity.qtyAmount):1
+
+  const quantity = ingredient.measurementQuantity.qtyAmount? handleQuantityInts(ingredient.measurementQuantity.qtyAmount):1
   let unitGramWeight = ingredient.measurementUnit.unitGrams? ingredient.measurementUnit.unitGrams :defaultWeight
 
   for(let nutrient in nutritionObj){
