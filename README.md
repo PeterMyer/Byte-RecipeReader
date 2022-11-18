@@ -46,7 +46,7 @@ Images are processed in order via [Tesseract.js](https://tesseract.projectnaptha
 These settings are sufficient for the basic use case of recognizing recipe text. However, the problem of sections parts of a recipe discussed below may have Tesseract solutions which can be explored in the future.
 
 #### Challenge: Understanding Parts of Recipe
-Recipe texts come in a non-standardized format with various potential sections including ingredients, instructions, commentary, and additional notes. These sections can be inside and between eachother causing the OCR to become confused aobut where one section ends and another begins. 
+Recipe texts come in a non-standardized format with various potential sections including ingredients, instructions, commentary, and additional notes. These sections can be inside and between each other leading to confused output. 
 
 The initial version of Byte explored identification of ingredients and instructions via training a [Brain.js](https://brain.js.org/#/) neural network model. While intital results were promising they did not approach a reliablility that would remove regular user input and confirmation. 
 
@@ -88,10 +88,10 @@ In its current state Byte is largely an MVP and has multiple opportunities for i
 ### OCR Selection UI
 The process of Upload Img > Crop Img > Drag and Drop Img > OCR > Verify > Recipe Form > Save is extremely clunkly and requires multiple pages. In future iterations of Byte I intend to streamline this process and ideally reduce to one page.
 
-## Nutritional Info Selection
+### Nutritional Info Selection
 Byte defaults to the first result from the USDA API. In a future version users should be able to see what food options are available, select the one they think matches each ingredient best, and then Byte should update the nutritional estimate based on their selection.
 
-## CSS Revamp
+### CSS Revamp
 In its current state Byte has fairly simple design attributes. The whole of the app's CSS should be revamped to by more stylish.
 
 
