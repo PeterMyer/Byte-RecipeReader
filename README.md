@@ -66,7 +66,7 @@ On save, this recipe form is converted to a JSON object and sent to the backend 
 ### Nutrition Data
 Recipe recognition via OCR proved to be an interesting problem, but is also a growing novelty offered by several cookbook apps such as the two previously mentioned, in a method similar to my own implementation. For an additional challenge I wanted to do something interesting with the recipes I had saved that was not as common in other cookbook apps. 
 
-For this reason I chose generating an estimate of the recipe nutritional information, which some web services offer, but not infrequently cookbook web apps.
+For this reason I chose generating an estimate of the recipe nutritional information, which some web services offer, but infrequently by cookbook web apps.
 
 #### Ingredient Parsing
 The first challenge to calculating nutritional data is parsing out the individual parts of a recipes ingredients. Each ingredient is made of several parts including the food item they are using, a numeric quantity value, the unit by which they are measured (cups/tablespoons), and additional commentary or notes. In order to calculate the nutritional info Byte needs to separate the food item, quantity, and unit into individual components of the listed ingredient. 
