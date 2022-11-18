@@ -71,8 +71,28 @@ For this reason I chose generating an estimate of the recipe nutritional informa
 #### Ingredient Parsing
 The first challenge to calculating nutritional data is parsing out the individual parts of a recipes ingredients. Each ingredient is made of several parts including the food item they are using, a numeric quantity value, the unit by which they are measured (cups/tablespoons), and additional commentary or notes. In order to calculate the nutritional info Byte needs to separate the food item, quantity, and unit into individual components of the listed ingredient. 
 
-Luckily this turns out to be a alreaady worked on problem. In 2015 the New York Times released the implementation of their [CRF tagger model](https://github.com/nytimes/ingredient-phrase-tagger) they use for their own cooking website. The full article is available [here](https://archive.nytimes.com/open.blogs.nytimes.com/2015/04/09/extracting-structured-data-from-recipes-using-conditional-random-fields/). This tagger is capable of splitting an ingredient line into NAME, UNIT, QUANTITY, COMMENT and OTHER, with admirable accuracy. 
+Luckily this turns out to be an alreaady worked problem. In 2015 The New York Times released the implementation of the [CRF tagger model](https://github.com/nytimes/ingredient-phrase-tagger) they use for their own cooking website. The full article is available [here](https://archive.nytimes.com/open.blogs.nytimes.com/2015/04/09/extracting-structured-data-from-recipes-using-conditional-random-fields/). This tagger is capable of splitting an ingredient line into NAME, UNIT, QUANTITY, COMMENT and OTHER, with admirable accuracy. 
 
+A hurdle remained as the original tagger was written in C++. However, in 2017 github user manugarri had release a Python [juypter notebook implementation](https://gist.github.com/manugarri/0fdd4e52f074d61d633ca23eee6da052) of the NYT code along with [a blog article](http://blog.manugarri.com/nyt_tagger/) explaining their approach. Working from there I was able adapt my own updated Python code, which is saved as middleware on the Byte server. 
+
+Whenever a recipe is saved to the Byte DB the listed ingredients are parsed by the Python middleware. The parsed ingredient food name, unit, quantity, and comments are saved to seperate tables and linked by a Ingredient table, which contains a normalized version of the original text. This structure enables easy calculations as well as queries for recipes that contain the same food items, or comments.
+
+#### Calculating Nutrition
+When a user clicks the "Get Nutrition" button Byte makes a POST request to the USDA FoodData Central database for each ingredient name related to the current recipe. The API will respond with a list of matching food items ranked by best match. Each returned food item contains a plethora of information, including serving size gram weight and nutrition info.
+
+Currently, Byte takes a naive approach and automatically selects the first "best match" that the USDA returns. The 13 nutritional values, per 100 grams, common on food labels are retrieved for that item and then scaled using the weight in grams of the ingredient serving size. For instance, a tablespoon = 4 grams. Serving size weights are already saved in Byte's unit db for quick lookup and conversions. In case a measure is not found, such as "slice", the USDA default serving's gram weight is used. The scaled nutrition is then multiplied by quantity and summed for each ingredient giving the total nutrition for the full recipe. Finally, the data is saved to a table in the database for future reference in the recipe file.
+
+## Future Iterations
+In its current state Byte is largely an MVP and has multiple opportunities for improvement. Below is a list of some future improvements I intend to make on the project.
+
+### OCR Selection UI
+The process of Upload Img > Crop Img > Drag and Drop Img > OCR > Verify > Recipe Form > Save is extremely clunkly and requires multiple pages. In future iterations of Byte I intend to streamline this process and ideally reduce to one page.
+
+## Nutritional Info Selection
+Byte defaults to the first result from the USDA API. In a future version users should be able to see what food options are available, select the one they think matches each ingredient best, and then Byte should update the nutritional estimate based on their selection.
+
+## CSS Revamp
+In its current state Byte has fairly simple design attributes. The whole of the app's CSS should be revamped to by more stylish.
 
 
 
