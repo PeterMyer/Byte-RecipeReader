@@ -43,7 +43,7 @@ The seperate drop targets allow Byte to understand what methods it should use to
 #### Tesseract
 Images are processed in order via [Tesseract.js](https://tesseract.projectnaptha.com/). Tesseract implementation is straight forward with two workers organized by a scheduler and outputting a status update which displays on the UI to inform user of progress. 
 
-These settings are sufficient for the basic use case of recognizing recipe text. However, desiring to do more with the text raised another challenge that was solved through various Byte feature solutions, and may have Tesseract and ML soltuions to be explored in the future.
+These settings are sufficient for the basic use case of recognizing recipe text. However, the problem of sections parts of a recipe discussed below may have Tesseract solutions which can be explored in the future.
 
 #### Challenge: Understanding Parts of Recipe
 Recipe texts come in a non-standardized format with various potential sections including ingredients, instructions, commentary, and additional notes. These sections can be inside and between eachother causing the OCR to become confused aobut where one section ends and another begins. 
