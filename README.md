@@ -53,7 +53,7 @@ The initial version of Byte explored identification of ingredients and instructi
 If user input was going to be required I decided to lean into it by having users select the sections and input manually for the recipe before sending it to Tesseract. This was accomplished with the previously outlined crop and drag-and-drop features. Later product research has shown this approach has been used for similar applications, such as [The Cookbook App](https://thecookbookapp.com/) and [Recipe Keeper](https://recipekeeperonline.com/).
 
 #### Verifying with Draft.js
-After Tesseract results are provided users are given the option to compare output to original image and make any desired changes. The text editor is implemented with [Draft.js](https://draftjs.org/) and provides a separate editor box for each uploaded image. Editor states are saved to a top level 'Parent State' which is shared with the lower level editors via React UseContext. On Submit this parent state is used to fill in a new recipe form. 
+After Tesseract results are provided users are given the option to compare output to original image and make any desired changes. The text editor is implemented with [Draft.js](https://draftjs.org/) and provides a separate editor box for each uploaded image. Editor states are saved to a top level 'Parent Editor State' which is shared with the lower level editors via React UseContext. On submit this parent state is used to fill in a new recipe form. 
 
 ### Formatted Recipe
 #### Putting it Together With React Hook Form
