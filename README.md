@@ -91,6 +91,11 @@ The process of Upload Img > Crop Img > Drag and Drop Img > OCR > Verify > Recipe
 ### Nutritional Info Selection
 Byte defaults to the first result from the USDA API. In a future version users should be able to see what food options are available, select the one they think matches each ingredient best, and then Byte should update the nutritional estimate based on their selection.
 
+### Nutritional Logic Expansion
+Cooking measurements are not straight forward. They can vary by country and type of food you are cooking, and the chance a previously unidentified unit appearing in a cookbook is very high. A general expansion of used metrics and logic for unfound metrics is definitely needed.
+
+Additionally, dry and wet ingredients have different gram weights. Currently Byte defaults to dry ingredient weights, but future iterations will need logic to identify liquids and calculate appropriately. 
+
 ### CSS Revamp
 In its current state Byte has fairly simple design attributes. The whole of the app's CSS should be revamped to by more stylish.
 
