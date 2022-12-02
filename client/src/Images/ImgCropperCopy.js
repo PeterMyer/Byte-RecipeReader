@@ -11,36 +11,22 @@ function ImgCropper(props) {
   const [cropData, setCropData] = useState(null);
   const [cropper, setCropper] = useState(null);
   const { user } = useAuth0();
+
   const images = props.images
   const setImages = props.setImages
   const setShow = props.setShow
-  const section = props.section
-  const instructions = props.instructions
-  const setInstructions = props.setInstructions
-  const ingredients = props.ingredients
-  const setIngredients = props.setIngredients
 
  const getCropData = async () => {
     if (cropper !== null) {
       const croppedImg = cropper.getCroppedCanvas().toDataURL('image/jpeg')
-      const croppedCoordinates = cropper.getData()
       setCropData(croppedImg)
       let cropperBlob = blobCreationFromURL(croppedImg)
       let blobFile = new File([cropperBlob], imgData.filepath , { type: 'image/jpeg' });
       const data = new FormData()
       data.append("uploaded_file", blobFile)
-
-      switch(section){
-        case 'instructions':
-          setInstructions([...instructions,{data:data, coordinates:croppedCoordinates}])
-          break
-        case 'ingredients':
-          setIngredients([...ingredients, {data:data, coordinates:croppedCoordinates}])
-          break
-        default:
-          setShow(false)
-      }
-      // cropper.destory()
+      let response = await apiService.upload.saveImage(data, user.sub)
+      let updatedState = [...images,...response.data.result]
+      setImages(Object.assign(updatedState))
       setShow(false)
     }
   };
@@ -48,7 +34,7 @@ function ImgCropper(props) {
     return(
       <div className = "editor">
         <Cropper
-          style={{ width: "100%" }}
+          style={{ height: 400, width: "100%" }}
           zoomTo={.15}
           initialAspectRatio={1}
           src={imgData.imgBlob}

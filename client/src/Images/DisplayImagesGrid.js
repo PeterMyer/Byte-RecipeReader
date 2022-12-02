@@ -12,7 +12,6 @@ export default function UserImages () {
   const [upload, setUpload] = useState(false)
   const { user } = useAuth0();
 
-
   const getImages = async() => {
     let imgs = await apiService.import.retrieveFilePaths(user.sub)
     setImages(imgs)
@@ -31,19 +30,18 @@ export default function UserImages () {
         <Sidebar/>
         <div className = "userImagesContent">
           <div className="imagesHeader">
-          <h1>Your Images</h1>
-          <button onClick={()=> handleUpload()}>Add Image</button>
-          <ImgModal 
-            onClose={() => setShow(false)} 
-            upload = {upload}
-            show={show}
-            setShow={setShow}
-            setUpload={setUpload}
-            images = {images}
-            setImages = {setImages}
-          />
-        </div>
-
+            <h1>Your Images</h1>
+            <button onClick={()=> handleUpload()}>Add Image</button>
+              <ImgModal 
+                onClose={() => setShow(false)} 
+                upload = {upload}
+                show={show}
+                setShow={setShow}
+                setUpload={setUpload}
+                images = {images}
+                setImages = {setImages}
+              />
+          </div>
         
         <div className="imagesContainer">
           {images !== null ?
@@ -57,7 +55,6 @@ export default function UserImages () {
                   imgMetaData = {image}
                   images = {images}
                   setImages = {setImages}
-          
                 />
               </div>
             )
