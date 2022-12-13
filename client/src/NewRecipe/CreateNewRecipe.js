@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import ImageUpload from './ImageUpload'
+import FabricCanvas from "./FabricCanvas";
 
 export default function CreateNewRecipe(){
     const [result, setResult] = useState("")
@@ -8,7 +9,9 @@ export default function CreateNewRecipe(){
     return(
         <div>
             {loaded? 
-                <img src={result} id="img" alt ="recipeImg"></img>
+                <FabricCanvas
+                    result = {result}
+                />
                 :
                 <ImageUpload
                     loaded = {loaded}
