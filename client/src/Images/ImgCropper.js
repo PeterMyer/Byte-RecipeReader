@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import { useAuth0 } from '@auth0/auth0-react';
-
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import apiService from "../Utilities/apiService";
 import {blobCreationFromURL} from '../Utilities/helperFunctions'
+import { fabric, Rectangle } from 'fabric'
 
 function ImgCropper(props) {
   const [imgData ] = useState(props.imgData)
@@ -19,29 +19,34 @@ function ImgCropper(props) {
   const setInstructions = props.setInstructions
   const ingredients = props.ingredients
   const setIngredients = props.setIngredients
+  const modalUse = props.modalUse
+  const setModalUse = props.setModalUse
+
+
 
  const getCropData = async () => {
     if (cropper !== null) {
       const croppedImg = cropper.getCroppedCanvas().toDataURL('image/jpeg')
-      const croppedCoordinates = cropper.getData()
-      setCropData(croppedImg)
       let cropperBlob = blobCreationFromURL(croppedImg)
       let blobFile = new File([cropperBlob], imgData.filepath , { type: 'image/jpeg' });
       const data = new FormData()
       data.append("uploaded_file", blobFile)
 
+      console.log('coordinates:',cropper.getCropBoxData(cropper))
+
       switch(section){
         case 'instructions':
-          setInstructions([...instructions,{data:data, coordinates:croppedCoordinates}])
+          setInstructions([...instructions,{data:data, coordinates:cropper.getCropBoxData(cropper)}])
           break
         case 'ingredients':
-          setIngredients([...ingredients, {data:data, coordinates:croppedCoordinates}])
+          setIngredients([...ingredients, {data:data, coordinates:cropper.getCropBoxData(cropper)}])
           break
         default:
           setShow(false)
       }
+      setModalUse('default')
       // cropper.destory()
-      setShow(false)
+      // setShow(false)
     }
   };
 

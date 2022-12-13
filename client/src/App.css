@@ -196,8 +196,7 @@ padding: 5px;
 }
 
 .modal-content {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 500px;
   background-color: #fff;
 }
 
@@ -227,19 +226,10 @@ padding: 5px;
   object-fit: contain
 }
 
-.fabric-canvas-wrapper{}
-
-.modal-img-container canvas {
-  max-width: 90%;
-  object-fit: contain;
-  overflow: clip;
-}
-
-.fabric-canvas-wrapper canvas{
+.modal-img-container canvas{
   max-width: 100%;
-  overflow-y: hidden;
+  object-fit: contain
 }
-
 
 .imgcardButton_ModalOpen{
   background: none;
@@ -530,13 +520,12 @@ padding: 5px;
   left: 5px
 }
 
-.recipeform-input-instructions-container {
+.recipeform-input-instructions-container{
   border: solid;
   border-color: lightgray;
   max-width: 80%;
   resize: none
 }
-
 #save-recipe{
   text-align: center;
   background-color: darkgreen;
