@@ -1,8 +1,18 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,useContext} from 'react'
 import { fabric } from 'fabric'
+import {Context} from './CreateNewRecipe'
 
-export default function FabricCanvas(props){
-    const result = props.result
+
+export default function FabricCanvas(){
+    const context = useContext(Context)
+    const result = context.result
+    const setSection = context.setSection
+    const setShowCropper = context.setShowCropper
+
+    const handleOpenEditor = async (selectedSection)=>{
+        setSection(selectedSection)
+        setShowCropper(true)
+    }
 
     useEffect(()=>{
         const imgElement = document.getElementById('recipe-img')
@@ -28,8 +38,7 @@ export default function FabricCanvas(props){
         })
         canvas.setBackgroundImage(imgInstance, canvas.renderAll.bind(canvas),{
         })
-    })
-
+    },[result])
 
     return(    
     <>
@@ -40,5 +49,11 @@ export default function FabricCanvas(props){
             </div>
             <img id="recipe-img" src = {result} alt = "uploadedImage" hidden />
         </div>
+        <div>
+            <button>Name</button>
+            <button onClick={()=>handleOpenEditor("instructions")}>Instructions</button>
+            <button>Ingredients</button>
+        </div>
+
     </>)
 }

@@ -1,9 +1,12 @@
-import React, {useState} from "react";
+import React, {useState,useContext} from "react";
+import {Context} from './CreateNewRecipe'
 
-export default function CreateNewRecipe(props){
-    const setLoaded = props.setLoaded
+export default function CreateNewRecipe(){
+    const context = useContext(Context)
+    const setLoaded = context.setLoaded
+    const setResult = context.setResult
+    
     //unsure if this is needed
-    const setResult = props.setResult
     const [form, setForm] = useState(null)
 
     const handleChange = (e)=>{
@@ -14,6 +17,8 @@ export default function CreateNewRecipe(props){
 
         reader.onload = function(e){
             setResult(e.target.result)
+            
+            //unsure if this is needed
             setForm(data)
             setLoaded(true)
         }
