@@ -19,6 +19,7 @@ export default function NavBar(){
             <Link to="/recipes">Recipes</Link> 
             <Link to="/files">Images</Link> 
             <Link to="/newRecipeImages">Create Recipe</Link> 
+            <Link to="/newRecipe">New Recipe</Link> 
           </div>
           <div id="navbar-auth">
             <AuthenticationButton />

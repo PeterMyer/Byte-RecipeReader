@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import apiService from "../Utilities/apiService";
 import { useAuth0 } from '@auth0/auth0-react';
 
-
 export default function NewRecipe (props) {
  const [loaded, setLoaded] = useState(false)
  const [result, setResult] = useState("")

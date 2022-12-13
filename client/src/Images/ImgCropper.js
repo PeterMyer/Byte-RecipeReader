@@ -23,7 +23,6 @@ function ImgCropper(props) {
   const setModalUse = props.setModalUse
 
 
-
  const getCropData = async () => {
     if (cropper !== null) {
       const croppedImg = cropper.getCroppedCanvas().toDataURL('image/jpeg')

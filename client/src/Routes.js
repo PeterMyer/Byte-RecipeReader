@@ -14,6 +14,7 @@ import VerifyTextEditor from './ReadImage/VerifyRecipeTextEditor';
 import DisplayUserRecipe from './Recipes/DisplaySingleRecipe';
 import ProtectedRoute from './Auth/protected-route';
 import {Loading} from './Auth/Loading';
+import CreateNewRecipe from './NewRecipe/CreateNewRecipe';
 
 
 export default function AppRoutes(){
@@ -33,7 +34,10 @@ export default function AppRoutes(){
                 element={<ProtectedRoute component={UserImages}/>} />  
             <Route 
                 path="/upload" 
-                element={<ProtectedRoute component={NewRecipe}/>} />  
+                element={<ProtectedRoute component={NewRecipe}/>} />
+            <Route 
+                path="/newRecipe" 
+                element={<ProtectedRoute component={CreateNewRecipe}/>} />
             <Route 
                 path="/edit" 
                 element={<ProtectedRoute component={ImgCropper}/>} />  
