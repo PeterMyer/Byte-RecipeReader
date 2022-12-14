@@ -708,3 +708,7 @@ padding: 5px;
     color:#259d47
   }
 
+.fabric-container{
+  display: flex;
+  flex-direction: column;
+}

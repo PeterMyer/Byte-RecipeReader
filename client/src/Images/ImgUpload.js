@@ -11,7 +11,6 @@ export default function NewRecipe (props) {
  const setImages = props.setImages
  const images = props.images
 
-  
   const handleChange=(e)=> {
     const file = e.target.files[0];
     var reader = new FileReader();

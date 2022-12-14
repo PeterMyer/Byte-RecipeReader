@@ -5,10 +5,8 @@ export default function CreateNewRecipe(){
     const context = useContext(Context)
     const setLoaded = context.setLoaded
     const setResult = context.setResult
+    const setForm = context.setForm
     
-    //unsure if this is needed
-    const [form, setForm] = useState(null)
-
     const handleChange = (e)=>{
         const file = e.target.files[0]
         let reader = new FileReader()
@@ -17,7 +15,6 @@ export default function CreateNewRecipe(){
 
         reader.onload = function(e){
             setResult(e.target.result)
-            //unsure if this is needed
             setForm(data)
             setLoaded(true)
         }
@@ -48,7 +45,6 @@ export default function CreateNewRecipe(){
                     onChange={handleChange}
                     />
             </form>
-
         </div>
     )
 }

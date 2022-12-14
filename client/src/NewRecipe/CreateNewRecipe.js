@@ -6,6 +6,7 @@ export const Context = React.createContext()
 
 export default function CreateNewRecipe(){
     const [result, setResult] = useState("")
+    const [form, setForm] = useState(null)
     const [loaded, setLoaded] = useState(false)
     const [name, setName] = useState("")
     const [instructions, setInstructions] = useState([])
@@ -28,7 +29,8 @@ export default function CreateNewRecipe(){
                 section, setSection,
                 width, setWidth,
                 height, setHeight,
-                fabricCanvas, setFabricCanvas
+                fabricCanvas, setFabricCanvas,
+                form, setForm
                 }} 
                 >
                     {loaded? 

@@ -16,9 +16,7 @@ export default function VerifyImgText(props){
         recipeData.map((recipeObj)=>{
             recipeObj.recipeEditorContent = convertToRaw(parentEditorState[recipeObj.id].getCurrentContent())
         })
-
         let parsedContent = parseEditorContentStates(recipeData)
-
         navigate('/newRecipeForm',{state: {'recipeData':parsedContent}})
     }
 
@@ -40,7 +38,7 @@ export default function VerifyImgText(props){
                             <div className = "recipeSegment" >
                                 <VerifyTextEditor readImgText={imgObj.OcrResult.data.text} recipeId ={imgObj.id}/> 
                                 <img className ="recipeImg"
-                                    src={imgObj.imgBlob}
+                                    src={imgObj.imgObjURL}
                                     alt="null"/>                
                             </div>)})}
                 </div>
@@ -51,7 +49,7 @@ export default function VerifyImgText(props){
                             <div className = "recipeSegment">
                                 <VerifyTextEditor  readImgText={imgObj.OcrResult.data.text} recipeId ={imgObj.id}/> 
                                 <img className ="recipeImg"
-                                    src={imgObj.imgBlob}
+                                    src={imgObj.imgObjURL}
                                     alt="null"/>                
                             </div>)})}
                 </div>
