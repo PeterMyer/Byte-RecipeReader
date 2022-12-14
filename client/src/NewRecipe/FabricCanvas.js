@@ -7,7 +7,14 @@ export default function FabricCanvas(){
     const context = useContext(Context)
     const result = context.result
     const setSection = context.setSection
+    const showCropper = context.showCropper
     const setShowCropper = context.setShowCropper
+    const instructions = context.instructions
+    const width = context.width
+    const height = context.height
+    const setHeight = context.setHeight
+    const setFabricCanvas = context.setFabricCanvas
+
 
     const handleOpenEditor = async (selectedSection)=>{
         setSection(selectedSection)
@@ -17,33 +24,64 @@ export default function FabricCanvas(){
     useEffect(()=>{
         const imgElement = document.getElementById('recipe-img')
         const imgInstance = new fabric.Image(imgElement)
-        let height
-        let width
-
-        if(imgInstance.height>=imgInstance.width){
-            height = 600
-            imgInstance.scaleToHeight(height)
-            width = imgInstance.getScaledWidth()
-        } else {
-            width = (480)
-            imgInstance.scaleToWidth(width)
-            height = imgInstance.getScaledHeight()
-        }
+        imgInstance.scaleToWidth(width)
+        let canvasHeight = imgInstance.getScaledHeight()
 
         let canvas = new fabric.Canvas('canvas', 
         {
-            //may not be necessary
             width: width,
-            height: height
+            height: canvasHeight,
+            preserveObjectStacking:true
         })
         canvas.setBackgroundImage(imgInstance, canvas.renderAll.bind(canvas),{
         })
-    },[result])
+        setHeight(canvasHeight)
+
+        if(instructions.length > 0){
+            instructions.forEach((ingredient)=>{
+                const croppedCoordinates = ingredient.coordinates
+
+                let rect = new fabric.Rect({
+                    top: croppedCoordinates.top,
+                    left: croppedCoordinates.left,
+                    width: croppedCoordinates.width,
+                    height: croppedCoordinates.height,
+                    stroke : 'blue',
+                    strokeWidth : 1,
+                    fill: 'white',
+                    opacity: .3,
+                    lockMovementX: true,
+                    lockMovementY: true,
+                    lockScalingX: true,
+                    lockScalingY: true
+                  })
+
+                  let text = new fabric.Text(" Instructions ",{
+                    left: croppedCoordinates.left,
+                    top: croppedCoordinates.top,
+                    textAlign: 'left',
+                    fontSize:14,
+                    width: 100,
+                    textBackgroundColor :"white",
+                    opacity: .7
+
+                  })
+                  canvas.add(rect)
+                  canvas.add(text)
+            })
+        }
+        const fabricCanvasCopy = canvas.toDataURL({
+                format: 'png',
+                multiplier: 2
+              })
+        canvas.sendToBack(canvas.backgroundImage)
+        setFabricCanvas(fabricCanvasCopy)
+    })
 
     return(    
-    <>
+    <div >
         {/* https://stackoverflow.com/questions/21931271/how-to-enable-responsive-design-for-fabric-js */}   
-        <div className = "modal-img-container" >
+        <div className = "modal-img-container">
             <div id = "fabric-canvas-wrapper">
                 <canvas id='canvas'></canvas>
             </div>
@@ -54,6 +92,5 @@ export default function FabricCanvas(){
             <button onClick={()=>handleOpenEditor("instructions")}>Instructions</button>
             <button>Ingredients</button>
         </div>
-
-    </>)
+    </div>)
 }

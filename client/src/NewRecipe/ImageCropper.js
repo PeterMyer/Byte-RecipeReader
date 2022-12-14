@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState,useEffect} from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
@@ -10,32 +10,33 @@ import { Context } from "./CreateNewRecipe";
 export default function ImageCropper(props) {
     const context = useContext(Context)
     const result = context.result
+    const showCropper = context.showCropper
+    const setShowCropper = context.setShowCropper
+    const section = context.section
+    const instructions = context.instructions
+    const setInstructions = context.setInstructions
+    const ingredients = context.ingredients
+    const setIngredients = context.setIngredients
+    const fabricCanvas = context.fabricCanvas
 
-  const [imgData ] = useState(props.imgData)
-  const [cropData, setCropData] = useState(null);
-  const [cropper, setCropper] = useState(null);
-  const { user } = useAuth0();
-  const images = props.images
-  const setImages = props.setImages
-  const setShow = props.setShow
-  const section = props.section
-  const instructions = props.instructions
-  const setInstructions = props.setInstructions
-  const ingredients = props.ingredients
-  const setIngredients = props.setIngredients
-  const modalUse = props.modalUse
-  const setModalUse = props.setModalUse
 
+    const [imgData ] = useState(props.imgData)
+    const [cropData, setCropData] = useState(null);
+    const [cropper, setCropper] = useState(null);
+    const { user } = useAuth0();
+    const images = props.images
+    const setImages = props.setImages
+    const setShow = props.setShow
 
  const getCropData = async () => {
     if (cropper !== null) {
       const croppedImg = cropper.getCroppedCanvas().toDataURL('image/jpeg')
       let cropperBlob = blobCreationFromURL(croppedImg)
-      let blobFile = new File([cropperBlob], imgData.filepath , { type: 'image/jpeg' });
+    //   let blobFile = new File([cropperBlob], imgData.filepath , { type: 'image/jpeg' });
+      let blobFile = new File([cropperBlob], { type: 'image/jpeg' });
+
       const data = new FormData()
       data.append("uploaded_file", blobFile)
-
-      console.log('coordinates:',cropper.getCropBoxData(cropper))
 
       switch(section){
         case 'instructions':
@@ -45,32 +46,32 @@ export default function ImageCropper(props) {
           setIngredients([...ingredients, {data:data, coordinates:cropper.getCropBoxData(cropper)}])
           break
         default:
-          setShow(false)
+            break
       }
-      setModalUse('default')
       // cropper.destory()
-      // setShow(false)
+      setShowCropper(false)
     }
   };
 
     return(
-      <div className = "editor">
+      <>
         <Cropper
-          style={{ width: "100%" }}
-          zoomTo={.15}
-          initialAspectRatio={1}
-          src={result}
-          viewMode={2}
-          minCropBoxHeight={10}
-          minCropBoxWidth={10}
-          background={false}
-          responsive={true}
-          autoCropArea={1}
-          checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
-          onInitialized={(instance) => {
-            setCropper(instance);
-          }}
-          guides={true}
+            style={{ width: 400}}
+            zoomTo={.15}
+            initialAspectRatio={1}
+            src={fabricCanvas}
+            viewMode={2}
+            minCropBoxHeight={10}
+            minCropBoxWidth={10}
+            background={false}
+            responsive={true}
+            autoCropArea={1}
+            zoomable={false}
+            checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+            onInitialized={(instance) => {
+                setCropper(instance);
+            }}
+            guides={true}
         />
         <div>
           <button onClick = {getCropData} >
@@ -78,9 +79,9 @@ export default function ImageCropper(props) {
           </button>
           {cropper === null ? null: (<button onClick={()=>cropper.setDragMode("move")} > Drag </button>)}
           {cropper === null ? null: (<button onClick={()=>cropper.setDragMode("crop")} > Crop </button>)}
-          {cropper === null ? null: (<button onClick={()=>cropper.zoom(0.1)} > Zoom In </button>)}
-          {cropper === null ? null: (<button onClick={()=>cropper.zoom(-0.1)} > Zoom Out </button>)}
+          {/* {cropper === null ? null: (<button onClick={()=>cropper.zoom(0.1)} > Zoom In </button>)}
+          {cropper === null ? null: (<button onClick={()=>cropper.zoom(-0.1)} > Zoom Out </button>)} */}
         </div>
-      </div>
+      </>
     )
   }

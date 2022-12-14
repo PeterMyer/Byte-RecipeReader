@@ -12,6 +12,9 @@ export default function CreateNewRecipe(){
     const [ingredients, setIngredients] = useState([])
     const [showCropper, setShowCropper] = useState(false)
     const [section, setSection] = useState(null)
+    const [width, setWidth] = useState(400)
+    const [height, setHeight] = useState(0)
+    const [fabricCanvas, setFabricCanvas] = useState(null)
 
     return(
         <div>
@@ -22,11 +25,14 @@ export default function CreateNewRecipe(){
                 instructions, setInstructions,
                 ingredients, setIngredients,
                 showCropper, setShowCropper,
-                section, setSection
+                section, setSection,
+                width, setWidth,
+                height, setHeight,
+                fabricCanvas, setFabricCanvas
                 }} 
                 >
                     {loaded? 
-                        <RecipeSectionSelection/>
+                        <RecipeSectionSelection />
                         :
                         <ImageUpload/>
                     }

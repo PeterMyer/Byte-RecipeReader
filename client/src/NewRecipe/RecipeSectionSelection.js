@@ -11,11 +11,10 @@ export default function RecipeSectionSelection(){
     return(
     <>
         {showCropper?
-            <ImageCropper
-            />
+           <ImageCropper/>
             :
-            <FabricCanvas
-        />}
+            <FabricCanvas/>
+        }
     </>
     )
 }

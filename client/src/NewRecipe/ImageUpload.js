@@ -17,7 +17,6 @@ export default function CreateNewRecipe(){
 
         reader.onload = function(e){
             setResult(e.target.result)
-            
             //unsure if this is needed
             setForm(data)
             setLoaded(true)
