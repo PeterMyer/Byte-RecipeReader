@@ -25,23 +25,21 @@ export default function FabricCanvas(){
     const handleSubmit = async()=>{
         //Save original Img
         const userId = user.sub
-        // const response = await apiService.upload.saveImage(form, userId)
-
+        const response = await apiService.upload.saveImage(form, userId)
         let recipeOutput = {
-            // Id: response.data.result[0].id,
-            // originalImgFilePath: response.data.result[0].filepath,
+            originalImgFilePath: response.data.result[0].filepath,
             recipeSelections:[]
         }
-
-        console.log('recipeOutput',recipeOutput)
-
+        let id = 0
         if(instructions.length>0){
             instructions.forEach(instruction=>{
                 let obj = {
                     imgObjURL: instruction.imgObjURL,
-                    location:"Instructions"
+                    location:"Instructions",
+                    id: id
                 }
                 recipeOutput.recipeSelections.push(obj)
+                id++
             })
         }
 
@@ -49,15 +47,14 @@ export default function FabricCanvas(){
             ingredients.forEach(ingredient=>{
                 let obj = {
                     imgObjURL: ingredient.imgObjURL,
-                    location:"Ingredients"
+                    location:"Ingredients",
+                    id: id
                 }
                 recipeOutput.recipeSelections.push(obj)
+                id++
             })
         }
-        console.log('recipeOutput',recipeOutput)
-
         navigate('/readMany',{state: {'recipeOutput':recipeOutput}})
-        console.log('post-navigate')
     }
 
     const handleOpenEditor = async (selectedSection)=>{

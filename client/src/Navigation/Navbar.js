@@ -17,8 +17,6 @@ export default function NavBar(){
           </div>
           <div id = "navbar-options">
             <Link to="/recipes">Recipes</Link> 
-            <Link to="/files">Images</Link> 
-            <Link to="/newRecipeImages">Create Recipe</Link> 
             <Link to="/newRecipe">New Recipe</Link> 
           </div>
           <div id="navbar-auth">
