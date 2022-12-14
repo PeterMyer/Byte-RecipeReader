@@ -7,7 +7,7 @@ import VerifyImgText from './VerifyImgTxt'
 
 export default function TesseractScheduler(){
     const {state} = useLocation()
-    const [imgBasket, setImageBasket] = useState(state.basketState)
+    const [imgBasket, setImageBasket] = useState(state.recipeOutput.recipeSelections)
     const [imgText, setImgText] = useState("")
     let history = createBrowserHistory();
     const [progLog1, setProgLog1] = useState(0);
@@ -50,7 +50,7 @@ export default function TesseractScheduler(){
             scheduler.addWorker(worker2)
 
             const results = await Promise.all(imgBasket.map((img) => {
-                let result = scheduler.addJob('recognize',img.imgBlob)
+                let result = scheduler.addJob('recognize',img.imgObjURL)
                 return result
                 }))
 

@@ -196,7 +196,7 @@ padding: 5px;
 }
 
 .modal-content {
-  width: 500px;
+  max-width: 500px;
   background-color: #fff;
 }
 
@@ -222,6 +222,11 @@ padding: 5px;
 }
 
 .modal-img-container img{
+  max-width: 100%;
+  object-fit: contain
+}
+
+.modal-img-container canvas{
   max-width: 100%;
   object-fit: contain
 }
@@ -702,3 +707,8 @@ padding: 5px;
     font-weight: bolder;
     color:#259d47
   }
+
+.fabric-container{
+  display: flex;
+  flex-direction: column;
+}
