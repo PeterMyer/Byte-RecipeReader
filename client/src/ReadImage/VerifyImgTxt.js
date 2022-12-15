@@ -33,7 +33,7 @@ export default function VerifyImgText(props){
                 </div>
                 <h2>Instructions</h2>
                 <div className = "recipeSegment-container">
-                    {recipeData.filter((imgObj)=>imgObj.location==="Instructions").map((imgObj)=>{
+                    {recipeData.filter((imgObj)=>imgObj.location==="instructions").map((imgObj)=>{
                         return(
                             <div className = "recipeSegment" >
                                 <VerifyTextEditor readImgText={imgObj.OcrResult.data.text} recipeId ={imgObj.id}/> 
@@ -44,7 +44,7 @@ export default function VerifyImgText(props){
                 </div>
                 <h2 >Ingredients</h2>
                 <div className = "recipeSegment-container" >
-                    {recipeData.filter((imgObj)=>imgObj.location==="Ingredients").map((imgObj)=>{
+                    {recipeData.filter((imgObj)=>imgObj.location==="ingredients").map((imgObj)=>{
                         return(
                             <div className = "recipeSegment">
                                 <VerifyTextEditor  readImgText={imgObj.OcrResult.data.text} recipeId ={imgObj.id}/> 

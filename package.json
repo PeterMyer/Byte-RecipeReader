@@ -50,6 +50,8 @@
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "python-shell": "^3.0.1",
-    "sequelize": "^6.25.3"
+    "sequelize": "^6.25.3",
+    "uuid": "^9.0.0",
+    "uuidv4": "^6.2.13"
   }
 }

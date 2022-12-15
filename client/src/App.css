@@ -708,6 +708,12 @@ padding: 5px;
     color:#259d47
   }
 
+.create-new-recipe-container{
+  display:flex;
+  justify-content: center;
+  padding-top: 2em;
+}
+
 .fabric-container{
   display: flex;
   flex-direction: column;

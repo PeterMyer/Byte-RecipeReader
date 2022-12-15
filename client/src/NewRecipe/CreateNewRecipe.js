@@ -9,8 +9,7 @@ export default function CreateNewRecipe(){
     const [form, setForm] = useState(null)
     const [loaded, setLoaded] = useState(false)
     const [name, setName] = useState("")
-    const [instructions, setInstructions] = useState([])
-    const [ingredients, setIngredients] = useState([])
+    const [cropObjects, setCropObjects] = useState({})
     const [showCropper, setShowCropper] = useState(false)
     const [section, setSection] = useState(null)
     const [width, setWidth] = useState(400)
@@ -18,19 +17,18 @@ export default function CreateNewRecipe(){
     const [fabricCanvas, setFabricCanvas] = useState(null)
 
     return(
-        <div>
+        <div className="create-new-recipe-container">
             <Context.Provider value={{
                 result, setResult,
                 loaded, setLoaded,
                 name, setName,
-                instructions, setInstructions,
-                ingredients, setIngredients,
                 showCropper, setShowCropper,
                 section, setSection,
                 width, setWidth,
                 height, setHeight,
                 fabricCanvas, setFabricCanvas,
-                form, setForm
+                form, setForm,
+                cropObjects, setCropObjects
                 }} 
                 >
                     {loaded? 
