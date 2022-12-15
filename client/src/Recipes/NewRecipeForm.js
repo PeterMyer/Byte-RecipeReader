@@ -7,8 +7,6 @@ import RecipeEditor from './RecipeInstrucEditor'
 import apiService from "../Utilities/apiService";
 import { useAuth0 } from '@auth0/auth0-react';
 
-
-
 export default function RecipeForm(){
     const { user } = useAuth0();
     const {state} = useLocation()

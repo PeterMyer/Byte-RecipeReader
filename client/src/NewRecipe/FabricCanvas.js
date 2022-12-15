@@ -110,7 +110,7 @@ export default function FabricCanvas(){
             {
                 width: width,
                 height: canvasHeight,
-                preserveObjectStacking:true,
+                preserveObjectStacking:false,
             })
         canvas.setBackgroundImage(imgInstance, canvas.renderAll.bind(canvas),{
             selectable:false
@@ -173,7 +173,7 @@ export default function FabricCanvas(){
         {/* https://stackoverflow.com/questions/21931271/how-to-enable-responsive-design-for-fabric-js */}   
         <div className="fabric-container" style = {{width: width, height:height}}>
             <div id = "fabric-canvas-wrapper">
-                <canvas id='canvas'></canvas>
+                <canvas id='canvas' style={{'z-index':-1}}></canvas>
             </div>
             <img id="recipe-img" src = {result} alt = "uploadedImage" hidden />
         </div>

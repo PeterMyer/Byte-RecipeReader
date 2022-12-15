@@ -9,7 +9,6 @@ export default function DisplayUserRecipe(){
     const { id } = useParams()
     const navigate = useNavigate();
 
-
     useEffect(()=>{
         fetchRecipe(id)
     },[])

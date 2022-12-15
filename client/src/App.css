@@ -66,7 +66,24 @@
   text-align: center;
   padding: 5px 15px;
   font-weight: bold;
+  font-size: medium;
+
   text-decoration: none;
+}
+
+#navbar-options button{
+  color: white;
+  float: left;
+  display: block;
+  text-align: center;
+  padding: 5px 15px;
+  font-weight: bold;
+  border:none;
+  cursor: pointer;
+  background-color :#2BB852;
+  font-size: medium;
+
+
 }
 
 #navbar-auth{
@@ -193,6 +210,7 @@ padding: 5px;
   display:flex;
   align-items: center;
   justify-content: center;
+  z-index: 99999;
 }
 
 .modal-content {
@@ -717,4 +735,20 @@ padding: 5px;
 .fabric-container{
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: -1;
+  overflow-x:hidden;
+  overflow-y:hidden
+}
+
+#fabric-canvas-wrapper{
+  position: relative;
+}
+
+#canvas{
+  z-index: -1;
+}
+
+#img-recipe{
+  z-index:-1
 }
