@@ -6,6 +6,7 @@ import apiService from "../Utilities/apiService";
 import {blobCreationFromURL} from '../Utilities/helperFunctions'
 import { fabric, Rectangle } from 'fabric'
 import { Context } from "./CreateNewRecipe";
+import {v4 as uuidv4} from 'uuid';
 
 export default function ImageCropper(props) {
     const context = useContext(Context)
@@ -18,6 +19,8 @@ export default function ImageCropper(props) {
     const ingredients = context.ingredients
     const setIngredients = context.setIngredients
     const fabricCanvas = context.fabricCanvas
+    const cropObjects = context.cropObjects
+    const setCropObjects = context.setCropObjects
 
 
     const [imgData ] = useState(props.imgData)
@@ -32,13 +35,13 @@ export default function ImageCropper(props) {
       const croppedImg = cropper.getCroppedCanvas().toDataURL('image/jpeg')
       let cropperBlob = blobCreationFromURL(croppedImg)
       let imgObjURL = URL.createObjectURL(cropperBlob);
-
+      const index = uuidv4()
       switch(section){
         case 'instructions':
-          setInstructions([...instructions,{imgObjURL:imgObjURL, coordinates:cropper.getCropBoxData(cropper)}])
+          setCropObjects({...cropObjects, [index]: {id:index,imgObjURL:imgObjURL, location:"instructions", coordinates:cropper.getCropBoxData(cropper)}})
           break
         case 'ingredients':
-          setIngredients([...ingredients, {imgObjURL:imgObjURL, coordinates:cropper.getCropBoxData(cropper)}])
+          setCropObjects({...cropObjects, [index]: {id:index,imgObjURL:imgObjURL, location:"ingredients", coordinates:cropper.getCropBoxData(cropper)}})
           break
         default:
             break
@@ -47,19 +50,23 @@ export default function ImageCropper(props) {
     }
   };
 
+  const handleCancel=()=>{
+    setShowCropper(false)
+  }
+
     return(
       <>
         <Cropper
             style={{ width: 400}}
             zoomTo={.15}
-            initialAspectRatio={1}
+            initialAspectRatio={3/2}
             src={fabricCanvas}
             viewMode={2}
             minCropBoxHeight={10}
             minCropBoxWidth={10}
             background={false}
             responsive={true}
-            autoCropArea={1}
+            autoCropArea={.75}
             zoomable={false}
             checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
             onInitialized={(instance) => {
@@ -70,6 +77,9 @@ export default function ImageCropper(props) {
         <div>
           <button onClick = {getCropData} >
               Accept
+          </button>
+          <button onClick = {handleCancel} >
+              Cancel
           </button>
           {/* {cropper === null ? null: (<button onClick={()=>cropper.setDragMode("move")} > Drag </button>)}
           {cropper === null ? null: (<button onClick={()=>cropper.setDragMode("crop")} > Crop </button>)} */}
