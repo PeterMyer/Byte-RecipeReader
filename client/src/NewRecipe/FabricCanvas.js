@@ -1,4 +1,4 @@
-import React, {useEffect,useContext} from 'react'
+import React, {useState,useEffect,useContext} from 'react'
 import { fabric } from 'fabric'
 import {Context} from './CreateNewRecipe'
 import apiService from "../Utilities/apiService";
@@ -23,6 +23,8 @@ export default function FabricCanvas(){
     const form = context.form
     const cropObjects = context.cropObjects
     const setCropObjects = context.setCropObjects
+    const recipeImg = context.recipeImg
+
 
     //Create Custom Delete Icon - REF: http://fabricjs.com/custom-control-render
     const deleteIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg version='1.1' id='Ebene_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='595.275px' height='595.275px' viewBox='200 215 230 470' xml:space='preserve'%3E%3Ccircle style='fill:%23F44336;' cx='299.76' cy='439.067' r='218.516'/%3E%3Cg%3E%3Crect x='267.162' y='307.978' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -222.6202 340.6915)' style='fill:white;' width='65.545' height='262.18'/%3E%3Crect x='266.988' y='308.153' transform='matrix(0.7071 0.7071 -0.7071 0.7071 398.3889 -83.3116)' style='fill:white;' width='65.544' height='262.179'/%3E%3C/g%3E%3C/svg%3E";
@@ -46,12 +48,14 @@ export default function FabricCanvas(){
                 recipeOutput.recipeSelections.push(obj)
             })
         }
-        navigate('/readMany',{state: {'recipeOutput':recipeOutput}})
+        navigate('/readMany',{state: {
+            'recipeOutput':recipeOutput,
+            'recipeImg':recipeImg}})
     }
 
     const handleOpenEditor = async (selectedSection)=>{
         setSection(selectedSection)
-        setShowCropper(true)
+        setShowCropper(true) 
     }
 
   function deleteObject(eventData, transform) {
@@ -101,6 +105,7 @@ export default function FabricCanvas(){
       });
 
     useEffect(()=>{
+        console.log('hello?')
         const imgElement = document.getElementById('recipe-img')
         const imgInstance = new fabric.Image(imgElement)
         imgInstance.scaleToWidth(width)
@@ -116,9 +121,52 @@ export default function FabricCanvas(){
             selectable:false
         })
         setHeight(canvasHeight)
-
+        console.log('hello?')
         if(Object.keys(cropObjects).length > 0){
             Object.values(cropObjects).forEach((cropObject)=>{
+                const croppedCoordinates = cropObject.coordinates
+                let rect = new fabric.Rect({
+                    top: croppedCoordinates.top,
+                    left: croppedCoordinates.left,
+                    width: croppedCoordinates.width,
+                    height: croppedCoordinates.height,
+                    stroke : 'blue',
+                    strokeWidth : 1,
+                    fill: 'white',
+                    opacity: .3,
+                    lockMovementX: true,
+                    lockMovementY: true,
+                    lockScalingX: true,
+                    lockScalingY: true,
+                    lockRotation: true,
+                    id:cropObject.id
+                  })
+
+                  let text = new fabric.Text(` ${cropObject.location} `,{
+                    left: croppedCoordinates.left,
+                    top: croppedCoordinates.top,
+                    textAlign: 'left',
+                    fontSize:14,
+                    width: 100,
+                    textBackgroundColor :"white",
+                    opacity: .7,
+                    selectable:false,
+                    lockMovementX: true,
+                    lockMovementY: true,
+                    lockScalingX: true,
+                    lockScalingY: true,
+                    lockRotation: true,
+                    id:cropObject.id
+                  })
+                  rect.setControlsVisibility(HideControls)
+                  canvas.add(rect)
+                  canvas.add(text)
+            })
+        }
+        console.log(recipeImg,Object.keys(recipeImg) )
+        if(Object.keys(recipeImg).length > 0){
+            Object.values(recipeImg).forEach((cropObject)=>{
+                console.log('cropObject',cropObject)
                 const croppedCoordinates = cropObject.coordinates
                 let rect = new fabric.Rect({
                     top: croppedCoordinates.top,
@@ -163,22 +211,29 @@ export default function FabricCanvas(){
                 format: 'png',
                 multiplier: 2
               })
+        
+              
+        setFabricCanvas(fabricCanvasCopy)
         canvas.sendToBack(canvas.backgroundImage)
-        setFabricCanvas(fabricCanvasCopy)  
+
     })
 
-    return(    
-    <div className = "recipe-section-selection-container">
-        <div className="section-selection-buttons-container">
-            <button id="section-submit-button" onClick={()=>handleSubmit()}>Submit</button>
-            <button onClick={()=>handleOpenEditor("instructions")}>Instructions</button>
-            <button onClick={()=>handleOpenEditor("ingredients")}>Ingredients</button>
-        </div>
-        <div id="fabric-canvas" className="fabric-container" style = {{width: width, height:height}}>
-            <div id = "fabric-canvas-wrapper">
-                <canvas id='canvas'></canvas>
+    return(
+    <>
+        <div id = "recipe-canvas-container"className = "recipe-section-selection-container">
+            <div className="section-selection-buttons-container">
+                <button onClick={()=>handleOpenEditor("instructions")}>Instructions</button>
+                <button onClick={()=>handleOpenEditor("ingredients")}>Ingredients</button>
+                <button onClick={()=>handleOpenEditor("image")}>Image</button>
+                <button id="section-submit-button" onClick={()=>handleSubmit()}>Submit</button>
+
             </div>
-            <img id="recipe-img" src = {result} alt = "uploadedImage" hidden />
+            <div id="fabric-canvas" className="fabric-container" style = {{width: width, height:height}}>
+                <div id = "fabric-canvas-wrapper">
+                    <canvas id='canvas'></canvas>
+                </div>
+                <img id="recipe-img" src = {result} alt = "uploadedImage" hidden />
+            </div>
         </div>
-    </div>)
+    </>  )
 }

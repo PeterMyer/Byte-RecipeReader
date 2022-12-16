@@ -12,12 +12,14 @@ export default function RecipeForm(){
     const {state} = useLocation()
     const [ingredients] = useState(state?state.recipeData.ingredients:null)
     const [instructions] = useState(state? state.recipeData.instructions:null)
+    const [recipeImg, setRecipeImg] = useState(state? [Object.values(state.recipeImg)[0].imgObjURL]: null)
     const navigate = useNavigate();
 
     const { register, handleSubmit,control, formState: { errors } } = useForm({
         defaultValues:{
             DraftJs: instructions ? EditorState.createWithContent(convertFromRaw(instructions)) : EditorState.createEmpty(),
-            Ingredients: ingredients? ingredients[0].map((ingredient)=> {return({value:ingredient})}):[{value: ""}]
+            Ingredients: ingredients? ingredients[0].map((ingredient)=> {return({value:ingredient})}):[{value: ""}],
+            RecipeImg: recipeImg? recipeImg : null
         }
     });
 
@@ -39,31 +41,66 @@ export default function RecipeForm(){
         navigate(`/recipe/${response.data.id}`)
     };
 
+    const onChange = async (e)=>{ 
+        const file = e.target.files[0]
+        let reader = new FileReader()
+        const data = new FormData()
+        data.append("uploaded_file", file)
+
+        reader.onload = function(e){
+            setRecipeImg(e.target.result)
+        }
+
+        reader.onerror = function(){
+            console.log("error", reader.error)
+        }
+        reader.readAsDataURL(file)
+    }
+
     return(
     <div className = "recipeform-container">
         <div className = "recipeform-outside-box">
         <form className = "recipeform" onSubmit={handleSubmit(onSubmit)}>
             <h1> Create A New Recipe </h1>
             <section className ="recipeform-section">
-                <label className = "recipeform-input-label"><strong>Recipe Name</strong>
-                    <div className = "recipeform-input-container" >
-                        <input
-                            {...register("recipeName",{required:true})}
-                            type="text"
-                            placeholder = "Recipe Name"
-                            className = "recipeform-input-field"
-                        />
+                <div className = "recipeform-subsection">
+                        <label className = "recipeform-input-label"><strong>Recipe Name</strong>
+                            <div className = "recipeform-input-container" >
+                                <input
+                                    {...register("recipeName",{required:true})}
+                                    type="text"
+                                    placeholder = "Recipe Name"
+                                    className = "recipeform-input-field"
+                                />
+                            </div>
+                        </label>
+                        <label className = "recipeform-input-label"><strong>Servings</strong>
+                            <div className = "recipeform-input-container" >
+                                <input 
+                                    {...register("servings")}
+                                    type="text"
+                                    placeholder="Servings"
+                                    className = "recipeform-input-field"/>
+                            </div>
+                        </label>
                     </div>
-                </label>
-                    <label className = "recipeform-input-label"><strong>Servings</strong>
-                        <div className = "recipeform-input-container" >
-                            <input 
-                                {...register("servings")}
-                                type="text"
-                                placeholder="Servings"
-                                className = "recipeform-input-field"/>
+                    <div className='recipeform-subsection'>
+                        <strong>Recipe Image</strong>
+                        <div className= 'recipeform-img-container'>
+                            <img src={recipeImg} alt="" style={{'max-width':200}}/>
                         </div>
-                    </label>
+                        <label id="recipeform-img-upload" className = "recipeform-input-label">
+                            <input 
+                                {...register("RecipeImg",{required:false})}
+                                type="file"
+                                accept="image/png, image/jpeg"
+                                encType="multipart/form-data" 
+                                onChange={onChange}
+                                hidden
+                            />
+                            <i id="img-upload-icon" class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image
+                        </label>
+                    </div>
             </section>
             <section className ="recipeform-section" id="ingredient">
                 <label className = "recipeform-input-label"><strong>Ingredients</strong>

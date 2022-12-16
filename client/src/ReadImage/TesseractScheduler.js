@@ -8,6 +8,8 @@ import VerifyImgText from './VerifyImgTxt'
 export default function TesseractScheduler(){
     const {state} = useLocation()
     const [imgBasket, setImageBasket] = useState(state.recipeOutput.recipeSelections)
+    const [recipeImg] = useState(state.recipeImg)
+
     const [imgText, setImgText] = useState("")
     let history = createBrowserHistory();
     const [progLog1, setProgLog1] = useState(0);
@@ -70,14 +72,14 @@ export default function TesseractScheduler(){
 
             history.push({ 
                 pathname: '/verifyText',
-                state: imgBasket
+                state: {imgBasket,recipeImg}
                })
             })()}
 
     if(imgText !== ""){
         return(
             <div>
-                <VerifyImgText readImgText={imgBasket} />
+                <VerifyImgText readImgText={imgBasket} recipeImg={recipeImg} />
             </div>
             )
         }else{

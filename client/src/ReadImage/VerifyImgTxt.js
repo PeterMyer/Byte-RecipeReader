@@ -8,7 +8,8 @@ import VerifySidebar from "../Sidebar/VerifySideBar";
 export const Context = React.createContext()
 
 export default function VerifyImgText(props){
-    const [recipeData, setRecipeData] = useState(props.readImgText)
+    const [recipeData] = useState(props.readImgText)
+    const [recipeImg,] = useState(props.recipeImg)
     const [parentEditorState, setParentEditorState] = useState(createParentEditorState(recipeData))
     const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ export default function VerifyImgText(props){
             recipeObj.recipeEditorContent = convertToRaw(parentEditorState[recipeObj.id].getCurrentContent())
         })
         let parsedContent = parseEditorContentStates(recipeData)
-        navigate('/newRecipeForm',{state: {'recipeData':parsedContent}})
+        navigate('/newRecipeForm',{state: {'recipeData':parsedContent, 'recipeImg':recipeImg}})
     }
 
     return(

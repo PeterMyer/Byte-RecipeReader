@@ -6,14 +6,21 @@ import {Context} from './CreateNewRecipe'
 export default function RecipeSectionSelection(){
     const context = useContext(Context)
     const showCropper = context.showCropper
+    const fabricCanvas = context.fabricCanvas
+    const height = context.height
 
     return(
-    <>
-        {showCropper?
-           <ImageCropper/>
-            :
-            <FabricCanvas/>
-        }
-    </>
+    <div className='test-parent' >
+        <span className="create-new-recipe-header">
+            <h1>Recipe Reader</h1>
+        </span>
+        <> 
+         {showCropper?
+
+            <ImageCropper/>
+        :
+            <FabricCanvas/>}
+        </>
+    </div>
     )
 }

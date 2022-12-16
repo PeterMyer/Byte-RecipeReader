@@ -21,6 +21,8 @@ export default function ImageCropper(props) {
     const fabricCanvas = context.fabricCanvas
     const cropObjects = context.cropObjects
     const setCropObjects = context.setCropObjects
+    const recipeImg = context.recipeImg
+    const setRecipeImg = context.setRecipeImg
     const height = context.height
 
 
@@ -45,8 +47,11 @@ export default function ImageCropper(props) {
         case 'ingredients':
           setCropObjects({...cropObjects, [index]: {id:index,imgObjURL:imgObjURL, location:"ingredients", coordinates:cropper.getCropBoxData(cropper)}})
           break
+        case 'image':
+          setRecipeImg({[index]: {id:index,imgObjURL:imgObjURL, location:"image", coordinates:cropper.getCropBoxData(cropper)}})
+          break
         default:
-            break
+          break
       }
       setShowCropper(false)
     }
@@ -57,7 +62,7 @@ export default function ImageCropper(props) {
   }
 
     return(
-      <div className="recipe-section-selection-container">
+      <div id="cropper-container" className="recipe-section-selection-container">
         <div className = "section-selection-buttons-container">
           <button onClick = {getCropData} >
               Accept
@@ -66,6 +71,7 @@ export default function ImageCropper(props) {
               Cancel
           </button>
         </div>
+        <div id="cropper-id">
         <Cropper
             style={{ width: 400, height: height}}
             zoomTo={.15}
@@ -84,6 +90,7 @@ export default function ImageCropper(props) {
             }}
             guides={true}
         />
+        </div>
       </div>
     )
   }
