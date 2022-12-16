@@ -1,4 +1,4 @@
-import React, {useState,useContext} from "react";
+import React, {useContext} from "react";
 import {Context} from './CreateNewRecipe'
 
 export default function CreateNewRecipe(){
@@ -35,8 +35,11 @@ export default function CreateNewRecipe(){
       }
 
     return(
-        <div>
-            <form encType="multipart/form-data" onSubmit={handleSubmit}>
+        < article className = "image-upload-container">
+            <span>
+                <h2>Choose A Recipe Image</h2>
+            </span>
+            <form className='image-upload-form' encType="multipart/form-data" onSubmit={handleSubmit}>
                 <input
                     type="file"
                     id="recipe"
@@ -45,6 +48,6 @@ export default function CreateNewRecipe(){
                     onChange={handleChange}
                     />
             </form>
-        </div>
+        </article >
     )
 }

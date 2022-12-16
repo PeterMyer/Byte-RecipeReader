@@ -13,6 +13,11 @@ export default function NavModal(props){
         navigate(location)
     }
 
+    const handleClose=()=>{
+        let fabricCanvas = Document.getElementById("fabric-canvas")
+        fabricCanvas.style={"z-index":-1}
+    }
+
     useEffect(()=>{
         props.onClose()
     },[location])
@@ -22,12 +27,13 @@ export default function NavModal(props){
     }
 
     return(
-        <div className = "modal" onClick={()=>props.onClose()}>
+        <div id="nav-modal" className = "modal" onClick={()=>props.onClose()}>
             <div className = "modal-content" onClick={e => e.stopPropagation()}>
                 <header className = "modal-header">
-                    <button onClick={()=>props.onClose()} className = "modal-button"><i class="fa-solid fa-x"></i></button>
+                    <strong>Create New Recipe</strong>
+                    <button onClick={()=>props.onClose()}><i class="fa-solid fa-x"></i></button>
                 </header>
-                <div className = "modal-body">
+                <div id="nav-modal-buttons-container" className = "modal-body">
                     <button onClick={()=>handleClick("/newRecipeForm")}>Create Manually</button>
                     <button onClick={()=>handleClick("/newRecipe")}>Create From Image</button>
             </div>

@@ -4,7 +4,6 @@ import {Context} from './CreateNewRecipe'
 import apiService from "../Utilities/apiService";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from "react-router-dom";
-import { get } from 'jquery';
 
 
 export default function FabricCanvas(){
@@ -164,16 +163,15 @@ export default function FabricCanvas(){
                 multiplier: 2
               })
         canvas.sendToBack(canvas.backgroundImage)
-        setFabricCanvas(fabricCanvasCopy)
-        
+        setFabricCanvas(fabricCanvasCopy)  
     })
 
     return(    
     <div >
         {/* https://stackoverflow.com/questions/21931271/how-to-enable-responsive-design-for-fabric-js */}   
-        <div className="fabric-container" style = {{width: width, height:height}}>
+        <div id="fabric-canvas" className="fabric-container" style = {{width: width, height:height}}>
             <div id = "fabric-canvas-wrapper">
-                <canvas id='canvas' style={{'z-index':-1}}></canvas>
+                <canvas id='canvas'></canvas>
             </div>
             <img id="recipe-img" src = {result} alt = "uploadedImage" hidden />
         </div>

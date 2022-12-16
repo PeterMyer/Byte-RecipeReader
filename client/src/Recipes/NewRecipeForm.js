@@ -10,14 +10,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 export default function RecipeForm(){
     const { user } = useAuth0();
     const {state} = useLocation()
-    const [ingredients, setIngredients] = useState(state?state.recipeData.ingredients:null)
-    const [instructions, setInstructions] = useState(state? state.recipeData.instructions:null)
+    const [ingredients] = useState(state?state.recipeData.ingredients:null)
+    const [instructions] = useState(state? state.recipeData.instructions:null)
     const navigate = useNavigate();
 
-    const { register, handleSubmit,control, watch, formState: { errors } } = useForm({
+    const { register, handleSubmit,control, formState: { errors } } = useForm({
         defaultValues:{
             DraftJs: instructions ? EditorState.createWithContent(convertFromRaw(instructions)) : EditorState.createEmpty(),
-            Ingredients: ingredients?ingredients[0].map((ingredient)=> {return({value:ingredient})}):null
+            Ingredients: ingredients? ingredients[0].map((ingredient)=> {return({value:ingredient})}):[{value: ""}]
         }
     });
 
@@ -84,7 +84,7 @@ export default function RecipeForm(){
                 </label>
             </section>
             <section className ="recipeform-section">
-                <label className = "recipeform-input-label"><strong>Instructions</strong>
+                <label className = "recipeform-instructions-label"><strong>Instructions</strong>
                     <RecipeEditor  control = {control}/>
                 </label>
             </section>
