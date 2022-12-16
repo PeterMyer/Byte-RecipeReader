@@ -804,21 +804,23 @@ text-align: center;
 margin-top: 15px;
 margin-left: 60px;
 }
-/* 
+
 .recipe-section-selection-container{
   display: flex;
   flex-direction: row;
   justify-content:center;
-
+  
+ 
 }
 
 .section-selection-buttons-container{
   display: flex;
   flex-direction: column;
-  margin-right: 5%;
+  margin-right: 50px;
+  min-width: 100px;
 }
 
 #section-submit-button{
   margin-top:1em;
   margin-bottom: 2em;
-} */
+}

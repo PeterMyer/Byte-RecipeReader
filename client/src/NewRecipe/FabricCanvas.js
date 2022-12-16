@@ -109,7 +109,8 @@ export default function FabricCanvas(){
             {
                 width: width,
                 height: canvasHeight,
-                preserveObjectStacking:false,
+                preserveObjectStacking:true,
+                selectable:false
             })
         canvas.setBackgroundImage(imgInstance, canvas.renderAll.bind(canvas),{
             selectable:false
@@ -167,18 +168,17 @@ export default function FabricCanvas(){
     })
 
     return(    
-    <div >
-        {/* https://stackoverflow.com/questions/21931271/how-to-enable-responsive-design-for-fabric-js */}   
+    <div className = "recipe-section-selection-container">
+        <div className="section-selection-buttons-container">
+            <button id="section-submit-button" onClick={()=>handleSubmit()}>Submit</button>
+            <button onClick={()=>handleOpenEditor("instructions")}>Instructions</button>
+            <button onClick={()=>handleOpenEditor("ingredients")}>Ingredients</button>
+        </div>
         <div id="fabric-canvas" className="fabric-container" style = {{width: width, height:height}}>
             <div id = "fabric-canvas-wrapper">
                 <canvas id='canvas'></canvas>
             </div>
             <img id="recipe-img" src = {result} alt = "uploadedImage" hidden />
-        </div>
-        <div>
-            <button onClick={()=>handleOpenEditor("instructions")}>Instructions</button>
-            <button onClick={()=>handleOpenEditor("ingredients")}>Ingredients</button>
-            <button onClick={()=>handleSubmit()}>Submit</button>
         </div>
     </div>)
 }
