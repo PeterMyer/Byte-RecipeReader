@@ -39,11 +39,11 @@ export default function DisplayRecipes(){
                         return(
                             <div className = "singleRecipeContainer" >
                                 <Link to={`/recipe/${recipe.id}`}>
-                                    <figure>
-                                        <img className = "singleRecipeDisplayIcon"
-                                        alt= "defeaultImg"
-                                        src = "RecipeIcon.png"
-                                        />
+                                    <figure>                              
+                                            <img className = "singleRecipeDisplayIcon"
+                                            alt= "defeaultImg"
+                                            src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}/>
+
                                         <div>{recipe.name}</div>
                                     </figure>
                                 </Link>

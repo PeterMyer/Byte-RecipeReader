@@ -2,7 +2,7 @@ const router = require('express').Router();
 const ParseIngredient = require('../classification_service/ParseIngredient')
 
 const {
-    models: { Recipe, Component, Ingredient,MeasurementQuantity,MeasurementUnit,RecipeComment, RecipeIngredient,RecipeNutrition },
+    models: { Recipe, Component, Ingredient,MeasurementQuantity,MeasurementUnit,RecipeComment, RecipeIngredient,RecipeNutrition, Image },
   } = require('../db/index');
 
 router.get('/', async(req,res,next)=>{
@@ -12,7 +12,9 @@ router.get('/', async(req,res,next)=>{
             {
                 where:{
                     userId:userId
-                }
+                },
+                include: {   
+                    model:Image}
             }
         )
         res.json(recipe)
@@ -26,6 +28,8 @@ router.get('/:id', async(req, res, next)=>{
     try{
         const recipe = await Recipe.findByPk(req.params.id,{
             include: [
+                {   
+                    model:Image},
                 {
                     model: Ingredient,
                     attributes: ['id', 'normText'],
@@ -62,7 +66,8 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             servings: req.body.servings,
             instructions: req.body.instructions,
             source: req.body.source,
-            userId: req.body.userId
+            userId: req.body.userId,
+            profileId: req.body.imgId
         })
         await Promise.all(
             parsedIngredients.map(async (item)=>{

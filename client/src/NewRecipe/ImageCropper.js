@@ -21,6 +21,10 @@ export default function ImageCropper(props) {
     const fabricCanvas = context.fabricCanvas
     const cropObjects = context.cropObjects
     const setCropObjects = context.setCropObjects
+    const recipeImg = context.recipeImg
+    const setRecipeImg = context.setRecipeImg
+    const height = context.height
+
 
 
     const [imgData ] = useState(props.imgData)
@@ -43,8 +47,11 @@ export default function ImageCropper(props) {
         case 'ingredients':
           setCropObjects({...cropObjects, [index]: {id:index,imgObjURL:imgObjURL, location:"ingredients", coordinates:cropper.getCropBoxData(cropper)}})
           break
+        case 'image':
+          setRecipeImg({[index]: {id:index,imgObjURL:imgObjURL, imgBlob: cropperBlob,location:"image", coordinates:cropper.getCropBoxData(cropper)}})
+          break
         default:
-            break
+          break
       }
       setShowCropper(false)
     }
@@ -55,9 +62,18 @@ export default function ImageCropper(props) {
   }
 
     return(
-      <>
+      <div id="cropper-container" className="recipe-section-selection-container">
+        <div className = "section-selection-buttons-container">
+          <button onClick = {getCropData} >
+              Accept
+          </button>
+          <button onClick = {handleCancel} >
+              Cancel
+          </button>
+        </div>
+        <div id="cropper-id">
         <Cropper
-            style={{ width: 400}}
+            style={{ width: 400, height: height}}
             zoomTo={.15}
             initialAspectRatio={3/2}
             src={fabricCanvas}
@@ -74,18 +90,7 @@ export default function ImageCropper(props) {
             }}
             guides={true}
         />
-        <div>
-          <button onClick = {getCropData} >
-              Accept
-          </button>
-          <button onClick = {handleCancel} >
-              Cancel
-          </button>
-          {/* {cropper === null ? null: (<button onClick={()=>cropper.setDragMode("move")} > Drag </button>)}
-          {cropper === null ? null: (<button onClick={()=>cropper.setDragMode("crop")} > Crop </button>)} */}
-          {/* {cropper === null ? null: (<button onClick={()=>cropper.zoom(0.1)} > Zoom In </button>)}
-          {cropper === null ? null: (<button onClick={()=>cropper.zoom(-0.1)} > Zoom Out </button>)} */}
         </div>
-      </>
+      </div>
     )
   }

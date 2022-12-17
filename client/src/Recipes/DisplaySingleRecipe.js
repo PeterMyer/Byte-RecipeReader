@@ -9,13 +9,13 @@ export default function DisplayUserRecipe(){
     const { id } = useParams()
     const navigate = useNavigate();
 
-
     useEffect(()=>{
         fetchRecipe(id)
     },[])
 
     const fetchRecipe= async(id)=>{
         let recipe = await apiService.recipe.retrieveRecipe(id)
+        console.log('recipe',recipe)
         setRecipeData({...recipe.data})
     }
 
@@ -48,8 +48,16 @@ export default function DisplayUserRecipe(){
                         </div>
                     </div>
                     <section>
-                        <strong>Servings</strong>
-                        <div>{recipeData.servings}</div>
+                        <div >
+                            <div>
+                                <strong>Servings</strong>
+                                <div>{recipeData.servings}</div>
+                            </div>
+                            <div>
+                                {recipeData.image?
+                                <img src={recipeData.image.filepath} style={{width: "200px"}} alt=""/>:null}
+                            </div>
+                        </div>
                     </section>
                     <section>
                         <h2>Ingredients</h2>

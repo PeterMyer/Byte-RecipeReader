@@ -15,9 +15,10 @@ export default function CreateNewRecipe(){
     const [width, setWidth] = useState(400)
     const [height, setHeight] = useState(0)
     const [fabricCanvas, setFabricCanvas] = useState(null)
+    const [recipeImg, setRecipeImg] = useState({})
 
     return(
-        <div className="create-new-recipe-container">
+        <article className="create-new-recipe-container">
             <Context.Provider value={{
                 result, setResult,
                 loaded, setLoaded,
@@ -28,7 +29,8 @@ export default function CreateNewRecipe(){
                 height, setHeight,
                 fabricCanvas, setFabricCanvas,
                 form, setForm,
-                cropObjects, setCropObjects
+                cropObjects, setCropObjects,
+                recipeImg, setRecipeImg
                 }} 
                 >
                     {loaded? 
@@ -37,6 +39,6 @@ export default function CreateNewRecipe(){
                         <ImageUpload/>
                     }
             </Context.Provider>
-        </div>
+        </article>
     )
 }
