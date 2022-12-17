@@ -31,6 +31,9 @@ RecipeComment.hasMany(Ingredient,{foreignKey: 'recipeCommentId'})
 Recipe.hasOne(RecipeNutrition,{foreignKey: 'recipeId'})
 RecipeNutrition.belongsTo(Recipe,{foreignKey: 'recipeId'})
 
+Recipe.belongsTo(Image,{foreignKey: 'profileId'})
+Image.hasOne(Recipe,{foreignKey: 'profileId'})
+
 module.exports = {
   db,
   models:{

@@ -48,7 +48,7 @@ export default function ImageCropper(props) {
           setCropObjects({...cropObjects, [index]: {id:index,imgObjURL:imgObjURL, location:"ingredients", coordinates:cropper.getCropBoxData(cropper)}})
           break
         case 'image':
-          setRecipeImg({[index]: {id:index,imgObjURL:imgObjURL, location:"image", coordinates:cropper.getCropBoxData(cropper)}})
+          setRecipeImg({[index]: {id:index,imgObjURL:imgObjURL, imgBlob: cropperBlob,location:"image", coordinates:cropper.getCropBoxData(cropper)}})
           break
         default:
           break

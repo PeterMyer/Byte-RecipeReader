@@ -12,14 +12,16 @@ export default function RecipeForm(){
     const {state} = useLocation()
     const [ingredients] = useState(state?state.recipeData.ingredients:null)
     const [instructions] = useState(state? state.recipeData.instructions:null)
-    const [recipeImg, setRecipeImg] = useState(state? [Object.values(state.recipeImg)[0].imgObjURL]: null)
+    // const [recipeImg, setRecipeImg] = useState(state? [Object.values(state.recipeImg)[0].imgObjURL]: null)
+    const [recipeImg, setRecipeImg] = useState(state? Object.values(state.recipeImg)[0]: null)
+    const [imgPreview, setImgPreview] = useState(state? Object.values(state.recipeImg)[0].imgObjURL: null)
     const navigate = useNavigate();
 
     const { register, handleSubmit,control, formState: { errors } } = useForm({
         defaultValues:{
             DraftJs: instructions ? EditorState.createWithContent(convertFromRaw(instructions)) : EditorState.createEmpty(),
             Ingredients: ingredients? ingredients[0].map((ingredient)=> {return({value:ingredient})}):[{value: ""}],
-            RecipeImg: recipeImg? recipeImg : null
+            recipeImgFile: recipeImg? recipeImg.imgBlob : null
         }
     });
 
@@ -29,13 +31,24 @@ export default function RecipeForm(){
       });
       
     const onSubmit = async (data) => {
+        console.log('data',data)
+
+        let imgResponse = null
+        if(data.recipeImgFile){
+            const fileData = new FormData()
+            fileData.append("uploaded_file", data.recipeImgFile)
+            let userId = user.sub
+            imgResponse = await apiService.upload.saveImage(fileData, userId)
+        }
+
         let recipePayload = {
             name: data.recipeName,
             servings: data.servings,
             ingredients: JSON.stringify(data.Ingredients.map((ingredient)=>ingredient.value.toLowerCase())),
             instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
             nutrition: data.nutrition,
-            userId: user.sub
+            userId: user.sub,
+            imgId: imgResponse.data.result[0].id
         }
         let response = await apiService.recipe.create(recipePayload)
         navigate(`/recipe/${response.data.id}`)
@@ -44,11 +57,10 @@ export default function RecipeForm(){
     const onChange = async (e)=>{ 
         const file = e.target.files[0]
         let reader = new FileReader()
-        const data = new FormData()
-        data.append("uploaded_file", file)
 
         reader.onload = function(e){
-            setRecipeImg(e.target.result)
+            setRecipeImg(file)
+            setImgPreview(e.target.result)
         }
 
         reader.onerror = function(){
@@ -87,11 +99,11 @@ export default function RecipeForm(){
                     <div className='recipeform-subsection'>
                         <strong>Recipe Image</strong>
                         <div className= 'recipeform-img-container'>
-                            <img src={recipeImg} alt="" style={{'max-width':200}}/>
+                            <img src={imgPreview} alt="" style={{'max-width':200}}/>
                         </div>
                         <label id="recipeform-img-upload" className = "recipeform-input-label">
                             <input 
-                                {...register("RecipeImg",{required:false})}
+                                {...register("recipeImgFile",{required:false})}
                                 type="file"
                                 accept="image/png, image/jpeg"
                                 encType="multipart/form-data" 
