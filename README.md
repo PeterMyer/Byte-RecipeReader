@@ -4,13 +4,11 @@ A web app used to digitize recipe ingredients, instructions, and generate nutrit
 ## How to use Byte
 ### Upload Images
 
-Find you favorite cook book recipe and upload pictures of the ingredients and instructions. You can use one or multiple multiple images to construct a recipe. 
+Find you favorite cook book recipe and upload pictures of the ingredients and instructions.
 
 Text should be cropped around the sections you wish the reader to parse in order to get the most accurate information. There is a built in cropper feature to allow adjustment of uploaded images. For best results images should be flat and evenly lit.
 
 ### Build Recipe
-
-Once images are prepared you can navigate to the Build Recipe page and use the drag and drop feature to select and organize your images. After clicking 'Build' Byte will read the text from each image and output text editor boxes for each image, where you can adjust the text as needed.
 
 When you are satisfied with the text and submit Byte will output a recipe edit page where you can add final details such number of servings and any additional ingredients not included in the original recipe.
 
@@ -28,16 +26,9 @@ Tesseract set up was very simple, and will be discussed further down the page. T
 Users are able to upload and save multiple images with a simple upload form. All user uploaded images are saved to an [Amazon AWS S3 bucket](https://aws.amazon.com/s3/). 
 
 #### Image Cropping and Sectioning
-Once saved, users have the option of cropping their images to fit closer to the text and into multiple selections. This feature is provided as an answer to challenges regarding OCR recipe section identification that will be discussed further in the Tesseract section. 
+Once saved, users have the option of identifying sections of their recipe such and ingredients and instructions. This feature is provided as an answer to challenges regarding OCR recipe section identification that will be discussed further in the Tesseract section. 
 
-Cropping is implemented with [Cropper.js](https://fengyuanchen.github.io/cropperjs/) with react implementation via [react-cropper.js](https://github.com/react-cropper/react-cropper). Once submitted cropped images are saved to S3 as a new image upload, leaving the original intact in case the user needs multiple selections from the same source.
-
-#### Recipe Construction
-A recipe that has been sectioned into several independent images will eventually need to be reconstructed back into something akin to its original form. In order to address this issue Byte uses an organizable drag-and-drop feature for image selection .
-
-From the 'Create Recipe' page users are provided a drag-and-drop selection, implemented with [react-dnd](https://react-dnd.github.io/react-dnd/about) of their saved images to construct their recipe, with drop targets for both Instructions and Ingredients. Images are processed from left to right in their respective drop zones.
-
-The seperate drop targets allow Byte to understand what methods it should use to process each image. The left to right processing ensures the outputs will be in the appropriate order, which is especially important for the instruction steps.
+Cropping is implemented with [Cropper.js](https://fengyuanchen.github.io/cropperjs/) with react implementation via [react-cropper.js](https://github.com/react-cropper/react-cropper). 
 
 ### Retrieving Image Text
 #### Tesseract
@@ -50,7 +41,7 @@ Recipe texts come in a non-standardized format with various potential sections i
 
 The initial version of Byte explored identification of ingredients and instructions via training a [Brain.js](https://brain.js.org/#/) neural network model. While intital results were promising they did not approach a reliablility that would remove regular user input and confirmation. 
 
-If user input was going to be required I decided to lean into it by having users select the sections and input manually for the recipe before sending it to Tesseract. This was accomplished with the previously outlined crop and drag-and-drop features. Later product research has shown this approach has been used for similar applications, such as [The Cookbook App](https://thecookbookapp.com/) and [Recipe Keeper](https://recipekeeperonline.com/).
+If user input was going to be required I decided to lean into it by having users select the sections and input manually for the recipe before sending it to Tesseract. Later product research has shown this approach has been used for similar applications, such as [The Cookbook App](https://thecookbookapp.com/) and [Recipe Keeper](https://recipekeeperonline.com/).
 
 #### Verifying with Draft.js
 After Tesseract results are provided users are given the option to compare output to original image and make any desired changes. The text editor is implemented with [Draft.js](https://draftjs.org/) and provides a separate editor box for each uploaded image. Editor states are saved to a top level 'Parent Editor State' which is shared with the lower level editors via React UseContext. On submit this parent state is used to fill in a new recipe form. 
@@ -84,9 +75,6 @@ Currently, Byte takes a naive approach and automatically selects the first "best
 
 ## Future Iterations
 In its current state Byte is largely an MVP and has multiple opportunities for improvement. Below is a list of some future improvements I intend to make on the project.
-
-### OCR Selection UI
-The process of Upload Img > Crop Img > Drag and Drop Img > OCR > Verify > Recipe Form > Save is extremely clunkly and requires multiple pages. In future iterations of Byte I intend to streamline this process and ideally reduce to one page.
 
 ### Nutritional Info Selection
 Byte defaults to the first result from the USDA API. In a future version users should be able to see what food options are available, select the one they think matches each ingredient best, and then Byte should update the nutritional estimate based on their selection.
