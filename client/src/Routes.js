@@ -11,6 +11,8 @@ import DisplayUserRecipe from './Recipes/DisplaySingleRecipe';
 import ProtectedRoute from './Auth/protected-route';
 import {Loading} from './Auth/Loading';
 import CreateNewRecipe from './NewRecipe/CreateNewRecipe';
+const { v4: uuidv4 } = require("uuid")
+
 
 
 export default function AppRoutes(){
@@ -26,7 +28,7 @@ export default function AppRoutes(){
             <Route path="/" element={<Home />} />
             <Route 
                 path="/newRecipe" 
-                element={<ProtectedRoute component={CreateNewRecipe}/>} />
+                element={<ProtectedRoute component={CreateNewRecipe}/>}  />
             <Route 
                 path="/readMany" 
                 element={<ProtectedRoute component={TesseractScheduler}/>} /> 

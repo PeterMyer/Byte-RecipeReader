@@ -162,6 +162,7 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             servings: req.body.servings,
             instructions: req.body.instructions,
             source: req.body.source,
+            profileId: req.body.imgId
         },{where:{id:req.params.id}})
 
         //Add New Ingredients

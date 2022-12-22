@@ -26,7 +26,9 @@ export default function DisplayUserRecipe(){
             servings: recipeData.servings,
             instructions: recipeData.instructions,
             source: recipeData.source,
-            ingredients: recipeData.ingredients
+            ingredients: recipeData.ingredients,
+            recipeImg: recipeData.image
+
         }
         navigate(`/editRecipeForm/${id}`,{state: {'recipeData':recipeObj}})
     }
@@ -47,32 +49,37 @@ export default function DisplayUserRecipe(){
                         <button onClick={(handleDelete)} id="edit-button"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
-                    <section>
-                        <div >
-                            <div>
-                                <strong>Servings</strong>
-                                <div>{recipeData.servings}</div>
-                            </div>
-                            <div>
-                                {recipeData.image?
-                                <img src={recipeData.image.filepath} style={{width: "200px"}} alt=""/>:null}
-                            </div>
+                    <section id= "recipe-summary"className = "recipe-display-section">
+                        <div className="recipe-display-img-container">
+                            <img 
+                                className="responsive-image" 
+                                // src={recipeData.image? recipeData.image.filepath: "RecipeIcon.png"} 
+                                src ={ recipeData.image? recipeData.image.filepath:"/RecipeIcon.png"}
+
+                                alt="RecipeIcon.png"/>
                         </div>
+                            <div id = "recipe-summary-info-container" className="recipe-display-subsection"> 
+                                <strong>Servings:</strong>
+                                <div>{recipeData.servings}</div>
+                                {/* <strong>Source:</strong> */}
+                            </div>
                     </section>
-                    <section>
-                        <h2>Ingredients</h2>
-                        <ul id="recipie-display-ingredient-list">
-                            {recipeData.ingredients.map(
-                                (ingredient)=>{
-                                        return(
-                                            <li>{ingredient.recipeIngredient.text}</li>)})}
-                        </ul>
-                    </section>
-                    <section>
+                    <section className="recipe-display-section">
+                        <div className="recipe-display-subsection">
+                            <h2>Ingredients</h2>
+                            <ul id="recipie-display-ingredient-list">
+                                {recipeData.ingredients.map(
+                                    (ingredient)=>{
+                                            return(
+                                                <li>{ingredient.recipeIngredient.text}</li>)})}
+                            </ul>
+                        </div>
+                        <div className="recipe-display-subsection">
                         <h2>Instructions</h2>
                         <Editor 
                         editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(recipeData.instructions)))}
                         readOnly= "true"/>
+                        </div>
                     </section>
                     <h2>Nutrition</h2>
                     <NutritionContainer id={id} ingredients={recipeData.ingredients} servings={recipeData.servings}/>

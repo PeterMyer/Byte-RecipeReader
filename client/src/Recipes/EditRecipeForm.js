@@ -7,9 +7,12 @@ import RecipeEditor from './RecipeInstrucEditor'
 import apiService from "../Utilities/apiService";
 import { useNavigate } from "react-router-dom";
 import {partitionIngredients} from '../Utilities/helperFunctions'
+import { useAuth0 } from '@auth0/auth0-react';
+
 
 
 export default function RecipeForm(){
+    const { user } = useAuth0();
     const {state} = useLocation()
     const { id } = useParams()
     const [recipeName] = useState(state?state.recipeData.name: null)
@@ -17,6 +20,8 @@ export default function RecipeForm(){
     const [source] = useState(state?state.recipeData.source: null)
     const [ingredients] = useState(state?state.recipeData.ingredients:null)
     const [instructions] = useState(state? state.recipeData.instructions:null)
+    const [recipeImg, setRecipeImg] = useState(state.recipeData.recipeImg? state.recipeData.recipeImg: null)
+    const [imgPreview, setImgPreview] = useState(state.recipeData.recipeImg? state.recipeData.recipeImg.filepath: "/RecipeIcon.png")
     const [deleted, setDeleted] = useState([])
     const navigate = useNavigate();
 
@@ -26,7 +31,8 @@ export default function RecipeForm(){
             servings:servings? servings:null,
             source: source? source: null,
             DraftJs: instructions ? EditorState.createWithContent(convertFromRaw(JSON.parse(instructions))) : EditorState.createEmpty(),
-            Ingredients: ingredients?ingredients.map((ingredient)=> {return({value:ingredient.recipeIngredient.text, id:ingredient.id})}):null,
+            Ingredients: ingredients? ingredients.map((ingredient)=> {return({value:ingredient.recipeIngredient.text, id:ingredient.id})}):null,
+            ImgFile: recipeImg? recipeImg.filepath: null
         }
     });
     const { fields, append, remove } = useFieldArray({
@@ -39,10 +45,36 @@ export default function RecipeForm(){
         remove(index)
         setDeleted([...deleted,removedIndex])
     }
+
+    const onChange = async (e)=>{ 
+        const file = e.target.files[0]
+        let reader = new FileReader()
+
+        reader.onload = function(e){
+            setImgPreview(e.target.result)
+        }
+
+        reader.onerror = function(){
+            console.log("error", reader.error)
+        }
+        reader.readAsDataURL(file)
+    }
     
     const onSubmit = async (data) => {
+        console.log('data',data)
         const editFormIngredients = data.Ingredients.map((ingredient)=>({value:ingredient.value ,id: ingredient.id}))
         const {newIngredient,formatChanges,toDelete} = partitionIngredients(state.recipeData.ingredients,editFormIngredients)
+
+        let imgResponse = null
+        let recipeImgId = recipeImg? recipeImg.id : null
+
+        if(data.ImgFile !== recipeImg){
+            const fileData = new FormData()
+            fileData.append("uploaded_file", data.ImgFile[0])
+            let userId = user.sub
+            imgResponse = await apiService.upload.saveImage(fileData, userId)
+        }
+        console.log(imgResponse)
 
         const recipePayload = {
             name: data.recipeName,
@@ -53,6 +85,7 @@ export default function RecipeForm(){
             nutrition: data.nutrition,
             deletedIngredients: [...toDelete,...deleted],
             changedFormat: formatChanges,
+            imgId: imgResponse ? imgResponse.data.result[0].id: recipeImgId
         }
         let response = await apiService.recipe.update(id,recipePayload)
         navigate(`/recipe/${response.data.id}`)
@@ -64,11 +97,11 @@ export default function RecipeForm(){
         <form className = "recipeform" onSubmit={handleSubmit(onSubmit)}>
             <h1> Edit Recipe </h1>
             <section className ="recipeform-section">
+                <div className = "recipeform-subsection">
                 <label className = "recipeform-input-label"><strong>Recipe Name</strong>
                     <div className = "recipeform-input-container" >
                         <input
                             {...register("recipeName",{required:true})}
-                            type="text"
                             placeholder = "Recipe Name"
                             className = "recipeform-input-field"
                         />
@@ -83,6 +116,24 @@ export default function RecipeForm(){
                                 className = "recipeform-input-field"/>
                         </div>
                     </label>
+                </div>
+                <div className='recipeform-subsection'>
+                        <strong>Recipe Image</strong>
+                        <div className= 'recipeform-img-container'>
+                            <img src={imgPreview} alt="" style={{'max-width':200}}/>
+                        </div>
+                        <label id="recipeform-img-upload" className = "recipeform-input-label">
+                            <input 
+                                {...register("ImgFile",{required:false})}
+                                type="file"
+                                accept="image/png, image/jpeg"
+                                encType="multipart/form-data" 
+                                onChange={onChange}
+                            />
+                            {/* <i id="img-upload-icon" class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image */}
+                        </label>
+                    </div>
+
             </section>
             <section className ="recipeform-section" id="ingredient">
                 <label className = "recipeform-input-label"><strong>Ingredients</strong>
