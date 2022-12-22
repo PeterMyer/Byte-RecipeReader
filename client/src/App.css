@@ -111,13 +111,14 @@ padding: 5px;
 .allRecipesContainer{
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
-  gap: 60px 50px
+  justify-content:flex-start;
+  gap: 30px 30px
 
 }
 .singleRecipeContainer{
   border-style: solid;
   border-color: #c0c0c0;
+  box-shadow: 5px 2px 2px #d7d9de;
 }
 
 .singleRecipeContainer a{
@@ -129,8 +130,15 @@ padding: 5px;
 }
 
 .singleRecipeDisplayIcon{
-  height: 300px;
-  width: 300px
+  height: 150px;
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.recipecontainer-name{
+  display:flex;
+  align-content: center;
+  align-items: center;
 }
 
 #recipeImg{
@@ -627,7 +635,7 @@ padding: 5px;
 .recipe-page-single{
   display: flex;
   justify-content: center;
-  
+  min-width: 400px
 }
 
 .recipe-display-container{
@@ -638,7 +646,7 @@ padding: 5px;
   border-style: solid;
   border-width: 1px;
   border-color:lightgray;
-  padding: 10px;
+  padding: 20px;
   box-shadow: 0px 10px 25px #d7d9de;
 }
 
@@ -646,6 +654,7 @@ padding: 5px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  
 }
 .recipe-display-header-buttons{
   display: flex;
@@ -653,12 +662,55 @@ padding: 5px;
   justify-content: flex-end;
 }
 
+.recipe-display-section{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 10px
+}
+
+.recipe-display-subsection{
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+
+.recipe-display-img-container{
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 350px;
+}
+
+#recipe-summary{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+#recipe-summary-info-container{
+  display: flex;
+  min-width: 20%;
+  padding:10px;
+  /* border-style: solid;
+  border-width: 1px;
+  border-color:lightgray;
+  background-color: rgb(239, 239, 239); */
+
+
+}
+
+.responsive-image{
+  width: 100%;
+  height: auto;
+}
+
 #edit-button{
   padding: 10px;
   background-color : white;
   color:  #35a956;
   text-decoration: none;
-  margin: 10px 30px;
+  margin: 10px 5px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
