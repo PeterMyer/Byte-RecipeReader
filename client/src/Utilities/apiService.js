@@ -57,7 +57,7 @@ export default {
     },
     saveNutrition: async (id, payload)=>{
       try{ 
-        let response = await apiClient.post(`/api/recipes/${id}/nutrition`, payload)
+        let response = await axios.post(`/api/recipes/${id}/nutrition`, payload)
         return response
       } catch(error){
           console.log(error)
@@ -68,7 +68,7 @@ export default {
   upload: {
    saveImage:  async (payload,userId) => {
     try {
-      let response = await apiClient.post(`/api/uploads/`, payload, {
+      let response = await axios.post(`/api/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
         },
@@ -81,7 +81,7 @@ export default {
     },
     deleteImage: async (payload) => {
       try {
-        let response = await apiClient.delete(`/api/uploads/${payload.id}`,{data:payload})
+        let response = await axios.delete(`/api/uploads/${payload.id}`,{data:payload})
 
           return response
       } catch(error) {
