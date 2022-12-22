@@ -7,7 +7,6 @@ const s3 = new S3(({
   region: 'us-east-2'
 }));
 
-
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001'
 })

@@ -34,8 +34,10 @@ const s3 = new AWS.S3({
 router.post('/', upload.single('uploaded_file'), async(req, res) => {
     try{
         const {userId} = req.query
+        console.log(req)
         const ext = path.extname(req.file.originalname)
         const newFilepath = `${uuidv4()}${ext}`
+
 
 
         const params = {

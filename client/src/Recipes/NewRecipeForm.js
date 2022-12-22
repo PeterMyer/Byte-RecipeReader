@@ -12,7 +12,6 @@ export default function RecipeForm(){
     const {state} = useLocation()
     const [ingredients] = useState(state?state.recipeData.ingredients:null)
     const [instructions] = useState(state? state.recipeData.instructions:null)
-    // const [recipeImg, setRecipeImg] = useState(state? [Object.values(state.recipeImg)[0].imgObjURL]: null)
     const [recipeImg, setRecipeImg] = useState(state? Object.values(state.recipeImg)[0]: null)
     const [imgPreview, setImgPreview] = useState(state? Object.values(state.recipeImg)[0].imgObjURL: null)
     const navigate = useNavigate();
@@ -21,7 +20,7 @@ export default function RecipeForm(){
         defaultValues:{
             DraftJs: instructions ? EditorState.createWithContent(convertFromRaw(instructions)) : EditorState.createEmpty(),
             Ingredients: ingredients? ingredients[0].map((ingredient)=> {return({value:ingredient})}):[{value: ""}],
-            recipeImgFile: recipeImg? recipeImg.imgBlob : null
+            ImgFile: recipeImg? recipeImg.imgBlob : null
         }
     });
 
@@ -31,12 +30,14 @@ export default function RecipeForm(){
       });
       
     const onSubmit = async (data) => {
-        console.log('data',data)
-
         let imgResponse = null
-        if(data.recipeImgFile){
+        if(data.ImgFile){
             const fileData = new FormData()
-            fileData.append("uploaded_file", data.recipeImgFile)
+            if(data.ImgFile[0]){
+                fileData.append("uploaded_file", data.ImgFile[0])
+            } else {
+                fileData.append("uploaded_file", data.ImgFile)
+            }
             let userId = user.sub
             imgResponse = await apiService.upload.saveImage(fileData, userId)
         }
@@ -48,7 +49,7 @@ export default function RecipeForm(){
             instructions: JSON.stringify(convertToRaw(data.DraftJs.getCurrentContent())),
             nutrition: data.nutrition,
             userId: user.sub,
-            imgId: imgResponse.data.result[0].id
+            imgId: imgResponse ? imgResponse.data.result[0].id:null
         }
         let response = await apiService.recipe.create(recipePayload)
         navigate(`/recipe/${response.data.id}`)
@@ -103,14 +104,13 @@ export default function RecipeForm(){
                         </div>
                         <label id="recipeform-img-upload" className = "recipeform-input-label">
                             <input 
-                                {...register("recipeImgFile",{required:false})}
+                                {...register("ImgFile",{required:false})}
                                 type="file"
                                 accept="image/png, image/jpeg"
                                 encType="multipart/form-data" 
                                 onChange={onChange}
-                                hidden
                             />
-                            <i id="img-upload-icon" class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image
+                            {/* <i id="img-upload-icon" class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image */}
                         </label>
                     </div>
             </section>

@@ -26,7 +26,9 @@ export default function DisplayUserRecipe(){
             servings: recipeData.servings,
             instructions: recipeData.instructions,
             source: recipeData.source,
-            ingredients: recipeData.ingredients
+            ingredients: recipeData.ingredients,
+            recipeImg: recipeData.image
+
         }
         navigate(`/editRecipeForm/${id}`,{state: {'recipeData':recipeObj}})
     }
@@ -59,7 +61,7 @@ export default function DisplayUserRecipe(){
                             <div id = "recipe-summary-info-container" className="recipe-display-subsection"> 
                                 <strong>Servings:</strong>
                                 <div>{recipeData.servings}</div>
-                                <strong>Source:</strong>
+                                {/* <strong>Source:</strong> */}
                             </div>
                     </section>
                     <section className="recipe-display-section">
