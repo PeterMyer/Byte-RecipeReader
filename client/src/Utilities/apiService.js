@@ -2,7 +2,7 @@
 import axios from "axios"
 const S3 = require('aws-sdk/clients/s3');
 const s3 = new S3(({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,              // accessKeyId that is stored in .env file
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,             
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
   region: 'us-east-2'
 }));
@@ -14,14 +14,14 @@ const apiClient = axios.create({
 export default {
   recipe:{
     create: async(payload)=>{
-      try { let response = await apiClient.post('/api/recipes', payload )
+      try { let response = await axios.post('/api/recipes', payload )
         return response
       } catch(error){
         console.log(error)
       }},
     getAll: async(payload)=>{
       try {
-        let response = await apiClient.get('/api/recipes',{
+        let response = await axios.get('/api/recipes',{
           params: {userId: payload}
         })
         console.log(response)
@@ -32,7 +32,7 @@ export default {
     },
     retrieveRecipe: async(id)=>{
       try{
-        let response = await apiClient.get(`/api/recipes/${id}`)
+        let response = await axios.get(`/api/recipes/${id}`)
         return response
       } catch(error){
           console.log(error)
@@ -40,7 +40,7 @@ export default {
     }, 
     update: async(id, payload)=>{
       try{
-        let response = await apiClient.put(`/api/recipes/${id}`, payload)
+        let response = await axios.put(`/api/recipes/${id}`, payload)
         return response
 
       } catch (error){
@@ -49,7 +49,7 @@ export default {
     },
     delete: async(id)=>{
       try{
-        let response = await apiClient.delete(`/api/recipes/${id}`)
+        let response = await axios.delete(`/api/recipes/${id}`)
         return response
       } catch(error){
         console.log(error)
@@ -82,6 +82,7 @@ export default {
     deleteImage: async (payload) => {
       try {
         let response = await apiClient.delete(`/api/uploads/${payload.id}`,{data:payload})
+
           return response
       } catch(error) {
           console.log(error)
@@ -89,7 +90,7 @@ export default {
     },
     classifyText: async (payload) =>{
       try {
-        let response = await apiClient.post('/api/classification', {
+        let response = await axios.post('/api/classification', {
           headers:{
             'Content-Type' : 'json'
           },
@@ -104,8 +105,7 @@ export default {
   import: {
     retrieveFilePaths: async (userId) => {
       try {
-        let {data} = await apiClient.get('/api/uploads',{params:{userId:userId}})
-        console.log('filePaths',data)
+        let {data} = await axios.get('/api/uploads',{params:{userId:userId}})
         return data
       } catch (error){
         console.log(error)
@@ -129,11 +129,11 @@ export default {
   }},
   nutrition:{
     search: async(id)=>{
-      let response = await apiClient.post(`/api/nutrition/${id}`)
+      let response = await axios.post(`/api/nutrition/${id}`)
       return response
     },
     retrieve: async(id)=>{
-      let response = await apiClient.get(`/api/nutrition/${id}`)
+      let response = await axios.get(`/api/nutrition/${id}`)
       return response
     }
   }
