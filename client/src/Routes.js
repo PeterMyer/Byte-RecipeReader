@@ -8,8 +8,8 @@ import UserRecipes from "./Recipes/DisplayRecipesGrid"
 import NewRecipeForm from './Recipes/NewRecipeForm'
 import VerifyTextEditor from './ReadImage/VerifyRecipeTextEditor';
 import DisplayUserRecipe from './Recipes/DisplaySingleRecipe';
-import ProtectedRoute from './Auth/protected-route';
-import {Loading} from './Auth/Loading';
+import {ProtectedRoute} from './Features/Auth';
+import {Loading} from './Features/Auth/components/Loading';
 import CreateNewRecipe from './NewRecipe/CreateNewRecipe';
 const { v4: uuidv4 } = require("uuid")
 

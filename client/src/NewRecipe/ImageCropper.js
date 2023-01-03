@@ -25,8 +25,6 @@ export default function ImageCropper(props) {
     const setRecipeImg = context.setRecipeImg
     const height = context.height
 
-
-
     const [imgData ] = useState(props.imgData)
     const [cropper, setCropper] = useState(null);
     const { user } = useAuth0();
