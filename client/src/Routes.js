@@ -10,7 +10,7 @@ import VerifyTextEditor from './ReadImage/VerifyRecipeTextEditor';
 import DisplayUserRecipe from './Recipes/DisplaySingleRecipe';
 import {ProtectedRoute} from './Features/Auth';
 import {Loading} from './Features/Auth/components/Loading';
-import CreateNewRecipe from './NewRecipe/CreateNewRecipe';
+import CreateNewRecipe from './Features/NewRecipe/components/CreateNewRecipe';
 const { v4: uuidv4 } = require("uuid")
 
 

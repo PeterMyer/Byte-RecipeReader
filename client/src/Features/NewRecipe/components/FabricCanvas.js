@@ -1,7 +1,6 @@
 import React, {useState,useEffect,useContext} from 'react'
 import { fabric } from 'fabric'
 import {Context} from './CreateNewRecipe'
-import apiService from "../Utilities/apiService";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from "react-router-dom";
 
@@ -31,9 +30,6 @@ export default function FabricCanvas(){
     img.src = deleteIcon;
 
     const handleSubmit = async()=>{
-        //Save original Img
-            // const userId = user.sub
-            // const response = await apiService.upload.saveImage(form, userId)
         let recipeOutput = {
             recipeSelections:[]
         }
@@ -120,7 +116,6 @@ export default function FabricCanvas(){
             selectable:false
         })
         setHeight(canvasHeight)
-        console.log('hello?')
         if(Object.keys(cropObjects).length > 0){
             Object.values(cropObjects).forEach((cropObject)=>{
                 const croppedCoordinates = cropObject.coordinates
@@ -162,7 +157,6 @@ export default function FabricCanvas(){
                   canvas.add(text)
             })
         }
-        console.log(recipeImg,Object.keys(recipeImg) )
         if(Object.keys(recipeImg).length > 0){
             Object.values(recipeImg).forEach((cropObject)=>{
                 console.log('cropObject',cropObject)

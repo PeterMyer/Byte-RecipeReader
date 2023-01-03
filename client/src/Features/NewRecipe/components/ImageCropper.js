@@ -2,8 +2,7 @@ import React, {useContext, useState,useEffect} from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import apiService from "../Utilities/apiService";
-import {blobCreationFromURL} from '../Utilities/helperFunctions'
+import {createBlobFromDataURL} from '../utils/createBlobFromDataURL'
 import { fabric, Rectangle } from 'fabric'
 import { Context } from "./CreateNewRecipe";
 import {v4 as uuidv4} from 'uuid';
@@ -35,7 +34,7 @@ export default function ImageCropper(props) {
  const getCropData = async () => {
     if (cropper !== null) {
       const croppedImg = cropper.getCroppedCanvas().toDataURL('image/jpeg')
-      let cropperBlob = blobCreationFromURL(croppedImg)
+      let cropperBlob = createBlobFromDataURL(croppedImg)
       let imgObjURL = URL.createObjectURL(cropperBlob);
       const index = uuidv4()
       switch(section){
