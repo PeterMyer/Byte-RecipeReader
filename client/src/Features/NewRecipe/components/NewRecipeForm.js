@@ -3,11 +3,11 @@ import {useState} from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray } from "react-hook-form";
 import {EditorState, createWithContent,convertFromRaw, convertToRaw} from "draft-js";
-import RecipeEditor from './RecipeInstrucEditor'
-import apiService from "../Utilities/apiService";
+import RecipeEditor from '../../../Recipes/RecipeInstrucEditor'
+import apiService from "../../../Utilities/apiService";
 import { useAuth0 } from '@auth0/auth0-react';
 
-export default function RecipeForm(){
+export function NewRecipeForm(){
     const { user } = useAuth0();
     const {state} = useLocation()
     const [ingredients] = useState(state?state.recipeData.ingredients:null)

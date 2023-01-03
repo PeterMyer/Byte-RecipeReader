@@ -2,18 +2,14 @@ import { Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import Home from './Home'
-import TesseractScheduler from './ReadImage/TesseractScheduler';
+import {CreateNewRecipe, NewRecipeForm} from './Features/NewRecipe';
+import {TesseractScheduler, VerifyTextEditor} from './Features/ReadImage';
 import RecipeForm from './Recipes/EditRecipeForm'
 import UserRecipes from "./Recipes/DisplayRecipesGrid"
-import NewRecipeForm from './Recipes/NewRecipeForm'
-import VerifyTextEditor from './ReadImage/VerifyRecipeTextEditor';
 import DisplayUserRecipe from './Recipes/DisplaySingleRecipe';
 import {ProtectedRoute} from './Features/Auth';
 import {Loading} from './Features/Auth/components/Loading';
-import CreateNewRecipe from './Features/NewRecipe/components/CreateNewRecipe';
 const { v4: uuidv4 } = require("uuid")
-
-
 
 export default function AppRoutes(){
     const { isLoading } = useAuth0();

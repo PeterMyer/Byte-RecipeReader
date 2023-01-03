@@ -2,7 +2,7 @@ import {Editor, EditorState, ContentState} from 'draft-js'
 import React, { useContext , useEffect} from 'react'
 import {Context} from './VerifyImgTxt'
 
-export default function VerifyTextEditor(props){
+export function VerifyTextEditor(props){
     const data = useContext(Context)
     const [editorState, setEditorState] = React.useState(() => EditorState.createWithContent(ContentState.createFromText(props.readImgText)))
     const setParentEditorState = data.setParentEditorState

@@ -4,7 +4,7 @@ import RecipeSectionSelection from "./RecipeSectionSelection";
 
 export const Context = React.createContext()
 
-export default function CreateNewRecipe(props){
+export function CreateNewRecipe(props){
     const [result, setResult] = useState("")
     const [form, setForm] = useState(null)
     const [loaded, setLoaded] = useState(false)

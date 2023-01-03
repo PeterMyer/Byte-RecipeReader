@@ -2,10 +2,10 @@ import { createWorker, createScheduler } from 'tesseract.js'
 import { useLocation } from 'react-router-dom';
 import { createBrowserHistory } from "history";
 import { useEffect, useState } from 'react'
-import VerifyImgText from './VerifyImgTxt'
+import {VerifyImgText} from './VerifyImgTxt'
 
 
-export default function TesseractScheduler(){
+export function TesseractScheduler(){
     const {state} = useLocation()
     const [imgBasket, setImageBasket] = useState(state.recipeOutput.recipeSelections)
     const [recipeImg] = useState(state.recipeImg)

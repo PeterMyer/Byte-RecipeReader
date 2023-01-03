@@ -1,13 +1,13 @@
-import VerifyTextEditor from "./VerifyRecipeTextEditor"
+import {VerifyTextEditor} from "./VerifyTextEditor"
 import React, { useState, createContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import { convertToRaw} from 'draft-js';
-import {parseEditorContentStates, createParentEditorState} from '../Utilities/helperFunctions'
-import VerifySidebar from "../Sidebar/VerifySideBar";
+import {parseEditorContentStates, createParentEditorState} from '../utils'
+import VerifySidebar from "../../../Sidebar/VerifySideBar";
 
 export const Context = React.createContext()
 
-export default function VerifyImgText(props){
+export function VerifyImgText(props){
     const [recipeData] = useState(props.readImgText)
     const [recipeImg,] = useState(props.recipeImg)
     const [parentEditorState, setParentEditorState] = useState(createParentEditorState(recipeData))
