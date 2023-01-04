@@ -3,15 +3,14 @@ import {useState} from 'react'
 import { useParams, useLocation } from 'react-router-dom';
 import { useForm, useFieldArray, useFormState } from "react-hook-form";
 import {EditorState, createWithContent,convertFromRaw, convertToRaw} from "draft-js";
-import RecipeEditor from './RecipeInstrucEditor'
-import apiService from "../Utilities/apiService";
+import {RecipeInstructionsEditor} from './RecipeInstructionsEditor'
 import { useNavigate } from "react-router-dom";
-import {partitionIngredients} from '../Utilities/helperFunctions'
+import {partitionIngredients} from '../utils/partitionIngredients'
 import { useAuth0 } from '@auth0/auth0-react';
+import {updateRecipe} from '../api/updateRecipe'
+import {saveImage} from '../api/saveImage'
 
-
-
-export default function RecipeForm(){
+export function EditRecipeForm(){
     const { user } = useAuth0();
     const {state} = useLocation()
     const { id } = useParams()
@@ -72,7 +71,7 @@ export default function RecipeForm(){
             const fileData = new FormData()
             fileData.append("uploaded_file", data.ImgFile[0])
             let userId = user.sub
-            imgResponse = await apiService.upload.saveImage(fileData, userId)
+            imgResponse = await saveImage(fileData, userId)
         }
         console.log(imgResponse)
 
@@ -87,7 +86,7 @@ export default function RecipeForm(){
             changedFormat: formatChanges,
             imgId: imgResponse ? imgResponse.data.result[0].id: recipeImgId
         }
-        let response = await apiService.recipe.update(id,recipePayload)
+        let response = await updateRecipe(id,recipePayload)
         navigate(`/recipe/${response.data.id}`)
     };
 
@@ -162,7 +161,7 @@ export default function RecipeForm(){
             </section>
             <section className ="recipeform-section">
                 <label className = "recipeform-input-label"><strong>Instructions</strong>
-                    <RecipeEditor  control = {control}/>
+                    <RecipeInstructionsEditor  control = {control}/>
                 </label>
             </section>
             <section className ="recipeform-section"x>

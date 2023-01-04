@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 import { useParams , useLocation, useNavigate } from "react-router-dom";
-import apiService from "../Utilities/apiService";
+import {getRecipe, deleteRecipe} from '../api'
 import { Editor, convertFromRaw, createWithContent, EditorState } from "draft-js";
-import NutritionContainer from "../Nutrition/NutritionContainer";
+import {NutritionContainer} from "../../Nutrition"
 
-export default function DisplayUserRecipe(){
+export function DisplaySingleRecipe(){
     const [recipeData, setRecipeData] = useState(null)
     const { id } = useParams()
     const navigate = useNavigate();
@@ -14,8 +14,7 @@ export default function DisplayUserRecipe(){
     },[])
 
     const fetchRecipe= async(id)=>{
-        let recipe = await apiService.recipe.retrieveRecipe(id)
-        console.log('recipe',recipe)
+        let recipe = await getRecipe(id)
         setRecipeData({...recipe.data})
     }
 
@@ -28,13 +27,13 @@ export default function DisplayUserRecipe(){
             source: recipeData.source,
             ingredients: recipeData.ingredients,
             recipeImg: recipeData.image
-
         }
+
         navigate(`/editRecipeForm/${id}`,{state: {'recipeData':recipeObj}})
     }
 
     const handleDelete =async()=>{
-        let result = await apiService.recipe.delete(id)
+        let result = await deleteRecipe(id)
         navigate(`/recipes`)
     }
 

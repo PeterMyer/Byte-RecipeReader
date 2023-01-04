@@ -2,8 +2,7 @@ import {Editor, EditorState, RichUtils} from 'draft-js'
 import React, {useCallback, useState} from 'react'
 import { Controller } from 'react-hook-form'
 
-
-export default function RecipeEditor({control}){
+export function RecipeInstructionsEditor({control}){
 
     return(
         <div className = "recipeform-input-instructions-container">

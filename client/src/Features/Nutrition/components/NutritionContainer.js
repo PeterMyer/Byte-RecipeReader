@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react"
-import apiService from "../Utilities/apiService";
-import {calculateIngredientNutrition} from '../Utilities/helperFunctions'
+import apiService from "../../../Utilities/apiService";
+import {calculateIngredientNutrition} from '../../../Utilities/helperFunctions'
 
-
-export default function NutritionContainer(props){
+export function NutritionContainer(props){
     const id = props.id
     const servings = props.servings
     const ingredients = props.ingredients
