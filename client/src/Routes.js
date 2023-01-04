@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-
 import Home from './Home'
 import {CreateNewRecipe} from './Features/NewRecipe';
 import {TesseractScheduler, VerifyTextEditor} from './Features/ReadImage';

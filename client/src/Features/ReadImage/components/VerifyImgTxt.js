@@ -3,7 +3,7 @@ import React, { useState, createContext} from 'react'
 import { useNavigate } from "react-router-dom";
 import { convertToRaw} from 'draft-js';
 import {parseEditorContentStates, createParentEditorState} from '../utils'
-import VerifySidebar from "../../../Sidebar/VerifySideBar";
+import VerifySidebar from "../../../Components/Sidebar/VerifySideBar";
 
 export const Context = React.createContext()
 
