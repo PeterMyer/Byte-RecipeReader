@@ -7,13 +7,13 @@ export function DisplayRecipes(){
     const [recipes, setRecipes] = useState([])
     const { user } = useAuth0();
 
-    const getRecipes = async () =>{
+    const fetchRecipes = async () =>{
             let response = await getAllRecipes(user.sub)
             setRecipes(response.data)
       }
 
     useEffect(()=> {
-        getRecipes()
+        fetchRecipes()
     },[])
 
     return(
@@ -25,9 +25,10 @@ export function DisplayRecipes(){
                         return(
                             <div className = "singleRecipeContainer" >
                                 <Link to={`/recipe/${recipe.id}`}>
-                                            <img className = "singleRecipeDisplayIcon"
-                                            alt= "RecipeIcon.png"
-                                            src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}/>
+                                            <img 
+                                                src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}
+                                                alt= "RecipeIcon.png"
+                                                className = "singleRecipeDisplayIcon"/>
                                         <div className="recipecontainer-name">{recipe.name}</div>
                                 </Link>
                             </div>

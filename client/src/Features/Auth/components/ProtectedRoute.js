@@ -13,3 +13,5 @@ export function ProtectedRoute ({ component }) {
     
       return <Component/> ;
     };
+
+    

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray } from "react-hook-form";
 import {EditorState, createWithContent,convertFromRaw, convertToRaw} from "draft-js";
 import {RecipeInstructionsEditor} from './RecipeInstructionsEditor'
-import apiService from "../../../Utilities/apiService";
+import { saveImage, createRecipe } from '../api';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export function NewRecipeForm(){
@@ -39,7 +39,7 @@ export function NewRecipeForm(){
                 fileData.append("uploaded_file", data.ImgFile)
             }
             let userId = user.sub
-            imgResponse = await apiService.upload.saveImage(fileData, userId)
+            imgResponse = await saveImage(fileData, userId)
         }
 
         let recipePayload = {
@@ -51,7 +51,9 @@ export function NewRecipeForm(){
             userId: user.sub,
             imgId: imgResponse ? imgResponse.data.result[0].id:null
         }
-        let response = await apiService.recipe.create(recipePayload)
+        console.log('recipe payload', recipePayload)
+        let response = await createRecipe(recipePayload)
+        console.log('response')
         navigate(`/recipe/${response.data.id}`)
     };
 
@@ -134,7 +136,7 @@ export function NewRecipeForm(){
             </section>
             <section className ="recipeform-section">
                 <label className = "recipeform-instructions-label"><strong>Instructions</strong>
-                    <RecipeEditor  control = {control}/>
+                    <RecipeInstructionsEditor  control = {control}/>
                 </label>
             </section>
             <section className ="recipeform-section"x>

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import {AuthenticationButton} from "../../Features/Auth"
-import { useAuth0 } from "@auth0/auth0-react";
 import {useState} from 'react'
 import NavModal from './NavModal'
 import RRIcon from "../../Assets/RRIcon.png"
@@ -12,10 +11,7 @@ export default function NavBar(){
         <nav id = "NavBar">
           <div>
             <Link to ="/">
-              <img 
-                id = "navbar-icon"
-                alt = "defeaultImg"
-                src = {RRIcon}/>
+              <img src = {RRIcon} alt = "defeaultImg" id = "navbar-icon"/>
             </Link>
           </div>
           <div id = "navbar-options">

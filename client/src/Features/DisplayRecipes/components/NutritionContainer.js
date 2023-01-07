@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import apiService from "../../../Utilities/apiService";
-import {calculateIngredientNutrition} from '../../../Utilities/helperFunctions'
+import {calculateIngredientNutrition} from '../utils/calculateIngredientNutrition'
+import {searchGovNutrition, getNutrition, saveNutrition} from '../api'
 
 export function NutritionContainer(props){
     const id = props.id
@@ -8,6 +8,8 @@ export function NutritionContainer(props){
     const ingredients = props.ingredients
     const [savedNutrition, setSavedNutrition]=  useState(null)
     const [nutritionData, setNutritionData] = useState(null)
+    const [calculatedNutrition, toggleCalculatedNutrition] = useState(false)
+
     let recipeNutrition ={
         "Energy": 0,
         "Fatty acids, total monounsaturated": 0,
@@ -22,18 +24,18 @@ export function NutritionContainer(props){
         "Calcium, Ca":0,
         "Iron, Fe":0,
         "Potassium, K":0
-
     }
-    const [calculatedNatrition, toggleCalculatedNutrition] = useState(false)
 
-    const getNurition = async(id)=>{
-        let nutrition = await apiService.nutrition.search(id)
+    const handleSearchGovNutrition = async(id)=>{
+        let nutrition = await searchGovNutrition(id)
+        console.log('nutrition:', nutrition)
         setNutritionData(nutrition.data)
         toggleCalculatedNutrition(true)
     }
 
-    const loadNurition = async(id)=>{
-        let response = await apiService.nutrition.retrieve(id)
+    const fetchNurition = async(id)=>{
+        let response = await getNutrition(id)
+        console.log('response', response)
         setSavedNutrition (JSON.parse(response.data.nutritionData))
     }
 
@@ -41,17 +43,17 @@ export function NutritionContainer(props){
         let nutritionPayload = {
             nutrition: JSON.stringify(recipeNutrition)
         }
-
-        let response = await apiService.recipe.saveNutrition(id, nutritionPayload)
+        let response = await saveNutrition(id, nutritionPayload)
         setSavedNutrition (JSON.parse(response.data.nutritionData))
     }
 
     useEffect(()=>{
-        loadNurition(id)
+        fetchNurition(id)
     },[])
 
     return(
-        <> {savedNutrition?           
+        <> 
+        {savedNutrition?           
             <div>
                 <h3>Per Serving</h3>
                 {
@@ -66,24 +68,22 @@ export function NutritionContainer(props){
                         )
                 })
                 }
-            </div>:
+            </div>
+            :
             <div>
-            {calculatedNatrition? 
-                <button onClick={()=>handleSaveNutrition(id,recipeNutrition)}>Save Nutrition</button>
-                : 
-                <button onClick={()=>getNurition(id)}>Get Nutrition</button>}
-             
-
-            {nutritionData?ingredients.map((ingredient,index)=>{
-                let ingredientNutrition = {}
-                let selectedFood = nutritionData[index].foods[0]
-                let defaultGramWeight = selectedFood.foodMeasures.length > 0 ?
-                    selectedFood.foodMeasures[selectedFood.foodMeasures.length-1].gramWeight: 
-                    0
-                console.log("ingredient",ingredient)
-
-                console.log("selectedFood",selectedFood)
-                return(
+                {calculatedNutrition? 
+                    <button onClick={()=>handleSaveNutrition(id,recipeNutrition)}>Save Nutrition</button>
+                    : 
+                    <button onClick={()=>handleSearchGovNutrition(id)}>Get Nutrition</button>}
+            {nutritionData?
+                ingredients.map((ingredient,index)=>{
+                    let ingredientNutrition = {}
+                    let selectedFood = nutritionData[index].foods[0]
+                    let defaultGramWeight = selectedFood.foodMeasures.length > 0 ?
+                        selectedFood.foodMeasures[selectedFood.foodMeasures.length-1].gramWeight
+                        : 
+                        0
+                    return(
                     <>
                         {Object.values(selectedFood.foodNutrients)
                             .filter((obj)=> obj.nutrientNumber === "203"
@@ -111,25 +111,29 @@ export function NutritionContainer(props){
                             recipeNutrition
                             )}
                     </>
+                    )}
                 )
-            })
-            :null}
-            {calculatedNatrition? 
-            <div>
-                {
-                    Object.entries(recipeNutrition).map(([nutrient, value])=> {
-                        return(
-                            <div className = 'nutrient-display'>  
-                                {nutrient==='Energy'?
-                                    <strong className= "nutrient-name">Calories:</strong>:
-                                    <strong className= "nutrient-name">{nutrient}:</strong>}
-                                <div className="nutrient-value" > {Math.round(value*100)/100}</div>
-                            </div >
-                        )
-                })
-                }
-            </div>
-            : null}
-        </div>}</>
+                :null
+            }
+            {
+                calculatedNutrition? 
+                    <div>
+                        {
+                            Object.entries(recipeNutrition).map(([nutrient, value])=> {
+                                return(
+                                    <div className = 'nutrient-display'>  
+                                        {nutrient==='Energy'?
+                                            <strong className= "nutrient-name">Calories:</strong>:
+                                            <strong className= "nutrient-name">{nutrient}:</strong>}
+                                        <div className="nutrient-value" > {Math.round(value*100)/100}</div>
+                                    </div >
+                                )
+                        })
+                        }
+                    </div>
+                    : null
+            }
+        </div>}
+        </>
     )
 }

@@ -8,7 +8,7 @@ import {VerifyImgText} from './VerifyImgTxt'
 export function TesseractScheduler(){
     const {state} = useLocation()
     const [imgBasket, setImageBasket] = useState(state.recipeOutput.recipeSelections)
-    const [recipeImg] = useState(state.recipeImg)
+    const [recipeImg] = useState(Object.entries(state.recipeImg).length>0? state.recipeImg : null)
 
     const [imgText, setImgText] = useState("")
     let history = createBrowserHistory();
