@@ -3,19 +3,19 @@ import { filterNutrientValues } from './filterNutrientValues'
 
 export function calculateRecipeNutrition(ingredients, nutritionData, servings){
   let recipeNutrition ={
-    "Energy": 0,
-    "Fatty acids, total monounsaturated": 0,
-    "Fatty acids, total polyunsaturated": 0,
-    "Fatty acids, total saturated": 0,
-    "Cholesterol": 0,
-    "Sodium, Na":0,
-    "Fiber, total dietary": 0,
-    "Protein":0,
-    "Sugars, total including NLEA":0,
-    "Vitamin D (D2 + D3)":0,
-    "Calcium, Ca":0,
-    "Iron, Fe":0,
-    "Potassium, K":0
+    "Energy": {amount: 0, unit:null},
+    "Fatty acids, total monounsaturated": {amount: 0, unit:'g'},
+    "Fatty acids, total polyunsaturated": {amount: 0, unit:'g'},
+    "Fatty acids, total saturated": {amount: 0, unit:'g'},
+    "Cholesterol": {amount: 0, unit:'mg'},
+    "Sodium, Na": {amount: 0, unit:'mg'},
+    "Fiber, total dietary": {amount: 0, unit:'g'},
+    "Protein":{amount: 0, unit:'g'},
+    "Sugars, total including NLEA":{amount: 0, unit:'g'},
+    "Vitamin D (D2 + D3)":{amount: 0, unit:'mcg'},
+    "Calcium, Ca":{amount: 0, unit:'mg'},
+    "Iron, Fe":{amount: 0, unit:'mg'},
+    "Potassium, K":{amount: 0, unit:'mg'}
   }
 
     ingredients.map((ingredient,index)=>{

@@ -13,6 +13,6 @@ export function aggregateNutritionTotals(ingredient, nutritionObj, defaultWeight
     }
   
     for(let nutrient in calculatedNutrition){
-      calculatedRecipeNutrition[nutrient] += calculatedNutrition[nutrient]
+      calculatedRecipeNutrition[nutrient]['amount'] += calculatedNutrition[nutrient]
     }
   }

@@ -11,7 +11,7 @@ export const DisplayNutritionData = ({nutrition}) => {
                         {nutrient==='Energy'?
                             <strong className= "nutrient-name">Calories:</strong>:
                             <strong className= "nutrient-name">{nutrient}:</strong>}
-                        <div className="nutrient-value" > {Math.round(value*100)/100}</div>
+                        <div className="nutrient-value" > {Math.round(value.amount*100)/100} {value.unit}</div>
                     </div>
                 )
         })

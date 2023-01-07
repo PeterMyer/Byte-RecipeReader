@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import {calculateRecipeNutrition} from '../utils/calculateIngredientNutrition'
+import {calculateRecipeNutrition} from '../utils/calculateRecipeNutrition'
 import { DisplayNutritionData } from "./DisplayNutritionData"
 import {searchGovNutrition, getNutrition, saveNutrition} from '../api'
 
