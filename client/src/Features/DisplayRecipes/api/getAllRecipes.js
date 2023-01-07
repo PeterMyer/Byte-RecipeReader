@@ -5,7 +5,6 @@ export const getAllRecipes = async(payload)=>{
       let response = await axiosClient.get('/api/recipes',{
         params: {userId: payload}
       })
-      console.log(response)
       return response
     } catch(error){
       console.log(error)
