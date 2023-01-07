@@ -1,13 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import Home from './Home'
-import {CreateNewRecipe} from './Features/NewRecipe';
-import {TesseractScheduler, VerifyTextEditor} from './Features/ReadImage';
-import {NewRecipeForm, EditRecipeForm} from './Features/RecipeForms'
-import { DisplayRecipes, DisplaySingleRecipe } from './Features/DisplayRecipes';
-import UserRecipes from "./Features/DisplayRecipes"
-import {ProtectedRoute} from './Features/Auth';
-import {Loading} from './Features/Auth/components/Loading';
+import Landing from '../Features/Misc/Landing'
+import {CreateNewRecipe} from '../Features/NewRecipe';
+import {TesseractScheduler, VerifyTextEditor} from '../Features/ReadImage';
+import {NewRecipeForm, EditRecipeForm} from '../Features/RecipeForms'
+import { DisplayRecipes, DisplaySingleRecipe } from '../Features/DisplayRecipes';
+import {ProtectedRoute} from '../Features/Auth';
+import {Loading} from '../Features/Auth/components/Loading';
 const { v4: uuidv4 } = require("uuid")
 
 export default function AppRoutes(){
@@ -20,7 +19,7 @@ export default function AppRoutes(){
     return(
     <div className = 'main-content-container'>
         <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Landing />} />
             <Route 
                 path="/newRecipe" 
                 element={<ProtectedRoute component={CreateNewRecipe}/>}  />

@@ -1,2 +1,5 @@
 export * from './deleteRecipe'
 export * from './getRecipe'
+export * from './searchGovNutrition'
+export * from './getNutrition'
+export * from './saveNutrition'

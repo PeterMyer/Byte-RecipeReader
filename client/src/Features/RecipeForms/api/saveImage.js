@@ -1,8 +1,8 @@
-import axios from "axios"
+import { axiosClient } from "../../../Lib/axios"
 
 export const saveImage =  async (payload,userId) => {
     try {
-      let response = await axios.post(`/api/uploads/`, payload, {
+      let response = await axiosClient.post(`/api/uploads/`, payload, {
         headers:{
           "Content-Type": "multipart/form-data"
         },

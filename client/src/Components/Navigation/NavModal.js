@@ -1,8 +1,5 @@
 import React, { useEffect} from 'react'
-import { Link } from "react-router-dom"
 import { useNavigate, useLocation } from "react-router-dom";
-
-
 
 export default function NavModal(props){
     const navigate = useNavigate();

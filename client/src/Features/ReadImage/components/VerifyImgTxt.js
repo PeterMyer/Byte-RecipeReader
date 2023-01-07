@@ -9,7 +9,7 @@ export const Context = React.createContext()
 
 export function VerifyImgText(props){
     const [recipeData] = useState(props.readImgText)
-    const [recipeImg,] = useState(props.recipeImg)
+    const [recipeImg] = useState(props.recipeImg)
     const [parentEditorState, setParentEditorState] = useState(createParentEditorState(recipeData))
     const navigate = useNavigate();
 

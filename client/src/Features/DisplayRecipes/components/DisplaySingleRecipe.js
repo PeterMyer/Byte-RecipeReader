@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react"
-import { useParams , useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {getRecipe, deleteRecipe} from '../api'
 import { Editor, convertFromRaw, createWithContent, EditorState } from "draft-js";
-import {NutritionContainer} from "../../Nutrition"
+import {NutritionContainer} from "./NutritionContainer"
+import { DisplayIngredients } from "./DisplayIngredients";
 
 export function DisplaySingleRecipe(){
     const [recipeData, setRecipeData] = useState(null)
     const { id } = useParams()
     const navigate = useNavigate();
-
-    useEffect(()=>{
-        fetchRecipe(id)
-    },[])
 
     const fetchRecipe= async(id)=>{
         let recipe = await getRecipe(id)
@@ -28,7 +25,6 @@ export function DisplaySingleRecipe(){
             ingredients: recipeData.ingredients,
             recipeImg: recipeData.image
         }
-
         navigate(`/editRecipeForm/${id}`,{state: {'recipeData':recipeObj}})
     }
 
@@ -36,6 +32,10 @@ export function DisplaySingleRecipe(){
         let result = await deleteRecipe(id)
         navigate(`/recipes`)
     }
+
+    useEffect(()=>{
+        fetchRecipe(id)
+    },[])
 
     return(
         <article className = 'recipe-page-single'>
@@ -48,36 +48,31 @@ export function DisplaySingleRecipe(){
                         <button onClick={(handleDelete)} id="edit-button"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
-                    <section id= "recipe-summary"className = "recipe-display-section">
+                    <section id="recipe-summary"className = "recipe-display-section">
                         <div className="recipe-display-img-container">
                             <img 
-                                className="responsive-image" 
-                                // src={recipeData.image? recipeData.image.filepath: "RecipeIcon.png"} 
                                 src ={ recipeData.image? recipeData.image.filepath:"/RecipeIcon.png"}
-
-                                alt="RecipeIcon.png"/>
+                                alt="RecipeIcon.png"
+                                className="responsive-image"/>
                         </div>
                             <div id = "recipe-summary-info-container" className="recipe-display-subsection"> 
                                 <strong>Servings:</strong>
-                                <div>{recipeData.servings}</div>
+                                <div>
+                                    {recipeData.servings}
+                                </div>
                                 {/* <strong>Source:</strong> */}
                             </div>
                     </section>
                     <section className="recipe-display-section">
                         <div className="recipe-display-subsection">
                             <h2>Ingredients</h2>
-                            <ul id="recipie-display-ingredient-list">
-                                {recipeData.ingredients.map(
-                                    (ingredient)=>{
-                                            return(
-                                                <li>{ingredient.recipeIngredient.text}</li>)})}
-                            </ul>
+                            <DisplayIngredients ingredients={recipeData.ingredients}/>
                         </div>
                         <div className="recipe-display-subsection">
-                        <h2>Instructions</h2>
-                        <Editor 
-                        editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(recipeData.instructions)))}
-                        readOnly= "true"/>
+                            <h2>Instructions</h2>
+                            <Editor 
+                                editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(recipeData.instructions)))}
+                                readOnly= "true"/>
                         </div>
                     </section>
                     <h2>Nutrition</h2>
@@ -86,7 +81,8 @@ export function DisplaySingleRecipe(){
             :
                 <div>
                     No data
-                </div>}
+                </div>
+            }
         </article>
     )
 }
