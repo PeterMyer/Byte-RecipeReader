@@ -1,7 +1,7 @@
-import FavRecipeIcon from "./Assets/FavRecipeIcon.png"
-import ImgCaptureIcon from "./Assets/ImgCaptureIcon.png"
-import MagnifyIcon from "./Assets/MagnifyIcon.png"
-import RecipeIcon from "./Assets/RecipePageIcon.png"
+import FavRecipeIcon from "../../Assets/FavRecipeIcon.png"
+import ImgCaptureIcon from "../../Assets/ImgCaptureIcon.png"
+import MagnifyIcon from "../../Assets/MagnifyIcon.png"
+import RecipeIcon from "../../Assets/RecipePageIcon.png"
 
  export default function Home(){
     return(
