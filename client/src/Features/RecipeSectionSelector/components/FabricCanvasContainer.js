@@ -73,7 +73,7 @@ export default function FabricCanvas(){
                 recipeOutput.recipeSelections.push(obj)
             })
         }
-        navigate('/readMany',{state: {
+        navigate('/parseImage',{state: {
             'recipeOutput':recipeOutput,
             'recipeImg':recipeImg
     }})

@@ -1,13 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import Landing from '../Features/Misc/Landing'
-import {CreateNewRecipe} from '../Features/RecipeSectionSelector';
-import {TesseractContainer} from '../Features/OcrImageParser';
-import { VerifyImgTextContainer } from '../Features/VerifyImageText';
-import {NewRecipeForm, EditRecipeForm} from '../Features/RecipeForms'
-import { DisplayAllRecipes, DisplaySingleRecipe } from '../Features/DisplayRecipes';
-import {ProtectedRoute} from '../Features/Auth';
-import {Loading} from '../Features/Auth/components/Loading';
+import Home from './Home'
+import {CreateNewRecipe} from './Features/RecipeSectionSelector';
+import {TesseractScheduler, VerifyImgTextContainer} from './Features/OcrImageParser';
+import {NewRecipeForm, EditRecipeForm} from './Features/RecipeForms'
+import { DisplayRecipes, DisplaySingleRecipe } from './Features/DisplayRecipes';
+import {ProtectedRoute} from './Features/Auth';
+import {Loading} from './Features/Auth/components/Loading';
 const { v4: uuidv4 } = require("uuid")
 
 export default function AppRoutes(){
@@ -20,16 +19,16 @@ export default function AppRoutes(){
     return(
     <div className = 'main-content-container'>
         <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<Home />} />
             <Route 
                 path="/newRecipe" 
                 element={<ProtectedRoute component={CreateNewRecipe}/>}  />
             <Route 
-                path="/parseImage" 
-                element={<ProtectedRoute component={TesseractContainer}/>} /> 
+                path="/imageParser" 
+                element={<ProtectedRoute component={TesseractScheduler}/>} /> 
             <Route 
                 path="/recipes" 
-                element={<ProtectedRoute component={DisplayAllRecipes}/>} />
+                element={<ProtectedRoute component={DisplayRecipes}/>} />
             <Route 
                 path="/newRecipeForm" 
                 element={<ProtectedRoute component={NewRecipeForm}/>} />

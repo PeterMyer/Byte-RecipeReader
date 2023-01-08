@@ -10,10 +10,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 export function NewRecipeForm(){
     const { user } = useAuth0();
     const {state} = useLocation()
-    const [ingredients] = useState(state?state.recipeData.ingredients:null)
-    const [instructions] = useState(state? state.recipeData.instructions:null)
-    const [recipeImg, setRecipeImg] = useState(state? Object.values(state.recipeImg)[0]: null)
-    const [imgPreview, setImgPreview] = useState(state? Object.values(state.recipeImg)[0].imgObjURL: null)
+    const [ingredients] = useState(state.recipeData.ingredients?state.recipeData.ingredients:null)
+    const [instructions] = useState(state.recipeData.instructions? state.recipeData.instructions:null)
+    const [recipeImg, setRecipeImg] = useState(state.recipeImg? Object.values(state.recipeImg)[0]: null)
+    const [imgPreview, setImgPreview] = useState(state.recipeImg? Object.values(state.recipeImg)[0].imgObjURL: null)
     const navigate = useNavigate();
 
     const { register, handleSubmit,control, formState: { errors } } = useForm({

@@ -1,8 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import { createBrowserHistory } from "history";
 import { useEffect, useState } from 'react'
-import {VerifyImgText} from './VerifyImgTxtContainer'
+import {VerifyImgTextContainer} from '../../VerifyImageText/components/VerifyImgTxtContainer'
 import { tesseractScheduler } from '../utils/tesseractScheduler';
+import { useNavigate } from 'react-router'
 
 export function TesseractContainer(){
     const {state} = useLocation()
@@ -12,8 +13,7 @@ export function TesseractContainer(){
     const [progLog1, setProgLog1] = useState(0);
     const [statusLog1, setStatusLog1] = useState("");
     const [progLog2, setProgLog2] = useState(0);
-    let history = createBrowserHistory();
-
+    const navigate = useNavigate();
 
     useEffect(()=>{
         let propsObject = {
@@ -22,21 +22,19 @@ export function TesseractContainer(){
             setProgLog2,
             recipeSections,
             setImgText,
-            setRecipeSections
+            setRecipeSections,
+            recipeImg
         }
         tesseractScheduler(propsObject)
-
-        history.push({ 
-            pathname: '/verifyText',
-            state: {recipeSections,recipeImg}
-            })
     },[])
 
     if(imgText !== ""){
-        return(
-            <VerifyImgText readImgText={recipeSections} recipeImg={recipeImg} />
-            )
-        }else{
+        navigate('/verifyText',{
+        state: {
+            'readImgText':recipeSections, 
+            'recipeImg':recipeImg
+        }})}
+
         return(
             <article className = "progress_page" >
                 <h2>Reading Image...</h2>
@@ -44,9 +42,9 @@ export function TesseractContainer(){
                     <h2 id = "tesseract-progress-status">Status: </h2>
                     <strong>{statusLog1} </strong>
                     <div classNiame = "tesseract-progressbar-container">
-                    <progress id="tesseract-progressbar" value = {progLog1+progLog2} max="2"/> 
-                </div>
+                        <progress id="tesseract-progressbar" value = {progLog1+progLog2} max="2"/> 
+                    </div>
                 </div>
             </article>
-        )}
+        )
 }

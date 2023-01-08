@@ -45,10 +45,10 @@ export function tesseractScheduler(props){
             }))
 
         setImgText(results)
-        setRecipeSections((section=>{
+        setRecipeSections((recipeSections=>{
             let currentSections = []
-            for(let i = 0; i<section.length; i++){
-                let obj = section[i]
+            for(let i = 0; i<recipeSections.length; i++){
+                let obj = recipeSections[i]
                 let OcrResult = results[i]
                 obj = {...obj, OcrResult}
                 currentSections.push(obj)

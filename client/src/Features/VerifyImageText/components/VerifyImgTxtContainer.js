@@ -1,5 +1,6 @@
 import React, { useState, createContext} from 'react'
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import { convertToRaw} from 'draft-js';
 import {parseEditorContentStates, createParentEditorState} from '../utils'
 import VerifySidebar from "../../../Components/Sidebar/VerifySideBar";
@@ -7,10 +8,11 @@ import { ImgTextComparison } from "./ImgTextComparison";
 
 export const Context = React.createContext()
 
-export function VerifyImgText(props){
-    const [recipeData] = useState(props.readImgText)
-    const [recipeImg] = useState(props.recipeImg)
-    const [parentEditorState, setParentEditorState] = useState(createParentEditorState(recipeData))
+export const VerifyImgTextContainer=()=>{
+    const {state} = useLocation()
+    const [recipeData] = useState(state.readImgText)
+    const [recipeImg] = useState(state.recipeImg)
+    const [parentEditorState, setParentEditorState] = useState(createParentEditorState (recipeData))
     const navigate = useNavigate();
 
     const handleAccept=()=>{
@@ -28,7 +30,8 @@ export function VerifyImgText(props){
 
     return(
         <article className = "verify-text-page">
-            <VerifySidebar/>
+{            console.log('recipeData:',state)
+}            <VerifySidebar/>
             <div className = "verify-recipe">
                 <Context.Provider value = {{
                 parentEditorState,setParentEditorState
