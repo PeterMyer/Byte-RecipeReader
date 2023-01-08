@@ -1,13 +1,11 @@
-import React, {useState, useContext} from "react";
+import React, {useContext} from "react";
 import ImageCropper from "./ImageCropper";
 import FabricCanvas from "./FabricCanvas";
-import {Context} from './CreateNewRecipe'
+import {Context} from './ImageProcessingContext'
 
-export default function RecipeSectionSelection(){
+export function CropperCanvasContainer(){
     const context = useContext(Context)
     const showCropper = context.showCropper
-    const fabricCanvas = context.fabricCanvas
-    const height = context.height
 
     return(
     <div className='test-parent' >
@@ -16,7 +14,6 @@ export default function RecipeSectionSelection(){
         </span>
         <> 
          {showCropper?
-
             <ImageCropper/>
         :
             <FabricCanvas/>}

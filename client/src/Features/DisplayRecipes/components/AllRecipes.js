@@ -3,17 +3,17 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import {getAllRecipes} from '../api/getAllRecipes'
 
-export function DisplayRecipes(){
+export function AllRecipes(){
     const [recipes, setRecipes] = useState([])
     const { user } = useAuth0();
 
-    const fetchRecipes = async () =>{
+    const handleGetAllRecipes = async () =>{
             let response = await getAllRecipes(user.sub)
             setRecipes(response.data)
       }
 
     useEffect(()=> {
-        fetchRecipes()
+        handleGetAllRecipes()
     },[])
 
     return(
@@ -24,18 +24,20 @@ export function DisplayRecipes(){
                     recipes.map((recipe)=>{
                         return(
                             <div className = "singleRecipeContainer" >
-                                <Link to={`/recipe/${recipe.id}`}>
-                                            <img 
-                                                src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}
-                                                alt= "RecipeIcon.png"
-                                                className = "singleRecipeDisplayIcon"/>
-                                        <div className="recipecontainer-name">{recipe.name}</div>
+                                <Link to={`/recipes/${recipe.id}`}>
+                                        <img 
+                                            src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}
+                                            alt= "RecipeIcon.png"
+                                            className = "singleRecipeDisplayIcon"/>
+                                        <div className="recipecontainer-name">
+                                            {recipe.name}
+                                        </div>
                                 </Link>
                             </div>
                             )
                     }):
                 <div>
-                    You have no recipes! To get started go to the Images page and upload pictures of your favorite recipe ingredients and instructions!
+                    You have no recipes!
                 </div>
                 }
             </div>

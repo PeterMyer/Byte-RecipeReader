@@ -1,13 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import Landing from '../Features/Misc/Landing'
-import {CreateNewRecipe} from '../Features/NewRecipe';
-import {TesseractScheduler, VerifyTextEditor} from '../Features/ReadImage';
-import {NewRecipeForm, EditRecipeForm} from '../Features/RecipeForms'
-import { DisplayRecipes, DisplaySingleRecipe } from '../Features/DisplayRecipes';
+import {ImageProcessingContext} from '../Features/RecipeImageIntake';
+import {TesseractContainer} from '../Features/ImageParser';
+import { VerifyImgTextContainer } from '../Features/VerifyImageText';
 import {ProtectedRoute} from '../Features/Auth';
 import {Loading} from '../Features/Auth/components/Loading';
-const { v4: uuidv4 } = require("uuid")
+import { RecipeRoutes } from '../Features/DisplayRecipes/Routes';
+import { RecipeFormRoutes } from '../Features/RecipeForms/Routes';
 
 export default function AppRoutes(){
     const { isLoading } = useAuth0();
@@ -21,26 +21,20 @@ export default function AppRoutes(){
         <Routes>
             <Route path="/" element={<Landing />} />
             <Route 
-                path="/newRecipe" 
-                element={<ProtectedRoute component={CreateNewRecipe}/>}  />
+                path="/recipeImageIntake" 
+                element={<ProtectedRoute component={ImageProcessingContext}/>}  />
             <Route 
-                path="/readMany" 
-                element={<ProtectedRoute component={TesseractScheduler}/>} /> 
+                path="/parseImage" 
+                element={<ProtectedRoute component={TesseractContainer}/>} /> 
             <Route 
-                path="/recipes" 
-                element={<ProtectedRoute component={DisplayRecipes}/>} />
+                path="/recipes/*" 
+                element={<ProtectedRoute component={RecipeRoutes}/>} />
             <Route 
-                path="/newRecipeForm" 
-                element={<ProtectedRoute component={NewRecipeForm}/>} />
-            <Route 
-                path="/editRecipeForm/:id" 
-                element={<ProtectedRoute component={EditRecipeForm}/>} />  
+                path="/recipeForm/*" 
+                element={<ProtectedRoute component={RecipeFormRoutes}/>} /> 
             <Route 
                 path="/verifyText" 
-                element={<ProtectedRoute component={VerifyTextEditor}/>} />   
-            <Route 
-                path="/recipe/:id" 
-                element={<ProtectedRoute component={DisplaySingleRecipe}/>} />  
+                element={<ProtectedRoute component={VerifyImgTextContainer}/>} />   
         </Routes>
     </div>
 )}

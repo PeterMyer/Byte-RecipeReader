@@ -1,7 +1,7 @@
 
 import {useState} from 'react'
 import { useParams, useLocation } from 'react-router-dom';
-import { useForm, useFieldArray, useFormState } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import {EditorState, createWithContent,convertFromRaw, convertToRaw} from "draft-js";
 import {RecipeInstructionsEditor} from './RecipeInstructionsEditor'
 import { useNavigate } from "react-router-dom";
@@ -60,7 +60,6 @@ export function EditRecipeForm(){
     }
     
     const onSubmit = async (data) => {
-        console.log('data',data)
         const editFormIngredients = data.Ingredients.map((ingredient)=>({value:ingredient.value ,id: ingredient.id}))
         const {newIngredient,formatChanges,toDelete} = partitionIngredients(state.recipeData.ingredients,editFormIngredients)
 
@@ -73,7 +72,6 @@ export function EditRecipeForm(){
             let userId = user.sub
             imgResponse = await saveImage(fileData, userId)
         }
-        console.log(imgResponse)
 
         const recipePayload = {
             name: data.recipeName,

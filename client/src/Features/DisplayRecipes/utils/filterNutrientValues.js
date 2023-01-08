@@ -1,7 +1,7 @@
-export function filterNutrientValues(selectedFood){
+export function filterNutrientValues(currentFood){
     let ingredientNutrition = {}
         
-    Object.values(selectedFood.foodNutrients)
+    Object.values(currentFood.foodNutrients)
         .filter((obj)=> 
             obj.nutrientNumber === "203"
             || obj.nutrientNumber === "208"

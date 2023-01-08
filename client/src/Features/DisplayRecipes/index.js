@@ -1,2 +1,2 @@
-export * from './components/DisplayRecipesGrid'
-export * from './components/DisplaySingleRecipe'
+export * from './components/AllRecipes'
+export * from './components/SingleRecipe'

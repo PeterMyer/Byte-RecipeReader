@@ -1,7 +1,7 @@
-import {aggregateNutritionTotals} from './aggregateNutritionTotals'
+import { sumNutritionTotals } from './sumNutritionTotals'
 import { filterNutrientValues } from './filterNutrientValues'
 
-export function calculateRecipeNutrition(ingredients, nutritionData, servings){
+export function calculateNutrition(ingredients, nutritionData, servings){
   let recipeNutrition ={
     "Energy": {amount: 0, unit:null},
     "Fatty acids, total monounsaturated": {amount: 0, unit:'g'},
@@ -19,13 +19,13 @@ export function calculateRecipeNutrition(ingredients, nutritionData, servings){
   }
 
     ingredients.map((ingredient,index)=>{
-      let selectedFood = nutritionData[index].foods[0]
-      let defaultGramWeight = selectedFood.foodMeasures.length > 0 ?
-          selectedFood.foodMeasures[selectedFood.foodMeasures.length-1].gramWeight : 0
+      let currentFood = nutritionData[index].foods[0]
+      let defaultGramWeight = currentFood.foodMeasures.length > 0 ?
+      currentFood.foodMeasures[currentFood.foodMeasures.length-1].gramWeight : 0
           
-      let ingredientNutrition = filterNutrientValues(selectedFood)
+      let ingredientNutrition = filterNutrientValues(currentFood)
 
-      aggregateNutritionTotals(
+      sumNutritionTotals(
           ingredient,
           ingredientNutrition,
           defaultGramWeight,
