@@ -1,2 +1,2 @@
-export {CreateNewRecipe} from './components/CreateNewRecipe'
+export {CreateNewRecipe} from './components/ContextProvider'
 export {NewRecipeForm} from '../RecipeForms/components/NewRecipeForm'

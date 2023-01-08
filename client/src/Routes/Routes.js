@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import Landing from '../Features/Misc/Landing'
-import {CreateNewRecipe} from '../Features/NewRecipe';
+import {CreateNewRecipe} from '../Features/RecipeSectionSelector';
 import {TesseractScheduler, VerifyTextEditor} from '../Features/ReadImage';
 import {NewRecipeForm, EditRecipeForm} from '../Features/RecipeForms'
-import { DisplayRecipes, DisplaySingleRecipe } from '../Features/DisplayRecipes';
+import { DisplayAllRecipes, DisplaySingleRecipe } from '../Features/DisplayRecipes';
 import {ProtectedRoute} from '../Features/Auth';
 import {Loading} from '../Features/Auth/components/Loading';
 const { v4: uuidv4 } = require("uuid")
@@ -28,7 +28,7 @@ export default function AppRoutes(){
                 element={<ProtectedRoute component={TesseractScheduler}/>} /> 
             <Route 
                 path="/recipes" 
-                element={<ProtectedRoute component={DisplayRecipes}/>} />
+                element={<ProtectedRoute component={DisplayAllRecipes}/>} />
             <Route 
                 path="/newRecipeForm" 
                 element={<ProtectedRoute component={NewRecipeForm}/>} />

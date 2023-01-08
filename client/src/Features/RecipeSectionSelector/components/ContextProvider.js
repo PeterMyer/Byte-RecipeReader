@@ -1,13 +1,13 @@
-import React, {useState, useContext, createContext} from "react";
+import React, {useState, createContext} from "react";
 import ImageUpload from './ImageUpload'
-import RecipeSectionSelection from "./RecipeSectionSelection";
+import RecipeSectionSelection from "./SelectionContainer";
 
 export const Context = React.createContext()
 
-export function CreateNewRecipe(props){
+export function CreateNewRecipe(){
     const [result, setResult] = useState("")
     const [form, setForm] = useState(null)
-    const [loaded, setLoaded] = useState(false)
+    const [imageLoaded, setImageLoaded] = useState(false)
     const [name, setName] = useState("")
     const [cropObjects, setCropObjects] = useState({})
     const [showCropper, setShowCropper] = useState(false)
@@ -21,7 +21,7 @@ export function CreateNewRecipe(props){
         <article className="create-new-recipe-container">
             <Context.Provider value={{
                 result, setResult,
-                loaded, setLoaded,
+                imageLoaded, setImageLoaded,
                 name, setName,
                 showCropper, setShowCropper,
                 section, setSection,
@@ -31,12 +31,12 @@ export function CreateNewRecipe(props){
                 form, setForm,
                 cropObjects, setCropObjects,
                 recipeImg, setRecipeImg
-                }} 
-                >
-                    {loaded? 
-                        <RecipeSectionSelection />
-                        :
-                        <ImageUpload/>
+                }}>
+                    {
+                        imageLoaded? 
+                            <RecipeSectionSelection />
+                            :
+                            <ImageUpload/>
                     }
             </Context.Provider>
         </article>

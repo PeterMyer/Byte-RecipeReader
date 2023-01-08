@@ -1,58 +1,60 @@
 import { useState, useEffect } from "react"
-import {calculateRecipeNutrition} from '../utils/calculateRecipeNutrition'
+import {calculateNutrition} from '../utils/calculateNutrition'
 import { DisplayNutritionData } from "./DisplayNutritionData"
-import {searchGovNutrition, getNutrition, saveNutrition} from '../api'
+import {lookupNutrition, getNutrition, saveNutrition} from '../api'
 
 export function NutritionContainer(props){
-    const id = props.id
+    const recipeId = props.recipeId
     const servings = props.servings
     const ingredients = props.ingredients
-    const [recipeNutrition, setRecipeNutrition] = useState(null)
-    const [existingNutrition, setSavedNutrition]=  useState(null)
+    const [newNutrition, setNewNutrition] = useState(null)
+    const [existingNutrition, setExistingNutrition]=  useState(null)
     const [nutritionCalulated, toggleNutritionCalulated] = useState(false)
 
-    const handleSearchGovNutrition = async(id)=>{
-        let nutrition = await searchGovNutrition(id)
-        let calculatedNutrition = calculateRecipeNutrition(ingredients, nutrition.data, servings)
+    const handleLookupNutrition = async(id)=>{
+        let nutrition = await lookupNutrition(id)
+        let totalNutrition = calculateNutrition(ingredients, nutrition.data, servings)
         toggleNutritionCalulated(true)
-        setRecipeNutrition(calculatedNutrition)
+        setNewNutrition(totalNutrition)
     }
 
-    const fetchNurition = async(id)=>{
+    const handleGethNurition = async(id)=>{
         let response = await getNutrition(id)
-        setSavedNutrition (JSON.parse(response.data.nutritionData))
+        setExistingNutrition (JSON.parse(response.data.nutritionData))
     }
 
-    const handleSaveNutrition = async(id, recipeNutrition)=>{
+    const handleSaveNutrition = async(id, newNutrition)=>{
         let nutritionPayload = {
-            nutrition: JSON.stringify(recipeNutrition)
+            nutrition: JSON.stringify(newNutrition)
         }
         let response = await saveNutrition(id, nutritionPayload)
-        setSavedNutrition (JSON.parse(response.data.nutritionData))
+        setExistingNutrition (JSON.parse(response.data.nutritionData))
     }
 
     useEffect(()=>{
-        fetchNurition(id)
+        handleGethNurition(recipeId)
     },[])
 
     return(
         <> 
-        {existingNutrition?   
-            <DisplayNutritionData nutrition={existingNutrition}/>
-            :
-            <div>
-                {
-                    nutritionCalulated? 
-                        <button onClick={()=>handleSaveNutrition(id,recipeNutrition)}>Save Nutrition</button>
-                        : 
-                        <button onClick={()=>handleSearchGovNutrition(id)}>Get Nutrition</button>
-                }
-                {
-                    recipeNutrition? 
-                        <DisplayNutritionData nutrition={recipeNutrition}/>
-                        : null
-                }
-            </div>}
+        {
+            existingNutrition?   
+                <DisplayNutritionData nutrition={existingNutrition}/>
+                :
+                <div>
+                    {
+                        nutritionCalulated? 
+                            <button onClick={()=>handleSaveNutrition(recipeId,newNutrition)}>Save Nutrition</button>
+                            : 
+                            <button onClick={()=>handleLookupNutrition(recipeId)}>Get Nutrition</button>
+                    }
+                    {
+                        newNutrition? 
+                            <DisplayNutritionData nutrition={newNutrition}/>
+                            : null
+                    }
+                </div>
+        }
         </>
     )
 }

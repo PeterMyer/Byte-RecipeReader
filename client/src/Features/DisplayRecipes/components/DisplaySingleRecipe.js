@@ -1,23 +1,23 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
-import {getRecipe, deleteRecipe} from '../api'
+import { getRecipe, deleteRecipe } from '../api'
 import { Editor, convertFromRaw, createWithContent, EditorState } from "draft-js";
-import {NutritionContainer} from "./NutritionContainer"
+import { NutritionContainer } from "./NutritionContainer"
 import { DisplayIngredients } from "./DisplayIngredients";
 
 export function DisplaySingleRecipe(){
     const [recipeData, setRecipeData] = useState(null)
-    const { id } = useParams()
+    const { recipeId } = useParams()
     const navigate = useNavigate();
 
-    const fetchRecipe= async(id)=>{
-        let recipe = await getRecipe(id)
+    const handleGetRecipe= async(recipeId)=>{
+        let recipe = await getRecipe(recipeId)
         setRecipeData({...recipe.data})
     }
 
-    const handleEdit =()=>{
-        const recipeObj = {
-            id: id,
+    const handleEditRecipe =()=>{
+        const recipeDataObject = {
+            id: recipeId,
             name: recipeData.name,
             servings: recipeData.servings,
             instructions: recipeData.instructions,
@@ -25,16 +25,16 @@ export function DisplaySingleRecipe(){
             ingredients: recipeData.ingredients,
             recipeImg: recipeData.image
         }
-        navigate(`/editRecipeForm/${id}`,{state: {'recipeData':recipeObj}})
+        navigate(`/editRecipeForm/${recipeId}`,{state: {'recipeData':recipeDataObject}})
     }
 
-    const handleDelete =async()=>{
-        let result = await deleteRecipe(id)
+    const handleDeleteRecipe =async()=>{
+        await deleteRecipe(recipeId)
         navigate(`/recipes`)
     }
 
     useEffect(()=>{
-        fetchRecipe(id)
+        handleGetRecipe(recipeId)
     },[])
 
     return(
@@ -44,8 +44,8 @@ export function DisplaySingleRecipe(){
                     <div className="recipe-display-header">
                         <h1>{recipeData.name}</h1>
                         <div className="recipe-display-header-buttons">
-                        <button onClick={(handleEdit)} id="edit-button"><i class="fa-regular fa-pen-to-square"></i></button>
-                        <button onClick={(handleDelete)} id="edit-button"><i class="fa-solid fa-trash"></i></button>
+                        <button onClick={(handleEditRecipe)} id="edit-button"><i class="fa-regular fa-pen-to-square"></i></button>
+                        <button onClick={(handleDeleteRecipe)} id="edit-button"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                     <section id="recipe-summary"className = "recipe-display-section">
@@ -60,7 +60,6 @@ export function DisplaySingleRecipe(){
                                 <div>
                                     {recipeData.servings}
                                 </div>
-                                {/* <strong>Source:</strong> */}
                             </div>
                     </section>
                     <section className="recipe-display-section">
@@ -75,8 +74,10 @@ export function DisplaySingleRecipe(){
                                 readOnly= "true"/>
                         </div>
                     </section>
-                    <h2>Nutrition</h2>
-                    <NutritionContainer id={id} ingredients={recipeData.ingredients} servings={recipeData.servings}/>
+                    <section className="recipe-display-section">
+                        <h2>Nutrition</h2>
+                        <NutritionContainer recipeId={recipeId} ingredients={recipeData.ingredients} servings={recipeData.servings}/>
+                    </section>
                 </div>
             :
                 <div>
