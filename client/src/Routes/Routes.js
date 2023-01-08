@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import Landing from '../Features/Misc/Landing'
 import {CreateNewRecipe} from '../Features/RecipeSectionSelector';
-import {TesseractScheduler, VerifyTextEditor} from '../Features/ReadImage';
+import {TesseractContainer, VerifyTextEditor} from '../Features/ReadImage';
 import {NewRecipeForm, EditRecipeForm} from '../Features/RecipeForms'
 import { DisplayAllRecipes, DisplaySingleRecipe } from '../Features/DisplayRecipes';
 import {ProtectedRoute} from '../Features/Auth';
@@ -25,7 +25,7 @@ export default function AppRoutes(){
                 element={<ProtectedRoute component={CreateNewRecipe}/>}  />
             <Route 
                 path="/readMany" 
-                element={<ProtectedRoute component={TesseractScheduler}/>} /> 
+                element={<ProtectedRoute component={TesseractContainer}/>} /> 
             <Route 
                 path="/recipes" 
                 element={<ProtectedRoute component={DisplayAllRecipes}/>} />
