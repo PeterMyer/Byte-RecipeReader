@@ -73,34 +73,41 @@ export function NewRecipeForm(){
     return(
     <div className = "recipeform-container">
         <div className = "recipeform-outside-box">
-        <form className = "recipeform" onSubmit={handleSubmit(onSubmit)}>
-            <h1> Create A New Recipe </h1>
-            <section className ="recipeform-section">
-                <div className = "recipeform-subsection">
-                        <label className = "recipeform-input-label"><strong>Recipe Name</strong>
-                            <div className = "recipeform-input-container" >
-                                <input
-                                    {...register("recipeName",{required:true})}
-                                    type="text"
-                                    placeholder = "Recipe Name"
-                                    className = "recipeform-input-field"
-                                />
-                            </div>
-                        </label>
-                        <label className = "recipeform-input-label"><strong>Servings</strong>
-                            <div className = "recipeform-input-container" >
-                                <input 
-                                    {...register("servings")}
-                                    type="text"
-                                    placeholder="Servings"
-                                    className = "recipeform-input-field"/>
-                            </div>
-                        </label>
+            <form className = "recipeform" onSubmit={handleSubmit(onSubmit)}>
+                <h1> Create A New Recipe </h1>
+                <section className ="recipeform-section">
+                    <div className = "recipeform-subsection">
+                    <label className = "recipeform-input-label">
+                        <strong>Recipe Name</strong>
+                        <div className = "recipeform-input-container" >
+                            <input
+                                {...register("recipeName",{required:true})}
+                                type="text"
+                                placeholder = "Recipe Name"
+                                className = "recipeform-input-field"
+                            />
+                        </div>
+                    </label>
+                    <label className = "recipeform-input-label">
+                        <strong>Servings</strong>
+                        <div className = "recipeform-input-container" >
+                            <input 
+                                {...register("servings")}
+                                type="text"
+                                placeholder="Servings"
+                                className = "recipeform-input-field"
+                            />
+                        </div>
+                    </label>
                     </div>
                     <div className='recipeform-subsection'>
                         <strong>Recipe Image</strong>
                         <div className= 'recipeform-img-container'>
-                            <img src={imgPreview} alt="" style={{'max-width':200}}/>
+                            <img 
+                                src={imgPreview} 
+                                alt="" 
+                                style={{'max-width':200}}
+                            />
                         </div>
                         <label id="recipeform-img-upload" className = "recipeform-input-label">
                             <input 
@@ -110,38 +117,55 @@ export function NewRecipeForm(){
                                 encType="multipart/form-data" 
                                 onChange={onChange}
                             />
-                            {/* <i id="img-upload-icon" class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image */}
                         </label>
                     </div>
             </section>
             <section className ="recipeform-section" id="ingredient">
-                <label className = "recipeform-input-label"><strong>Ingredients</strong>
-                {fields.map((field,index)=>{
-                    return(
-                        <div className = "recipeform-input-container" >
-                            <input 
-                                key = {field.id}
-                                {...register(`Ingredients.${index}.value`)}
-                                type = "text"
-                                placeholder = "Ingredient"
-                                className = "recipeform-input-field-ingredients"
-                            /><button type="button" className = "recipeform-input-hiddenbutton" 
-                                onClick={()=>remove(index)}><i class="fa-solid fa-circle-xmark"></i></button>
-                        </div>)}
-                )}
-                <button type="button" id = "addButton" onClick={()=> append({value:""})}><i class="fa-solid fa-circle-plus"></i></button>
+                <label className = "recipeform-input-label">
+                    <strong>Ingredients</strong>
+                    {fields.map((field,index)=>{
+                        return(
+                            <div className = "recipeform-input-container" >
+                                <input 
+                                    key = {field.id}
+                                    {...register(`Ingredients.${index}.value`)}
+                                    type = "text"
+                                    placeholder = "Ingredient"
+                                    className = "recipeform-input-field-ingredients"
+                                />
+                                <button 
+                                    type="button" 
+                                    className = "recipeform-input-hiddenbutton" 
+                                    onClick={()=>remove(index)}>
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                </button>
+                            </div>)}
+                    )}
+                    <button 
+                        type="button" 
+                        id = "addButton" 
+                        onClick={()=> append({value:""})}>
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </button>
                 </label>
-            </section>
-            <section className ="recipeform-section">
-                <label className = "recipeform-instructions-label"><strong>Instructions</strong>
-                    <RecipeInstructionsEditor  control = {control}/>
-                </label>
-            </section>
-            <section className ="recipeform-section"x>
-            <button id="save-recipe" type="submit" 
-            value="Save Recipe">Save Recipe</button>
-            </section>
-        </form>
+                </section>
+                <section className ="recipeform-section">
+                    <label className = "recipeform-instructions-label">
+                        <strong>Instructions</strong>
+                        <RecipeInstructionsEditor  
+                            control = {control}
+                        />
+                    </label>
+                </section>
+                <section className ="recipeform-section"x>
+                    <button 
+                        id="save-recipe" 
+                        type="submit" 
+                        value="Save Recipe">
+                        Save Recipe
+                    </button>
+                </section>
+            </form>
         </div>
     </div>
 )}

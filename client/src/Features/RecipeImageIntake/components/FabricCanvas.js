@@ -79,7 +79,7 @@ export default function FabricCanvas(){
     }})
 }
 
-    const handleOpenEditor = async (selectedSection)=>{
+    const handleShowCropper = async (selectedSection)=>{
         setSection(selectedSection)
         setShowCropper(true) 
     }
@@ -103,16 +103,34 @@ export default function FabricCanvas(){
     <>
         <div id = "recipe-canvas-container"className = "recipe-section-selection-container">
             <div className="section-selection-buttons-container">
-                <button onClick={()=>handleOpenEditor("instructions")}>Instructions</button>
-                <button onClick={()=>handleOpenEditor("ingredients")}>Ingredients</button>
-                <button onClick={()=>handleOpenEditor("image")}>Image</button>
-                <button id="section-submit-button" onClick={()=>handleSubmit()}>Submit</button>
+                <button 
+                    onClick={()=>handleShowCropper("instructions")}>
+                    Instructions
+                </button>
+                <button 
+                    onClick={()=>handleShowCropper("ingredients")}>
+                    Ingredients
+                </button>
+                <button 
+                    onClick={()=>handleShowCropper("image")}>
+                    Image
+                </button>
+                <button 
+                    id="section-submit-button" 
+                    onClick={()=>handleSubmit()}>
+                    Submit
+                </button>
             </div>
             <div id="fabric-canvas" className="fabric-container" style = {{width: width, height:height}}>
                 <div id = "fabric-canvas-wrapper">
-                    <canvas id='canvas'></canvas>
+                    <canvas id='canvas'/>
                 </div>
-                <img id="recipe-img" src = {result} alt = "uploadedImage" hidden />
+                <img 
+                    id="recipe-img" 
+                    src = {result} 
+                    alt = "uploadedImage" 
+                    hidden 
+                />
             </div>
         </div>
     </>  

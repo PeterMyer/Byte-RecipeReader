@@ -8,15 +8,18 @@ export const ImgTextComparison = (props)=>{
     return(
     <section className = "recipeSegment-container">
         {recipeData.filter((imgObj)=>
-            imgObj.location===location).map((imgObj)=>
-            {
+            imgObj.location===location).map((imgObj)=>{
                 return(
                     <div className = "recipeSegment" >
-                        <VerifyTextEditor readImgText={imgObj.OcrResult.data.text} recipeId ={imgObj.id}/> 
+                        <VerifyTextEditor 
+                            readImgText={imgObj.OcrResult.data.text} 
+                            recipeId ={imgObj.id}
+                        /> 
                         <img
                             src={imgObj.imgObjURL}
                             alt="null"
-                            className ="recipeImg"/>                
+                            className ="recipeImg"
+                        />                
                     </div>
                 )
             })

@@ -95,7 +95,8 @@ export function EditRecipeForm(){
             <h1> Edit Recipe </h1>
             <section className ="recipeform-section">
                 <div className = "recipeform-subsection">
-                <label className = "recipeform-input-label"><strong>Recipe Name</strong>
+                <label className = "recipeform-input-label">
+                    <strong>Recipe Name</strong>
                     <div className = "recipeform-input-container" >
                         <input
                             {...register("recipeName",{required:true})}
@@ -110,14 +111,19 @@ export function EditRecipeForm(){
                                 {...register("servings")}
                                 type="text"
                                 placeholder="Servings"
-                                className = "recipeform-input-field"/>
+                                className = "recipeform-input-field"
+                            />
                         </div>
                     </label>
                 </div>
                 <div className='recipeform-subsection'>
                         <strong>Recipe Image</strong>
                         <div className= 'recipeform-img-container'>
-                            <img src={imgPreview} alt="" style={{'max-width':200}}/>
+                            <img 
+                                src={imgPreview} 
+                                alt="" 
+                                style={{'max-width':200}}
+                            />
                         </div>
                         <label id="recipeform-img-upload" className = "recipeform-input-label">
                             <input 
@@ -127,45 +133,54 @@ export function EditRecipeForm(){
                                 encType="multipart/form-data" 
                                 onChange={onChange}
                             />
-                            {/* <i id="img-upload-icon" class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image */}
                         </label>
                     </div>
-
             </section>
             <section className ="recipeform-section" id="ingredient">
-                <label className = "recipeform-input-label"><strong>Ingredients</strong>
-                {fields.map((field,index)=>{
-                    return(
-                        <div key = {field.id} className = "recipeform-input-container" >
-                            <input 
-                                key = {field.id}
-                                {...register(`Ingredients.${index}.value`)}
-                                type = "text"
-                                placeholder = "Ingredient"
-                                className = "recipeform-input-field-ingredients"
-                                defaultValue={field.value}
-                            />
-                            <button 
-                                type="button"
-                                className = "recipeform-input-hiddenbutton" 
-                                onClick={()=>handleDelete(index)}><i className="fa-solid fa-circle-xmark"></i></button> 
-                        </div>)}
-                    )}
+                <label className = "recipeform-input-label">
+                    <strong>Ingredients</strong>
+                    {fields.map((field,index)=>{
+                        return(
+                            <div key = {field.id} className = "recipeform-input-container" >
+                                <input 
+                                    key = {field.id}
+                                    {...register(`Ingredients.${index}.value`)}
+                                    type = "text"
+                                    placeholder = "Ingredient"
+                                    className = "recipeform-input-field-ingredients"
+                                    defaultValue={field.value}
+                                />
+                                <button 
+                                    type="button"
+                                    className = "recipeform-input-hiddenbutton" 
+                                    onClick={()=>handleDelete(index)}>
+                                    <i className="fa-solid fa-circle-xmark"></i>
+                                </button> 
+                            </div>)}
+                        )}
                     <button
-                    type="button"
-                    id = "addButton" 
-                    onClick={()=> append({value:"",id:null})}><i className="fa-solid fa-circle-plus"></i></button>
+                        type="button"
+                        id = "addButton" 
+                        onClick={()=> append({value:"",id:null})}>
+                        <i className="fa-solid fa-circle-plus"></i>
+                    </button>
                 </label>
             </section>
             <section className ="recipeform-section">
-                <label className = "recipeform-input-label"><strong>Instructions</strong>
-                    <RecipeInstructionsEditor  control = {control}/>
+                <label className = "recipeform-input-label">
+                    <strong>Instructions</strong>
+                    <RecipeInstructionsEditor  
+                        control = {control}
+                    />
                 </label>
             </section>
             <section className ="recipeform-section"x>
                 <button 
-                id="save-recipe" type="submit" 
-                value="Save Recipe">Save Recipe</button>
+                    id="save-recipe" 
+                    type="submit" 
+                    value="Save Recipe">
+                    Save Recipe
+                </button>
             </section>
         </form>
         </div>

@@ -1,7 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { createBrowserHistory } from "history";
 import { useEffect, useState } from 'react'
-import {VerifyImgTextContainer} from '../../VerifyImageText/components/VerifyImgTxtContainer'
 import { tesseractScheduler } from '../utils/tesseractScheduler';
 import { useNavigate } from 'react-router'
 
@@ -40,7 +38,7 @@ export function TesseractContainer(){
                 <h2>Reading Image...</h2>
                 <div className = "tesseract-progress-container">
                     <h2 id = "tesseract-progress-status">Status: </h2>
-                    <strong>{statusLog1} </strong>
+                    <strong>{statusLog1}</strong>
                     <div classNiame = "tesseract-progressbar-container">
                         <progress id="tesseract-progressbar" value = {progLog1+progLog2} max="2"/> 
                     </div>

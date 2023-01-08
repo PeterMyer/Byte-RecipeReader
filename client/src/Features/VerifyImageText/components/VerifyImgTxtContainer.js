@@ -16,9 +16,11 @@ export const VerifyImgTextContainer=()=>{
     const navigate = useNavigate();
 
     const handleAccept=()=>{
+
         recipeData.map((recipeObj)=>{
             recipeObj.recipeEditorContent = convertToRaw(parentEditorState[recipeObj.id].getCurrentContent())
         })
+
         let parsedContent = parseEditorContentStates(recipeData)
         
         navigate('/recipeForm/new',{
@@ -33,17 +35,27 @@ export const VerifyImgTextContainer=()=>{
         <article className = "verify-text-page">
            <VerifySidebar/>
             <div className = "verify-recipe">
-                <Context.Provider value = {{
-                parentEditorState,setParentEditorState
-                }}>
+                <Context.Provider 
+                    value = {{parentEditorState,setParentEditorState}}
+                >
                     <div className = "verify-text-header">
                         <h1>Verify Recipe Results</h1>
-                        <button id="acceptTextButton" onClick={(handleAccept)}>Accept Results</button>
+                        <button 
+                            id="acceptTextButton" 
+                            onClick={(handleAccept)}>
+                            Accept Results
+                        </button>
                     </div>
                     <h2>Instructions</h2>
-                    <ImgTextComparison recipeData = {recipeData} location = {"instructions"}/>
+                    <ImgTextComparison 
+                        recipeData = {recipeData} 
+                        location = {"instructions"}
+                    />
                     <h2 >Ingredients</h2>
-                    <ImgTextComparison recipeData = {recipeData} location = {"ingredients"}/>
+                    <ImgTextComparison 
+                        recipeData = {recipeData} 
+                        location = {"ingredients"}
+                    />
                 </Context.Provider>
             </div>
         </article>

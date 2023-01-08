@@ -25,13 +25,13 @@ export function AllRecipes(){
                         return(
                             <div className = "singleRecipeContainer" >
                                 <Link to={`/recipes/${recipe.id}`}>
-                                        <img 
-                                            src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}
-                                            alt= "RecipeIcon.png"
-                                            className = "singleRecipeDisplayIcon"/>
-                                        <div className="recipecontainer-name">
-                                            {recipe.name}
-                                        </div>
+                                    <img 
+                                        src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}
+                                        alt= "RecipeIcon.png"
+                                        className = "singleRecipeDisplayIcon"/>
+                                    <div className="recipecontainer-name">
+                                        {recipe.name}
+                                    </div>
                                 </Link>
                             </div>
                             )

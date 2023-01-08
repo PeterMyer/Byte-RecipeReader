@@ -3,7 +3,7 @@ import {calculateNutrition} from '../utils/calculateNutrition'
 import { DisplayNutritionData } from "./NutritionData"
 import {lookupNutrition, getNutrition, saveNutrition} from '../api'
 
-export function NutritionContainer(props){
+export function Nutrition(props){
     const recipeId = props.recipeId
     const servings = props.servings
     const ingredients = props.ingredients
@@ -44,14 +44,21 @@ export function NutritionContainer(props){
                 <div>
                     {
                         nutritionCalulated? 
-                            <button onClick={()=>handleSaveNutrition(recipeId,newNutrition)}>Save Nutrition</button>
+                            <button onClick={()=> handleSaveNutrition(recipeId,newNutrition)}>
+                                Save Nutrition
+                            </button>
                             : 
-                            <button onClick={()=>handleLookupNutrition(recipeId)}>Get Nutrition</button>
+                            <button onClick={()=> handleLookupNutrition(recipeId)}>
+                                Get Nutrition
+                            </button>
                     }
                     {
                         newNutrition? 
-                            <DisplayNutritionData nutrition={newNutrition}/>
-                            : null
+                            <DisplayNutritionData 
+                                nutrition={newNutrition}
+                            />
+                            : 
+                            null
                     }
                 </div>
         }

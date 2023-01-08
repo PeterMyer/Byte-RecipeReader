@@ -30,14 +30,17 @@ export default function ImageUpload(){
             <span>
                 <h2>Choose A Recipe Image</h2>
             </span>
-            <form className='image-upload-form' encType="multipart/form-data">
+            <form 
+                className='image-upload-form' 
+                encType="multipart/form-data"
+            >
                 <input
                     type="file"
                     id="recipe"
                     name="uploaded_file"
                     accept="image/png, image/jpeg"
                     onChange={handleChange}
-                    />
+                />
             </form>
         </article >
     )

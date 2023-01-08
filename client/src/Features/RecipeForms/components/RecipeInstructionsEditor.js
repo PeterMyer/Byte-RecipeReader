@@ -12,7 +12,8 @@ export function RecipeInstructionsEditor({control}){
                 render={({field: {value, onChange} }) => (
                     <Editor 
                         editorState={value}
-                        onChange={onChange}/>
+                        onChange={onChange}
+                    />
                 )}
             />
         </div>
