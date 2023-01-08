@@ -2,10 +2,10 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
 import { getRecipe, deleteRecipe } from '../api'
 import { Editor, convertFromRaw, createWithContent, EditorState } from "draft-js";
-import { NutritionContainer } from "./NutritionContainer"
-import { DisplayIngredients } from "./DisplayIngredients";
+import { NutritionContainer } from "./Nutrition"
+import { DisplayIngredients } from "./Ingredients";
 
-export function DisplaySingleRecipe(){
+export function SingleRecipe(){
     const [recipeData, setRecipeData] = useState(null)
     const { recipeId } = useParams()
     const navigate = useNavigate();

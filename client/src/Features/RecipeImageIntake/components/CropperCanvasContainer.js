@@ -1,9 +1,9 @@
 import React, {useContext} from "react";
 import ImageCropper from "./ImageCropper";
-import FabricCanvas from "./FabricCanvasContainer";
-import {Context} from './ContextProvider'
+import FabricCanvas from "./FabricCanvas";
+import {Context} from './ImageProcessingContext'
 
-export default function SelectionContainer(){
+export function CropperCanvasContainer(){
     const context = useContext(Context)
     const showCropper = context.showCropper
 

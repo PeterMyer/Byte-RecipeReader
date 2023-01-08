@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import {calculateNutrition} from '../utils/calculateNutrition'
-import { DisplayNutritionData } from "./DisplayNutritionData"
+import { DisplayNutritionData } from "./NutritionData"
 import {lookupNutrition, getNutrition, saveNutrition} from '../api'
 
 export function NutritionContainer(props){

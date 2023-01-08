@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {createBlobFromDataURL} from '../utils/createBlobFromDataURL'
-import { Context } from "./ContextProvider";
+import { Context } from "./ImageProcessingContext";
 import {v4 as uuidv4} from 'uuid';
 
 export default function ImageCropper(props) {

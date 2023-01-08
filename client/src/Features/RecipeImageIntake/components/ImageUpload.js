@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
-import {Context} from './ContextProvider'
+import {Context} from './ImageProcessingContext'
 
-export default function CreateNewRecipe(){
+export default function ImageUpload(){
     const context = useContext(Context)
     const setImageLoaded = context.setImageLoaded
     const setResult = context.setResult

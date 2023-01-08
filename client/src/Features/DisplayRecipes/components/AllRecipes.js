@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import {getAllRecipes} from '../api/getAllRecipes'
 
-export function DisplayAllRecipes(){
+export function AllRecipes(){
     const [recipes, setRecipes] = useState([])
     const { user } = useAuth0();
 

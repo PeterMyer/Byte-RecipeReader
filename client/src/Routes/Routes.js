@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import Landing from '../Features/Misc/Landing'
-import {CreateNewRecipe} from '../Features/RecipeSectionSelector';
+import {ImageProcessingContext} from '../Features/RecipeImageIntake';
 import {TesseractContainer} from '../Features/ImageParser';
 import { VerifyImgTextContainer } from '../Features/VerifyImageText';
 import {ProtectedRoute} from '../Features/Auth';
@@ -21,8 +21,8 @@ export default function AppRoutes(){
         <Routes>
             <Route path="/" element={<Landing />} />
             <Route 
-                path="/newRecipe" 
-                element={<ProtectedRoute component={CreateNewRecipe}/>}  />
+                path="/recipeImageIntake" 
+                element={<ProtectedRoute component={ImageProcessingContext}/>}  />
             <Route 
                 path="/parseImage" 
                 element={<ProtectedRoute component={TesseractContainer}/>} /> 

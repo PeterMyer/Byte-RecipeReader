@@ -1,10 +1,10 @@
 import React, {useState, createContext} from "react";
 import ImageUpload from './ImageUpload'
-import RecipeSectionSelection from "./SelectionContainer";
+import {CropperCanvasContainer} from "./CropperCanvasContainer";
 
 export const Context = React.createContext()
 
-export function CreateNewRecipe(){
+export function ImageProcessingContext(){
     const [result, setResult] = useState("")
     const [form, setForm] = useState(null)
     const [imageLoaded, setImageLoaded] = useState(false)
@@ -34,7 +34,7 @@ export function CreateNewRecipe(){
                 }}>
                     {
                         imageLoaded? 
-                            <RecipeSectionSelection />
+                            <CropperCanvasContainer />
                             :
                             <ImageUpload/>
                     }

@@ -1,6 +1,6 @@
 import React, {useEffect,useContext} from 'react'
 import { fabric } from 'fabric'
-import {Context} from './ContextProvider'
+import {Context} from './ImageProcessingContext'
 import { useNavigate } from "react-router-dom";
 import { createFabricCanvas } from '../utils/createFabricCanvas';
 import { createCanvasObjects } from '../utils/createCanvasObjects';
