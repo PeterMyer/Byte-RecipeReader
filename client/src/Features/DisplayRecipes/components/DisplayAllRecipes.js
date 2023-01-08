@@ -24,12 +24,14 @@ export function DisplayAllRecipes(){
                     recipes.map((recipe)=>{
                         return(
                             <div className = "singleRecipeContainer" >
-                                <Link to={`/recipe/${recipe.id}`}>
-                                            <img 
-                                                src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}
-                                                alt= "RecipeIcon.png"
-                                                className = "singleRecipeDisplayIcon"/>
-                                        <div className="recipecontainer-name">{recipe.name}</div>
+                                <Link to={`/recipes/${recipe.id}`}>
+                                        <img 
+                                            src ={ recipe.image? recipe.image.filepath:"RecipeIcon.png"}
+                                            alt= "RecipeIcon.png"
+                                            className = "singleRecipeDisplayIcon"/>
+                                        <div className="recipecontainer-name">
+                                            {recipe.name}
+                                        </div>
                                 </Link>
                             </div>
                             )

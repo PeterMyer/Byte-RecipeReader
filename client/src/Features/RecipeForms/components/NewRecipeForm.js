@@ -51,9 +51,7 @@ export function NewRecipeForm(){
             userId: user.sub,
             imgId: imgResponse ? imgResponse.data.result[0].id:null
         }
-        console.log('recipe payload', recipePayload)
         let response = await createRecipe(recipePayload)
-        console.log('response')
         navigate(`/recipe/${response.data.id}`)
     };
 

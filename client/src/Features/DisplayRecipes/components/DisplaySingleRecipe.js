@@ -25,7 +25,7 @@ export function DisplaySingleRecipe(){
             ingredients: recipeData.ingredients,
             recipeImg: recipeData.image
         }
-        navigate(`/editRecipeForm/${recipeId}`,{state: {'recipeData':recipeDataObject}})
+        navigate(`/recipeForm/edit/${recipeId}`,{state: {'recipeData':recipeDataObject}})
     }
 
     const handleDeleteRecipe =async()=>{

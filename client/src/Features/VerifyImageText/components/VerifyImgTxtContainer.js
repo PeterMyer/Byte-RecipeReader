@@ -20,7 +20,8 @@ export const VerifyImgTextContainer=()=>{
             recipeObj.recipeEditorContent = convertToRaw(parentEditorState[recipeObj.id].getCurrentContent())
         })
         let parsedContent = parseEditorContentStates(recipeData)
-        navigate('/newRecipeForm',{
+        
+        navigate('/recipeForm/new',{
             state: {
                 'recipeData':parsedContent, 
                 'recipeImg':recipeImg
@@ -30,8 +31,7 @@ export const VerifyImgTextContainer=()=>{
 
     return(
         <article className = "verify-text-page">
-{            console.log('recipeData:',state)
-}            <VerifySidebar/>
+           <VerifySidebar/>
             <div className = "verify-recipe">
                 <Context.Provider value = {{
                 parentEditorState,setParentEditorState
