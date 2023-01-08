@@ -2,14 +2,12 @@ import { createWorker, createScheduler } from 'tesseract.js'
 import { useLocation } from 'react-router-dom';
 import { createBrowserHistory } from "history";
 import { useEffect, useState } from 'react'
-import {VerifyImgText} from './VerifyImgTxt'
-
+import {VerifyImgText} from './VerifyImgTxtContainer'
 
 export function TesseractScheduler(){
     const {state} = useLocation()
-    const [imgBasket, setImageBasket] = useState(state.recipeOutput.recipeSelections)
+    const [recipeSections, setRecipeSections] = useState(state.recipeOutput.recipeSelections)
     const [recipeImg] = useState(Object.entries(state.recipeImg).length>0? state.recipeImg : null)
-
     const [imgText, setImgText] = useState("")
     let history = createBrowserHistory();
     const [progLog1, setProgLog1] = useState(0);
@@ -51,41 +49,39 @@ export function TesseractScheduler(){
             scheduler.addWorker(worker1)
             scheduler.addWorker(worker2)
 
-            const results = await Promise.all(imgBasket.map((img) => {
+            const results = await Promise.all(recipeSections.map((img) => {
                 let result = scheduler.addJob('recognize',img.imgObjURL)
                 return result
                 }))
 
             setImgText(results)
-            setImageBasket((imgBasket=>{
-                let newBasket = []
-                for(let i = 0; i<imgBasket.length; i++){
-                    let obj = imgBasket[i]
+            setRecipeSections((section=>{
+                let currentSections = []
+                for(let i = 0; i<section.length; i++){
+                    let obj = section[i]
                     let OcrResult = results[i]
                     obj = {...obj, OcrResult}
-                    newBasket.push(obj)
+                    currentSections.push(obj)
                     
                 }
-                return newBasket}))
+                return currentSections}))
 
             await scheduler.terminate();
 
             history.push({ 
                 pathname: '/verifyText',
-                state: {imgBasket,recipeImg}
+                state: {recipeSections,recipeImg}
                })
             })()}
 
     if(imgText !== ""){
         return(
-            <div>
-                <VerifyImgText readImgText={imgBasket} recipeImg={recipeImg} />
-            </div>
+            <VerifyImgText readImgText={recipeSections} recipeImg={recipeImg} />
             )
         }else{
         return(
-            <div className = "progress_page" >
-                <h2>Reading Image</h2>
+            <article className = "progress_page" >
+                <h2>Reading Image...</h2>
                 <div className = "tesseract-progress-container">
                     <h2 id = "tesseract-progress-status">Status: </h2>
                     <strong>{statusLog1} </strong>
@@ -93,6 +89,6 @@ export function TesseractScheduler(){
                     <progress id="tesseract-progressbar" value = {progLog1+progLog2} max="2"/> 
                 </div>
                 </div>
-            </div>
+            </article>
         )}
 }

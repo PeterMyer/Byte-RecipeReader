@@ -1,9 +1,7 @@
 import React, { useContext, useState } from "react";
-import { useAuth0 } from '@auth0/auth0-react';
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {createBlobFromDataURL} from '../utils/createBlobFromDataURL'
-import { fabric } from 'fabric'
 import { Context } from "./ContextProvider";
 import {v4 as uuidv4} from 'uuid';
 

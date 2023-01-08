@@ -3,7 +3,7 @@ import ImgCaptureIcon from "../../Assets/ImgCaptureIcon.png"
 import MagnifyIcon from "../../Assets/MagnifyIcon.png"
 import RecipeIcon from "../../Assets/RecipePageIcon.png"
 
- export default function Home(){
+ export default function Landing(){
     return(
         <article className="landingPage-content" >
             <div>
