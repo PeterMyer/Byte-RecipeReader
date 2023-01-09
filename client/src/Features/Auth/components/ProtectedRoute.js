@@ -1,6 +1,6 @@
-import React from 'react';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
-import  {Loading}  from './Loading';
+import React from "react";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
+import  {Loading}  from "./Loading";
 
 export function ProtectedRoute ({ component }) {
     const Component = withAuthenticationRequired(component, {

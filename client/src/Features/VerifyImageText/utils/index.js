@@ -1,2 +1,2 @@
-export * from './createParentEditorState'
-export * from './parseEditorContentStates'
+export * from "./createParentEditorState"
+export * from "./parseEditorContentStates"

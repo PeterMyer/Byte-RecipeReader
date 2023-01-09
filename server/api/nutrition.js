@@ -1,32 +1,32 @@
-const axios = require('axios');
-const router = require('express').Router();
+const axios = require("axios");
+const router = require("express").Router();
 const {
     models: { Recipe, Component, Ingredient,MeasurementQuantity,MeasurementUnit,RecipeComment, RecipeNutrition  },
-  } = require('../db/index');
+  } = require("../db/index");
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:3001'
+    baseURL: "http://localhost:3001"
   })
 
-router.post('/:id',async(req,res,next)=>{
+router.post("/:id",async(req,res,next)=>{
     try{
         const recipe = await Recipe.findByPk(req.params.id,{
             include: [
                 {
                     model: Ingredient,
-                    attributes: ['id', 'normText'],
+                    attributes: ["id", "normText"],
                     include:[{
                         model: Component,
-                        attributes: ['id','name']},
+                        attributes: ["id","name"]},
                         {
                         model: MeasurementQuantity,
-                        attributes: ['id','qtyAmount']},
+                        attributes: ["id","qtyAmount"]},
                         {
                         model: MeasurementUnit,
-                        attributes: ['id','unitDescription']},
+                        attributes: ["id","unitDescription"]},
                         {
                         model: RecipeComment,
-                        attributes: ['id','commentText']},
+                        attributes: ["id","commentText"]},
                     ]
                 }
             ]
@@ -36,7 +36,7 @@ router.post('/:id',async(req,res,next)=>{
         const usdaResults = await Promise.all(
             recipe.ingredients.map(async (ingredient)=>{                   
                     let params = {
-                        'query': ingredient.component.name,
+                        "query": ingredient.component.name,
                         "dataType": [
                             "Foundation",
                             "Survey (FNDDS)"
@@ -57,7 +57,7 @@ router.post('/:id',async(req,res,next)=>{
     }
 })
 
-router.get('/:id',async(req,res,next)=>{
+router.get("/:id",async(req,res,next)=>{
     try{
         const nutrients = await RecipeNutrition.findOne({
             where: {recipeId: req.params.id}

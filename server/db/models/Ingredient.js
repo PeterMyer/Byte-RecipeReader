@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require("sequelize")
+const db = require("../db")
 
-const Ingredient = db.define('ingredient',{
+const Ingredient = db.define("ingredient",{
   id:{
     type: Sequelize.UUID,
     primaryKey: true,

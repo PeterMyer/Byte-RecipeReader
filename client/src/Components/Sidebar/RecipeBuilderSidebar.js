@@ -25,7 +25,7 @@ export default function RecipeBuilderSidebar(){
                 <h2 className = "sidebar-section-header">Order Matters!</h2>
                 <p>Byte will read images in the drop area from left to right. Text from images read first will appear high on the final recipe page. Be sure to put your images in the desired order! </p>
                 <h2 className = "sidebar-section-header">Ready, Set...Build!</h2>
-                <p>Once you have your images ordered how you want hit the 'Build' button at the bottom of the page</p>
+                <p>Once you have your images ordered how you want hit the "Build" button at the bottom of the page</p>
             </div>            
         </div>
         <div id="main">

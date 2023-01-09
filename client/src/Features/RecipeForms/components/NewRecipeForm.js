@@ -1,16 +1,16 @@
 
-import {useState} from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
-import {EditorState, createWithContent,convertFromRaw, convertToRaw} from "draft-js";
-import {RecipeInstructionsEditor} from './RecipeInstructionsEditor'
-import { saveImage, createRecipe } from '../api';
-import { useAuth0 } from '@auth0/auth0-react';
+import { EditorState, createWithContent, convertFromRaw, convertToRaw } from "draft-js";
+import { RecipeInstructionsEditor } from "./RecipeInstructionsEditor"
+import { saveImage, createRecipe } from "../api";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export function NewRecipeForm(){
     const { user } = useAuth0();
-    const {state} = useLocation()
-    const [ingredients] = useState(state.recipeData.ingredients?state.recipeData.ingredients:null)
+    const { state } = useLocation()
+    const [ ingredients ] = useState(state.recipeData.ingredients?state.recipeData.ingredients:null)
     const [instructions] = useState(state.recipeData.instructions? state.recipeData.instructions:null)
     const [recipeImg, setRecipeImg] = useState(state.recipeImg? Object.values(state.recipeImg)[0]: null)
     const [imgPreview, setImgPreview] = useState(state.recipeImg? Object.values(state.recipeImg)[0].imgObjURL: null)
@@ -100,13 +100,13 @@ export function NewRecipeForm(){
                         </div>
                     </label>
                     </div>
-                    <div className='recipeform-subsection'>
+                    <div className="recipeform-subsection">
                         <strong>Recipe Image</strong>
-                        <div className= 'recipeform-img-container'>
+                        <div className= "recipeform-img-container">
                             <img 
                                 src={imgPreview} 
                                 alt="" 
-                                style={{'max-width':200}}
+                                style={{"max-width":200}}
                             />
                         </div>
                         <label id="recipeform-img-upload" className = "recipeform-input-label">

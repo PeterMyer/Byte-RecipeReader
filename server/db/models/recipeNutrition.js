@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require("sequelize")
+const db = require("../db")
 
-const RecipeNutrition = db.define('recipeNutrition',{
+const RecipeNutrition = db.define("recipeNutrition",{
     nutritionData:{
         type: Sequelize.JSON,
         allowNull: true,

@@ -20,20 +20,20 @@ recipe_data = json.loads(data)
 # print(recipe_data)
 
 tagger = pycrfsuite.Tagger() #USED
-tagger.open('./server/classification_service/trained_model')
+tagger.open("./server/classification_service/trained_model")
 
 tokenizer = PunktSentenceTokenizer() #Used
 
-# with open('tmp/new_training_file.csv') as fname:
+# with open("tmp/new_training_file.csv") as fname:
 #     lines = fname.readlines()
-#     items = [line.strip('\n').split('\t') for line in lines]
+#     items = [line.strip("\n").split("\t") for line in lines]
 #     items = [item for item in items if len(item)==6]
 
 sentences = []
 
 # sent = [items[0]]
 # for item in items[1:]:
-#     if 'I1' in item:
+#     if "I1" in item:
 #         sentences.append(sent)
 #         sent = [item]
 #     else:
@@ -76,7 +76,7 @@ def format_ingredient_output(tagger_output, display=False): #USED
 
     for token, tag in tagger_output:
     # turn B-NAME/123 back into "name"
-        tag = re.sub(r'^[BI]\-', "", tag).lower() #Good
+        tag = re.sub(r"^[BI]\-", "", tag).lower() #Good
         token = utils.unclump(token)
 
         # ---- DISPLAY ----
@@ -126,14 +126,14 @@ def parse_ingredient(sent): ##USED
     tagger_output = zip(sent2tokens(sentence_features), tags) #Good
     parsed_ingredient =  format_ingredient_output(tagger_output) #here
     if parsed_ingredient:
-        parsed_ingredient[0]['name'] = parsed_ingredient[0].get('name','').strip('.') #Good
+        parsed_ingredient[0]["name"] = parsed_ingredient[0].get("name","").strip(".") #Good
     return parsed_ingredient
 
 def parse_recipe_ingredients(line): ##Good
     """Wrapper around parse_ingredient so we can call it on an ingredient list"""
     # print(ingredient_list) ##SO FAR SO GOOD ####
     # sentences = tokenizer.tokenize(ingredient_list) ##Good
-    line.strip('\n')
+    line.strip("\n")
     ingredients = []
     ingredients.extend(parse_ingredient(line)) #Good
     return ingredients

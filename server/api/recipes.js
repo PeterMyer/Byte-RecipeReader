@@ -1,11 +1,11 @@
-const router = require('express').Router();
-const ParseIngredient = require('../classification_service/ParseIngredient')
+const router = require("express").Router();
+const ParseIngredient = require("../classification_service/ParseIngredient")
 
 const {
     models: { Recipe, Component, Ingredient,MeasurementQuantity,MeasurementUnit,RecipeComment, RecipeIngredient,RecipeNutrition, Image },
-  } = require('../db/index');
+  } = require("../db/index");
 
-router.get('/', async(req,res,next)=>{
+router.get("/", async(req,res,next)=>{
     try{
         let {userId} = req.query;
         const recipe = await Recipe.findAll(
@@ -24,7 +24,7 @@ router.get('/', async(req,res,next)=>{
     }
 })
 
-router.get('/:id', async(req, res, next)=>{
+router.get("/:id", async(req, res, next)=>{
     try{
         const recipe = await Recipe.findByPk(req.params.id,{
             include: [
@@ -32,19 +32,19 @@ router.get('/:id', async(req, res, next)=>{
                     model:Image},
                 {
                     model: Ingredient,
-                    attributes: ['id', 'normText'],
+                    attributes: ["id", "normText"],
                     include:[{
                         model: Component,
-                        attributes: ['id','name']},
+                        attributes: ["id","name"]},
                         {
                         model: MeasurementQuantity,
-                        attributes: ['id','qtyAmount']},
+                        attributes: ["id","qtyAmount"]},
                         {
                         model: MeasurementUnit,
-                        attributes: ['id','unitDescription','unitGrams']},
+                        attributes: ["id","unitDescription","unitGrams"]},
                         {
                         model: RecipeComment,
-                        attributes: ['id','commentText']},
+                        attributes: ["id","commentText"]},
                     ]
                 }
             ]
@@ -57,7 +57,7 @@ router.get('/:id', async(req, res, next)=>{
 })
 
 // POST api/recipes/
-router.post('/' ,ParseIngredient, async(req,res,next)=>{
+router.post("/" ,ParseIngredient, async(req,res,next)=>{
     try {
         const parsedIngredients = req.parsedIngredients[0].filter(item=>item.length>0)
         
@@ -79,8 +79,8 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
                     input = "no input"
                     } = item[0]
 
-                // if(qty && qty.includes('/')){
-                //     let splitFraction = qty.split('/')
+                // if(qty && qty.includes("/")){
+                //     let splitFraction = qty.split("/")
                 //     qty = parseInt(splitFraction[0],10)/parseInt(splitFraction[1],10)
                 // }
                 
@@ -124,19 +124,19 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             include: [
                     {
                         model: Ingredient,
-                        attributes: ['id'],
+                        attributes: ["id"],
                         include:[{
                             model: Component,
-                            attributes: ['id','name']},
+                            attributes: ["id","name"]},
                             {
                             model: MeasurementQuantity,
-                            attributes: ['id','qtyAmount']},
+                            attributes: ["id","qtyAmount"]},
                             {
                             model: MeasurementUnit,
-                            attributes: ['id','unitDescription']},
+                            attributes: ["id","unitDescription"]},
                             {
                             model: RecipeComment,
-                            attributes: ['id','commentText']}
+                            attributes: ["id","commentText"]}
                         ]
                     }
                 ]
@@ -147,7 +147,7 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
     }
  })
 
- router.put('/:id',ParseIngredient, async(req, res, next)=>{
+ router.put("/:id",ParseIngredient, async(req, res, next)=>{
     try{
 
         const parsedIngredients = req.parsedIngredients?
@@ -177,7 +177,7 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
                     input = "no input"
                     } = item[0]
                 
-                 console.log('item:',item)   
+                 console.log("item:",item)   
 
                 let [component, componentCreated] = await Component.findOrCreate({
                     where:{
@@ -246,19 +246,19 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
             include: [
                     {
                         model: Ingredient,
-                        attributes: ['id'],
+                        attributes: ["id"],
                         include:[{
                             model: Component,
-                            attributes: ['id','name']},
+                            attributes: ["id","name"]},
                             {
                             model: MeasurementQuantity,
-                            attributes: ['id','qtyAmount']},
+                            attributes: ["id","qtyAmount"]},
                             {
                             model: MeasurementUnit,
-                            attributes: ['id','unitDescription']},
+                            attributes: ["id","unitDescription"]},
                             {
                             model: RecipeComment,
-                            attributes: ['id','commentText']}
+                            attributes: ["id","commentText"]}
                         ]
                     }
                 ]
@@ -280,7 +280,7 @@ router.post('/' ,ParseIngredient, async(req,res,next)=>{
         next(error)
     }})
 
-router.delete('/:id', async(req,res,next)=>{
+router.delete("/:id", async(req,res,next)=>{
     try{
         const recipe = await Recipe.destroy({
             where:{
@@ -305,5 +305,5 @@ router.delete('/:id', async(req,res,next)=>{
         next(error)
     }
 })
-//  router.post('/', createNewRecipe)
+//  router.post("/", createNewRecipe)
  module.exports = router;
