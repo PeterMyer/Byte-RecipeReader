@@ -35,11 +35,11 @@ export default function NavModal( props ) {
         </header>
         <div id="nav-modal-buttons-container" className = "modal-body">
           <button 
-            onClick = {() => handleClick("/newRecipeForm")}>
+            onClick = {() => handleClick("/recipeForm/new")}>
             Create Manually
           </button>
           <button 
-            onClick = {() => handleClick("/newRecipe")}>
+            onClick = {() => handleClick("/recipeImageIntake")}>
             Create From Image
           </button>
         </div>

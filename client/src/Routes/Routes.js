@@ -17,25 +17,23 @@ export default function AppRoutes() {
 	}
 	
 	return(
-		<div className = "main-content-container">
-			<Routes>
-				<Route path = "/" element = { <Landing/> }/>
-				<Route 
-					path = "/recipeImageIntake" 
-					element = { <ProtectedRoute component = { ImageProcessingContext }/> }/>
-				<Route 
-					path = "/parseImage" 
-					element = { <ProtectedRoute component = { TesseractContainer }/> }/> 
-				<Route 
-					path = "/recipes/*" 
-					element = { <ProtectedRoute component = { RecipeRoutes }/> }/>
-				<Route 
-					path = "/recipeForm/*" 
-					element = { <ProtectedRoute component = { RecipeFormRoutes }/> }/> 
-				<Route 
-					path = "/verifyText" 
-					element = { <ProtectedRoute component = { VerifyImgTextContainer }/> }/>
-			</Routes>
-		</div>
+		<Routes>
+			<Route path = "/" element = { <Landing/> }/>
+			<Route 
+				path = "/recipeImageIntake" 
+				element = { <ProtectedRoute component = { ImageProcessingContext }/> }/>
+			<Route 
+				path = "/parseImage" 
+				element = { <ProtectedRoute component = { TesseractContainer }/> }/> 
+			<Route 
+				path = "/recipes/*" 
+				element = { <ProtectedRoute component = { RecipeRoutes }/> }/>
+			<Route 
+				path = "/recipeForm/*" 
+				element = { <ProtectedRoute component = { RecipeFormRoutes }/> }/> 
+			<Route 
+				path = "/verifyText" 
+				element = { <ProtectedRoute component = { VerifyImgTextContainer }/> }/>
+		</Routes>
 	)
 }

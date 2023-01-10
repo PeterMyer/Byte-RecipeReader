@@ -9,30 +9,32 @@ export default function NavBar() {
     return(
       <>
         <nav id = "navbar">
-          <div>
-            <Link to = "/">
-              <img 
-                src = { RRIcon } 
-                alt = "Byte Icon" 
-                id = "navbar-icon"/>
-            </Link>
+          <div className ="navbar-content">
+            <div>
+              <Link to = "/">
+                <img 
+                  src = { RRIcon } 
+                  alt = "Byte Icon" 
+                  id = "navbar-icon"/>
+              </Link>
+            </div>
+            <div id = "navbar-options">
+              <Link 
+                to = "/recipes">
+                Recipes
+              </Link> 
+              <button 
+                onClick = {() => setShow( true )}>
+                New Recipe
+              </button>
+            </div>
+            <div id = "navbar-auth">
+              <AuthenticationButton/>
+            </div>
+            <NavModal
+              onClose = {() => setShow( false )} 
+              show = { show }/>
           </div>
-          <div id = "navbar-options">
-            <Link 
-              to = "/recipes">
-              Recipes
-            </Link> 
-            <button 
-              onClick = {() => setShow( true )}>
-              New Recipe
-            </button>
-          </div>
-          <div id = "navbar-auth">
-            <AuthenticationButton/>
-          </div>
-          <NavModal
-            onClose = {() => setShow( false )} 
-            show = { show }/>
         </nav>
       </>
       )

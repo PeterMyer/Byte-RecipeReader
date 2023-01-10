@@ -1,6 +1,5 @@
-import ReactDOM from "react-dom/client";
 import { Auth0ProviderWithHistory } from "../Features/Auth/"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 const historyInstance = createBrowserHistory();   

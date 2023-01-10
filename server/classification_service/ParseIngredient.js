@@ -3,6 +3,7 @@ const PythonShell = require("python-shell").PythonShell;
 const ParseIngredient= async(req, res, next)=>{
     if(!req.body.ingredients){
         console.log("no new ingredients")
+        req.parsedIngredients = null
         next()
     } else {
     let options = {

@@ -6,7 +6,7 @@ import RecipeIcon from "../../Assets/RecipePageIcon.png"
  export default function Landing() {
 	return(
 		<article className = "landingPage-content">
-			<header>
+			<header className = "landingPage-header">
 				<h1 className = "landingPage-title">BYTE</h1>
 				<h2>Recipe Reader</h2>
 			</header>

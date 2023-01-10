@@ -1,4 +1,3 @@
-
 export default function ImagesSidebar(){
 
     /* Set the width of the sidebar to 25px and the left margin of the page content to 250px */
@@ -17,8 +16,8 @@ export default function ImagesSidebar(){
     return(
         <>
             <div id="mySidebar" className="sidebar">
-                <a href="javascript:void(0)" class="closebtn" onClick={()=>closeNav()}>&times;</a>
-                <h1  className="sidebar-header">Byte Tips</h1>
+                <a href = "javascript:void(0)" class = "closebtn" onClick= {() => closeNav()}>&times;</a>
+                <h1  className = "sidebar-header">Byte Tips</h1>
                 <div className = "sidebar-content ">
                     <h2 className = "sidebar-section-header">Recipe Images</h2>
                     <p>Recipe images are the building blocks of Byte recipes. Upload images of your recipe ingredients and instructions. You can use multiple images to build the same recipe.</p>

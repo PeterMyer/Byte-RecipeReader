@@ -31,7 +31,7 @@ export const VerifyImgTextContainer = () => {
 
 	return(
 		<article className = "verify-text-page">
-			<VerifySidebar/>
+			{/* <VerifySidebar/> */}
 			<div className = "verify-recipe">
 				<Context.Provider 
 						value = {{ parentEditorState, setParentEditorState }}>

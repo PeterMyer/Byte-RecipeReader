@@ -1,31 +1,38 @@
 
 .main-content {
   margin-top: 115px; /* Add a top margin to avoid content overlay */
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
-/*///// Nav Bar ////*/
+/*///// Navbar ////*/
 #navbar{
   background-color: #2BB852;
   color: white;
   position: fixed;
-  height: 90px;
   top: 0;
   width: 100%;
-  display: flex;
-  flex-direction: row;  
   box-shadow: 0px 2px 5px  #ced2d8;
   z-index: 1;
 }
 
+.navbar-content{
+  display: flex;
+  flex-direction: row;  
+  height: 90px;
+  margin-left: 10%;
+  margin-right: 10%
+}
+
 #navbar-icon{
   height: 100px;
-  width:100px,
+  width:100px;
 }
 
 #navbar-options{
   display: flex;
   flex-direction: row;
-  align-items: flex-end
+  align-items: flex-end;
 }
 
 #navbar-options a{
@@ -52,7 +59,7 @@
   font-size: large;
 }
 
-#navbar-auth{
+#navbar-auth {
 align-self: center;
 margin-left: auto;
 margin-right: 5%;
@@ -69,7 +76,7 @@ padding: 5px;
   border-radius: 20px;  
   cursor: pointer;
   font-size: medium;
-  }
+}
 
 /* Display Recipes */
 .allRecipesContainer{
@@ -77,8 +84,8 @@ padding: 5px;
   flex-flow: row wrap;
   justify-content:flex-start;
   gap: 30px 30px
-
 }
+
 .singleRecipeContainer{
   border-style: solid;
   border-color: #c0c0c0;
@@ -149,7 +156,6 @@ padding: 5px;
   background-color:#259d47;
   border: none;
   cursor: pointer;
-
 }
 
 #nav-modal-buttons-container{
@@ -157,6 +163,7 @@ padding: 5px;
   flex-direction: column;
   align-content: space-between;
 }
+
 #nav-modal-buttons-container button{
   padding: 5px;
   margin: 5px
@@ -240,8 +247,8 @@ padding: 5px;
   width: 70%;
   border: none;
   transition: all 0.5s
-
 }
+
 #tesseract-progressbar::-webkit-progress-bar {
   background-color: #f3f3f3;
   border: 0;
@@ -253,6 +260,7 @@ padding: 5px;
   transition: all 0.5s;
 
 }
+
 #tesseract-progressbar::-webkit-progress-value {
   border: 0;
   height: 18px;
@@ -308,7 +316,8 @@ padding: 5px;
 
 .recipeform-outside-box{
   display:block;
-  width:60%;
+  width:70%;
+  min-width: 500px;
   border-style: solid;
   border-width: 1px;
   border-color:lightgray;
@@ -456,7 +465,6 @@ padding: 5px;
   width:100%;
   border: solid;
   border-color: lightgray;
-  max-width: 80%;
   resize: none;
   height: 100%;
 }
@@ -654,7 +662,6 @@ padding: 5px;
   display:flex;
   flex-direction: row;
   justify-content: space-evenly;
-  align-content: center;
 }
 
 .landingPage-icon-container{
@@ -665,7 +672,11 @@ padding: 5px;
 .landingPage-content{
   display:flex;
   flex-direction: column;
-  text-align: center;}
+}
+
+.landingPage-header{
+  text-align: center
+}
 
 .landingPage-title{
   font-size: xx-large;
@@ -760,6 +771,7 @@ margin-left: 60px;
 
 .recipe-selection-container{
   display: flex;
+  background-color:  #a9a9a9;
   flex-direction: column;
   justify-content: center;
   text-align: center;

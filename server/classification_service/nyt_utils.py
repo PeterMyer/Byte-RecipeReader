@@ -161,7 +161,7 @@ def displayIngredient(ingredient):
     """
 
     return "".join([
-        "<span class="%s">%s</span>" % (tag, " ".join(tokens))
+        "<span class='%s'>%s</span>" % (tag, " ".join(tokens))
         for tag, tokens in ingredient
     ])
 
