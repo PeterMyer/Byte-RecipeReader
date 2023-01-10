@@ -1,27 +1,27 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios"
-const S3 = require('aws-sdk/clients/s3');
+const S3 = require("aws-sdk/clients/s3");
 const s3 = new S3(({
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,             
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-  region: 'us-east-2'
+  region: "us-east-2"
 }));
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3001'
+  baseURL: "http://localhost:3001"
 })
 
 export default {
   recipe:{
     create: async(payload)=>{
-      try { let response = await axios.post('/api/recipes', payload )
+      try { let response = await axios.post("/api/recipes", payload )
         return response
       } catch(error){
         console.log(error)
       }},
     getAll: async(payload)=>{
       try {
-        let response = await axios.get('/api/recipes',{
+        let response = await axios.get("/api/recipes",{
           params: {userId: payload}
         })
         console.log(response)
@@ -90,9 +90,9 @@ export default {
     },
     classifyText: async (payload) =>{
       try {
-        let response = await axios.post('/api/classification', {
+        let response = await axios.post("/api/classification", {
           headers:{
-            'Content-Type' : 'json'
+            "Content-Type" : "json"
           },
           data:payload
           })
@@ -105,7 +105,7 @@ export default {
   import: {
     retrieveFilePaths: async (userId) => {
       try {
-        let {data} = await axios.get('/api/uploads',{params:{userId:userId}})
+        let {data} = await axios.get("/api/uploads",{params:{userId:userId}})
         return data
       } catch (error){
         console.log(error)
@@ -115,7 +115,7 @@ export default {
     try {
       let response = await fetch(filePath,
         {
-          cache: 'no-cache',
+          cache: "no-cache",
         })
       let resBlob = await response.blob()
       let objectURL = URL.createObjectURL(resBlob);

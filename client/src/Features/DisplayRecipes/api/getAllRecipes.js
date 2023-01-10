@@ -1,12 +1,12 @@
 import { axiosClient } from "../../../Lib/axios"
 
-export const getAllRecipes = async(payload)=>{
+export const getAllRecipes = async( payload ) => {
     try {
-      let response = await axiosClient.get('/api/recipes',{
-        params: {userId: payload}
+      let response = await axiosClient.get( "/api/recipes", {
+        params: { userId: payload }
       })
       return response
-    } catch(error){
-      console.log(error)
+    } catch( error ) {
+      console.log( error )
     }
   }

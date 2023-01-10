@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
-// const pkg = require('../../package.json')
+const Sequelize = require("sequelize")
+// const pkg = require("../../package.json")
 
 const databaseName = "recipe-app"
 
@@ -8,7 +8,7 @@ const config = {
   logging: false
 };
 
-if(process.env.LOGGING === 'true'){
+if(process.env.LOGGING === "true"){
   delete config.logging
 }
 
@@ -28,9 +28,9 @@ const db = new Sequelize(
 test_connection = async function () {
   try {
     await db.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log("Connection has been established successfully.");
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error("Unable to connect to the database:", error);
   }
 }
 

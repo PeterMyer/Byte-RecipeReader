@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require("sequelize")
+const db = require("../db")
 
-const Component = db.define('measurementUnit',{
+const Component = db.define("measurementUnit",{
     unitDescription:{
     type: Sequelize.STRING,
     allowNull: true,

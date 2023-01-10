@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
-const path = require('path')
+const path = require("path")
 
-router.get('/:filename', async (req,res)=>{
+router.get("/:filename", async (req,res)=>{
   try {
     res.sendStatus(200);
 } catch (err) {

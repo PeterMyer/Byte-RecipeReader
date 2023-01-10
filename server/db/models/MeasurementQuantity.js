@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require("sequelize")
+const db = require("../db")
 
-const Component = db.define('measurementQuantity',{
+const Component = db.define("measurementQuantity",{
     qtyAmount:{
     type: Sequelize.STRING,
     allowNull: true,

@@ -20,7 +20,7 @@ export default function VerifySidebar(){
                 <h1  className="sidebar-header">Byte Tips</h1>
                 <div className = "sidebar-content ">
                     <h2>Verifying Results</h2>
-                    <p>Here you can review the results from Byte's image reading and make adjustments where necessary.</p>
+                    <p>Here you can review the results from Byte"s image reading and make adjustments where necessary.</p>
                     <p>When you are satisfied with the text you can click "Accept Results" to generate the recipe.</p>
                 </div>
             </div>

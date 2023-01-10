@@ -1,12 +1,12 @@
 
-import {EditorState,ContentState} from 'draft-js'
+import {EditorState,ContentState} from "draft-js"
 
 // Create Blob file from URL
   // ref: https://www.geeksforgeeks.org/how-to-convert-data-uri-to-file-then-append-to-formdata/
 
 export function blobCreationFromURL(inputURI) {
-  var byteString = window.atob(inputURI.split(',')[1]);
-  var mimeString = inputURI.split(',')[0].split(':')[1].split(';')[0]
+  var byteString = window.atob(inputURI.split(",")[1]);
+  var mimeString = inputURI.split(",")[0].split(":")[1].split(";")[0]
   var ab = new ArrayBuffer(byteString.length);
   var ia = new Uint8Array(ab);
 
@@ -20,11 +20,11 @@ export function blobCreationFromURL(inputURI) {
 }
 
 export function parseEditorContentStates(contentArray){
-  let ingredients = contentArray.filter((obj)=>obj.location === 'ingredients')
+  let ingredients = contentArray.filter((obj)=>obj.location === "ingredients")
   .map((obj)=>{return obj.recipeEditorContent.blocks
       .map((block)=>{return block.text })})
 
-  let instructionContent = contentArray.filter((obj)=>obj.location === 'instructions').map((obj)=>{return obj.recipeEditorContent})
+  let instructionContent = contentArray.filter((obj)=>obj.location === "instructions").map((obj)=>{return obj.recipeEditorContent})
   let instructions = instructionContent.shift()
   instructionContent.map((obj)=>obj.blocks.map((block)=>instructions.blocks.push(block)))
 
@@ -57,15 +57,15 @@ export function partitionIngredients(recipeDataIngredients, editFormIngredients)
 }
 
 export function splitFraction(qty){
-  if(qty.includes('/')){
-    let splitFraction = qty.split('/')
+  if(qty.includes("/")){
+    let splitFraction = qty.split("/")
     qty = parseInt(splitFraction[0],10)/parseInt(splitFraction[1],10)
   }
   return qty
 }
 
 export function splitMixedNumber(qty){
-  let splitNumber = qty.split(' ')
+  let splitNumber = qty.split(" ")
   let wholeNum = parseInt(splitNumber[0])
   let fraction = splitFraction(splitNumber[1])
   qty = wholeNum + fraction
@@ -73,10 +73,10 @@ export function splitMixedNumber(qty){
 }
 
 export function handleQuantityInts(qty){
-  if(qty.includes(' ')){
+  if(qty.includes(" ")){
     qty = splitMixedNumber(qty)
     return qty
-  } else if (qty.includes('/')){
+  } else if (qty.includes("/")){
     qty = splitFraction(qty)
     return qty
   } else {

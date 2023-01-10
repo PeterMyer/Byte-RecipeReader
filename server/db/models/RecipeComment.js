@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize')
-const db = require('../db')
+const Sequelize = require("sequelize")
+const db = require("../db")
 
-const Component = db.define('recipeComment',{
+const Component = db.define("recipeComment",{
     commentText:{
     type: Sequelize.STRING,
     allowNull: true,

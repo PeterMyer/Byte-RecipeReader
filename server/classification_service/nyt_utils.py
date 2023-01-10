@@ -12,12 +12,12 @@ def tokenize(s):
     But we must split the text on "cups/" etc. in order to pick it up.
     """
 
-    american_units = ['cup', 'tablespoon', 'teaspoon', 'pound', 'ounce', 'quart', 'pint']
+    american_units = ["cup", "tablespoon", "teaspoon", "pound", "ounce", "quart", "pint"]
     for unit in american_units:
-        s = s.replace(unit + '/', unit + ' ')
-        s = s.replace(unit + 's/', unit + 's ')
+        s = s.replace(unit + "/", unit + " ")
+        s = s.replace(unit + "s/", unit + "s ")
 
-    return list(filter(None, re.split(r'([,\(\)])?\s+', clumpFractions(s))))
+    return list(filter(None, re.split(r"([,\(\)])?\s+", clumpFractions(s))))
 
 def joinLine(columns):
     return "\t".join(columns)
@@ -25,12 +25,12 @@ def joinLine(columns):
 def clumpFractions(s):
     """
     Replaces the whitespace between the integer and fractional part of a quantity
-    with a dollar sign, so it's interpreted as a single token. The rest of the
+    with a dollar sign, so it"s interpreted as a single token. The rest of the
     string is left alone.
         clumpFractions("aaa 1 2/3 bbb")
         # => "aaa 1$2/3 bbb"
     """
-    return re.sub(r'(\d+)\s+(\d)/(\d)', r'\1$\2/\3', s)
+    return re.sub(r"(\d+)\s+(\d)/(\d)", r"\1$\2/\3", s)
 
 def cleanUnicodeFractions(s):
     """
@@ -40,33 +40,33 @@ def cleanUnicodeFractions(s):
     """
 
     fractions = {
-        u'\x215b': '1/8',
-        u'\x215c': '3/8',
-        u'\x215d': '5/8',
-        u'\x215e': '7/8',
-        u'\x2159': '1/6',
-        u'\x215a': '5/6',
-        u'\x2155': '1/5',
-        u'\x2156': '2/5',
-        u'\x2157': '3/5',
-        u'\x2158': '4/5',
-        u'\xbc': ' 1/4',
-        u'\xbe': '3/4',
-        u'\x2153': '1/3',
-        u'\x2154': '2/3',
-        u'\xbd': '1/2',
+        u"\x215b": "1/8",
+        u"\x215c": "3/8",
+        u"\x215d": "5/8",
+        u"\x215e": "7/8",
+        u"\x2159": "1/6",
+        u"\x215a": "5/6",
+        u"\x2155": "1/5",
+        u"\x2156": "2/5",
+        u"\x2157": "3/5",
+        u"\x2158": "4/5",
+        u"\xbc": " 1/4",
+        u"\xbe": "3/4",
+        u"\x2153": "1/3",
+        u"\x2154": "2/3",
+        u"\xbd": "1/2",
     }
 
     for f_unicode, f_ascii in fractions.items():
-        s = s.replace(f_unicode, ' ' + f_ascii)
+        s = s.replace(f_unicode, " " + f_ascii)
 
     return s
 
 def unclump(s):
     """
-    Replacess $'s with spaces. The reverse of clumpFractions.
+    Replacess $"s with spaces. The reverse of clumpFractions.
     """
-    return re.sub(r'\$', " ", s)
+    return re.sub(r"\$", " ", s)
 
 def normalizeToken(s):
     """
@@ -131,7 +131,7 @@ def isCapitalized(token):
     """
     Returns true if a given token starts with a capital letter.
     """
-    return re.match(r'^[A-Z]', token) is not None
+    return re.match(r"^[A-Z]", token) is not None
 
 def lengthGroup(actualLength):
     """
@@ -147,17 +147,17 @@ def insideParenthesis(token, tokens):
     """
     Returns true if the word is inside parenthesis in the phrase.
     """
-    if token in ['(', ')']:
+    if token in ["(", ")"]:
         return True
     else:
         line = " ".join(tokens)
-        return re.match(r'.*\(.*'+re.escape(token)+'.*\).*',  line) is not None
+        return re.match(r".*\(.*"+re.escape(token)+".*\).*",  line) is not None
 
 def displayIngredient(ingredient):
     """
     Format a list of (tag, [tokens]) tuples as an HTML string for display.
         displayIngredient([("qty", ["1"]), ("name", ["cat", "pie"])])
-        # => <span class='qty'>1</span> <span class='name'>cat pie</span>
+        # => <span class="qty">1</span> <span class="name">cat pie</span>
     """
 
     return "".join([
@@ -218,7 +218,7 @@ def import_data(lines):
     #
     for line in lines:
         # blank line starts a new ingredient
-        if line in ('', '\n'):
+        if line in ("", "\n"):
             data.append({})
             display.append([])
             prevTag = None
@@ -227,19 +227,19 @@ def import_data(lines):
         elif line[0] == "#":
             pass
 
-        # otherwise it's a token
+        # otherwise it"s a token
         # e.g.: potato \t I2 \t L5 \t NoCAP \t B-NAME/0.978253
         else:
 
-            columns = re.split('\t', line.strip())
+            columns = re.split("\t", line.strip())
             token = columns[0].strip()
 
             # unclump fractions
             token = unclump(token)
 
             # turn B-NAME/123 back into "name"
-            tag, confidence = re.split(r'/', columns[-1], 1)
-            tag = re.sub('^[BI]\-', "", tag).lower()
+            tag, confidence = re.split(r"/", columns[-1], 1)
+            tag = re.sub("^[BI]\-", "", tag).lower()
 
             # ---- DISPLAY ----
             # build a structure which groups each token by its tag, so we can
@@ -290,11 +290,11 @@ def export_data(lines):
     """ Parse "raw" ingredient lines into CRF-ready output """
     output = []
     for line in lines:
-        line_clean = re.sub('<[^<]+?>', '', line)
+        line_clean = re.sub("<[^<]+?>", "", line)
         tokens = tokenize(line_clean)
 
         for i, token in enumerate(tokens):
             features = getFeatures(token, i+1, tokens)
             output.append(joinLine([token] + features))
-        output.append('')
-    return '\n'.join(output)
+        output.append("")
+    return "\n".join(output)
