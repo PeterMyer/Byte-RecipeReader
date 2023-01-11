@@ -10,22 +10,24 @@ export default function NavBar() {
       <>
         <nav id = "navbar">
           <div className ="navbar-content">
-            <div>
-              <Link to = "/">
+            <div id = "navbar-home-link-container">
+              <Link to = "/" id = "navbar-home-link">
                 <img 
                   src = { RRIcon } 
                   alt = "Byte Icon" 
                   id = "navbar-icon"/>
+                  BYTE
               </Link>
             </div>
+            <div className="navbar-options-container">
             <div id = "navbar-options">
               <Link 
                 to = "/recipes">
-                Recipes
+                RECIPES
               </Link> 
               <button 
                 onClick = {() => setShow( true )}>
-                New Recipe
+                NEW RECIPE
               </button>
             </div>
             <div id = "navbar-auth">
@@ -34,6 +36,7 @@ export default function NavBar() {
             <NavModal
               onClose = {() => setShow( false )} 
               show = { show }/>
+            </div>
           </div>
         </nav>
       </>

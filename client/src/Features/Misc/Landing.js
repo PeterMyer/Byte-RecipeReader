@@ -6,21 +6,17 @@ import RecipeIcon from "../../Assets/RecipePageIcon.png"
  export default function Landing() {
 	return(
 		<article className = "landingPage-content">
-			<header className = "landingPage-header">
-				<h1 className = "landingPage-title">BYTE</h1>
-				<h2>Recipe Reader</h2>
-			</header>
 			<section>
 				<div className = "landingPage-icon-row">
 					<div className = "landingPage-icon-container">
-						<h3>Choose Your Favorite Recipes</h3>
+						<div>Choose Your Favorite Recipes</div>
 						<img 
 							width = "300px" 
 							src = { FavRecipeIcon } 
 							alt = "favRecipe"/>
 					</div>
 					<div className="landingPage-icon-container">
-						<h3>Upload Images of <br/> Ingredients and Instructions</h3>
+						<div>Upload Images of <br/> Ingredients and Instructions</div>
 						<img 
 							width = "250px" 
 							src = { ImgCaptureIcon } 
@@ -29,14 +25,14 @@ import RecipeIcon from "../../Assets/RecipePageIcon.png"
 				</div>
 				<div className="landingPage-icon-row">
 					<div className="landingPage-icon-container">
-						<h3>Parse Text From Images</h3>
+						<div>Parse Text From Images</div>
 						<img 
 							width = "250px" 
 							src={MagnifyIcon} 
 							alt ="magnifyIcon"/>
 					</div>
 					<div className="landingPage-icon-container">
-						<h3>Generate <br/> Recipe and Nutrition Info</h3>
+						<div>Generate <br/> Recipe and Nutrition Info</div>
 						<img 
 							width = "250px" 
 							src={RecipeIcon} 

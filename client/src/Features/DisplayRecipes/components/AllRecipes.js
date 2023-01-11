@@ -18,7 +18,7 @@ export function AllRecipes() {
 
 	return(
 		<section>
-			<h1>Your Recipes</h1>
+			<h1 className="page-title">Recipes</h1>
 			<div className = "allRecipesContainer">
 				{ recipes.length !== 0 ? 
 					recipes.map(( recipe ) => {
