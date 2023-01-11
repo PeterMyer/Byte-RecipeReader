@@ -1,3 +1,9 @@
+:root{
+  --off_white:#FCFCFC;
+  --dark_green: #356809;
+  --medium_green: #5FA621
+}
+
 
 .main-content {
   margin-top: 115px; /* Add a top margin to avoid content overlay */
@@ -5,10 +11,19 @@
   margin-right: 10%;
 }
 
+html{
+  background-color: var(--off_white)
+}
+
+.page-title{
+  font-family: 'Manrope', sans-serif;
+  font-size: x-large;
+  opacity: 85%}
+
 /*///// Navbar ////*/
 #navbar{
-  background-color: #2BB852;
-  color: white;
+  background-color: var(--off_white);
+  color: var(--dark_green);
   position: fixed;
   top: 0;
   width: 100%;
@@ -19,15 +34,39 @@
 .navbar-content{
   display: flex;
   flex-direction: row;  
-  height: 90px;
+  height: 75px;
   margin-left: 10%;
   margin-right: 10%
 }
 
-#navbar-icon{
-  height: 100px;
-  width:100px;
+#navbar-home-link-container{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
 }
+
+#navbar-home-link{
+  display:flex;
+  flex-direction: row;
+  text-decoration: none;
+  font-family: 'Lilita One', cursive;
+  color: var(--dark_green);
+  align-items: center;
+  font-size: 60px;
+}
+
+#navbar-icon{
+  height: 80px;
+  width: 80px;
+  padding-top: 10px;
+}
+
+.navbar-options-container{
+  display:flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: 5%;
+}   
 
 #navbar-options{
   display: flex;
@@ -37,46 +76,57 @@
 
 #navbar-options a{
   display: flex;
-  color: white;
-  padding: 5px 15px;
-  font-weight: bold;
+  color: black;
+  padding: 5px 10px;
+  font-family: 'Mukta', sans-serif;
   font-size: large;
   align-self: center;
   text-decoration: none;
+  opacity: 70%;
 }
 
 #navbar-options button{
-  color: white;
+  color: black;
   float: left;
   display: block;
   align-self:center;
   text-align: center;
-  padding: 5px 15px;
-  font-weight: bold;
+  padding: 5px 20px;
+  font-family: 'Mukta', sans-serif;
   border:none;
   cursor: pointer;
-  background-color :#2BB852;
   font-size: large;
+  background-color :var(--off_white);
+  opacity: 70%;
+
 }
 
 #navbar-auth {
 align-self: center;
-margin-left: auto;
-margin-right: 5%;
 padding: 5px;
 }
 
 #navbar-auth button{
-  padding: 15px;
-  font-weight: bold;
+  padding: 10px;
+  font-family: 'Mukta', sans-serif;
   text-decoration: none;
-  color: #1d5c2f;
+  color: var(--dark_green);
   background-color: white;
-  border: none;
-  border-radius: 20px;  
+  border: solid;
+  border-radius: 30px;  
   cursor: pointer;
-  font-size: medium;
-}
+  font-size: large;}
+
+#navbar-auth button:hover{
+  padding: 10px;
+  font-family: 'Mukta', sans-serif;
+  text-decoration: none;
+  color: var(--off_white);
+  background-color: var(--dark_green);
+  border: solid;
+  border-radius: 30px;  
+  cursor: pointer;
+  font-size: large;}
 
 /* Display Recipes */
 .allRecipesContainer{
@@ -87,9 +137,12 @@ padding: 5px;
 }
 
 .singleRecipeContainer{
+  width: 200px;
+  height: 250px;
   border-style: solid;
-  border-color: #c0c0c0;
-  box-shadow: 5px 2px 2px #d7d9de;
+  border-color: #d8d8d8;
+  box-shadow: 5px 4px 2px  #d7d9de;
+  margin-top: 20px;
 }
 
 .singleRecipeContainer a{
@@ -101,8 +154,8 @@ padding: 5px;
 }
 
 .singleRecipeDisplayIcon{
-  height: 150px;
-  width: 150px;
+  height: 200px;
+  width: 200px;
   margin-bottom: 10px;
 }
 
@@ -110,6 +163,10 @@ padding: 5px;
   display:flex;
   align-content: center;
   align-items: center;
+  font-family: 'Manrope', sans-serif;
+  font-size: large;
+  font-weight: bold;
+  padding-left: 5px;
 }
 
 #recipeImg{
@@ -144,7 +201,7 @@ padding: 5px;
   color:white;
   justify-content: center;
   padding:10px;
-  background-color:#259d47
+  background-color: var(--dark_green)
 }
 
 .modal-header button {
@@ -153,7 +210,7 @@ padding: 5px;
   top:0;
   right:0;
   color: white;
-  background-color:#259d47;
+  background-color:var(--dark_green);
   border: none;
   cursor: pointer;
 }
@@ -681,7 +738,8 @@ padding: 5px;
 .landingPage-title{
   font-size: xx-large;
   font-weight: bolder;
-  color:#259d47
+  font-family: 'Epilogue', sans-serif;
+  color:#259d47;
 }
 
 .create-new-recipe-container{
