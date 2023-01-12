@@ -4,6 +4,7 @@ import { getRecipe, deleteRecipe } from "../api"
 import { Editor, convertFromRaw, createWithContent, EditorState } from "draft-js"
 import { Nutrition } from "./Nutrition"
 import { DisplayIngredients } from "./Ingredients"
+import ByteIcon from "../../../Assets/ByteIcon.png"
 
 export function SingleRecipe() {
 	const [ recipeData, setRecipeData ] = useState( null )
@@ -69,8 +70,8 @@ export function SingleRecipe() {
 							</div>
 							<div className = "recipe-display-img-container">
 								<img 
-									src = { recipeData.image? recipeData.image.filepath:"/RecipeIcon.png"}
-									alt = "RecipeIcon.png"
+									src = { recipeData.image? recipeData.image.filepath: ByteIcon}
+									alt = "ByteIcon"
 									className = "responsive-image"
 								/>
 							</div>

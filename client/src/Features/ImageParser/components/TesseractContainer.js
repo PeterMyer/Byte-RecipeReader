@@ -37,11 +37,12 @@ export function TesseractContainer(){
 
 	return(
 		<article className = "progress_page">
-			<h2>Reading Image...</h2>
+			<h2>Reading Image</h2>
 			<div className = "tesseract-progress-container">
 				<h2 id = "tesseract-progress-status">Status: </h2>
 				<strong>{ statusLog1 }</strong>
 				<div classNiame = "tesseract-progressbar-container">
+					{console.log('progLog1: ',progLog2)}
 					<progress id = "tesseract-progressbar" value = { progLog1 + progLog2 } max = "2"/> 
 				</div>
 			</div>

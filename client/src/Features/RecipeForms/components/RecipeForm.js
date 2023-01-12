@@ -6,27 +6,43 @@ import { RecipeInstructionsEditor } from "./RecipeInstructionsEditor"
 import { updateRecipe, saveImage, createRecipe  } from "../api";
 import { useAuth0 } from "@auth0/auth0-react";
 import { createEditRecipePayload, createNewRecipePayload } from "../utils";
+import ByteIcon  from "../../../Assets/ByteIcon.png"
 
 export function RecipeForm(){
     const { user } = useAuth0();
 	const { state } = useLocation()
 	const { id } = useParams()
-	const useCase = state.useCase
+	const useCase = (state? state.useCase : null)
 
 	const [ recipeName ] = useState( state ? state.recipeData.name : null )
 	const [ servings ] = useState( state ? state.recipeData.servings : null )
 	const [ source ] = useState( state ? state.recipeData.source : null)
-	const [ ingredients ] = useState( state.recipeData.ingredients ? state.recipeData.ingredients : null )
-	const [ instructions ] = useState( state.recipeData.instructions ? state.recipeData.instructions : null )
+	const [ ingredients ] = useState( state ? 
+		state.recipeData.ingredients ? state.recipeData.ingredients : null 
+		:
+		null )
+	const [ instructions ] = useState( state ? 
+		state.recipeData.instructions ? state.recipeData.instructions : null
+		:
+		null )
 	const [ recipeImg, setRecipeImg ] = useState( useCase === "edit"?
 		state.recipeData.recipeImg ? state.recipeData.recipeImg : null
 		:
-		state.recipeImg ? Object.values(state.recipeImg)[0] : null )
+		state ? 
+			state.recipeImg ? Object.values(state.recipeImg)[0] 
+			: 
+			null 
+		: 
+		null)
 	const [ imgPreview, setImgPreview ] = useState( useCase === "edit"?
-		state.recipeData.recipeImg ? state.recipeData.recipeImg.filepath : "/RecipeIcon.png"
+		state.recipeData.recipeImg ? state.recipeData.recipeImg.filepath : { ByteIcon }
 		:
-		state ? URL.createObjectURL(Object.values(state.recipeImg)[0].imgBlob)
-		: "/RecipeIcon.png" )
+		state? state.recipeImg ? 
+			URL.createObjectURL(Object.values(state.recipeImg)[0].imgBlob)
+			: 
+			{ ByteIcon }
+		:
+		{ ByteIcon} )
 	const [ deleted, setDeleted ] = useState([])
 	const navigate = useNavigate();
 
