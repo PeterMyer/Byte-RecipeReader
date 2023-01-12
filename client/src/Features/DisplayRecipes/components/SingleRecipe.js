@@ -43,7 +43,8 @@ export function SingleRecipe() {
 	},[])
 
 	return(
-		<article className = "recipe-page-single">
+		<article className = "page-content">
+			<div className = "recipe-page-single">
 			{ recipeData !== null ?
 					<div className = "recipe-display-container">
 						<div className = "recipe-display-header">
@@ -105,6 +106,7 @@ export function SingleRecipe() {
 							No data
 					</div>
 			}
+			</div>
 		</article>
   )
 }

@@ -17,7 +17,7 @@ export function AllRecipes() {
 	}, [])
 
 	return(
-		<section>
+		<section className = "page-content">
 			<h1 className="page-title">Recipes</h1>
 			<div className = "allRecipesContainer">
 				{ recipes.length !== 0 ? 
