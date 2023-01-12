@@ -43,7 +43,7 @@ export default function FabricCanvas(){
                 recipeOutput.recipeSelections.push(obj)
             })
         }
-        navigate('/parseImage',{state: {
+        navigate('/readMany',{state: {
             'recipeOutput':recipeOutput,
             'recipeImg':recipeImg}})
     }
@@ -100,7 +100,6 @@ export default function FabricCanvas(){
       });
 
     useEffect(()=>{
-        console.log('hello?')
         const imgElement = document.getElementById('recipe-img')
         const imgInstance = new fabric.Image(imgElement)
         imgInstance.scaleToWidth(width)
