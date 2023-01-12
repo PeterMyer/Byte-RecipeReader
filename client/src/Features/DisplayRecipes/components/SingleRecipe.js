@@ -44,25 +44,29 @@ export function SingleRecipe() {
 
 	return(
 		<article className = "page-content">
-			<div className = "recipe-page-single">
 			{ recipeData !== null ?
+				<div className = "recipe-page-single">
+					<div className = "recipe-display-header-buttons">
+						<button
+							onClick = {( handleEditRecipe )} 
+							id = "edit-button">
+							<i class = "fa-regular fa-pen-to-square"></i>
+						</button>
+						<button 
+							onClick = {( handleDeleteRecipe )} 
+							id = "edit-button">
+							<i class = "fa-solid fa-trash"></i>
+						</button>
+						</div>
 					<div className = "recipe-display-container">
 						<div className = "recipe-display-header">
+							<div className = "display-header-text">
 							<h1>{ recipeData.name }</h1>
-							<div className = "recipe-display-header-buttons">
-								<button
-									onClick = {( handleEditRecipe )} 
-									id = "edit-button">
-									<i class = "fa-regular fa-pen-to-square"></i>
-								</button>
-								<button 
-									onClick = {( handleDeleteRecipe )} 
-									id = "edit-button">
-									<i class = "fa-solid fa-trash"></i>
-								</button>
+							<strong>Servings:</strong>
+								<div>
+									{ recipeData.servings }
+								</div>
 							</div>
-						</div>
-						<section id = "recipe-summary" className = "recipe-display-section">
 							<div className = "recipe-display-img-container">
 								<img 
 									src = { recipeData.image? recipeData.image.filepath:"/RecipeIcon.png"}
@@ -70,29 +74,24 @@ export function SingleRecipe() {
 									className = "responsive-image"
 								/>
 							</div>
-							<div id = "recipe-summary-info-container" className="recipe-display-subsection"> 
-								<strong>Servings:</strong>
-								<div>
-									{ recipeData.servings }
-								</div>
-							</div>
-						</section>
+						</div>
 						<section className = "recipe-display-section">
-							<div className = "recipe-display-subsection">
 								<h2>Ingredients</h2>
 								<DisplayIngredients 
 									ingredients = { recipeData.ingredients }
 								/>
-							</div>
-							<div className = "recipe-display-subsection">
+							</section>
+
+							<section className = "recipe-display-section">
 								<h2>Instructions</h2>
+								<div className = "recipe-display-instructions-container">
 								<Editor 
 									editorState = { EditorState.createWithContent(convertFromRaw(JSON.parse( recipeData.instructions ))) }
-									readOnly = "true"
-								/>
-							</div>
+									readOnly = "true"/>
+								</div>
+									
 						</section>
-						<section className = "recipe-display-section">
+						<section className = "recipe-display-section" id = "recipe-display-nutrition-data">
 							<h2>Nutrition</h2>
 							<Nutrition 
 								recipeId = { recipeId } 
@@ -101,12 +100,12 @@ export function SingleRecipe() {
 							/>
 						</section>
 					</div>
-				:
-					<div>
-							No data
-					</div>
-			}
 			</div>
+			:
+			<div>
+					No data
+			</div>
+			}
 		</article>
   )
 }

@@ -15,17 +15,13 @@ html{
 }
 
 .main-content {
-  margin-top: 90px; /* Add a top margin to avoid content overlay */
+  margin-top: 80px; /* Add a top margin to avoid content overlay */
   margin-left: 10%;
   margin-right: 10%;
 }
 
 .page-content{
   margin-top:10%
-}
-
-html{
-  background-color: var(--off_white)
 }
 
 .page-title{
@@ -47,7 +43,7 @@ html{
 .navbar-content{
   display: flex;
   flex-direction: row;  
-  height: 90px;
+  height: 80px;
   margin-left: 10%;
   margin-right: 10%
 }
@@ -89,17 +85,16 @@ html{
 
 #navbar-options a{
   display: flex;
-  color: white;
+  color: var(--off_white);
   padding: 5px 10px;
   font-family: 'Mukta', sans-serif;
   font-size: large;
   align-self: center;
   text-decoration: none;
-  opacity: 70%;
 }
 
 #navbar-options button{
-  color: white;
+  color: var(--off_white);
   float: left;
   display: block;
   align-self:center;
@@ -110,7 +105,6 @@ html{
   cursor: pointer;
   font-size: large;
   background-color :var(--dark_neutral);
-  opacity: 70%;
 
 }
 
@@ -123,25 +117,13 @@ padding: 5px;
   padding: 10px;
   font-family: 'Mukta', sans-serif;
   text-decoration: none;
-  color: white;
+  color: var(--off_white);
   background-color: var(--dark_neutral);
-  border: solid;
+  border: none;
   border-radius: 30px;  
   cursor: pointer;
   font-size: large;
-  opacity: 70%;
 }
-
-#navbar-auth button:hover{
-  padding: 10px;
-  font-family: 'Mukta', sans-serif;
-  text-decoration: none;
-  color: var(--off_white);
-  background-color: var(--dark_neutral);
-  border: solid;
-  border-radius: 30px;  
-  cursor: pointer;
-  font-size: large;}
 
   /* Landing Page */
 .landingPage-icon-row{
@@ -178,47 +160,34 @@ padding: 5px;
   color: white;
   font-size: 4em;
   width: 50%;
+  margin-top: 1.5em;
   margin-bottom: 5px;
 }
 
 .landing-content-inner div{
   display: flex;
   flex-wrap: wrap;
-  color: white;
+  color: var(--off_white);
   width: 50%;
   margin-bottom: 5px;
   margin-left:2%
 }
 
-.landing-content-inner button{
+.landing-content-inner a{
   width: 200px;
   font-family: 'Manrope', sans-serif;
   
-  /* Padding and margins */
   padding: 1em;
   margin-top: 30px;
   
-  /* Text styles */
   color: white; 
   background-color: var(--dark_red);
   text-decoration: none;
   font-size: 1em;
+  text-align: center;
   
-  /* Border styles */
   border: 3px solid var(--dark_red); 
   border-radius: 20px;
-}
-
-
-.landingPage-header{
-  text-align: center
-}
-
-.landingPage-title{
-  font-size: xx-large;
-  font-weight: bolder;
-  font-family: 'Epilogue', sans-serif;
-  color:#259d47;
 }
 
 /* Display Recipes */
@@ -282,7 +251,7 @@ padding: 5px;
 }
 
 .modal-content {
-  min-width: 200px;
+  min-width: 250px;
   max-width: 300px;
   background-color: #fff;
   z-index: 999;
@@ -294,7 +263,7 @@ padding: 5px;
   color:white;
   justify-content: center;
   padding:10px;
-  background-color: var(--medium_orange)
+  background-color: var(--dark_red)
 }
 
 .modal-header button {
@@ -303,7 +272,7 @@ padding: 5px;
   top:0;
   right:0;
   color: white;
-  background-color:var(--medium_orange);
+  background-color:var(--dark_red);
   border: none;
   cursor: pointer;
 }
@@ -319,7 +288,7 @@ padding: 5px;
   margin: 5px;
   width: 150px;
   border: solid;
-  background-color: white;
+  background-color: var(--off_white);
   color: var(--deep_blue);
   border: solid;
   border-width: 2px;
@@ -328,8 +297,7 @@ padding: 5px;
   cursor: pointer;
 }
 #nav-modal-buttons-container button:hover{
-  background-color: var(--deep_blue);
-  color: var(--off_white)
+  background-color: var(--offwhite)
 }
 
 /* Recipe Image Intake */
@@ -481,11 +449,13 @@ padding: 5px;
   display:block;
   width:70%;
   min-width: 500px;
+  margin-top: 10px;
   border-style: solid;
   border-width: 1px;
   border-color:lightgray;
   padding: 10px;
   box-shadow: 0px 10px 25px #d7d9de;
+  background-color: white
 }
 
 .recipeform{
@@ -501,7 +471,7 @@ padding: 5px;
   border-style: solid;
   width: 90%;
   border-width: 1px;
-  border-color:lightgray;
+  border-color:var(--deep_blue);
   border-left: none;
   border-right: none;
   border-bottom:none;
@@ -648,7 +618,7 @@ padding: 5px;
 .recipe-page-single{
   display: flex;
   justify-content: center;
-  min-width: 400px
+  min-width: 400px;
 }
 
 .recipe-display-container{
@@ -656,31 +626,57 @@ padding: 5px;
   flex-direction: column;
   align-items: left;
   width: 60%;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
   border-style: solid;
   border-width: 1px;
   border-color:lightgray;
-  padding: 20px;
   box-shadow: 0px 10px 25px #d7d9de;
+  background-color: white;
+
 }
 
 .recipe-display-header{
   display: flex;
   flex-direction: row;
+  border-bottom: solid;
+  border-color: white;
   justify-content: space-between;
-  
+  width:100%;
+  background-color: var(--dark_neutral);
+}
+
+.display-header-text{
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  align-items:center;
+  width:50%;
+  color: white;
+}
+
+.recipe-display-header h1{
+  font-size: xx-large;
+
 }
 .recipe-display-header-buttons{
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .recipe-display-section{
   display:flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 30px;
-  padding: 10px
+  margin-top: 10px;
+  margin-left: 2em;
+  margin-right: 2em
+}
+
+.recipe-display-section h2{
+  margin-top: 0
 }
 
 .recipe-display-subsection{
@@ -690,9 +686,49 @@ padding: 5px;
 }
 
 .recipe-display-img-container{
+
   min-width: 100px;
   min-height: 100px;
   max-width: 350px;
+  margin: 0;
+  padding: 0;
+}
+
+#recipie-display-ingredient-list{
+  list-style: none;
+  margin-top: 5px;
+  line-height: 2em;
+}
+
+.recipe-display-instructions-container{
+  padding-left: 40px;
+  padding-right: 40px
+}
+
+#recipe-display-nutrition-data h2{
+  margin:0
+}
+
+#recipe-display-nutrition-data h3{
+  margin-top:0
+}
+
+#nutrient-display-container{
+  margin-left: 2em;
+  
+}
+
+.nutrient-display{
+  display:flex;
+  align-items: flex-end;
+}
+
+#calories-display{
+  font-size: x-large;
+}
+
+#calories-display-value{
+  font-size: x-large;
 }
 
 #recipe-summary{
@@ -715,18 +751,20 @@ padding: 5px;
 #edit-button{
   padding: 10px;
   background-color : white;
-  color:  #35a956;
+  color:  var(--dark_neutral);
   text-decoration: none;
   margin: 10px 5px;
   border-radius: 6px;
-  border: none;
+  border: solid;
+  border-color: var(--dark_neutral);
   cursor: pointer;
-  font-size: large
+  font-size: large;
+  opacity: 75%;
 }
 
 
 #edit-button:hover{
-  color:darkgreen;
+  color:(darkgreen);
 }
 .recipe-display-container h1{
   text-align: start
@@ -736,7 +774,7 @@ padding: 5px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  max-width: 50%;}
+  max-width: 70%;}
 
 .nutrient-name{
   display: flex;
@@ -852,8 +890,8 @@ padding: 5px;
   display:flex;
   width: 100%;
   height:30px;
-  background-color: #2BB852;
-  color: white;
+  background-color: var(--dark_red);
+  color: var(--off_white);
   justify-content: center;
   align-items: center ;
   padding-top: 10px;
@@ -901,8 +939,6 @@ margin-left: 60px;
 .section-selection-buttons-container button:hover{
   background-color:rgb(130, 130, 130); 
   color:white;
-
-
 }
 
 .recipe-selection-container{
@@ -912,6 +948,7 @@ margin-left: 60px;
   justify-content: center;
   text-align: center;
   position: relative;
+  margin-top:10px;
   top: 0;
   left: 0;
 }
@@ -933,9 +970,12 @@ margin-left: 60px;
   top: 0;
   left: 0;
   padding-right: 50px;
+  ;
 }
 
 .create-new-recipe-header{
-  background-color: #2BB852;
+  background-color: var(--dark_red);
   color: white;
+  font-family: 'Manrope', sans-serif;
+
 }

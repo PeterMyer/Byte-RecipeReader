@@ -12,10 +12,10 @@ export default function NavBar() {
           <div className ="navbar-content">
             <div id = "navbar-home-link-container">
               <Link to = "/" id = "navbar-home-link">
-                <img 
+                {/* <img 
                   src = { RRIcon } 
                   alt = "Byte Icon" 
-                  id = "navbar-icon"/>
+                  id = "navbar-icon"/> */}
                   BYTE
               </Link>
             </div>
