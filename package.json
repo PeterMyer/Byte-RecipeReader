@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/PeterMyer/NutritionLabelGenerator/issues"
   },
-  "homepage": "https://github.com/PeterMyer/NutritionLabelGenerator#readme",
+  "homepage": "https://byte-recipe-reader.herokuapp.com/",
   "devDependencies": {
     "eslint": "^8.31.0",
     "eslint-config-airbnb": "^19.0.4",
