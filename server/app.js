@@ -34,12 +34,12 @@ app.use("/api", require("./api"));
 app.use("/images", express.static("server/images"))
 
 // app.use(express.static(path.join(__dirname, "public")));
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../build", "index.html"));
+app.get("/*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 
 app.get("*",(req, res) => {
-  res.sendFile(path.resolve(__dirname, "../build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 })
 
 // catch 404 and forward to error handler
