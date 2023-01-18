@@ -29,23 +29,29 @@ app.use(express.json({limit: "50mb"}));
 
 app.use(express.urlencoded({ limit: "50mb",extended: true }));
 app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, "public")));
+if (process.env.NODE_ENV === "production") {
+app.use(express.static(path.resolve(__dirname, "../client/build")))}
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "../client/build")));}
+
 
 app.use("/api", require("./api"));
 app.use("/images", express.static("server/images"))
 
-// app.use(express.static(path.join(__dirname, "public")));
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
-
-app.get("*",(req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+app.get("*",(req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+})
 
 // error handler
 app.use(function(err, req, res, next) {
