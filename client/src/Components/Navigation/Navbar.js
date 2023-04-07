@@ -3,7 +3,6 @@ import { AuthenticationButton } from "../../Features/Auth"
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react"
 import NavModal from "./NavModal"
-import ByteIcon from "../../Assets/ByteIcon.png"
 
 export default function NavBar() {
   const [ show, setShow ] = useState( false )

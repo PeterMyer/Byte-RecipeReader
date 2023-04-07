@@ -11,7 +11,6 @@ export function AllRecipes() {
   const { user } = useAuth0();
   const navigate = useNavigate();
 
-
 	const handleGetAllRecipes = async () => {
 		let response = await getAllRecipes( user.sub )
 		setRecipes( response.data )

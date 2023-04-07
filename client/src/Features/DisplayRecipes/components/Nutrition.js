@@ -44,7 +44,7 @@ export function Nutrition( props ) {
 				<div>
 					{
 						nutritionCalulated ? 
-							<button onClick = {() => handleSaveNutrition( recipeId,newNutrition )}>
+							<button onClick = {() => handleSaveNutrition( recipeId, newNutrition )}>
 								Save Nutrition
 							</button>
 						: 
