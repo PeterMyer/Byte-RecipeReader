@@ -13,7 +13,7 @@ Text should be cropped around the sections you wish the reader to parse in order
 When you are satisfied with the text and submit Byte will output a recipe edit page where you can add final details such number of servings and any additional ingredients not included in the original recipe.
 
 ### Generate Nutrition Info
-From the completed recipe page you can also generate the estimated nutrition data for your ingredients. Byte will reach out to the USDA Food Database API are find the best match for your listed ingredient and then calculate the nutrition data from the given measurements. Once created the nutrition data is saved to your Byte recipe for future reference. 
+From the completed recipe page you can also generate the estimated nutrition data for your ingredients. Byte will reach out to the USDA Food Database API to find the best match for your listed ingredient and then calculate the nutrition data from the given measurements. Once created the nutrition data is saved to your Byte recipe for future reference. 
 
 ## How Byte Works
 ### Why Byte
