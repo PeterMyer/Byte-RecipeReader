@@ -9,6 +9,12 @@ const RecipeComment = require("./models/RecipeComment")
 const RecipeIngredient = require("./models/RecipeIngredient")
 const RecipeNutrition = require("./models/recipeNutrition")
 
+const DefaultByteFoodItem = require('./models/DefaultByteFoodItem');
+const FoodItemNutrition = require('./models/FoodItemNutrition');
+const FoodItemNutritionMatch = require('./models/FoodItemNutritionMatch');
+const UsdaFoodItem = require('./models/UsdaFoodItem');
+const userFoodItem = require('./models/UserFoodItem');
+
 Recipe.belongsToMany(Ingredient, { through: RecipeIngredient });
 Ingredient.belongsToMany(Recipe, { through: RecipeIngredient});
 Recipe.hasMany(RecipeIngredient);
@@ -33,6 +39,22 @@ RecipeNutrition.belongsTo(Recipe,{foreignKey: "recipeId"})
 
 Recipe.belongsTo(Image,{foreignKey: "profileId"})
 Image.hasOne(Recipe,{foreignKey: "profileId"})
+
+Component.belongsToMany(FoodItemNutrition. { through: FoodItemNutritionMatch });
+FoodItemNutrition.belongsToMany(Component, { through: FoodItemNutritionMatch });
+
+FoodItemNutrition.hasOne(UsdaFoodItem)
+UsdaFoodItem.belongsTo(FoodItemNutrition)
+
+FoodItemNutrition.hasOne(userFoodItem)
+userFoodItem.belongsTo(FoodItemNutrition)
+
+FoodItemNutrition.hasOne(DefaultByteFoodItem)
+DefaultByteFoodItem.belongsTo(FoodItemNutrition)
+
+RecipeIngredient.hasOne(FoodItemNutrition, { foreignKey: 'FoodItemId'})
+FoodItemNutrition.belongsToMany(RecipeIngredient, { foreignKey: 'FoodItemId'})
+
 
 module.exports = {
   db,
