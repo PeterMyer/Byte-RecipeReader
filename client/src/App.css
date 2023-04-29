@@ -1006,4 +1006,11 @@ modal-footer {
 .nutrition-calculator-refactor {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+}
+
+.ingredient-container-refactor {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

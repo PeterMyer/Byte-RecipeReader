@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { calculateNutrition } from '../utils/calculateNutrition';
-import { DisplayNutritionData } from './NutritionData';
+import { DisplayNutritionData } from './DisplayNutritionData';
 import { lookupNutrition, getNutrition, saveNutrition } from '../api';
 import { useLocation } from 'react-router-dom';
 import { IngredientNutrition } from './IngredientNutrition';
@@ -10,13 +10,14 @@ export function NutritionCalculator() {
   const recipeId = state.recipeId;
   const servings = state.servings;
   const ingredients = state.ingredients;
-  const [newNutrition, setNewNutrition] = useState(null);
+  const [recipeNutrition, setRecipeNutrition] = useState(null);
   const [existingNutrition, setExistingNutrition] = useState(null);
   const [nutritionCalulated, toggleNutritionCalulated] = useState(false);
   const [USDANutrition, setUSDANutrition] = useState(null);
 
   const handleLookupNutrition = async (id) => {
     let nutrition = await lookupNutrition(id);
+    console.log('API Complete');
     setUSDANutrition(nutrition.data);
   };
 
@@ -28,7 +29,7 @@ export function NutritionCalculator() {
     );
     console.log('recipeNutrition:', recipeNutrition);
     toggleNutritionCalulated(true);
-    setNewNutrition(recipeNutrition.totalNutrition);
+    setRecipeNutrition(recipeNutrition);
   };
 
   const handleGetNurition = async (id) => {
@@ -57,7 +58,9 @@ export function NutritionCalculator() {
           {nutritionCalulated ? (
             <>
               <button
-                onClick={() => handleSaveNutrition(recipeId, newNutrition)}
+                onClick={() =>
+                  handleSaveNutrition(recipeId, recipeNutrition.newNutrition)
+                }
               >
                 Save Nutrition
               </button>
@@ -75,12 +78,17 @@ export function NutritionCalculator() {
               </button>
             </>
           )}
-          {newNutrition ? (
+          {recipeNutrition ? (
             <div className="nutrition-calculator-refactor">
               <div>
-                <IngredientNutrition ingredients={ingredients} />
+                <IngredientNutrition
+                  ingredients={ingredients}
+                  recipeNutrition={recipeNutrition}
+                />
               </div>
-              <DisplayNutritionData nutrition={newNutrition} />
+              <DisplayNutritionData
+                nutrition={recipeNutrition.totalNutrition}
+              />
             </div>
           ) : // <DisplayNutritionData nutrition={newNutrition} />
           null}
