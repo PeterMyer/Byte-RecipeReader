@@ -13,16 +13,22 @@ export function NutritionCalculator() {
   const [newNutrition, setNewNutrition] = useState(null);
   const [existingNutrition, setExistingNutrition] = useState(null);
   const [nutritionCalulated, toggleNutritionCalulated] = useState(false);
+  const [USDANutrition, setUSDANutrition] = useState(null);
 
   const handleLookupNutrition = async (id) => {
     let nutrition = await lookupNutrition(id);
-    let totalNutrition = calculateNutrition(
+    console.log('nutrition', nutrition);
+    setUSDANutrition(nutrition.data);
+  };
+
+  const handleCalculateNutrition = async () => {
+    let recipeNutrition = calculateNutrition(
       ingredients,
-      nutrition.data,
+      USDANutrition,
       servings
     );
     toggleNutritionCalulated(true);
-    setNewNutrition(totalNutrition);
+    setNewNutrition(recipeNutrition.totalNutrition);
   };
 
   const handleGetNurition = async (id) => {
@@ -49,13 +55,25 @@ export function NutritionCalculator() {
       ) : (
         <div>
           {nutritionCalulated ? (
-            <button onClick={() => handleSaveNutrition(recipeId, newNutrition)}>
-              Save Nutrition
-            </button>
+            <>
+              <button
+                onClick={() => handleSaveNutrition(recipeId, newNutrition)}
+              >
+                Save Nutrition
+              </button>
+              <button onClick={() => handleCalculateNutrition()}>
+                calculateNutrition
+              </button>
+            </>
           ) : (
-            <button onClick={() => handleLookupNutrition(recipeId)}>
-              Get Nutrition
-            </button>
+            <>
+              <button onClick={() => handleLookupNutrition(recipeId)}>
+                Get Nutrition
+              </button>
+              <button onClick={() => handleCalculateNutrition()}>
+                calculateNutrition
+              </button>
+            </>
           )}
           {newNutrition ? (
             <div className="nutrition-calculator-refactor">
