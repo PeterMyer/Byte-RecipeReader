@@ -17,7 +17,6 @@ export function NutritionCalculator() {
 
   const handleLookupNutrition = async (id) => {
     let nutrition = await lookupNutrition(id);
-    console.log('nutrition', nutrition);
     setUSDANutrition(nutrition.data);
   };
 
@@ -27,6 +26,7 @@ export function NutritionCalculator() {
       USDANutrition,
       servings
     );
+    console.log('recipeNutrition:', recipeNutrition);
     toggleNutritionCalulated(true);
     setNewNutrition(recipeNutrition.totalNutrition);
   };
@@ -77,7 +77,6 @@ export function NutritionCalculator() {
           )}
           {newNutrition ? (
             <div className="nutrition-calculator-refactor">
-              {console.log(ingredients)}
               <div>
                 <IngredientNutrition ingredients={ingredients} />
               </div>
