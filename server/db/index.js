@@ -40,7 +40,7 @@ RecipeNutrition.belongsTo(Recipe,{foreignKey: "recipeId"})
 Recipe.belongsTo(Image,{foreignKey: "profileId"})
 Image.hasOne(Recipe,{foreignKey: "profileId"})
 
-Component.belongsToMany(FoodItemNutrition. { through: FoodItemNutritionMatch });
+Component.belongsToMany(FoodItemNutrition, { through: FoodItemNutritionMatch });
 FoodItemNutrition.belongsToMany(Component, { through: FoodItemNutritionMatch });
 
 FoodItemNutrition.hasOne(UsdaFoodItem)
@@ -53,7 +53,7 @@ FoodItemNutrition.hasOne(DefaultByteFoodItem)
 DefaultByteFoodItem.belongsTo(FoodItemNutrition)
 
 RecipeIngredient.hasOne(FoodItemNutrition, { foreignKey: 'FoodItemId'})
-FoodItemNutrition.belongsToMany(RecipeIngredient, { foreignKey: 'FoodItemId'})
+FoodItemNutrition.belongsTo(RecipeIngredient, { foreignKey: 'FoodItemId'})
 
 
 module.exports = {

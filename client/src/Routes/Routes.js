@@ -8,6 +8,7 @@ import { ProtectedRoute } from "../Features/Auth";
 import { Loading } from "../Features/Auth/components/Loading";
 import { RecipeRoutes } from "../Features/DisplayRecipes/Routes";
 import { RecipeFormRoutes } from "../Features/RecipeForms/Routes";
+import { NutritionRoutes } from "../Features/Nutrition/Routes";
 
 export default function AppRoutes() {
 	const { isLoading } = useAuth0();
@@ -31,6 +32,9 @@ export default function AppRoutes() {
 			<Route 
 				path = "/recipeForm/*" 
 				element = { <ProtectedRoute component = { RecipeFormRoutes }/> }/> 
+			<Route 
+				path = "/nutrition/*" 
+				element = { <ProtectedRoute component = { NutritionRoutes }/> }/> 
 			<Route 
 				path = "/verifyText" 
 				element = { <ProtectedRoute component = { VerifyImgTextContainer }/> }/>
