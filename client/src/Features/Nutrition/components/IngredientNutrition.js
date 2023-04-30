@@ -1,4 +1,5 @@
 import React from 'react';
+import { IngredientSelect } from './IngredientSelect';
 
 export const IngredientNutrition = ({ ingredients, recipeNutrition }) => {
   return (
@@ -7,18 +8,22 @@ export const IngredientNutrition = ({ ingredients, recipeNutrition }) => {
       {ingredients.map((ingredient) => {
         return (
           <>
+            {console.log(
+              recipeNutrition.ingredients[ingredient.normText].allUsdaOptions
+            )}
+
             <div className="ingredient-container-refactor">
               <div>
-                <h4>Original </h4>
                 <div>{ingredient.recipeIngredient.text}</div>
               </div>
               <div>
-                <h4>Matched </h4>
                 <div>
-                  {
-                    recipeNutrition.ingredients[ingredient.normText]
-                      .matchedIndexItem.description
-                  }
+                  <IngredientSelect
+                    allUsdaOptions={
+                      recipeNutrition.ingredients[ingredient.normText]
+                        .allUsdaOptions
+                    }
+                  />
                 </div>
               </div>
             </div>
