@@ -1,5 +1,3 @@
-import { handleQuantityInts } from './handleQuantityInts';
-
 export function sumIngredientNutrition(recipeNutrition) {
   let recipeNutritionTotal = {
     Energy: { amount: 0, unit: null },
@@ -18,13 +16,11 @@ export function sumIngredientNutrition(recipeNutrition) {
   };
 
   for (let ingredient in recipeNutrition.ingredients) {
-    for (let nutrient in ingredient.ingredientNutrition) {
-      console.log('nutrient', nutrient);
-      // recipeNutritionTotal[nutrient]['amount'] += nutrient['amount'];
+    const ingredientObj = recipeNutrition.ingredients[ingredient];
+    for (let nutrient in ingredientObj.ingredientNutrition) {
+      const nutrientVal = ingredientObj.ingredientNutrition[nutrient]['amount'];
+      recipeNutritionTotal[nutrient]['amount'] += nutrientVal;
     }
   }
-
-  // console.log('recipeNutritionTotal', recipeNutritionTotal);
-
   return recipeNutritionTotal;
 }
