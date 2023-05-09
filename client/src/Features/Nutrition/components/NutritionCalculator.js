@@ -22,6 +22,7 @@ export function NutritionCalculator() {
   };
 
   const handleCalculateNutrition = async () => {
+    console.log('ingredients:', ingredients);
     let recipeNutrition = calculateNutrition(
       ingredients,
       USDANutrition,

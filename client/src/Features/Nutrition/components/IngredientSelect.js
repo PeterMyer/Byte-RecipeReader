@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Select from 'react-select';
 
 export function IngredientSelect({ allUsdaOptions }) {
@@ -6,6 +6,5 @@ export function IngredientSelect({ allUsdaOptions }) {
     return { value: `${index}`, label: option.description };
   });
 
-  console.log(options);
   return <Select options={options} defaultValue={options[0]} />;
 }

@@ -1,11 +1,12 @@
-import { sumNutritionTotals } from './sumNutritionTotals';
-import { filterNutrientValues } from './filterNutrientValues';
+import { buildRecipeNutrition } from './buildRecipeNutrition';
 
 export function calculateNutrition(ingredients, nutritionData, servings) {
-  let recipeNutrition = {
-    ingredients: {},
-    totalNutrition: {},
-  };
+  const recipeNutrition = buildRecipeNutrition(
+    ingredients,
+    nutritionData,
+    servings
+  );
+  console.log('Recipe Nutrition:', recipeNutrition);
 
   let recipeNutritionTotal = {
     Energy: { amount: 0, unit: null },
@@ -23,39 +24,39 @@ export function calculateNutrition(ingredients, nutritionData, servings) {
     'Potassium, K': { amount: 0, unit: 'mg' },
   };
 
-  ingredients.map((ingredient, index) => {
-    recipeNutrition['ingredients'][ingredient.recipeIngredient.text] = {
-      nurtritionPer100G: {},
-      matchedIndex: 0,
-      matchedIndexItem: nutritionData[index].foods[0],
-      allUsdaOptions: nutritionData[index].foods,
-    };
+  // ingredients.map((ingredient, index) => {
+  //   recipeNutrition['ingredients'][ingredient.recipeIngredient.text] = {
+  //     nurtritionPer100G: {},
+  //     matchedIndex: 0,
+  //     matchedIndexItem: nutritionData[index].foods[0],
+  //     allUsdaOptions: nutritionData[index].foods,
+  //   };
 
-    let currentFood = nutritionData[index].foods[0];
+  //   let currentFood = nutritionData[index].foods[0];
 
-    // Defaults the unit of measurements (tbs/cup/etc) to 'Quantity not specified' which appears last in list of options
-    let defaultGramWeight =
-      currentFood.foodMeasures.length > 0
-        ? currentFood.foodMeasures[currentFood.foodMeasures.length - 1]
-            .gramWeight
-        : 0;
+  //   // Defaults the unit of measurements (tbs/cup/etc) to 'Quantity not specified' which appears last in list of options
+  //   let defaultGramWeight =
+  //     currentFood.foodMeasures.length > 0
+  //       ? currentFood.foodMeasures[currentFood.foodMeasures.length - 1]
+  //           .gramWeight
+  //       : 0;
 
-    let ingredientNutrition = filterNutrientValues(currentFood);
+  //   let ingredientNutrition = filterNutrientValues(currentFood);
 
-    recipeNutrition['ingredients'][
-      ingredient.recipeIngredient.text
-    ].nurtritionPer100G = {
-      ...ingredientNutrition,
-    };
+  //   recipeNutrition['ingredients'][
+  //     ingredient.recipeIngredient.text
+  //   ].nurtritionPer100G = {
+  //     ...ingredientNutrition,
+  //   };
 
-    sumNutritionTotals(
-      ingredient,
-      ingredientNutrition,
-      defaultGramWeight,
-      servings,
-      recipeNutritionTotal
-    );
-  });
+  //   sumNutritionTotals(
+  //     ingredient,
+  //     ingredientNutrition,
+  //     defaultGramWeight,
+  //     servings,
+  //     recipeNutritionTotal
+  //   );
+  // });
 
   recipeNutrition.totalNutrition = { ...recipeNutritionTotal };
 
