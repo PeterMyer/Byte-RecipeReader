@@ -22,13 +22,11 @@ export function NutritionCalculator() {
   };
 
   const handleCalculateNutrition = async () => {
-    console.log('ingredients:', ingredients);
     let recipeNutrition = calculateNutrition(
       ingredients,
       USDANutrition,
       servings
     );
-    console.log('recipeNutrition:', recipeNutrition);
     toggleNutritionCalulated(true);
     setRecipeNutrition(recipeNutrition);
   };

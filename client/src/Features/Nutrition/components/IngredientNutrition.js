@@ -8,10 +8,6 @@ export const IngredientNutrition = ({ ingredients, recipeNutrition }) => {
       {ingredients.map((ingredient) => {
         return (
           <>
-            {console.log(
-              recipeNutrition.ingredients[ingredient.normText].allUsdaOptions
-            )}
-
             <div className="ingredient-container-refactor">
               <div>
                 <div>{ingredient.recipeIngredient.text}</div>
