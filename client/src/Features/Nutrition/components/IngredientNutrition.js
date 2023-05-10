@@ -19,6 +19,8 @@ export const IngredientNutrition = ({ ingredients, recipeNutrition }) => {
                       recipeNutrition.ingredients[ingredient.normText]
                         .allUsdaOptions
                     }
+                    recipeNutrition={recipeNutrition}
+                    ingredientName={ingredient.recipeIngredient.text}
                   />
                 </div>
               </div>
