@@ -83,9 +83,11 @@ export function NutritionCalculator() {
                 <IngredientNutrition
                   ingredients={ingredients}
                   recipeNutrition={recipeNutrition}
+                  setRecipeNutrition={setRecipeNutrition}
                 />
               </div>
               <DisplayNutritionData
+              recipeNutrition= {recipeNutrition}
                 nutrition={recipeNutrition.totalNutrition}
               />
             </div>

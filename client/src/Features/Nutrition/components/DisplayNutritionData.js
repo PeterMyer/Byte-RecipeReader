@@ -1,6 +1,7 @@
 import React from 'react';
 
-export const DisplayNutritionData = ({ nutrition }) => {
+export const DisplayNutritionData = ({ recipeNutrition }) => {
+  const nutrition = recipeNutrition.totalNutrition;
   return (
     <>
       <div id="nutrient-display-container">

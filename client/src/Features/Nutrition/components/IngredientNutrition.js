@@ -1,7 +1,11 @@
 import React from 'react';
 import { IngredientSelect } from './IngredientSelect';
 
-export const IngredientNutrition = ({ ingredients, recipeNutrition }) => {
+export const IngredientNutrition = ({
+  ingredients,
+  recipeNutrition,
+  setRecipeNutrition,
+}) => {
   return (
     <>
       <h3>Ingredients</h3>
@@ -21,6 +25,7 @@ export const IngredientNutrition = ({ ingredients, recipeNutrition }) => {
                     }
                     recipeNutrition={recipeNutrition}
                     ingredientName={ingredient.recipeIngredient.text}
+                    setRecipeNutrition={setRecipeNutrition}
                   />
                 </div>
               </div>

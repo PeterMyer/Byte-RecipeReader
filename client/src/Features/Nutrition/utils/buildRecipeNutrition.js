@@ -5,6 +5,7 @@ export function buildRecipeNutrition(ingredients, nutritionData, servings) {
   const recipeNutrition = {
     ingredients: {},
     totalNutrition: {},
+    servings: servings,
   };
 
   ingredients.map((ingredient, index) => {
@@ -14,6 +15,7 @@ export function buildRecipeNutrition(ingredients, nutritionData, servings) {
       matchedIndexItem: nutritionData[index].foods[0],
       allUsdaOptions: nutritionData[index].foods,
       ingredientNutrition: {},
+      recipeData: ingredient,
     };
 
     let currentFood = nutritionData[index].foods[0];
