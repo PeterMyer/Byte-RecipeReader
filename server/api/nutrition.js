@@ -11,6 +11,7 @@ const {
     RecipeNutrition,
   },
 } = require('../db/index');
+const FoodItemNutrition = require('../db/models/FoodItemNutrition');
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001',
@@ -27,18 +28,12 @@ router.post('/:id', async (req, res, next) => {
             {
               model: Component,
               attributes: ['id', 'name'],
-            },
-            {
-              model: MeasurementQuantity,
-              attributes: ['id', 'qtyAmount'],
-            },
-            {
-              model: MeasurementUnit,
-              attributes: ['id', 'unitDescription'],
-            },
-            {
-              model: RecipeComment,
-              attributes: ['id', 'commentText'],
+              include: [
+                {
+                  model: FoodItemNutrition,
+                  attributes: ['id', 'name', 'source', 'nutrition'],
+                },
+              ],
             },
           ],
         },
@@ -48,6 +43,7 @@ router.post('/:id', async (req, res, next) => {
     //USDA API CALL
     const usdaResults = await Promise.all(
       recipe.ingredients.map(async (ingredient) => {
+        console.log('ingredient', ingredient.component.foodItemNutritions);
         let params = {
           query: ingredient.component.name,
           dataType: ['Foundation', 'Survey (FNDDS)'],
@@ -63,7 +59,7 @@ router.post('/:id', async (req, res, next) => {
         return response.data;
       })
     );
-    res.json(usdaResults);
+    res.json({ recipe, usdaResults });
   } catch (error) {
     next(error);
   }

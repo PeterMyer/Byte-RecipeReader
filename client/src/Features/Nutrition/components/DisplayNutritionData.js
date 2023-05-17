@@ -2,13 +2,12 @@ import React from 'react';
 
 export const DisplayNutritionData = ({ recipeNutrition }) => {
   console.log('Display recipeNutrition', recipeNutrition);
-  const nutrition = recipeNutrition.totalNutrition;
   return (
     <>
       <div id="nutrient-display-container">
         <h3>Per Serving</h3>
 
-        {Object.entries(nutrition).map(([nutrient, value]) => {
+        {Object.entries(recipeNutrition).map(([nutrient, value]) => {
           return (
             <div className="nutrient-display">
               {nutrient === 'Energy' ? (

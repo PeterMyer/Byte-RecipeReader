@@ -21,8 +21,7 @@ export function NutritionCalculator() {
 
   const handleLookupNutrition = async (id) => {
     let nutrition = await lookupNutrition(id);
-    console.log('API Complete');
-    setUSDANutrition(nutrition.data);
+    setUSDANutrition(nutrition.data.usdaResults);
   };
 
   const handleCalculateNutrition = async () => {
@@ -37,6 +36,7 @@ export function NutritionCalculator() {
 
   const handleGetNurition = async (id) => {
     let response = await getNutrition(id);
+    console.log('response', response);
     setExistingNutrition(JSON.parse(response.data.nutritionData));
   };
 
@@ -78,55 +78,54 @@ export function NutritionCalculator() {
 
   return (
     <>
-      {existingNutrition ? (
-        <DisplayNutritionData nutrition={existingNutrition} />
-      ) : (
-        <div>
-          {nutritionCalulated ? (
-            <>
-              <button
-                onClick={() =>
-                  handleSaveNutrition(
-                    recipeId,
-                    recipeNutrition.totalNutrition,
-                    recipeNutrition.ingredients
-                  )
-                }
-              >
-                Save Nutrition
-              </button>
-              <button onClick={() => handleCalculateNutrition()}>
-                calculateNutrition
-              </button>
-            </>
-          ) : (
-            <>
-              <button onClick={() => handleLookupNutrition(recipeId)}>
-                Get Nutrition
-              </button>
-              <button onClick={() => handleCalculateNutrition()}>
-                calculateNutrition
-              </button>
-            </>
-          )}
-          {recipeNutrition ? (
-            <div className="nutrition-calculator-refactor">
-              <div>
-                <IngredientNutrition
-                  ingredients={ingredients}
-                  recipeNutrition={recipeNutrition}
-                  setRecipeNutrition={setRecipeNutrition}
-                />
-              </div>
-              <DisplayNutritionData
+      {/* {existingNutrition ? (
+        <DisplayNutritionData recipeNutrition={existingNutrition} />
+      ) : ( */}
+      <div>
+        {nutritionCalulated ? (
+          <>
+            <button
+              onClick={() =>
+                handleSaveNutrition(
+                  recipeId,
+                  recipeNutrition.totalNutrition,
+                  recipeNutrition.ingredients
+                )
+              }
+            >
+              Save Nutrition
+            </button>
+            <button onClick={() => handleCalculateNutrition()}>
+              calculateNutrition
+            </button>
+          </>
+        ) : (
+          <>
+            <button onClick={() => handleLookupNutrition(recipeId)}>
+              Get Nutrition
+            </button>
+            <button onClick={() => handleCalculateNutrition()}>
+              calculateNutrition
+            </button>
+          </>
+        )}
+        {recipeNutrition ? (
+          <div className="nutrition-calculator-refactor">
+            <div>
+              <IngredientNutrition
+                ingredients={ingredients}
                 recipeNutrition={recipeNutrition}
-                nutrition={recipeNutrition.totalNutrition}
+                setRecipeNutrition={setRecipeNutrition}
               />
             </div>
-          ) : // <DisplayNutritionData nutrition={newNutrition} />
-          null}
-        </div>
-      )}
+            <DisplayNutritionData
+              recipeNutrition={recipeNutrition.totalNutrition}
+            />
+          </div>
+        ) : // <DisplayNutritionData nutrition={newNutrition} />
+        null}
+      </div>
+      {/* )} */}
     </>
   );
 }
