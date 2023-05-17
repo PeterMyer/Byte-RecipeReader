@@ -5,9 +5,12 @@ import { lookupNutrition, getNutrition, saveNutrition } from '../api';
 import { useLocation } from 'react-router-dom';
 import { IngredientNutrition } from './IngredientNutrition';
 import { updateNutrition } from '../api/updateNutrition';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export function NutritionCalculator() {
   const { state } = useLocation();
+  const { user } = useAuth0();
+
   const recipeId = state.recipeId;
   const servings = state.servings;
   const ingredients = state.ingredients;
@@ -37,10 +40,28 @@ export function NutritionCalculator() {
     setExistingNutrition(JSON.parse(response.data.nutritionData));
   };
 
-  const handleSaveNutrition = async (id, totalNutrition) => {
+  const handleSaveNutrition = async (id, totalNutrition, ingredients) => {
     let response = null;
+
+    console.log('ingredients', ingredients);
     let nutritionPayload = {
       nutrition: JSON.stringify(totalNutrition),
+      ingredients: Object.values(ingredients).map((ingredient) => {
+        return {
+          user: user.sub,
+          foodItemName: ingredient.recipeData.component.name,
+          foodItemId: ingredient.recipeData.component.id,
+          recipeId: ingredient.recipeData.id,
+          ingredientId: ingredient.recipeData.recipeIngredient.ingredientId,
+          calculatedNutrition: ingredient.IngredientNutrition,
+          matchedFoodItem: {
+            name: ingredient.matchedIndexItem.description,
+            source: 'USDA',
+            sourceId: ingredient.matchedIndexItem.fdcId,
+            nutrition: JSON.stringify(ingredient.nurtritionPer100G),
+          },
+        };
+      }),
     };
 
     if (existingNutrition) {
@@ -66,7 +87,11 @@ export function NutritionCalculator() {
             <>
               <button
                 onClick={() =>
-                  handleSaveNutrition(recipeId, recipeNutrition.totalNutrition)
+                  handleSaveNutrition(
+                    recipeId,
+                    recipeNutrition.totalNutrition,
+                    recipeNutrition.ingredients
+                  )
                 }
               >
                 Save Nutrition

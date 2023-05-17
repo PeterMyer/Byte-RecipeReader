@@ -324,6 +324,7 @@ router.post('/:id/nutrition', async (req, res, next) => {
       recipeId: req.params.id,
       nutritionData: req.body.nutrition,
     });
+
     res.json(nutrition);
   } catch (error) {
     next(error);
