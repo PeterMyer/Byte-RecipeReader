@@ -18,7 +18,6 @@ export function NutritionCalculator() {
   const handleLookupNutrition = async (id) => {
     let nutrition = await lookupNutrition(id);
     console.log('API Complete');
-    console.log('USDA Results', nutrition);
     setUSDANutrition(nutrition.data);
   };
 
@@ -88,7 +87,7 @@ export function NutritionCalculator() {
                 />
               </div>
               <DisplayNutritionData
-                recipeNutrition={recipeNutrition}
+              recipeNutrition= {recipeNutrition}
                 nutrition={recipeNutrition.totalNutrition}
               />
             </div>
