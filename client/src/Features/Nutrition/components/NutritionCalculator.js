@@ -4,6 +4,7 @@ import { DisplayNutritionData } from './DisplayNutritionData';
 import { lookupNutrition, getNutrition, saveNutrition } from '../api';
 import { useLocation } from 'react-router-dom';
 import { IngredientNutrition } from './IngredientNutrition';
+import { updateNutrition } from '../api/updateNutrition';
 
 export function NutritionCalculator() {
   const { state } = useLocation();
@@ -36,11 +37,18 @@ export function NutritionCalculator() {
     setExistingNutrition(JSON.parse(response.data.nutritionData));
   };
 
-  const handleSaveNutrition = async (id, newNutrition) => {
+  const handleSaveNutrition = async (id, totalNutrition) => {
+    let response = null;
     let nutritionPayload = {
-      nutrition: JSON.stringify(newNutrition),
+      nutrition: JSON.stringify(totalNutrition),
     };
-    let response = await saveNutrition(id, nutritionPayload);
+
+    if (existingNutrition) {
+      response = await updateNutrition(id, nutritionPayload);
+    } else {
+      response = await saveNutrition(id, nutritionPayload);
+    }
+
     setExistingNutrition(JSON.parse(response.data.nutritionData));
   };
 
@@ -58,7 +66,7 @@ export function NutritionCalculator() {
             <>
               <button
                 onClick={() =>
-                  handleSaveNutrition(recipeId, recipeNutrition.newNutrition)
+                  handleSaveNutrition(recipeId, recipeNutrition.totalNutrition)
                 }
               >
                 Save Nutrition
@@ -87,7 +95,7 @@ export function NutritionCalculator() {
                 />
               </div>
               <DisplayNutritionData
-              recipeNutrition= {recipeNutrition}
+                recipeNutrition={recipeNutrition}
                 nutrition={recipeNutrition.totalNutrition}
               />
             </div>
