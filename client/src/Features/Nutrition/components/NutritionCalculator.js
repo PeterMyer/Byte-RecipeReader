@@ -43,7 +43,6 @@ export function NutritionCalculator() {
   const handleSaveNutrition = async (id, totalNutrition, ingredients) => {
     let response = null;
 
-    console.log('ingredients', ingredients);
     let nutritionPayload = {
       nutrition: JSON.stringify(totalNutrition),
       ingredients: Object.values(ingredients).map((ingredient) => {
@@ -51,9 +50,9 @@ export function NutritionCalculator() {
           user: user.sub,
           foodItemName: ingredient.recipeData.component.name,
           foodItemId: ingredient.recipeData.component.id,
-          recipeId: ingredient.recipeData.id,
+          recipeId: recipeId,
           ingredientId: ingredient.recipeData.recipeIngredient.ingredientId,
-          calculatedNutrition: ingredient.IngredientNutrition,
+          calculatedNutrition: JSON.stringify(ingredient.ingredientNutrition),
           matchedFoodItem: {
             name: ingredient.matchedIndexItem.description,
             source: 'USDA',

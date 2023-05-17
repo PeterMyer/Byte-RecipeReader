@@ -1,6 +1,7 @@
 import React from 'react';
 
 export const DisplayNutritionData = ({ recipeNutrition }) => {
+  console.log('Display recipeNutrition', recipeNutrition);
   const nutrition = recipeNutrition.totalNutrition;
   return (
     <>

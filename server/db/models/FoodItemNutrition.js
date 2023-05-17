@@ -17,9 +17,8 @@ const FoodItemNutrition = db.define('foodItemNutrition', {
   },
   nutrition: {
     type: Sequelize.JSON,
-    allowNull: false,
+    allowNull: true,
   },
-
 });
 
 module.exports = FoodItemNutrition;

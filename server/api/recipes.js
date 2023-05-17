@@ -12,6 +12,8 @@ const {
     RecipeIngredient,
     RecipeNutrition,
     Image,
+    FoodItemNutrition,
+    FoodItemNutritionMatch,
   },
 } = require('../db/index');
 
@@ -319,11 +321,50 @@ router.put('/:id', ParseIngredient, async (req, res, next) => {
 });
 
 router.post('/:id/nutrition', async (req, res, next) => {
+  console.log();
   try {
     const nutrition = await RecipeNutrition.create({
       recipeId: req.params.id,
       nutritionData: req.body.nutrition,
     });
+
+    await Promise.all(
+      req.body.ingredients.map(async (ingredient) => {
+        const [foodItemNutrition, foodItemNutritionCreated] =
+          await FoodItemNutrition.findOrCreate({
+            where: {
+              name: ingredient.matchedFoodItem.name,
+              source: ingredient.matchedFoodItem.source,
+            },
+          });
+        await FoodItemNutrition.update(
+          {
+            nutrition: ingredient.matchedFoodItem.nutrition,
+          },
+          {
+            where: {
+              name: ingredient.matchedFoodItem.name,
+              source: ingredient.matchedFoodItem.source,
+            },
+          }
+        );
+
+        await FoodItemNutritionMatch.create({
+          userId: ingredient.user,
+          recipeId: ingredient.recipeId,
+          componentId: ingredient.foodItemId,
+          foodItemNutritionId: foodItemNutrition.id,
+        });
+
+        const recipeIngredient = await RecipeIngredient.findOne({
+          where: { ingredientId: ingredient.ingredientId },
+        });
+        await recipeIngredient.update({
+          foodItemNutritionId: foodItemNutrition.id,
+          calculatedNutrition: ingredient.calculatedNutrition,
+        });
+      })
+    );
 
     res.json(nutrition);
   } catch (error) {

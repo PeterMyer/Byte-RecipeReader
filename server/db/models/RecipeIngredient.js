@@ -9,6 +9,9 @@ const RecipeIngredient = db.define('recipeIngredient', {
   calculatedNutrition: {
     type: Sequelize.JSON,
   },
+  foodItemNutritionId: {
+    type: Sequelize.UUID,
+  },
 });
 
 module.exports = RecipeIngredient;

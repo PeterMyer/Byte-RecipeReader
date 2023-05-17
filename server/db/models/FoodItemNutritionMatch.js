@@ -10,6 +10,14 @@ const FoodItemNutritionMatch = db.define('foodItemNutritionMatch', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  componentId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  foodItemNutritionId: {
+    type: Sequelize.UUID,
+    allowNull: false,
+  },
 });
 
 module.exports = FoodItemNutritionMatch;
