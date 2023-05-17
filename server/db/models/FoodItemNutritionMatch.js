@@ -6,6 +6,10 @@ const FoodItemNutritionMatch = db.define('foodItemNutritionMatch', {
     type: Sequelize.TEXT,
     allowNull: false,
   },
+  recipeId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
 });
 
 module.exports = FoodItemNutritionMatch;
