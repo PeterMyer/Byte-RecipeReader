@@ -43,7 +43,6 @@ router.post('/:id', async (req, res, next) => {
     // USDA API CALL
     const usdaResults = await Promise.all(
       recipe.ingredients.map(async (ingredient) => {
-        console.log('ingredient', ingredient.component.foodItemNutritions);
         const params = {
           query: ingredient.component.name,
           dataType: ['Foundation', 'Survey (FNDDS)'],

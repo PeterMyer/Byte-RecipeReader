@@ -218,8 +218,6 @@ router.put('/:id', ParseIngredient, async (req, res, next) => {
             input = 'no input',
           } = item[0];
 
-          console.log('item:', item);
-
           let [component, componentCreated] = await Component.findOrCreate({
             where: {
               name: name,
@@ -327,7 +325,6 @@ router.put('/:id', ParseIngredient, async (req, res, next) => {
 });
 
 router.post('/:id/nutrition', async (req, res, next) => {
-  console.log();
   try {
     const nutrition = await RecipeNutrition.create({
       recipeId: req.params.id,
@@ -420,8 +417,6 @@ router.put('/:id/nutrition', async (req, res, next) => {
         );
       })
     );
-
-    console.log('NUTRITION', recipeNutrition);
 
     res.json(recipeNutrition);
   } catch (error) {
