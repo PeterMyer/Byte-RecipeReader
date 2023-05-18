@@ -26,7 +26,6 @@ export function NutritionCalculator() {
   };
 
   const handleCalculateNutrition = async () => {
-    console.log('original ingredients', ingredients);
     let recipeNutrition = calculateNutrition(
       ingredients,
       USDANutrition,
@@ -55,7 +54,7 @@ export function NutritionCalculator() {
           ingredientId: ingredient.recipeData.recipeIngredient.ingredientId,
           calculatedNutrition: JSON.stringify(ingredient.ingredientNutrition),
           matchedFoodItem: {
-            name: ingredient.matchedIndexItem.description,
+            name: ingredient.matchedIndexItem.name,
             source: 'USDA',
             sourceId: ingredient.matchedIndexItem.fdcId,
             nutrition: JSON.stringify(ingredient.nurtritionPer100G),
@@ -64,11 +63,14 @@ export function NutritionCalculator() {
       }),
     };
 
+    console.log('payload', nutritionPayload);
+
     if (existingNutrition) {
       response = await updateNutrition(id, nutritionPayload);
     } else {
       response = await saveNutrition(id, nutritionPayload);
     }
+    console.log('save response', response);
 
     setExistingNutrition(JSON.parse(response.data.nutritionData));
   };
