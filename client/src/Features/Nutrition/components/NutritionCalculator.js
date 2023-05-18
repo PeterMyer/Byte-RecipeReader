@@ -1,44 +1,41 @@
 import { useState, useEffect } from 'react';
-import { calculateNutrition } from '../utils/calculateNutrition';
+import { calculateNutrition } from '../utils/index';
 import { DisplayNutritionData } from './DisplayNutritionData';
-import { lookupNutrition, getNutrition, saveNutrition } from '../api';
+import { lookupNutrition, saveNutrition, updateNutrition } from '../api';
 import { useLocation } from 'react-router-dom';
 import { IngredientNutrition } from './IngredientNutrition';
-import { updateNutrition } from '../api/updateNutrition';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export function NutritionCalculator() {
   const { state } = useLocation();
   const { user } = useAuth0();
-
   const recipeId = state.recipeId;
   const servings = state.servings;
   const ingredients = state.ingredients;
   const [recipeNutrition, setRecipeNutrition] = useState(null);
   const [existingNutrition, setExistingNutrition] = useState(null);
   const [nutritionCalulated, toggleNutritionCalulated] = useState(false);
-  const [USDANutrition, setUSDANutrition] = useState(null);
+  const [USDAOptions, setUSDAOptions] = useState(null);
 
-  const handleLookupNutrition = async (id) => {
+  const handleLookupUSDAOptions = async (id) => {
     let nutrition = await lookupNutrition(id);
-    console.log('usda Response', nutrition);
-    setUSDANutrition(nutrition.data.usdaResults);
+    setUSDAOptions(nutrition.data.usdaResults);
   };
 
   const handleCalculateNutrition = async () => {
     let recipeNutrition = calculateNutrition(
       ingredients,
-      USDANutrition,
+      USDAOptions,
       servings
     );
     toggleNutritionCalulated(true);
     setRecipeNutrition(recipeNutrition);
   };
 
-  const handleGetNurition = async (id) => {
-    let response = await getNutrition(id);
-    setExistingNutrition(JSON.parse(response.data.nutritionData));
-  };
+  // const handleGetNurition = async (id) => {
+  //   let response = await getNutrition(id);
+  //   setExistingNutrition(JSON.parse(response.data.nutritionData));
+  // };
 
   const handleSaveNutrition = async (id, totalNutrition, ingredients) => {
     let response = null;
@@ -63,20 +60,17 @@ export function NutritionCalculator() {
       }),
     };
 
-    console.log('payload', nutritionPayload);
-
     if (existingNutrition) {
       response = await updateNutrition(id, nutritionPayload);
     } else {
       response = await saveNutrition(id, nutritionPayload);
     }
-    console.log('save response', response);
-
+    console.log('response', response);
     setExistingNutrition(JSON.parse(response.data.nutritionData));
   };
 
   useEffect(() => {
-    handleGetNurition(recipeId);
+    handleLookupUSDAOptions(recipeId);
   }, []);
 
   return (
@@ -104,7 +98,7 @@ export function NutritionCalculator() {
           </>
         ) : (
           <>
-            <button onClick={() => handleLookupNutrition(recipeId)}>
+            <button onClick={() => handleLookupUSDAOptions(recipeId)}>
               Get Nutrition
             </button>
             <button onClick={() => handleCalculateNutrition()}>
