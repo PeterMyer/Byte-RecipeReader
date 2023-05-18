@@ -1014,3 +1014,88 @@ modal-footer {
   flex-direction: row;
   justify-content: space-between;
 }
+
+/*Nutrition Label */
+.nutrition-label {
+  border: 1px solid black;
+  margin: 20px;
+  float: left;
+  width: 280px;
+  padding: 0.5rem;
+  background-color: white;
+  font-size: small;
+  line-height: 1.4;
+  font-family: 'Helvetica Black', sans-serif;
+}
+.nutrition-label table {
+  border-collapse: collapse;
+}
+
+.nutrition-label-header {
+  border-bottom: 10px solid black;
+  padding: 0 0 0.25rem 0;
+  margin: 0;
+}
+.nutrition-label-title {
+  font-weight: bold;
+  font-size: 2rem;
+  margin: 0;
+  border-bottom: 1px solid black;
+}
+.nutrition-label-table {
+  width: 100%;
+}
+
+#nutrition-label-calories-header {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  font-weight: bold;
+}
+
+#nutrition-label-calories-text {
+  font-size: 2rem;
+  padding: 0;
+}
+
+#calorie-int-box {
+  font-size: 2.5rem;
+  vertical-align: bottom;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.nutrition-label-table tr,
+td,
+th {
+  font-weight: normal;
+  text-align: left;
+  padding: 0.25rem 0;
+  border-top: 1px solid black;
+  white-space: nowrap;
+}
+td:last-child {
+  text-align: right;
+}
+
+.small-info {
+  font-size: 0.5rem;
+}
+
+.thick-row td {
+  border-top-width: 5px;
+}
+
+.row-end {
+  border-bottom: 5px solid black;
+}
+
+.blank-cell {
+  width: 1rem;
+  border-top: 0;
+}
+.thick-end {
+  border-bottom: 10px solid black;
+}

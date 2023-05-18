@@ -7,11 +7,6 @@ export function calculateNutrition(ingredients, nutritionData, servings) {
     nutritionData,
     servings
   );
-
-  console.log('recipeNutrition', recipeNutrition);
-
   recipeNutrition.totalNutrition = sumIngredientNutrition(recipeNutrition);
-  console.log('Recipe Nutrition:', recipeNutrition);
-
   return recipeNutrition;
 }

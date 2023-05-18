@@ -42,7 +42,6 @@ export function calculateIngredientNutrition(
       ((scaledGramWeight / 100) * ingredientNutrition[nutrient].value) /
       servings;
   }
-  console.log('ingredientNutritionTotal', ingredientNutritionTotal);
 
   return ingredientNutritionTotal;
 }

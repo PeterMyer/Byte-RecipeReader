@@ -1,9 +1,7 @@
 export function filterNutrientValues(currentFood) {
   let ingredientNutrition = {};
 
-  console.log('pre filter', currentFood);
-
-  Object.values(currentFood.foodNutrients)
+  currentFood
     .filter(
       (obj) =>
         obj.nutrientNumber === '203' ||

@@ -17,14 +17,11 @@ export function sumIngredientNutrition(recipeNutrition) {
 
   for (let ingredient in recipeNutrition.ingredients) {
     const ingredientObj = recipeNutrition.ingredients[ingredient];
-    // console.log('ingredientObj', ingredientObj);
 
     for (let nutrient in ingredientObj.ingredientNutrition) {
       const nutrientVal = ingredientObj.ingredientNutrition[nutrient]['amount'];
-      // console.log('nutrientVal', nutrientVal);
       recipeNutritionTotal[nutrient]['amount'] += nutrientVal;
     }
   }
-  // console.log('sum total', recipeNutritionTotal);
   return recipeNutritionTotal;
 }

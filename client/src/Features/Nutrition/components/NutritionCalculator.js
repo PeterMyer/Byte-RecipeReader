@@ -5,6 +5,7 @@ import { lookupNutrition, saveNutrition, updateNutrition } from '../api';
 import { useLocation } from 'react-router-dom';
 import { IngredientNutrition } from './IngredientNutrition';
 import { useAuth0 } from '@auth0/auth0-react';
+import { NutritionLabel } from './NutritionLabel';
 
 export function NutritionCalculator() {
   const { state } = useLocation();
@@ -16,11 +17,12 @@ export function NutritionCalculator() {
   const [existingNutrition, setExistingNutrition] = useState(state.nutrition);
 
   const handleNutritionSetUp = async (id) => {
-    let usdaOptions = await lookupNutrition(id);
+    let nutritionData = await lookupNutrition(id);
+    console.log(nutritionData);
 
     let recipeNutrition = calculateNutrition(
       ingredients,
-      usdaOptions.data.usdaResults,
+      nutritionData.data.usdaResults,
       servings
     );
 
@@ -88,9 +90,10 @@ export function NutritionCalculator() {
                   setRecipeNutrition={setRecipeNutrition}
                 />
               </div>
-              <DisplayNutritionData
+              <NutritionLabel recipeNutrition={recipeNutrition} />
+              {/* <DisplayNutritionData
                 recipeNutrition={recipeNutrition.totalNutrition}
-              />
+              /> */}
             </div>
           </>
         ) : (
