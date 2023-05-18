@@ -9,18 +9,21 @@ export function buildRecipeNutrition(ingredients, nutritionData, servings) {
   };
 
   ingredients.map((ingredient, index) => {
+    let currentFood =
+      ingredient.component.foodItemNutritions[0] || nutritionData[index][0];
+
     recipeNutrition['ingredients'][ingredient.recipeIngredient.text] = {
       nurtritionPer100G: {},
       matchedIndex: 0,
-      matchedIndexItem: nutritionData[index].foods[0],
-      allUsdaOptions: nutritionData[index].foods,
+      matchedIndexItem: currentFood,
+      allUsdaOptions: [currentFood, ...nutritionData[index]],
       ingredientNutrition: {},
       recipeData: ingredient,
     };
 
-    let currentFood = nutritionData[index].foods[0];
-
-    let nutritionValues = filterNutrientValues(currentFood);
+    let nutritionValues = currentFood.fdcId
+      ? filterNutrientValues(currentFood.nutrition)
+      : JSON.parse(currentFood.nutrition);
 
     recipeNutrition['ingredients'][
       ingredient.recipeIngredient.text

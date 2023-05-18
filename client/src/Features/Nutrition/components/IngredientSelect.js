@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { sumIngredientNutrition } from '../utils/sumIngredientNutrition';
 import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
+import { buildSelectOptions } from '../utils/buildSelectOptions';
 
 export function IngredientSelect({
   allUsdaOptions,
@@ -9,9 +10,7 @@ export function IngredientSelect({
   ingredientName,
   setRecipeNutrition,
 }) {
-  const options = allUsdaOptions.map((option, index) => {
-    return { value: `${index}`, label: option.description };
-  });
+  const options = buildSelectOptions(allUsdaOptions);
 
   const handleChange = (event) => {
     const recipeNutritionCopy = { ...recipeNutrition };

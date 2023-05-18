@@ -22,10 +22,11 @@ export function calculateIngredientNutrition(
     'Potassium, K': { amount: 0, unit: 'mg' },
   };
 
+  // This needs to be reworked. Local copies do not have a foodMeasure property so always go default
   const defaultGramWeight =
-    currentFood.foodMeasures.length > 0
+    currentFood.foodMeasures?.length > 0
       ? currentFood.foodMeasures[currentFood.foodMeasures.length - 1].gramWeight
-      : 0;
+      : 10;
 
   const quantity = ingredient.measurementQuantity.qtyAmount
     ? handleQuantityInts(ingredient.measurementQuantity.qtyAmount)

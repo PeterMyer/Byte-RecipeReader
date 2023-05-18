@@ -48,7 +48,6 @@ router.post('/:id', async (req, res, next) => {
           query: ingredient.component.name,
           dataType: ['Foundation', 'Survey (FNDDS)'],
           pageSize: 10,
-          nutrients: [203],
         };
         const response = await apiClient.post(
           `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.foodDataCentralApiKey}`,
@@ -59,6 +58,7 @@ router.post('/:id', async (req, res, next) => {
           nutrition: food.foodNutrients,
           source: 'USDA',
           fdcId: food.fdcId,
+          foodMeasures: food.foodMeasures,
         }));
 
         return result;

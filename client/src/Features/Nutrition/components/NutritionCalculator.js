@@ -26,6 +26,7 @@ export function NutritionCalculator() {
   };
 
   const handleCalculateNutrition = async () => {
+    console.log('original ingredients', ingredients);
     let recipeNutrition = calculateNutrition(
       ingredients,
       USDANutrition,
@@ -37,7 +38,6 @@ export function NutritionCalculator() {
 
   const handleGetNurition = async (id) => {
     let response = await getNutrition(id);
-    console.log('response', response);
     setExistingNutrition(JSON.parse(response.data.nutritionData));
   };
 
