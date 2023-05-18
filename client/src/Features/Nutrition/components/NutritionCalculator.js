@@ -21,6 +21,7 @@ export function NutritionCalculator() {
 
   const handleLookupNutrition = async (id) => {
     let nutrition = await lookupNutrition(id);
+    console.log('usda Response', nutrition);
     setUSDANutrition(nutrition.data.usdaResults);
   };
 

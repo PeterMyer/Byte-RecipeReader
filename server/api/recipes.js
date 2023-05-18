@@ -48,6 +48,12 @@ router.get('/:id', async (req, res, next) => {
             {
               model: Component,
               attributes: ['id', 'name'],
+              include: [
+                {
+                  model: FoodItemNutrition,
+                  attributes: ['id', 'name', 'source', 'nutrition'],
+                },
+              ],
             },
             {
               model: MeasurementQuantity,

@@ -40,23 +40,28 @@ router.post('/:id', async (req, res, next) => {
       ],
     });
 
-    //USDA API CALL
+    // USDA API CALL
     const usdaResults = await Promise.all(
       recipe.ingredients.map(async (ingredient) => {
         console.log('ingredient', ingredient.component.foodItemNutritions);
-        let params = {
+        const params = {
           query: ingredient.component.name,
           dataType: ['Foundation', 'Survey (FNDDS)'],
-          pageSize: 25,
+          pageSize: 10,
           nutrients: [203],
         };
-        let response = await apiClient.post(
+        const response = await apiClient.post(
           `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.foodDataCentralApiKey}`,
           params
         );
-        // const result = {[response.data.foodSearchCriteria.query]: [...response.data.foods] };
+        const result = response.data.foods.map((food) => ({
+          name: food.description,
+          nutrition: food.foodNutrients,
+          source: 'USDA',
+          fdcId: food.fdcId,
+        }));
 
-        return response.data;
+        return result;
       })
     );
     res.json({ recipe, usdaResults });
