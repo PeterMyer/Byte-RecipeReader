@@ -50,6 +50,7 @@ export function SingleRecipe() {
         recipeId: recipeId,
         ingredients: recipeData.ingredients,
         servings: recipeData.servings,
+        nutrition: recipeData.recipeNutrition.nutritionData,
       },
     });
   };

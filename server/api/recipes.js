@@ -42,6 +42,9 @@ router.get('/:id', async (req, res, next) => {
           model: Image,
         },
         {
+          model: RecipeNutrition,
+        },
+        {
           model: Ingredient,
           attributes: ['id', 'normText'],
           include: [
