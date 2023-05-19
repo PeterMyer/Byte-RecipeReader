@@ -20,6 +20,9 @@ export function calculateIngredientNutrition(
     'Calcium, Ca': { amount: 0, unit: 'mg' },
     'Iron, Fe': { amount: 0, unit: 'mg' },
     'Potassium, K': { amount: 0, unit: 'mg' },
+    'Total lipid (fat)': { amount: 0, unit: 'g' },
+    'Carbohydrate, by difference': { amount: 0, unit: 'g' },
+    'Fatty acids, total trans': { amount: 0, unit: 'g' },
   };
 
   // This needs to be reworked. Local copies do not have a foodMeasure property so always go default
@@ -37,6 +40,8 @@ export function calculateIngredientNutrition(
     : defaultGramWeight;
 
   for (let nutrient in ingredientNutrition) {
+    console.log('nutrient', nutrient);
+
     let scaledGramWeight = unitGramWeight * quantity;
     ingredientNutritionTotal[nutrient]['amount'] +=
       ((scaledGramWeight / 100) * ingredientNutrition[nutrient].value) /

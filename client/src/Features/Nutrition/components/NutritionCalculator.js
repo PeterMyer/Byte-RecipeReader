@@ -18,7 +18,7 @@ export function NutritionCalculator() {
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
-    console.log(nutritionData);
+    console.log('nutritionData', nutritionData);
 
     let recipeNutrition = calculateNutrition(
       ingredients,

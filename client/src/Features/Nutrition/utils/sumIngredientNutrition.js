@@ -13,6 +13,9 @@ export function sumIngredientNutrition(recipeNutrition) {
     'Calcium, Ca': { amount: 0, unit: 'mg' },
     'Iron, Fe': { amount: 0, unit: 'mg' },
     'Potassium, K': { amount: 0, unit: 'mg' },
+    'Total lipid (fat)': { amount: 0, unit: 'g' },
+    'Carbohydrate, by difference': { amount: 0, unit: 'g' },
+    'Fatty acids, total trans': { amount: 0, unit: 'g' },
   };
 
   for (let ingredient in recipeNutrition.ingredients) {

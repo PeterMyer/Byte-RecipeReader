@@ -1,15 +1,16 @@
+import { buildLabelData } from '../utils/buildLabelData';
+
 export function NutritionLabel({ recipeNutrition }) {
-  console.log('recipeNutrition:', recipeNutrition);
+  const labelData = buildLabelData(recipeNutrition);
+  console.log('label data', labelData);
   let placeholder = ' X ';
   return (
     <>
       <section className="nutrition-label">
         <header className="nutrition-label-header">
           <h1 className="nutrition-label-title">Nutrition Facts</h1>
-          <div>Servings {placeholder}</div>
-          <div>
-            <b>Serving Size{placeholder}</b>
-          </div>
+          <div>Servings {recipeNutrition.servings}</div>
+          <div>{/* <b>Serving Size{placeholder}</b> */}</div>
         </header>
         <table className="nutrition-label-table">
           <thead>
@@ -27,7 +28,7 @@ export function NutritionLabel({ recipeNutrition }) {
                   <div id="nutrition-label-calories-text">Calories</div>
                 </div>
               </th>
-              <td id="calorie-int-box">{placeholder}</td>
+              <td id="calorie-int-box">{labelData.calories.amount}</td>
             </tr>
             <tr className="thick-row">
               <td colspan="3">
@@ -36,106 +37,78 @@ export function NutritionLabel({ recipeNutrition }) {
             </tr>
             <tr>
               <th colspan="2">
-                <b>Total Fat</b>
-                {placeholder}
+                <b>Total Fat</b> {labelData.totalFat.amount}
               </th>
               <td>
-                <b>{placeholder}%</b>
+                <b>{labelData.totalFat.DV}%</b>
               </td>
             </tr>
             <tr>
               <td className="blank-cell"></td>
-              <th>
-                Saturated Fat
-                {placeholder}
-              </th>
-              <td>
-                <b>{placeholder}%</b>
-              </td>
+              <th>Saturated Fat {labelData.saturatedFat.amount}</th>
+              <td>{<b>{labelData.saturatedFat.DV}%</b>}</td>
             </tr>
             <tr>
               <td class="blank-cell"></td>
-              <th>
-                Trans Fat
-                {placeholder}
-              </th>
+              <th>Trans Fat {labelData.transFat.amount}</th>
               <td></td>
             </tr>
             <tr>
               <th colspan="2">
-                <b>Cholesterol</b>
-                {placeholder}
+                <b>Cholesterol</b> {labelData.cholesteral.amount}
               </th>
               <td>
-                <b>{placeholder}%</b>
+                <b>{labelData.cholesteral.DV}%</b>
               </td>
             </tr>
             <tr>
               <th colspan="2">
-                <b>Sodium</b>
-                {placeholder}
+                <b>Sodium</b> {labelData.sodium.amount}
               </th>
               <td>
-                <b>{placeholder}%</b>
+                <b>{labelData.sodium.DV}%</b>
               </td>
             </tr>
             <tr>
               <th colSpan="2">
-                <b>Total Carbohydrate</b>
-                {placeholder}
+                <b>Total Carbohydrate</b> {labelData.totalCarbs.amount}
               </th>
               <td>
-                <b>{placeholder}%</b>
+                <b>{labelData.totalCarbs.DV}%</b>
               </td>
             </tr>
             <tr>
               <td className="blank-cell"></td>
-              <th>
-                Saturated Fat
-                {placeholder}
-              </th>
+              <th>Dietary Fiber {labelData.dietaryFibers.amount}</th>
               <td>
-                <b>{placeholder}%</b>
+                <b>{labelData.dietaryFibers.DV}%</b>
               </td>
             </tr>
             <tr>
               <td class="blank-cell"></td>
-              <th>
-                Trans Fat
-                {placeholder}
-              </th>
+              <th>Total Sugars {labelData.sugars.amount}</th>
             </tr>
             <tr class="thick-end">
               <th colspan="2">
-                <b>Protein</b>
-                {placeholder}
+                <b>Protein</b> {labelData.sugars.amount}
               </th>
               <td></td>
             </tr>
             <tr>
-              <th colSpan="2">Vitamin D{placeholder}</th>
-              <td>{placeholder}%</td>
+              <th colSpan="2">Vitamin D {labelData.vitamenD.amount}</th>
+              <td>{labelData.vitamenD.DV}%</td>
             </tr>
             <tr>
-              <th colSpan="2">
-                Calcium
-                {placeholder}
-              </th>
-              <td>{placeholder}%</td>
+              <th colSpan="2">Calcium {labelData.calcium.amount}</th>
+              <td>{labelData.calcium.DV}%</td>
             </tr>
             <tr>
-              <th colSpan="2">
-                Iron
-                {placeholder}
-              </th>
-              <td>{placeholder}%</td>
+              <th colSpan="2">Iron {labelData.iron.amount}</th>
+              <td>{labelData.iron.DV}%</td>
             </tr>
             <tr className="row-end">
-              <th colSpan="2">
-                Potassium
-                {placeholder}
-              </th>
-              <td>{placeholder}%</td>
+              <th colSpan="2">Potassium {labelData.pottasium.amount}</th>
+              <td>{labelData.pottasium.DV}%</td>
             </tr>
           </tbody>
         </table>

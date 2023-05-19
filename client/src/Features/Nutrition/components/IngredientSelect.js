@@ -3,6 +3,7 @@ import Select from 'react-select';
 import { sumIngredientNutrition } from '../utils/sumIngredientNutrition';
 import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
 import { buildSelectOptions } from '../utils/buildSelectOptions';
+import { filterNutrientValues } from '../utils';
 
 export function IngredientSelect({
   allUsdaOptions,
@@ -18,6 +19,16 @@ export function IngredientSelect({
     recipeNutritionCopy.ingredients[ingredientName].matchedIndexItem =
       allUsdaOptions[event.value];
 
+    let currentFood =
+      recipeNutritionCopy.ingredients[ingredientName].matchedIndexItem;
+
+    let nutritionValues = currentFood.fdcId
+      ? filterNutrientValues(currentFood.nutrition)
+      : JSON.parse(currentFood.nutrition);
+
+    recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G = {
+      ...nutritionValues,
+    };
     recipeNutritionCopy.ingredients[ingredientName].ingredientNutrition =
       calculateIngredientNutrition(
         recipeNutritionCopy.ingredients[ingredientName].recipeData,
