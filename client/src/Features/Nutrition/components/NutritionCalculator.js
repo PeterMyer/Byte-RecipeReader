@@ -28,6 +28,8 @@ export function NutritionCalculator() {
       servings
     );
 
+    console.log('recipeNutrition', recipeNutrition);
+
     setRecipeNutrition(recipeNutrition);
   };
 

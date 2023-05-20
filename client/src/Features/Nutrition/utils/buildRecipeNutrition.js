@@ -1,5 +1,6 @@
 import { calculateIngredientNutrition } from './calculateIngredientNutrition';
 import { filterNutrientValues } from './filterNutrientValues';
+import { formatNutrientData } from './formatNutritionData';
 
 export function buildRecipeNutrition(ingredients, nutritionData, servings) {
   const recipeNutrition = {

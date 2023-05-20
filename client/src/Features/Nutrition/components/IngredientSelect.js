@@ -26,6 +26,7 @@ export function IngredientSelect({
       ? filterNutrientValues(currentFood.nutrition)
       : JSON.parse(currentFood.nutrition);
 
+    console.log('nutritionValues', nutritionValues);
     recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G = {
       ...nutritionValues,
     };

@@ -1,6 +1,4 @@
 export function buildLabelData(recipeNutrition) {
-  console.log('labelmaker_recipeNutrition', recipeNutrition);
-
   function createLabelItem(keyString, dailyValue) {
     let amount = Math.round(recipeNutrition.totalNutrition[keyString]?.amount);
     let labelItem = {
@@ -12,20 +10,20 @@ export function buildLabelData(recipeNutrition) {
 
   const labelData = {
     servings: recipeNutrition.servings,
-    calories: createLabelItem('Energy'),
-    totalFat: createLabelItem('Total lipid (fat)', 65),
-    saturatedFat: createLabelItem('Fatty acids, total saturated', 20),
-    transFat: createLabelItem('Fatty acids, total trans'),
-    cholesteral: createLabelItem('Cholesterol', 300),
-    sodium: createLabelItem('Sodium, Na', 1500),
-    totalCarbs: createLabelItem('Carbohydrate, by difference', 225),
-    dietaryFibers: createLabelItem('Fiber, total dietary', 25),
-    sugars: createLabelItem('Sugars, total including NLEA', 50),
-    protien: createLabelItem('Protein'),
-    vitamenD: createLabelItem('Vitamin D (D2 + D3)', 15),
-    calcium: createLabelItem('Calcium, Ca', 1300),
-    iron: createLabelItem('Iron, Fe', 18),
-    pottasium: createLabelItem('Potassium, K', 4700),
+    calories: createLabelItem('calories'),
+    totalFat: createLabelItem('totalFat', 65),
+    saturatedFat: createLabelItem('saturatedFat', 20),
+    transFat: createLabelItem('transFat'),
+    cholesteral: createLabelItem('cholesteral', 300),
+    sodium: createLabelItem('sodium', 1500),
+    totalCarbs: createLabelItem('totalCarbs', 225),
+    dietaryFibers: createLabelItem('dietaryFibers', 25),
+    sugars: createLabelItem('sugars', 50),
+    protien: createLabelItem('protien'),
+    vitaminD: createLabelItem('vitaminD', 15),
+    calcium: createLabelItem('calcium', 1300),
+    iron: createLabelItem('iron', 18),
+    pottassium: createLabelItem('pottassium', 4700),
   };
 
   return labelData;

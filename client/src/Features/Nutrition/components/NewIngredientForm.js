@@ -41,15 +41,15 @@ export function NewIngredientForm() {
         </label>
         <label>
           Total Carbohydrate:
-          <input {...register('carbohydrate')}></input>
+          <input {...register('totalCarbs')}></input>
         </label>
         <label>
           Dietary Fiber:
-          <input {...register('fiber')}></input>
+          <input {...register('dietaryFibers')}></input>
         </label>
         <label>
           Sugars:
-          <input {...register('sugar')}></input>
+          <input {...register('sugars')}></input>
         </label>
         <label>
           Protien:

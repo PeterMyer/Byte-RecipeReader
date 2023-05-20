@@ -1,3 +1,5 @@
+import { formatNutrientData } from './formatNutritionData';
+
 export function filterNutrientValues(currentFood) {
   let ingredientNutrition = {};
 
@@ -28,7 +30,7 @@ export function filterNutrientValues(currentFood) {
       };
     });
 
-  console.log('filtered', ingredientNutrition);
+  const formattedIngredientNutrition = formatNutrientData(ingredientNutrition);
 
-  return ingredientNutrition;
+  return formattedIngredientNutrition;
 }

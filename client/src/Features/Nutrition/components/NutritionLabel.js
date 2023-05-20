@@ -95,8 +95,8 @@ export function NutritionLabel({ recipeNutrition }) {
               <td></td>
             </tr>
             <tr>
-              <th colSpan="2">Vitamin D {labelData.vitamenD.amount}</th>
-              <td>{labelData.vitamenD.DV}%</td>
+              <th colSpan="2">Vitamin D {labelData.vitaminD.amount}</th>
+              <td>{labelData.vitaminD.DV}%</td>
             </tr>
             <tr>
               <th colSpan="2">Calcium {labelData.calcium.amount}</th>
@@ -107,8 +107,8 @@ export function NutritionLabel({ recipeNutrition }) {
               <td>{labelData.iron.DV}%</td>
             </tr>
             <tr className="row-end">
-              <th colSpan="2">Potassium {labelData.pottasium.amount}</th>
-              <td>{labelData.pottasium.DV}%</td>
+              <th colSpan="2">Potassium {labelData.pottassium.amount}</th>
+              <td>{labelData.pottassium.DV}%</td>
             </tr>
           </tbody>
         </table>
