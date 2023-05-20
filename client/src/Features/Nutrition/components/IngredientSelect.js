@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Select from 'react-select';
 import { sumIngredientNutrition } from '../utils/sumIngredientNutrition';
 import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
@@ -12,6 +12,8 @@ export function IngredientSelect({
   setRecipeNutrition,
 }) {
   const options = buildSelectOptions(allUsdaOptions);
+  const selectedValue =
+    options[recipeNutrition.ingredients[ingredientName].matchedIndex];
 
   const handleChange = (event) => {
     const recipeNutritionCopy = { ...recipeNutrition };
@@ -26,7 +28,6 @@ export function IngredientSelect({
       ? filterNutrientValues(currentFood.nutrition)
       : JSON.parse(currentFood.nutrition);
 
-    console.log('nutritionValues', nutritionValues);
     recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G = {
       ...nutritionValues,
     };
@@ -44,10 +45,6 @@ export function IngredientSelect({
   };
 
   return (
-    <Select
-      options={options}
-      defaultValue={options[0]}
-      onChange={handleChange}
-    />
+    <Select options={options} value={selectedValue} onChange={handleChange} />
   );
 }

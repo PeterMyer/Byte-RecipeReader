@@ -2,8 +2,6 @@ import { buildLabelData } from '../utils/buildLabelData';
 
 export function NutritionLabel({ recipeNutrition }) {
   const labelData = buildLabelData(recipeNutrition);
-  console.log('label data', labelData);
-  let placeholder = ' X ';
   return (
     <>
       <section className="nutrition-label">

@@ -8,13 +8,34 @@ const {
     MeasurementQuantity,
     MeasurementUnit,
     RecipeComment,
+    FoodItemNutrition,
     RecipeNutrition,
   },
 } = require('../db/index');
-const FoodItemNutrition = require('../db/models/FoodItemNutrition');
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:3001',
+});
+
+router.post('/newItem', async (req, res, next) => {
+  try {
+    const [foodItemNutrition, foodItemNutritionCreated] =
+      await FoodItemNutrition.findOrCreate({
+        where: {
+          name: req.body.name,
+          sourceId: req.body.sourceId,
+          source: req.body.source,
+        },
+      });
+
+    await foodItemNutrition.update({
+      nutrition: req.body.nutrition,
+    });
+
+    res.send(foodItemNutrition);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.post('/:id', async (req, res, next) => {

@@ -16,7 +16,7 @@ export function NutritionCalculator() {
   const ingredients = state.ingredients;
   const [recipeNutrition, setRecipeNutrition] = useState(null);
   const [existingNutrition, setExistingNutrition] = useState(state.nutrition);
-  const [display, setDisplay] = useState('label');
+  const [form, setForm] = useState(null);
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
@@ -92,13 +92,18 @@ export function NutritionCalculator() {
                   ingredients={ingredients}
                   recipeNutrition={recipeNutrition}
                   setRecipeNutrition={setRecipeNutrition}
-                  setDisplay={setDisplay}
+                  setForm={setForm}
                 />
               </div>
-              {display === 'label' ? (
-                <NutritionLabel recipeNutrition={recipeNutrition} />
+              {form ? (
+                <NewIngredientForm
+                  form={form}
+                  setForm={setForm}
+                  setRecipeNutrition={setRecipeNutrition}
+                  recipeNutrition={recipeNutrition}
+                />
               ) : (
-                <NewIngredientForm display={display} setDisplay={setDisplay} />
+                <NutritionLabel recipeNutrition={recipeNutrition} />
               )}
             </div>
           </>

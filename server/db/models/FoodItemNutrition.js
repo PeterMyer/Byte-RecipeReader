@@ -15,6 +15,9 @@ const FoodItemNutrition = db.define('foodItemNutrition', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  sourceId: {
+    type: Sequelize.STRING,
+  },
   nutrition: {
     type: Sequelize.JSON,
     allowNull: true,

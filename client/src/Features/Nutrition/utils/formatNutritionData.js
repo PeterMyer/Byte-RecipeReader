@@ -1,6 +1,4 @@
 export function formatNutrientData(currentFood) {
-  console.log('currentFood', currentFood);
-
   function formatNutrient(keyString) {
     const formattedNutrient = {
       amount: Math.round(currentFood[keyString]?.value),
