@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { IngredientNutrition } from './IngredientNutrition';
 import { useAuth0 } from '@auth0/auth0-react';
 import { NutritionLabel } from './NutritionLabel';
+import { NewIngredientForm } from './NewIngredientForm';
 
 export function NutritionCalculator() {
   const { state } = useLocation();
@@ -15,6 +16,7 @@ export function NutritionCalculator() {
   const ingredients = state.ingredients;
   const [recipeNutrition, setRecipeNutrition] = useState(null);
   const [existingNutrition, setExistingNutrition] = useState(state.nutrition);
+  const [display, setDisplay] = useState('label');
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
@@ -88,12 +90,14 @@ export function NutritionCalculator() {
                   ingredients={ingredients}
                   recipeNutrition={recipeNutrition}
                   setRecipeNutrition={setRecipeNutrition}
+                  setDisplay={setDisplay}
                 />
               </div>
-              <NutritionLabel recipeNutrition={recipeNutrition} />
-              {/* <DisplayNutritionData
-                recipeNutrition={recipeNutrition.totalNutrition}
-              /> */}
+              {display === 'label' ? (
+                <NutritionLabel recipeNutrition={recipeNutrition} />
+              ) : (
+                <NewIngredientForm display={display} setDisplay={setDisplay} />
+              )}
             </div>
           </>
         ) : (

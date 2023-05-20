@@ -1099,3 +1099,15 @@ td:last-child {
 .thick-end {
   border-bottom: 10px solid black;
 }
+
+/*NEW INGREDIENT FORM*/
+.new-ingredient-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-ingredient-form input {
+  display: flex;
+
+  justify-content: space-between;
+}

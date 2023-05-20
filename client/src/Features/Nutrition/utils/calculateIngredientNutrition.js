@@ -40,8 +40,6 @@ export function calculateIngredientNutrition(
     : defaultGramWeight;
 
   for (let nutrient in ingredientNutrition) {
-    console.log('nutrient', nutrient);
-
     let scaledGramWeight = unitGramWeight * quantity;
     ingredientNutritionTotal[nutrient]['amount'] +=
       ((scaledGramWeight / 100) * ingredientNutrition[nutrient].value) /

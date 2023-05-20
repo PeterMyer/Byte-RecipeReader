@@ -5,7 +5,12 @@ export const IngredientNutrition = ({
   ingredients,
   recipeNutrition,
   setRecipeNutrition,
+  setDisplay,
 }) => {
+  const handleCreateIngredient = () => {
+    setDisplay('form');
+  };
+
   return (
     <>
       <h3>Ingredients</h3>
@@ -28,6 +33,7 @@ export const IngredientNutrition = ({
                     setRecipeNutrition={setRecipeNutrition}
                   />
                 </div>
+                <button onClick={handleCreateIngredient}>+</button>
               </div>
             </div>
           </>
