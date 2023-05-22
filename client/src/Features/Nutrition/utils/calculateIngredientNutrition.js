@@ -23,8 +23,6 @@ export function calculateIngredientNutrition(
     protien: { amount: 0, unit: 'g' },
   };
 
-  console.log('currentFood', currentFood);
-
   const defaultGramWeight =
     currentFood.foodMeasures?.length > 0
       ? currentFood.foodMeasures[currentFood.foodMeasures.length - 1].gramWeight
@@ -37,8 +35,6 @@ export function calculateIngredientNutrition(
   let unitGramWeight = ingredient.measurementUnit.unitGrams
     ? ingredient.measurementUnit.unitGrams
     : defaultGramWeight;
-
-  console.log('unit gram weight', unitGramWeight);
 
   for (let nutrient in ingredientNutrition) {
     let scaledGramWeight = unitGramWeight * quantity;

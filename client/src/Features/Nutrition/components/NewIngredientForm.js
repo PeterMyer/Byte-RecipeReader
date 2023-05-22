@@ -181,7 +181,7 @@ export function NewIngredientForm({
                   <input
                     key={field.id}
                     {...register(`measurements.${index}.value`)}
-                    type="integer"
+                    type="number"
                   />
                 </label>
               </div>

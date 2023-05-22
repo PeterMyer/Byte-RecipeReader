@@ -18,7 +18,7 @@ export function UnitSelect({ measures }) {
       .map((measure, index) => {
         return {
           value: `${index}`,
-          label: `${measure.disseminationText}- ${measure.gramWeight}g`,
+          label: `${measure.disseminationText} (${measure.gramWeight}g)`,
         };
       });
   } else {
