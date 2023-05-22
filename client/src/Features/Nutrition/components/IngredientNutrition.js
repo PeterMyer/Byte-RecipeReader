@@ -16,8 +16,6 @@ export const IngredientNutrition = ({
     <>
       <h3>Ingredients</h3>
       {ingredients.map((ingredient) => {
-        console.log('ingredient', ingredient);
-        console.log('recipeNutrition', recipeNutrition);
         return (
           <>
             <div className="fingredient-container-refactor">
@@ -29,10 +27,9 @@ export const IngredientNutrition = ({
                     {ingredient.component.name}
                   </div>
                 </div>
-                <div>{ingredient.recipeComment.commentText}</div>
               </div>
               <div>
-                <div>
+                <div className="input-line">
                   <UnitSelect
                     measures={
                       recipeNutrition.ingredients[ingredient.normText]
@@ -48,14 +45,14 @@ export const IngredientNutrition = ({
                     ingredientName={ingredient.recipeIngredient.text}
                     setRecipeNutrition={setRecipeNutrition}
                   />
+                  <button
+                    onClick={() =>
+                      handleCreateIngredient(ingredient.recipeIngredient.text)
+                    }
+                  >
+                    +
+                  </button>
                 </div>
-                <button
-                  onClick={() =>
-                    handleCreateIngredient(ingredient.recipeIngredient.text)
-                  }
-                >
-                  +
-                </button>
               </div>
             </div>
           </>

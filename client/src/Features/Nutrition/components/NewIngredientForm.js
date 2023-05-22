@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { createNutritionItem } from '../api';
 import { useAuth0 } from '@auth0/auth0-react';
 import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
@@ -11,8 +11,17 @@ export function NewIngredientForm({
   recipeNutrition,
   setRecipeNutrition,
 }) {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control } = useForm({
+    defaultValues: {
+      measurements: [{ name: 'slice', value: 10 }],
+    },
+  });
   const { user } = useAuth0();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'measurements', // unique name for your Field Array
+  });
 
   const onSubmit = async (data) => {
     const itemNutrition = {
@@ -84,62 +93,114 @@ export function NewIngredientForm({
           Ingredient Name:
           <input {...register('name')}></input>
         </label>
-        <label>
-          Calories:
-          <input {...register('calories')}></input>
-        </label>
-        <label>
-          Total Fat:
-          <input {...register('totalFat')}></input>
-        </label>
-        <label>
-          Saturated Fat:
-          <input {...register('saturatedFat')}></input>
-        </label>
-        <label>
-          Trans Fat:
-          <input {...register('trasFat')}></input>
-        </label>
-        <label>
-          Cholesterol:
-          <input {...register('cholesterol')}></input>
-        </label>
-        <label>
-          Sodium:
-          <input {...register('sodium')}></input>
-        </label>
-        <label>
-          Total Carbohydrate:
-          <input {...register('totalCarbs')}></input>
-        </label>
-        <label>
-          Dietary Fiber:
-          <input {...register('dietaryFibers')}></input>
-        </label>
-        <label>
-          Sugars:
-          <input {...register('sugars')}></input>
-        </label>
-        <label>
-          Protien:
-          <input {...register('protien')}></input>
-        </label>
-        <label>
-          Vitamen D:
-          <input {...register('vitamenD')}></input>
-        </label>
-        <label>
-          Calcium:
-          <input {...register('calcium')}></input>
-        </label>
-        <label>
-          Iron:
-          <input {...register('iron')}></input>
-        </label>
-        <label>
-          Potassium:
-          <input {...register('potassium')}></input>
-        </label>
+        <div className="input-line">
+          <label>
+            Calories:
+            <input {...register('calories')}></input>
+          </label>
+          <label>
+            Total Fat:
+            <input {...register('totalFat')}></input>
+          </label>
+        </div>
+        <div className="input-line">
+          <label>
+            Saturated Fat:
+            <input {...register('saturatedFat')}></input>
+          </label>
+          <label>
+            Trans Fat:
+            <input {...register('trasFat')}></input>
+          </label>
+        </div>
+        <div className="input-line">
+          <label>
+            Cholesterol:
+            <input {...register('cholesterol')}></input>
+          </label>
+          <label>
+            Sodium:
+            <input {...register('sodium')}></input>
+          </label>
+        </div>
+        <div className="input-line">
+          <label>
+            Total Carbohydrate:
+            <input {...register('totalCarbs')}></input>
+          </label>
+          <label>
+            Dietary Fiber:
+            <input {...register('dietaryFibers')}></input>
+          </label>
+        </div>
+        <div className="input-line">
+          <label>
+            Sugars:
+            <input {...register('sugars')}></input>
+          </label>
+          <label>
+            Protien:
+            <input {...register('protien')}></input>
+          </label>
+        </div>
+        <div className="input-line">
+          <label>
+            Vitamen D:
+            <input {...register('vitamenD')}></input>
+          </label>
+          <label>
+            Calcium:
+            <input {...register('calcium')}></input>
+          </label>
+        </div>
+        <div className="input-line">
+          <label>
+            Iron:
+            <input {...register('iron')}></input>
+          </label>
+          <label>
+            Potassium:
+            <input {...register('potassium')}></input>
+          </label>
+        </div>
+        <div className="measurement-input-section">
+          <strong>Unique Measurement Units</strong>
+          {fields.map((field, index) => {
+            return (
+              <div key={field.id} className="new-ingredient-measurement-input">
+                <label>
+                  Unit Name
+                  <input
+                    key={field.id}
+                    {...register(`measurements.${index}.name`)}
+                    type="text"
+                  />
+                </label>
+                <label>
+                  Gram Wieght
+                  <input
+                    key={field.id}
+                    {...register(`measurements.${index}.value`)}
+                    type="integer"
+                  />
+                </label>
+              </div>
+            );
+          })}
+          <button
+            type="button"
+            id="addButton"
+            onClick={() =>
+              append({
+                name: '',
+                value: 0,
+                id: null,
+              })
+            }
+          >
+            <i className="fa-solid fa-circle-plus"></i>
+          </button>
+        </div>
       </form>
     </section>
   );

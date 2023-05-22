@@ -1113,6 +1113,15 @@ td:last-child {
 
 .new-ingredient-form input {
   display: flex;
-
   justify-content: space-between;
+}
+
+.new-ingredient-measurement-input {
+  display: flex;
+  flex-direction: row;
+}
+
+.measurement-input-section {
+  display: flex;
+  flex-direction: column;
 }
