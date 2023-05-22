@@ -23,11 +23,12 @@ export function calculateIngredientNutrition(
     protien: { amount: 0, unit: 'g' },
   };
 
-  // This needs to be reworked. Local copies do not have a foodMeasure property so always go default
+  console.log('currentFood', currentFood);
+
   const defaultGramWeight =
     currentFood.foodMeasures?.length > 0
       ? currentFood.foodMeasures[currentFood.foodMeasures.length - 1].gramWeight
-      : 10;
+      : currentFood.servingSize;
 
   const quantity = ingredient.measurementQuantity.qtyAmount
     ? handleQuantityInts(ingredient.measurementQuantity.qtyAmount)
@@ -36,6 +37,8 @@ export function calculateIngredientNutrition(
   let unitGramWeight = ingredient.measurementUnit.unitGrams
     ? ingredient.measurementUnit.unitGrams
     : defaultGramWeight;
+
+  console.log('unit gram weight', unitGramWeight);
 
   for (let nutrient in ingredientNutrition) {
     let scaledGramWeight = unitGramWeight * quantity;

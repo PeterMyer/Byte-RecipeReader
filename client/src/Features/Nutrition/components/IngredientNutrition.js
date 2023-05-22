@@ -1,5 +1,6 @@
 import React from 'react';
 import { IngredientSelect } from './IngredientSelect';
+import { UnitSelect } from './UnitSelect';
 
 export const IngredientNutrition = ({
   ingredients,
@@ -15,14 +16,29 @@ export const IngredientNutrition = ({
     <>
       <h3>Ingredients</h3>
       {ingredients.map((ingredient) => {
+        console.log('ingredient', ingredient);
+        console.log('recipeNutrition', recipeNutrition);
         return (
           <>
-            <div className="ingredient-container-refactor">
+            <div className="fingredient-container-refactor">
               <div>
-                <div>{ingredient.recipeIngredient.text}</div>
+                <div className="input-line">
+                  <div>
+                    {ingredient.measurementQuantity.qtyAmount}{' '}
+                    {ingredient.measurementUnit.unitDescription}{' '}
+                    {ingredient.component.name}
+                  </div>
+                </div>
+                <div>{ingredient.recipeComment.commentText}</div>
               </div>
               <div>
                 <div>
+                  <UnitSelect
+                    measures={
+                      recipeNutrition.ingredients[ingredient.normText]
+                        .matchedIndexItem.foodMeasures
+                    }
+                  />
                   <IngredientSelect
                     allUsdaOptions={
                       recipeNutrition.ingredients[ingredient.normText]

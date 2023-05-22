@@ -1011,8 +1011,13 @@ modal-footer {
 
 .ingredient-container-refactor {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
+}
+
+.input-line {
+  display: flex;
+  flex-direction: row;
 }
 
 /*Nutrition Label */

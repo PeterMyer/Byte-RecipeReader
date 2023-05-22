@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Select from 'react-select';
 import { sumIngredientNutrition } from '../utils/sumIngredientNutrition';
 import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
