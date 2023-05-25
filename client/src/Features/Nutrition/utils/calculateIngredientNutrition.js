@@ -1,9 +1,9 @@
 import { handleQuantityInts } from './handleQuantityInts';
 
 export function calculateIngredientNutrition(
-  ingredient,
-  ingredientNutrition,
-  currentFood,
+  nutritionValues,
+  gramWeight,
+  quantity,
   servings
 ) {
   let ingredientNutritionTotal = {
@@ -23,25 +23,18 @@ export function calculateIngredientNutrition(
     protien: { amount: 0, unit: 'g' },
   };
 
-  const defaultGramWeight =
-    currentFood.foodMeasures?.length > 0
-      ? currentFood.foodMeasures[currentFood.foodMeasures.length - 1].gramWeight
-      : currentFood.servingSize;
+  console.log('nutritionValues', nutritionValues);
+  console.log('gramWeight', gramWeight);
+  console.log('quantity', quantity);
+  console.log('servings', servings);
 
-  const quantity = ingredient.measurementQuantity.qtyAmount
-    ? handleQuantityInts(ingredient.measurementQuantity.qtyAmount)
-    : 1;
-
-  let unitGramWeight = ingredient.measurementUnit.unitGrams
-    ? ingredient.measurementUnit.unitGrams
-    : defaultGramWeight;
-
-  for (let nutrient in ingredientNutrition) {
-    let scaledGramWeight = unitGramWeight * quantity;
+  for (let nutrient in nutritionValues) {
+    let scaledGramWeight = gramWeight * quantity;
     ingredientNutritionTotal[nutrient]['amount'] +=
-      ((scaledGramWeight / 100) * ingredientNutrition[nutrient].amount) /
-      servings;
+      ((scaledGramWeight / 100) * nutritionValues[nutrient].amount) / servings;
   }
+
+  console.log('new ingredientNutrition', ingredientNutritionTotal);
 
   return ingredientNutritionTotal;
 }

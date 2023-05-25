@@ -9,6 +9,6 @@ export function handleQuantityInts(qty) {
     qty = splitFraction(qty);
     return qty;
   } else {
-    return qty;
+    return parseInt(qty);
   }
 }

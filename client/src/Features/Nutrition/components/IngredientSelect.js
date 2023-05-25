@@ -4,6 +4,7 @@ import { sumIngredientNutrition } from '../utils/sumIngredientNutrition';
 import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
 import { buildSelectOptions } from '../utils/buildSelectOptions';
 import { filterNutrientValues } from '../utils';
+import { findDefaultFoodMeasure } from '../utils/findDefaultFoodMeasure';
 
 export function IngredientSelect({
   allUsdaOptions,
@@ -24,6 +25,24 @@ export function IngredientSelect({
     let currentFood =
       recipeNutritionCopy.ingredients[ingredientName].matchedIndexItem;
 
+    const {
+      currentMeasurement,
+      gramWeight,
+      measureOptions,
+      matchedMeasurementIndex,
+    } = findDefaultFoodMeasure(
+      recipeNutrition.ingredients[ingredientName].measurementUnitName,
+      currentFood.foodMeasures
+    );
+
+    recipeNutritionCopy.ingredients[ingredientName].currentMeasurement =
+      currentMeasurement;
+    recipeNutritionCopy.ingredients[ingredientName].gramWeight = gramWeight;
+    recipeNutritionCopy.ingredients[ingredientName].measurementOptions =
+      measureOptions;
+    recipeNutritionCopy.ingredients[ingredientName].matchedMeasurementIndex =
+      matchedMeasurementIndex;
+
     let nutritionValues = currentFood.fdcId
       ? filterNutrientValues(currentFood.nutrition)
       : JSON.parse(currentFood.nutrition);
@@ -31,16 +50,21 @@ export function IngredientSelect({
     recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G = {
       ...nutritionValues,
     };
+
     recipeNutritionCopy.ingredients[ingredientName].ingredientNutrition =
       calculateIngredientNutrition(
-        recipeNutritionCopy.ingredients[ingredientName].recipeData,
+        //nutrtionValues
         recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G,
-        recipeNutritionCopy.ingredients[ingredientName].matchedIndexItem,
+        //gramWeight
+        gramWeight,
+        //quantity
+        recipeNutritionCopy.ingredients[ingredientName].quantity,
+        //servings
         recipeNutritionCopy.servings
       );
 
     recipeNutritionCopy.totalNutrition =
-      sumIngredientNutrition(recipeNutrition);
+      sumIngredientNutrition(recipeNutritionCopy);
     setRecipeNutrition(recipeNutritionCopy);
   };
 

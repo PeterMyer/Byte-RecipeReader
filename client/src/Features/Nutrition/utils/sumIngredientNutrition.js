@@ -26,5 +26,7 @@ export function sumIngredientNutrition(recipeNutrition) {
       }
     }
   }
+
+  console.log('recipeNutritionTotal', recipeNutritionTotal);
   return recipeNutritionTotal;
 }

@@ -20,16 +20,12 @@ export function NutritionCalculator() {
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
-    console.log('nutritionData', nutritionData);
 
     let recipeNutrition = calculateNutrition(
       ingredients,
       nutritionData.data.usdaResults,
       servings
     );
-
-    console.log('recipeNutrition', recipeNutrition);
-
     setRecipeNutrition(recipeNutrition);
   };
 
