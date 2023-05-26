@@ -22,7 +22,12 @@ export function buildRecipeNutrition(ingredients, nutritionData, servings) {
       nurtritionPer100G: {},
       matchedIndex: 0,
       matchedIndexItem: currentFood,
-      allUsdaOptions: [currentFood, ...nutritionData[index]],
+      allUsdaOptions: [
+        currentFood,
+        ...nutritionData[index].filter(
+          (item) => item.fdcId !== currentFood.fdcId
+        ),
+      ],
       ingredientNutrition: {},
       recipeData: ingredient,
       measurementOptions: [],

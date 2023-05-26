@@ -12,6 +12,7 @@ const RecipeNutrition = require('./models/recipeNutrition');
 const DefaultByteFoodItem = require('./models/DefaultByteFoodItem');
 const FoodItemNutrition = require('./models/FoodItemNutrition');
 const FoodItemNutritionMatch = require('./models/FoodItemNutritionMatch');
+const FoodItemMeasureOptions = require('./models/FoodItemMeasureOptions');
 const UsdaFoodItem = require('./models/UsdaFoodItem');
 const userFoodItem = require('./models/UserFoodItem');
 
@@ -58,6 +59,11 @@ userFoodItem.belongsTo(FoodItemNutrition);
 FoodItemNutrition.hasOne(DefaultByteFoodItem);
 DefaultByteFoodItem.belongsTo(FoodItemNutrition);
 
+FoodItemNutrition.hasOne(FoodItemMeasureOptions, { foreignKey: 'FoodItemId' });
+FoodItemMeasureOptions.belongsTo(FoodItemNutrition, {
+  foreignKey: 'FoodItemId',
+});
+
 RecipeIngredient.hasOne(FoodItemNutrition, { foreignKey: 'FoodItemId' });
 FoodItemNutrition.belongsTo(RecipeIngredient, { foreignKey: 'FoodItemId' });
 
@@ -75,5 +81,6 @@ module.exports = {
     RecipeNutrition,
     FoodItemNutrition,
     FoodItemNutritionMatch,
+    FoodItemMeasureOptions,
   },
 };

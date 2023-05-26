@@ -10,6 +10,7 @@ const {
     RecipeComment,
     FoodItemNutrition,
     RecipeNutrition,
+    FoodItemMeasureOptions,
   },
 } = require('../db/index');
 
@@ -32,7 +33,23 @@ router.post('/newItem', async (req, res, next) => {
       nutrition: req.body.nutrition,
     });
 
-    res.send(foodItemNutrition);
+    const [itemMeasureOptions, itemMeasureOptionsCreated] =
+      await FoodItemMeasureOptions.findOrCreate({
+        where: {
+          foodItemId: foodItemNutrition.id,
+        },
+      });
+
+    await itemMeasureOptions.update({
+      options: req.body.measurementOptions,
+    });
+
+    const response = {
+      itemNutrition: foodItemNutrition,
+      measureOptions: itemMeasureOptions,
+    };
+
+    res.send(response);
   } catch (error) {
     next(error);
   }

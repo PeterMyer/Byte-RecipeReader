@@ -1,28 +1,6 @@
-import React, { useState } from 'react';
-import { IngredientSelect } from './IngredientSelect';
-import { UnitSelect } from './UnitSelect';
-import { useForm } from 'react-hook-form';
-import { handleQuantityInts } from '../utils';
+import React from 'react';
 
-export const SingleIngredient = ({ ingredient, setForm, recipeNutrition }) => {
-  const [editIngredient, setEditIngredient] = useState(false);
-
-  const handleClick = () => {
-    setEditIngredient(true);
-  };
-
-  const handleCreateIngredient = (ingredientName) => {
-    setForm([true, ingredientName]);
-  };
-
-  const handleQuantityChange = (event, ingredient) => {
-    console.log(event);
-    // const recipeNutritionCopy = { ...recipeNutrition };
-    // recipeNutritionCopy.ingredients[ingredient].quantity = 1;
-  };
-
-  // const { register } = useForm();
-
+export const SingleIngredient = ({ ingredient }) => {
   return (
     <>
       <div className="ingredient-container-refactor">

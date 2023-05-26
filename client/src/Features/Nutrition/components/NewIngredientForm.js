@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
 import { sumIngredientNutrition } from '../utils/sumIngredientNutrition';
 import { filterNutrientValues } from '../utils';
+import { genericMeasurements } from '../utils/genericMeasurements';
 
 export function NewIngredientForm({
   form,
@@ -13,7 +14,7 @@ export function NewIngredientForm({
 }) {
   const { register, handleSubmit, control } = useForm({
     defaultValues: {
-      measurements: [{ name: 'slice', value: 10 }],
+      measurements: [{ name: 'slice', gramWeight: 10 }],
     },
   });
   const { user } = useAuth0();
@@ -40,47 +41,92 @@ export function NewIngredientForm({
       iron: { amount: data.iron, unit: 'mg' },
       pottassium: { amount: data.pottassium, unit: 'g' },
     };
+
+    const measurementOptions = [...data.measurements, ...genericMeasurements];
+
     const itemPayload = {
       sourceId: user.sub,
       source: 'User',
       name: data.name,
       nutrition: JSON.stringify(itemNutrition),
+      measurementOptions: JSON.stringify(measurementOptions),
     };
 
     let response = await createNutritionItem(itemPayload);
     let ingredient = form[1];
-    let originalOptions =
-      recipeNutrition.ingredients[ingredient].allUsdaOptions;
-    let recipeNutritionCopy = { ...recipeNutrition };
-    recipeNutritionCopy.ingredients[ingredient].matchedIndex = 0;
-    recipeNutritionCopy.ingredients[ingredient].allUsdaOptions = [
-      response.data,
-      ...originalOptions,
-    ];
-    recipeNutritionCopy.ingredients[ingredient].matchedIndexItem =
-      recipeNutritionCopy.ingredients[ingredient].allUsdaOptions[0];
+    let ingredientEdit = form[2];
+    let setIngredientEdit = form[3];
 
-    let currentFood =
-      recipeNutritionCopy.ingredients[ingredient].matchedIndexItem;
+    let measureOptions = JSON.parse(response.data.measureOptions.options);
+
+    let newFoodItem = {
+      name: response.data.itemNutrition.name,
+      nutrition: response.data.itemNutrition.nutrition,
+      source: response.data.itemNutrition.source,
+      foodMeasures: measureOptions,
+    };
+    let ingredientEditCopy = { ...ingredientEdit };
+    // let originalFoodOptions =
+    //   recipeNutrition.ingredients[ingredient].allUsdaOptions;
+    let originalFoodOptions = ingredientEditCopy.allUsdaOptions;
+    let updatedFoodOptions = [newFoodItem, ...originalFoodOptions];
+
+    // let recipeNutritionCopy = { ...recipeNutrition };
+    // recipeNutritionCopy.ingredients[ingredient].matchedIndex = 0;
+    ingredientEditCopy.matchedIndex = 0;
+    // recipeNutritionCopy.ingredients[ingredient].measurementOptions =
+    //   measureOptions;
+    ingredientEditCopy.measurementOptions = measureOptions;
+    // recipeNutritionCopy.ingredients[ingredient].currentMeasurement =
+    //   measureOptions[0];
+    ingredientEditCopy.currentMeasurement = measureOptions[0];
+    // recipeNutritionCopy.ingredients[ingredient].matchedMeasurementIndex = 0;
+    ingredientEditCopy.matchedMeasurementIndex = 0;
+    // recipeNutritionCopy.ingredients[ingredient].gramWeight =
+    //   recipeNutritionCopy.ingredients[ingredient].currentMeasurement.value;
+    ingredientEditCopy.gramWeight = ingredientEditCopy.currentMeasurement.value;
+    // recipeNutritionCopy.ingredients[ingredient].allUsdaOptions =
+    //   updatedFoodOptions;
+    ingredientEditCopy.allUsdaOptions = updatedFoodOptions;
+    // recipeNutritionCopy.ingredients[ingredient].matchedIndexItem =
+    //   recipeNutritionCopy.ingredients[ingredient].allUsdaOptions[0];
+    ingredientEditCopy.matchedIndexItem = ingredientEditCopy.allUsdaOptions[0];
+
+    // let currentFood =
+    //   recipeNutritionCopy.ingredients[ingredient].matchedIndexItem;
+    let currentFood = ingredientEditCopy.matchedIndexItem;
 
     let nutritionValues = currentFood.fdcId
       ? filterNutrientValues(currentFood.nutrition)
       : JSON.parse(currentFood.nutrition);
 
-    recipeNutritionCopy.ingredients[ingredient].nurtritionPer100G = {
+    // recipeNutritionCopy.ingredients[ingredient].nurtritionPer100G = {
+    //   ...nutritionValues,
+    // };
+
+    ingredientEditCopy.nurtritionPer100G = {
       ...nutritionValues,
     };
-    recipeNutritionCopy.ingredients[ingredient].ingredientNutrition =
-      calculateIngredientNutrition(
-        recipeNutritionCopy.ingredients[ingredient].recipeData,
-        recipeNutritionCopy.ingredients[ingredient].nurtritionPer100G,
-        recipeNutritionCopy.ingredients[ingredient].matchedIndexItem,
-        recipeNutritionCopy.servings
-      );
 
-    recipeNutritionCopy.totalNutrition =
-      sumIngredientNutrition(recipeNutrition);
-    setRecipeNutrition(recipeNutritionCopy);
+    // recipeNutritionCopy.ingredients[ingredient].ingredientNutrition =
+    //   calculateIngredientNutrition(
+    //     recipeNutritionCopy.ingredients[ingredient].nurtritionPer100G,
+    //     recipeNutritionCopy.ingredients[ingredient].gramWeight,
+    //     recipeNutritionCopy.ingredients[ingredient].quantity,
+    //     recipeNutritionCopy.servings
+    //   );
+
+    ingredientEditCopy.ingredientNutrition = calculateIngredientNutrition(
+      ingredientEditCopy.nurtritionPer100G,
+      ingredientEditCopy.gramWeight,
+      ingredientEditCopy.quantity,
+      recipeNutrition.servings
+    );
+
+    // recipeNutritionCopy.totalNutrition =
+    //   sumIngredientNutrition(recipeNutrition);
+    // setRecipeNutrition(recipeNutritionCopy);
+    setIngredientEdit(ingredientEditCopy);
     setForm(null);
   };
 
@@ -180,7 +226,7 @@ export function NewIngredientForm({
                   Gram Weight
                   <input
                     key={field.id}
-                    {...register(`measurements.${index}.value`)}
+                    {...register(`measurements.${index}.gramWeight`)}
                     type="number"
                   />
                 </label>

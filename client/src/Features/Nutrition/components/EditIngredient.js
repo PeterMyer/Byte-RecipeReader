@@ -17,12 +17,15 @@ export function EditIngredient({
   const quantity = recipeIngredient.quantity;
   const [IngredientEdit, setIngredientEdit] = useState(recipeIngredient);
 
-  const handleCreateIngredient = (ingredientName) => {
-    setForm([true, ingredientName]);
+  const handleCreateIngredient = (
+    ingredientName,
+    IngredientEdit,
+    setIngredientEdit
+  ) => {
+    setForm([true, ingredientName, IngredientEdit, setIngredientEdit]);
   };
 
   const onSubmit = (data) => {
-    console.log(recipeNutrition);
     let IngredientEditCopy = { ...IngredientEdit };
     IngredientEditCopy.quantity = data[`quantity${index}`];
     IngredientEditCopy.ingredientNutrition = calculateIngredientNutrition(
@@ -51,6 +54,7 @@ export function EditIngredient({
 
   return (
     <div>
+      {console.log('IngredientEdit', IngredientEdit)}
       <div className="ingredient-container-refactor">
         <div>
           <div className="input-line">
@@ -68,15 +72,10 @@ export function EditIngredient({
             <UnitSelect
               measures={IngredientEdit.measurementOptions}
               recipeNutrition={recipeNutrition}
-              // ingredientName={ingredient.normText}
-              // setRecipeNutrition={setRecipeNutrition}
               IngredientEdit={IngredientEdit}
               setIngredientEdit={setIngredientEdit}
             />
             <IngredientSelect
-              allUsdaOptions={
-                recipeNutrition.ingredients[ingredient.normText].allUsdaOptions
-              }
               recipeNutrition={recipeNutrition}
               ingredientName={ingredient.recipeIngredient.text}
               setRecipeNutrition={setRecipeNutrition}
@@ -85,7 +84,11 @@ export function EditIngredient({
             />
             <button
               onClick={() =>
-                handleCreateIngredient(ingredient.recipeIngredient.text)
+                handleCreateIngredient(
+                  ingredient.recipeIngredient.text,
+                  IngredientEdit,
+                  setIngredientEdit
+                )
               }
             >
               +

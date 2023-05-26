@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { IngredientSelect } from './IngredientSelect';
-import { UnitSelect } from './UnitSelect';
-import { handleQuantityInts } from '../utils';
 import { SingleIngredient } from './SingleIngredient';
 import { EditIngredient } from './EditIngredient';
 

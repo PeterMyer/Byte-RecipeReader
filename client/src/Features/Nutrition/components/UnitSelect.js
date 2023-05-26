@@ -1,16 +1,15 @@
-import Select from 'react-select';
 import { useEffect, useState } from 'react';
-import { calculateIngredientNutrition, sumIngredientNutrition } from '../utils';
+import Select from 'react-select';
+import { calculateIngredientNutrition } from '../utils';
 
 export function UnitSelect({
   measures,
   recipeNutrition,
-  // ingredientName,
-  // setRecipeNutrition,
   IngredientEdit,
   setIngredientEdit,
 }) {
   const currentMeasureIndex = IngredientEdit.matchedMeasurementIndex;
+  const [measureSelectOptions, setMeasures] = useState(measures);
 
   const genericMeasurements = [
     { name: 'tsp', gramWeight: 4 },
@@ -20,27 +19,18 @@ export function UnitSelect({
     { name: 'lb', gramWeight: 453 },
   ];
 
-  const handleChange = (event) => {
+  useEffect(() => {
     console.log('measures', measures);
-    console.log('index', event.value);
+    setMeasures(measures);
+  }, [measures]);
 
+  const handleChange = (event) => {
     let IngredientEditCopy = { ...IngredientEdit };
-    // const recipeNutritionCopy = { ...recipeNutrition };
-    // recipeNutritionCopy.ingredients[ingredientName].matchedMeasurementIndex =
-    //   event.value;
     IngredientEditCopy.matchedMeasurementIndex = event.value;
-    // recipeNutritionCopy.ingredients[ingredientName].currentMeasurement =
-    //   measures[event.value];
-    IngredientEditCopy.currentMeasurement = measures[event.value];
+    IngredientEditCopy.currentMeasurement = measureSelectOptions[event.value];
 
-    // recipeNutritionCopy.ingredients[ingredientName].gramWeight =
-    //   recipeNutritionCopy.ingredients[
-    //     ingredientName
-    //   ].currentMeasurement.gramWeight;
     IngredientEditCopy.gramWeight =
       IngredientEditCopy.currentMeasurement.gramWeight;
-
-    console.log('IngredientEditCopy', IngredientEditCopy);
 
     IngredientEditCopy.ingredientNutrition = calculateIngredientNutrition(
       //nutrtionValues
@@ -54,21 +44,22 @@ export function UnitSelect({
     );
 
     setIngredientEdit(IngredientEditCopy);
+  };
 
-    // recipeNutritionCopy.totalNutrition =
-    //   sumIngredientNutrition(recipeNutritionCopy);
-    // setRecipeNutrition(recipeNutritionCopy);
+  const useGeneric = () => {
+    setMeasures(genericMeasurements);
   };
 
   let measureOptions;
-  if (measures.length > 0) {
-    measureOptions = measures.map((measure, index) => {
+  if (measureSelectOptions.length > 0) {
+    measureOptions = measureSelectOptions.map((measure, index) => {
       return {
         value: `${index}`,
         label: `${measure.name} (${measure.gramWeight}g)`,
       };
     });
   } else {
+    console.log('no values generic');
     measureOptions = genericMeasurements.map((measure, index) => {
       return {
         value: `${index}`,
@@ -77,10 +68,13 @@ export function UnitSelect({
     });
   }
   return (
-    <Select
-      options={measureOptions}
-      value={measureOptions[currentMeasureIndex]}
-      onChange={handleChange}
-    />
+    <>
+      <Select
+        options={measureOptions}
+        value={measureOptions[currentMeasureIndex]}
+        onChange={handleChange}
+      />
+      <button onClick={useGeneric}>Use Generic</button>
+    </>
   );
 }

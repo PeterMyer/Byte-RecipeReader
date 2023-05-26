@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { calculateNutrition } from '../utils/index';
-import { DisplayNutritionData } from './DisplayNutritionData';
 import { lookupNutrition, saveNutrition, updateNutrition } from '../api';
 import { useLocation } from 'react-router-dom';
 import { IngredientNutrition } from './IngredientNutrition';
