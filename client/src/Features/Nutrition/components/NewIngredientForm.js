@@ -177,7 +177,7 @@ export function NewIngredientForm({
                   />
                 </label>
                 <label>
-                  Gram Wieght
+                  Gram Weight
                   <input
                     key={field.id}
                     {...register(`measurements.${index}.value`)}

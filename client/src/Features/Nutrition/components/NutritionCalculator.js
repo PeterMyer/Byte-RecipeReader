@@ -26,6 +26,7 @@ export function NutritionCalculator() {
       nutritionData.data.usdaResults,
       servings
     );
+    console.log('recipeNutrition', recipeNutrition);
     setRecipeNutrition(recipeNutrition);
   };
 
@@ -87,6 +88,7 @@ export function NutritionCalculator() {
                 <IngredientNutrition
                   ingredients={ingredients}
                   recipeNutrition={recipeNutrition}
+                  recipeIngredients={recipeNutrition.ingredients}
                   setRecipeNutrition={setRecipeNutrition}
                   setForm={setForm}
                 />

@@ -1,86 +1,67 @@
 import React, { useState } from 'react';
 import { IngredientSelect } from './IngredientSelect';
 import { UnitSelect } from './UnitSelect';
-import { useForm } from 'react-hook-form';
 import { handleQuantityInts } from '../utils';
+import { SingleIngredient } from './SingleIngredient';
+import { EditIngredient } from './EditIngredient';
 
 export const IngredientNutrition = ({
   ingredients,
   recipeNutrition,
   setRecipeNutrition,
   setForm,
+  recipeIngredients,
 }) => {
-  const handleCreateIngredient = (ingredientName) => {
-    setForm([true, ingredientName]);
-  };
+  const [editIngredient, setEditIngredient] = useState({
+    editStatus: false,
+    index: null,
+  });
 
-  const handleQuantityChange = (event, ingredient) => {
-    console.log(event);
-    // const recipeNutritionCopy = { ...recipeNutrition };
-    // recipeNutritionCopy.ingredients[ingredient].quantity = 1;
+  const handleClick = (index) => {
+    setEditIngredient({ status: true, index: index });
   };
-
-  const { register } = useForm();
 
   return (
     <>
       <h3>Ingredients</h3>
       {ingredients.map((ingredient, index) => {
-        const editIngredient = useState;
-        const quantity = handleQuantityInts(
-          ingredient.measurementQuantity?.qtyAmount
-        );
-
         return (
           <>
-            <div className="ingredient-container-refactor">
-              <div>
-                <div className="input-line">
-                  <div>
-                    "{ingredient.measurementQuantity?.qtyAmount}{' '}
-                    {ingredient.measurementUnit.unitDescription}{' '}
-                    {ingredient.component.name}"
-                  </div>
+            <SingleIngredient
+              ingredient={ingredient}
+              setForm={setForm}
+              recipeNutrition={recipeNutrition}
+            />
+            {editIngredient.status && editIngredient.index === index ? (
+              <EditIngredient
+                ingredient={ingredient}
+                setForm={setForm}
+                recipeNutrition={recipeNutrition}
+                recipeIngredient={recipeIngredients[ingredient.normText]}
+                index={index}
+                setRecipeNutrition={setRecipeNutrition}
+                setEditIngredient={setEditIngredient}
+              />
+            ) : (
+              <>
+                <div className="input-matched-text">
+                  {recipeNutrition.ingredients[ingredient.normText].quantity}{' '}
+                  {'[ '}
+                  {recipeNutrition.ingredients[ingredient.normText]
+                    .currentMeasurement.disseminationText
+                    ? recipeNutrition.ingredients[ingredient.normText]
+                        .currentMeasurement.disseminationText
+                    : recipeNutrition.ingredients[ingredient.normText]
+                        .currentMeasurement.name}{' '}
+                  {'] '}
+                  {
+                    recipeNutrition.ingredients[ingredient.normText]
+                      .matchedIndexItem.name
+                  }
                 </div>
-              </div>
-              <div>
-                <div className="input-line">
-                  <label>
-                    <input
-                      defaultValue={quantity}
-                      type="number"
-                      {...register(`quantity${index}`)}
-                    />
-                  </label>
-                  <></>
-                  <UnitSelect
-                    measures={
-                      recipeNutrition.ingredients[ingredient.normText]
-                        .measurementOptions
-                    }
-                    recipeNutrition={recipeNutrition}
-                    ingredientName={ingredient.recipeIngredient.text}
-                    setRecipeNutrition={setRecipeNutrition}
-                  />
-                  <IngredientSelect
-                    allUsdaOptions={
-                      recipeNutrition.ingredients[ingredient.normText]
-                        .allUsdaOptions
-                    }
-                    recipeNutrition={recipeNutrition}
-                    ingredientName={ingredient.recipeIngredient.text}
-                    setRecipeNutrition={setRecipeNutrition}
-                  />
-                  <button
-                    onClick={() =>
-                      handleCreateIngredient(ingredient.recipeIngredient.text)
-                    }
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            </div>
+                <button onClick={() => handleClick(index)}>Edit</button>
+              </>
+            )}
           </>
         );
       })}

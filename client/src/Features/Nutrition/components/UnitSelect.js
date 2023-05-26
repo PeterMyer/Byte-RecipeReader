@@ -5,11 +5,12 @@ import { calculateIngredientNutrition, sumIngredientNutrition } from '../utils';
 export function UnitSelect({
   measures,
   recipeNutrition,
-  ingredientName,
-  setRecipeNutrition,
+  // ingredientName,
+  // setRecipeNutrition,
+  IngredientEdit,
+  setIngredientEdit,
 }) {
-  const currentMeasureIndex =
-    recipeNutrition.ingredients[ingredientName].matchedMeasurementIndex;
+  const currentMeasureIndex = IngredientEdit.matchedMeasurementIndex;
 
   const genericMeasurements = [
     { name: 'tsp', gramWeight: 4 },
@@ -20,32 +21,43 @@ export function UnitSelect({
   ];
 
   const handleChange = (event) => {
-    const recipeNutritionCopy = { ...recipeNutrition };
-    recipeNutritionCopy.ingredients[ingredientName].matchedMeasurementIndex =
-      event.value;
-    recipeNutritionCopy.ingredients[ingredientName].currentMeasurement =
-      measures[event.value];
+    console.log('measures', measures);
+    console.log('index', event.value);
 
-    recipeNutritionCopy.ingredients[ingredientName].gramWeight =
-      recipeNutritionCopy.ingredients[
-        ingredientName
-      ].currentMeasurement.gramWeight;
+    let IngredientEditCopy = { ...IngredientEdit };
+    // const recipeNutritionCopy = { ...recipeNutrition };
+    // recipeNutritionCopy.ingredients[ingredientName].matchedMeasurementIndex =
+    //   event.value;
+    IngredientEditCopy.matchedMeasurementIndex = event.value;
+    // recipeNutritionCopy.ingredients[ingredientName].currentMeasurement =
+    //   measures[event.value];
+    IngredientEditCopy.currentMeasurement = measures[event.value];
 
-    recipeNutritionCopy.ingredients[ingredientName].ingredientNutrition =
-      calculateIngredientNutrition(
-        //nutrtionValues
-        recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G,
-        //gramWeight
-        recipeNutritionCopy.ingredients[ingredientName].gramWeight,
-        //quantity
-        recipeNutritionCopy.ingredients[ingredientName].quantity,
-        //servings
-        recipeNutritionCopy.servings
-      );
+    // recipeNutritionCopy.ingredients[ingredientName].gramWeight =
+    //   recipeNutritionCopy.ingredients[
+    //     ingredientName
+    //   ].currentMeasurement.gramWeight;
+    IngredientEditCopy.gramWeight =
+      IngredientEditCopy.currentMeasurement.gramWeight;
 
-    recipeNutritionCopy.totalNutrition =
-      sumIngredientNutrition(recipeNutritionCopy);
-    setRecipeNutrition(recipeNutritionCopy);
+    console.log('IngredientEditCopy', IngredientEditCopy);
+
+    IngredientEditCopy.ingredientNutrition = calculateIngredientNutrition(
+      //nutrtionValues
+      IngredientEditCopy.nurtritionPer100G,
+      //gramWeight
+      IngredientEditCopy.gramWeight,
+      //quantity
+      IngredientEditCopy.quantity,
+      //servings
+      recipeNutrition.servings
+    );
+
+    setIngredientEdit(IngredientEditCopy);
+
+    // recipeNutritionCopy.totalNutrition =
+    //   sumIngredientNutrition(recipeNutritionCopy);
+    // setRecipeNutrition(recipeNutritionCopy);
   };
 
   let measureOptions;

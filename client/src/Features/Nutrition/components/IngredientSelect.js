@@ -11,19 +11,24 @@ export function IngredientSelect({
   recipeNutrition,
   ingredientName,
   setRecipeNutrition,
+  IngredientEdit,
+  setIngredientEdit,
 }) {
   const options = buildSelectOptions(allUsdaOptions);
-  const selectedValue =
-    options[recipeNutrition.ingredients[ingredientName].matchedIndex];
+  const selectedValue = options[IngredientEdit.matchedIndex];
 
   const handleChange = (event) => {
-    const recipeNutritionCopy = { ...recipeNutrition };
-    recipeNutritionCopy.ingredients[ingredientName].matchedIndex = event.value;
-    recipeNutritionCopy.ingredients[ingredientName].matchedIndexItem =
-      allUsdaOptions[event.value];
+    // const recipeNutritionCopy = { ...recipeNutrition };
+    const IngredientEditCopy = { ...IngredientEdit };
+    // recipeNutritionCopy.ingredients[ingredientName].matchedIndex = event.value;
+    IngredientEditCopy.matchedIndex = event.value;
+    // recipeNutritionCopy.ingredients[ingredientName].matchedIndexItem =
+    //   allUsdaOptions[event.value];
+    IngredientEditCopy.matchedIndexItem = allUsdaOptions[event.value];
 
-    let currentFood =
-      recipeNutritionCopy.ingredients[ingredientName].matchedIndexItem;
+    // let currentFood =
+    //   recipeNutritionCopy.ingredients[ingredientName].matchedIndexItem;
+    let currentFood = IngredientEditCopy.matchedIndexItem;
 
     const {
       currentMeasurement,
@@ -35,37 +40,49 @@ export function IngredientSelect({
       currentFood.foodMeasures
     );
 
-    recipeNutritionCopy.ingredients[ingredientName].currentMeasurement =
-      currentMeasurement;
-    recipeNutritionCopy.ingredients[ingredientName].gramWeight = gramWeight;
-    recipeNutritionCopy.ingredients[ingredientName].measurementOptions =
-      measureOptions;
-    recipeNutritionCopy.ingredients[ingredientName].matchedMeasurementIndex =
-      matchedMeasurementIndex;
+    console.log('gramWeight', gramWeight);
+
+    // recipeNutritionCopy.ingredients[ingredientName].currentMeasurement =
+    //   currentMeasurement;
+    IngredientEditCopy.currentMeasurement = currentMeasurement;
+    // recipeNutritionCopy.ingredients[ingredientName].gramWeight = gramWeight;
+    IngredientEditCopy.gramWeight = gramWeight;
+    // recipeNutritionCopy.ingredients[ingredientName].measurementOptions =
+    //   measureOptions;
+    IngredientEditCopy.measurementOptions = measureOptions;
+    // recipeNutritionCopy.ingredients[ingredientName].matchedMeasurementIndex =
+    //   matchedMeasurementIndex;
+    IngredientEditCopy.matchedMeasurementIndex = matchedMeasurementIndex;
 
     let nutritionValues = currentFood.fdcId
       ? filterNutrientValues(currentFood.nutrition)
       : JSON.parse(currentFood.nutrition);
 
-    recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G = {
-      ...nutritionValues,
-    };
+    // recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G = {
+    //   ...nutritionValues,
+    // };
+    IngredientEditCopy.nurtritionPer100G = { ...nutritionValues };
 
-    recipeNutritionCopy.ingredients[ingredientName].ingredientNutrition =
-      calculateIngredientNutrition(
-        //nutrtionValues
-        recipeNutritionCopy.ingredients[ingredientName].nurtritionPer100G,
-        //gramWeight
-        gramWeight,
-        //quantity
-        recipeNutritionCopy.ingredients[ingredientName].quantity,
-        //servings
-        recipeNutritionCopy.servings
-      );
+    IngredientEditCopy.ingredientNutrition = calculateIngredientNutrition(
+      //nutrtionValues
+      IngredientEditCopy.nurtritionPer100G,
+      //gramWeight
+      gramWeight,
+      //quantity
+      IngredientEditCopy.quantity,
+      //servings
+      recipeNutrition.servings
+    );
 
-    recipeNutritionCopy.totalNutrition =
-      sumIngredientNutrition(recipeNutritionCopy);
-    setRecipeNutrition(recipeNutritionCopy);
+    console.log('IngredientEdit', IngredientEdit);
+
+    console.log('IngredientEditCopy', IngredientEditCopy);
+
+    setIngredientEdit(IngredientEditCopy);
+
+    // recipeNutritionCopy.totalNutrition =
+    //   sumIngredientNutrition(recipeNutritionCopy);
+    // setRecipeNutrition(recipeNutritionCopy);
   };
 
   return (

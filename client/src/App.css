@@ -1125,3 +1125,8 @@ td:last-child {
   display: flex;
   flex-direction: column;
 }
+
+.input-matched-text {
+  color: #8c9796;
+  font-size: small;
+}
