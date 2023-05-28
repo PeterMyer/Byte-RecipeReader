@@ -12,6 +12,7 @@ export function EditIngredient({
   ingredient,
   setForm,
   setEditIngredient,
+  setShowModal,
 }) {
   const { register, handleSubmit } = useForm();
   const quantity = recipeIngredient.quantity;
@@ -20,22 +21,25 @@ export function EditIngredient({
   const handleCreateIngredient = (
     ingredientName,
     IngredientEdit,
-    setIngredientEdit
+    setIngredientEdit,
+    event
   ) => {
+    event.preventDefault();
+
+    const body = document.querySelector('body');
+    body.style.overflow = 'hidden';
+
     setForm([true, ingredientName, IngredientEdit, setIngredientEdit]);
+    setShowModal(true);
   };
 
   const onSubmit = (data) => {
     let IngredientEditCopy = { ...IngredientEdit };
     IngredientEditCopy.quantity = data[`quantity${index}`];
     IngredientEditCopy.ingredientNutrition = calculateIngredientNutrition(
-      //nutrtionValues
       IngredientEditCopy.nurtritionPer100G,
-      //gramWeight
       IngredientEditCopy.gramWeight,
-      //quantity
       IngredientEditCopy.quantity,
-      //servings
       recipeNutrition.servings
     );
 
@@ -53,49 +57,52 @@ export function EditIngredient({
   };
 
   return (
-    <div>
-      {console.log('IngredientEdit', IngredientEdit)}
-      <div className="ingredient-container-refactor">
-        <div>
-          <div className="input-line">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <input type="submit" value="Save"></input>
-              <label>
-                <input
-                  defaultValue={quantity}
-                  type="number"
-                  {...register(`quantity${index}`)}
-                />
-              </label>
-            </form>
-            <></>
-            <UnitSelect
-              measures={IngredientEdit.measurementOptions}
-              recipeNutrition={recipeNutrition}
-              IngredientEdit={IngredientEdit}
-              setIngredientEdit={setIngredientEdit}
-            />
-            <IngredientSelect
-              recipeNutrition={recipeNutrition}
-              ingredientName={ingredient.recipeIngredient.text}
-              setRecipeNutrition={setRecipeNutrition}
-              IngredientEdit={IngredientEdit}
-              setIngredientEdit={setIngredientEdit}
-            />
-            <button
-              onClick={() =>
-                handleCreateIngredient(
-                  ingredient.recipeIngredient.text,
-                  IngredientEdit,
-                  setIngredientEdit
-                )
-              }
-            >
-              +
-            </button>
-          </div>
+    <form
+      className="calculator-single-ingredient-edit-form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="calculator-edit-form-inputs">
+        <label>
+          <input
+            className="calculator-ingredient-quantity-input"
+            defaultValue={quantity}
+            type="number"
+            {...register(`quantity${index}`)}
+          />
+        </label>
+        <UnitSelect
+          measures={IngredientEdit.measurementOptions}
+          recipeNutrition={recipeNutrition}
+          IngredientEdit={IngredientEdit}
+          setIngredientEdit={setIngredientEdit}
+        />
+        <div className="caculator-edit-form-select-container ">
+          <IngredientSelect
+            recipeNutrition={recipeNutrition}
+            ingredientName={ingredient.recipeIngredient.text}
+            setRecipeNutrition={setRecipeNutrition}
+            IngredientEdit={IngredientEdit}
+            setIngredientEdit={setIngredientEdit}
+          />
+          <button
+            onClick={(event) =>
+              handleCreateIngredient(
+                ingredient.recipeIngredient.text,
+                IngredientEdit,
+                setIngredientEdit,
+                event
+              )
+            }
+          >
+            + Custom Ingredient
+          </button>
         </div>
       </div>
-    </div>
+      <input
+        className="calculator-edit-form-submit-button"
+        type="submit"
+        value="Save"
+      ></input>
+    </form>
   );
 }

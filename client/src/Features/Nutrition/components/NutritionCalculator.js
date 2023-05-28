@@ -6,6 +6,7 @@ import { IngredientNutrition } from './IngredientNutrition';
 import { useAuth0 } from '@auth0/auth0-react';
 import { NutritionLabel } from './NutritionLabel';
 import { NewIngredientForm } from './NewIngredientForm';
+import { NewIngredientPanel } from './NewIngredientPanel';
 
 export function NutritionCalculator() {
   const { state } = useLocation();
@@ -16,6 +17,7 @@ export function NutritionCalculator() {
   const [recipeNutrition, setRecipeNutrition] = useState(null);
   const [existingNutrition, setExistingNutrition] = useState(state.nutrition);
   const [form, setForm] = useState(null);
+  const [showPanel, setShowPanel] = useState(false);
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
@@ -25,7 +27,6 @@ export function NutritionCalculator() {
       nutritionData.data.usdaResults,
       servings
     );
-    console.log('recipeNutrition', recipeNutrition);
     setRecipeNutrition(recipeNutrition);
   };
 
@@ -83,26 +84,25 @@ export function NutritionCalculator() {
               </button>
             </>
             <div className="nutrition-calculator-refactor">
-              <div>
-                <IngredientNutrition
-                  ingredients={ingredients}
-                  recipeNutrition={recipeNutrition}
-                  recipeIngredients={recipeNutrition.ingredients}
-                  setRecipeNutrition={setRecipeNutrition}
-                  setForm={setForm}
-                />
-              </div>
-              {form ? (
-                <NewIngredientForm
-                  form={form}
-                  setForm={setForm}
-                  setRecipeNutrition={setRecipeNutrition}
-                  recipeNutrition={recipeNutrition}
-                />
-              ) : (
-                <NutritionLabel recipeNutrition={recipeNutrition} />
-              )}
+              <IngredientNutrition
+                ingredients={ingredients}
+                recipeNutrition={recipeNutrition}
+                recipeIngredients={recipeNutrition.ingredients}
+                setRecipeNutrition={setRecipeNutrition}
+                setForm={setForm}
+                setShowModal={setShowPanel}
+                form={form}
+              />
+              <NutritionLabel recipeNutrition={recipeNutrition} />
             </div>
+            <NewIngredientPanel
+              onClose={() => setShowPanel(false)}
+              showPanel={showPanel}
+              form={form}
+              recipeNutrition={recipeNutrition}
+              setForm={setForm}
+              setRecipeNutrition={setRecipeNutrition}
+            />
           </>
         ) : (
           'Loading...'

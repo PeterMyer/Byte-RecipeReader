@@ -13,12 +13,6 @@ html {
   background-color: var(--off_white);
 }
 
-.main-content {
-  margin-top: 80px; /* Add a top margin to avoid content overlay */
-  margin-left: 10%;
-  margin-right: 10%;
-}
-
 .page-content {
   margin-top: 10%;
 }
@@ -1003,29 +997,13 @@ modal-footer {
   font-family: 'Manrope', sans-serif;
 }
 
-.nutrition-calculator-refactor {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.ingredient-container-refactor {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.input-line {
-  display: flex;
-  flex-direction: row;
-}
-
 /*Nutrition Label */
 .nutrition-label {
   border: 1px solid black;
   margin: 20px;
   float: left;
   width: 280px;
+  height: 580px;
   padding: 0.5rem;
   background-color: white;
   font-size: small;
@@ -1106,19 +1084,10 @@ td:last-child {
 }
 
 /*NEW INGREDIENT FORM*/
-.new-ingredient-form {
-  display: flex;
-  flex-direction: column;
-}
 
 .new-ingredient-form input {
   display: flex;
   justify-content: space-between;
-}
-
-.new-ingredient-measurement-input {
-  display: flex;
-  flex-direction: row;
 }
 
 .measurement-input-section {
@@ -1129,4 +1098,51 @@ td:last-child {
 .input-matched-text {
   color: #8c9796;
   font-size: small;
+}
+
+/*Calculator CSS */
+
+.nutrition-calculator-refactor {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.calculator-single-ingredient-container {
+  display: flex;
+  flex-direction: column;
+}
+.calculator-single-ingredient-button-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.calculator-single-ingredient-editbox-input-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.calculator-ingredient-quantity-input {
+  width: 50px;
+  height: 33px;
+  border: solid 1px rgb(181, 181, 181);
+  border-radius: 5px;
+}
+
+.calculator-edit-form-unit-select-field {
+  width: 275px;
+}
+
+.calculator-edit-form-submit-button {
+  width: 100px;
+}
+
+.calculator-edit-form-ingredient-select-field {
+  width: 275px;
+}
+
+.caculator-edit-form-select-container {
+  display: flex;
+  flex-direction: column;
 }

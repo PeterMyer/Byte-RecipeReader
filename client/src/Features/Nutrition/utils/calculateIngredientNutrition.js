@@ -23,11 +23,6 @@ export function calculateIngredientNutrition(
     protien: { amount: 0, unit: 'g' },
   };
 
-  console.log('nutritionValues', nutritionValues);
-  console.log('gramWeight', gramWeight);
-  console.log('quantity', quantity);
-  console.log('servings', servings);
-
   for (let nutrient in nutritionValues) {
     let scaledGramWeight = gramWeight * quantity;
     ingredientNutritionTotal[nutrient]['amount'] +=

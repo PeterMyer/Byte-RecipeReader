@@ -59,6 +59,11 @@ export function IngredientSelect({
   };
 
   return (
-    <Select options={options} value={selectedValue} onChange={handleChange} />
+    <Select
+      options={options}
+      value={selectedValue}
+      onChange={handleChange}
+      className="calculator-edit-form-ingredient-select-field"
+    />
   );
 }

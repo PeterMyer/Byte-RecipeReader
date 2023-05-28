@@ -1,0 +1,172 @@
+.main-content {
+  margin-top: 80px; /* Add a top margin to avoid content overlay */
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.Panel {
+  position: fixed;
+  right: -100vh;
+  top: 80px;
+  opacity: 0;
+  background-color: white;
+  width: 35%;
+  height: 90vh;
+  padding: 0 12px 12px;
+  z-index: 40;
+  transition: all 0.5s ease-in-out;
+  overflow-y: scroll;
+}
+.Panel header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  color: black;
+  padding: 20px;
+}
+.Panel header button {
+  background-color: white;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+.Panel .panel-body {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.Panel.Show {
+  right: 0;
+  opacity: 100;
+}
+
+.Overlay {
+  background-color: rgba(0, 0, 0, 0.55);
+  inset: 0;
+  position: fixed;
+  display: none;
+  z-index: 30;
+}
+
+.Overlay.Show {
+  display: block;
+}
+
+.new-ingredient-form {
+  display: flex;
+  flex-direction: column;
+}
+.new-ingredient-form #form-submit {
+  align-self: center;
+  justify-content: center;
+  width: 125px;
+  background-color: var(--dark_neutral);
+  color: var(--off_white);
+  cursor: pointer;
+  font-family: "Mukta", sans-serif;
+  font-size: large;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+.new-ingredient-form section {
+  display: flex;
+  border: 1px solid grey;
+  justify-content: space-between;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 3px;
+}
+.new-ingredient-form section .section-header {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.new-ingredient-form section .section-header .sub-title {
+  font-weight: 300;
+  font-size: small;
+}
+.new-ingredient-form section .section-inputs {
+  display: flex;
+  flex-direction: column;
+}
+.new-ingredient-form section .section-inputs label {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: medium;
+  font-family: Arial, Helvetica, sans-serif;
+  align-items: center;
+  color: rgb(86, 86, 86);
+}
+.new-ingredient-form section .section-inputs label input {
+  margin-left: 10px;
+  margin-bottom: 2px;
+}
+.new-ingredient-form section .section-inputs .quantity-input input {
+  width: 50px;
+}
+.new-ingredient-form section .section-inputs .new-ingredient-measurement-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.new-ingredient-form section #addButton {
+  color: var(--light_blue);
+  background-color: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: large;
+  align-self: flex-end;
+}
+.new-ingredient-form section #addButton:hover {
+  color: var(--deep_blue);
+}
+
+.calculator-ingredients-list {
+  width: 70%;
+}
+
+.calculator-ingredients-single {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid rgb(205, 205, 205);
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  margin-bottom: 2px;
+}
+
+.calculator-single-ingredient-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ingredient-input-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.input-line {
+  display: flex;
+  flex-direction: row;
+}
+
+.input-line-comment {
+  font-weight: light;
+}
+
+.calculator-edit-form-inputs {
+  display: flex;
+  justify-content: space-between;
+}/*# sourceMappingURL=app.css.map */

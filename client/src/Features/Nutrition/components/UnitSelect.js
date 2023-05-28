@@ -20,7 +20,6 @@ export function UnitSelect({
   ];
 
   useEffect(() => {
-    console.log('measures', measures);
     setMeasures(measures);
   }, [measures]);
 
@@ -46,7 +45,8 @@ export function UnitSelect({
     setIngredientEdit(IngredientEditCopy);
   };
 
-  const useGeneric = () => {
+  const handleuseGeneric = (event) => {
+    event.preventDefault();
     setMeasures(genericMeasurements);
   };
 
@@ -59,7 +59,6 @@ export function UnitSelect({
       };
     });
   } else {
-    console.log('no values generic');
     measureOptions = genericMeasurements.map((measure, index) => {
       return {
         value: `${index}`,
@@ -68,13 +67,14 @@ export function UnitSelect({
     });
   }
   return (
-    <>
+    <div className="caculator-edit-form-select-container ">
       <Select
         options={measureOptions}
         value={measureOptions[currentMeasureIndex]}
         onChange={handleChange}
+        className="calculator-edit-form-unit-select-field"
       />
-      <button onClick={useGeneric}>Use Generic</button>
-    </>
+      <button onClick={(event) => handleuseGeneric(event)}>Use Generic</button>
+    </div>
   );
 }

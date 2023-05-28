@@ -2,7 +2,6 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { createNutritionItem } from '../api';
 import { useAuth0 } from '@auth0/auth0-react';
 import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
-import { sumIngredientNutrition } from '../utils/sumIngredientNutrition';
 import { filterNutrientValues } from '../utils';
 import { genericMeasurements } from '../utils/genericMeasurements';
 
@@ -11,6 +10,7 @@ export function NewIngredientForm({
   setForm,
   recipeNutrition,
   setRecipeNutrition,
+  onClose,
 }) {
   const { register, handleSubmit, control } = useForm({
     defaultValues: {
@@ -53,7 +53,6 @@ export function NewIngredientForm({
     };
 
     let response = await createNutritionItem(itemPayload);
-    let ingredient = form[1];
     let ingredientEdit = form[2];
     let setIngredientEdit = form[3];
 
@@ -66,55 +65,26 @@ export function NewIngredientForm({
       foodMeasures: measureOptions,
     };
     let ingredientEditCopy = { ...ingredientEdit };
-    // let originalFoodOptions =
-    //   recipeNutrition.ingredients[ingredient].allUsdaOptions;
     let originalFoodOptions = ingredientEditCopy.allUsdaOptions;
     let updatedFoodOptions = [newFoodItem, ...originalFoodOptions];
 
-    // let recipeNutritionCopy = { ...recipeNutrition };
-    // recipeNutritionCopy.ingredients[ingredient].matchedIndex = 0;
     ingredientEditCopy.matchedIndex = 0;
-    // recipeNutritionCopy.ingredients[ingredient].measurementOptions =
-    //   measureOptions;
     ingredientEditCopy.measurementOptions = measureOptions;
-    // recipeNutritionCopy.ingredients[ingredient].currentMeasurement =
-    //   measureOptions[0];
     ingredientEditCopy.currentMeasurement = measureOptions[0];
-    // recipeNutritionCopy.ingredients[ingredient].matchedMeasurementIndex = 0;
     ingredientEditCopy.matchedMeasurementIndex = 0;
-    // recipeNutritionCopy.ingredients[ingredient].gramWeight =
-    //   recipeNutritionCopy.ingredients[ingredient].currentMeasurement.value;
     ingredientEditCopy.gramWeight = ingredientEditCopy.currentMeasurement.value;
-    // recipeNutritionCopy.ingredients[ingredient].allUsdaOptions =
-    //   updatedFoodOptions;
     ingredientEditCopy.allUsdaOptions = updatedFoodOptions;
-    // recipeNutritionCopy.ingredients[ingredient].matchedIndexItem =
-    //   recipeNutritionCopy.ingredients[ingredient].allUsdaOptions[0];
     ingredientEditCopy.matchedIndexItem = ingredientEditCopy.allUsdaOptions[0];
 
-    // let currentFood =
-    //   recipeNutritionCopy.ingredients[ingredient].matchedIndexItem;
     let currentFood = ingredientEditCopy.matchedIndexItem;
 
     let nutritionValues = currentFood.fdcId
       ? filterNutrientValues(currentFood.nutrition)
       : JSON.parse(currentFood.nutrition);
 
-    // recipeNutritionCopy.ingredients[ingredient].nurtritionPer100G = {
-    //   ...nutritionValues,
-    // };
-
     ingredientEditCopy.nurtritionPer100G = {
       ...nutritionValues,
     };
-
-    // recipeNutritionCopy.ingredients[ingredient].ingredientNutrition =
-    //   calculateIngredientNutrition(
-    //     recipeNutritionCopy.ingredients[ingredient].nurtritionPer100G,
-    //     recipeNutritionCopy.ingredients[ingredient].gramWeight,
-    //     recipeNutritionCopy.ingredients[ingredient].quantity,
-    //     recipeNutritionCopy.servings
-    //   );
 
     ingredientEditCopy.ingredientNutrition = calculateIngredientNutrition(
       ingredientEditCopy.nurtritionPer100G,
@@ -123,116 +93,141 @@ export function NewIngredientForm({
       recipeNutrition.servings
     );
 
-    // recipeNutritionCopy.totalNutrition =
-    //   sumIngredientNutrition(recipeNutrition);
-    // setRecipeNutrition(recipeNutritionCopy);
     setIngredientEdit(ingredientEditCopy);
     setForm(null);
+    const body = document.querySelector('body');
+    body.style.overflow = 'auto';
+    onClose();
   };
 
   return (
-    <section>
-      <h3>Add New Ingredient</h3>
+    <article>
+      <div></div>
       <form className="new-ingredient-form" onSubmit={handleSubmit(onSubmit)}>
-        <input type="submit" value="Save Ingredient"></input>
-        <label>
-          Ingredient Name:
-          <input {...register('name')}></input>
-        </label>
-        <div className="input-line">
-          <label>
-            Calories:
-            <input {...register('calories')}></input>
-          </label>
-          <label>
-            Total Fat:
-            <input {...register('totalFat')}></input>
-          </label>
-        </div>
-        <div className="input-line">
-          <label>
-            Saturated Fat:
-            <input {...register('saturatedFat')}></input>
-          </label>
-          <label>
-            Trans Fat:
-            <input {...register('trasFat')}></input>
-          </label>
-        </div>
-        <div className="input-line">
-          <label>
-            Cholesterol:
-            <input {...register('cholesterol')}></input>
-          </label>
-          <label>
-            Sodium:
-            <input {...register('sodium')}></input>
-          </label>
-        </div>
-        <div className="input-line">
-          <label>
-            Total Carbohydrate:
-            <input {...register('totalCarbs')}></input>
-          </label>
-          <label>
-            Dietary Fiber:
-            <input {...register('dietaryFibers')}></input>
-          </label>
-        </div>
-        <div className="input-line">
-          <label>
-            Sugars:
-            <input {...register('sugars')}></input>
-          </label>
-          <label>
-            Protien:
-            <input {...register('protien')}></input>
-          </label>
-        </div>
-        <div className="input-line">
-          <label>
-            Vitamen D:
-            <input {...register('vitamenD')}></input>
-          </label>
-          <label>
-            Calcium:
-            <input {...register('calcium')}></input>
-          </label>
-        </div>
-        <div className="input-line">
-          <label>
-            Iron:
-            <input {...register('iron')}></input>
-          </label>
-          <label>
-            Potassium:
-            <input {...register('potassium')}></input>
-          </label>
-        </div>
-        <div className="measurement-input-section">
-          <strong>Unique Measurement Units</strong>
-          {fields.map((field, index) => {
-            return (
-              <div key={field.id} className="new-ingredient-measurement-input">
-                <label>
-                  Unit Name
-                  <input
-                    key={field.id}
-                    {...register(`measurements.${index}.name`)}
-                    type="text"
-                  />
-                </label>
-                <label>
-                  Gram Weight
-                  <input
-                    key={field.id}
-                    {...register(`measurements.${index}.gramWeight`)}
-                    type="number"
-                  />
-                </label>
-              </div>
-            );
-          })}
+        <section>
+          <div className="section-title">
+            <strong>Required</strong>
+          </div>
+          <div className="section-inputs">
+            <label className="text-input">
+              Name
+              <input {...register('name')}></input>
+            </label>
+
+            <label className="quantity-input">
+              Calories
+              <input {...register('calories')}></input>
+            </label>
+          </div>
+        </section>
+        <section>
+          <div className="section-header">
+            <strong>Macro Nutrients</strong>
+            <div className="sub-title">
+              <>Optional</>
+            </div>
+          </div>
+          <div className="section-inputs">
+            <label className="quantity-input">
+              Total Fat
+              <input {...register('totalFat')}></input>
+            </label>
+            <label className="quantity-input">
+              Saturated Fat
+              <input {...register('saturatedFat')}></input>
+            </label>
+            <label className="quantity-input">
+              Trans Fat
+              <input {...register('trasFat')}></input>
+            </label>
+            <label className="quantity-input">
+              Cholesterol
+              <input {...register('cholesterol')}></input>
+            </label>
+            <label className="quantity-input">
+              Sodium
+              <input {...register('sodium')}></input>
+            </label>
+            <label className="quantity-input">
+              Total Carbohydrate
+              <input {...register('totalCarbs')}></input>
+            </label>
+            <label className="quantity-input">
+              Dietary Fiber
+              <input {...register('dietaryFibers')}></input>
+            </label>
+            <label className="quantity-input">
+              Sugars
+              <input {...register('sugars')}></input>
+            </label>
+            <label className="quantity-input">
+              Protien
+              <input {...register('protien')}></input>
+            </label>
+          </div>
+        </section>
+        <section>
+          <div className="section-header">
+            <strong>Micro Nutrients</strong>
+            <div className="sub-title">
+              <>Optional</>
+            </div>
+          </div>
+          <div className="section-inputs">
+            <label className="quantity-input">
+              Vitamen D<input {...register('vitamenD')}></input>
+            </label>
+            <label className="quantity-input">
+              Calcium
+              <input {...register('calcium')}></input>
+            </label>
+            <label className="quantity-input">
+              Iron:
+              <input {...register('iron')}></input>
+            </label>
+            <label className="quantity-input">
+              Potassium
+              <input {...register('potassium')}></input>
+            </label>
+          </div>
+        </section>
+        <section className="measurement-input-section">
+          <div className="section-header">
+            <strong>Custom Measurements</strong>
+            <div className="sub-title">
+              <>Optional</>
+            </div>
+          </div>
+          <div className="section-inputs">
+            {fields.map((field, index) => {
+              return (
+                <div
+                  key={field.id}
+                  className="new-ingredient-measurement-input"
+                >
+                  <label>
+                    Name
+                    <input
+                      key={field.id}
+                      {...register(`measurements.${index}.name`)}
+                      type="text"
+                    />
+                  </label>
+                  <label
+                    className="quantity-input"
+                    style={{ 'padding-left': '10px' }}
+                  >
+                    Grams
+                    <input
+                      key={field.id}
+                      {...register(`measurements.${index}.gramWeight`)}
+                      type="number"
+                    />{' '}
+                  </label>
+                </div>
+              );
+            })}
+          </div>
           <button
             type="button"
             id="addButton"
@@ -246,8 +241,9 @@ export function NewIngredientForm({
           >
             <i className="fa-solid fa-circle-plus"></i>
           </button>
-        </div>
+        </section>
+        <input id="form-submit" type="submit" value="Save"></input>
       </form>
-    </section>
+    </article>
   );
 }
