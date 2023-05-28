@@ -4,6 +4,12 @@
   margin-right: 10%;
 }
 
+.nutrition-calculator-refactor {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--off_white);
+}
+
 .Panel {
   position: fixed;
   right: -100vh;
@@ -142,6 +148,7 @@
   padding-bottom: 10px;
   border-radius: 5px;
   margin-bottom: 2px;
+  background-color: white;
 }
 
 .calculator-single-ingredient-container {
@@ -168,5 +175,142 @@
 
 .calculator-edit-form-inputs {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+}
+
+.calculator-edit-form-input-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.caculator-edit-form-select-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#custom-ingredient-button {
+  align-items: right;
+  width: 150px;
+  padding: 6px;
+  margin-top: 6px;
+  border-radius: 5px;
+  background-color: lightgray;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+#custom-ingredient-button:hover {
+  background-color: black;
+  color: white;
+}
+
+.calculator-ingredient-quantity-input {
+  width: 50px;
+  height: 33px;
+  border: solid 1px rgb(181, 181, 181);
+  border-radius: 5px;
+}
+
+.calculator-edit-form-unit-select-field {
+  width: 275px;
+}
+
+.calculator-edit-form-ingredient-select-field {
+  width: 275px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 21px;
+  margin-top: 6px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 17px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(15px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.calculator-edit-form-submit-button {
+  width: 100px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 1250px) {
+  .calculator-edit-form-unit-select-field {
+    width: 100%;
+    min-width: 175px;
+  }
+  .calculator-edit-form-ingredient-select-field {
+    width: 100%;
+    min-width: 175px;
+  }
+}
+@media (max-width: 1000px) {
+  .calculator-edit-form-inputs {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media (max-width: 850px) {
+  .nutrition-calculator-refactor {
+    display: flex;
+    flex-direction: column-reverse;
+    align-content: center;
+  }
 }/*# sourceMappingURL=app.css.map */

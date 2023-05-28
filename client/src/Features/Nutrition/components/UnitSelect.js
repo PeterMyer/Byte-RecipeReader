@@ -10,6 +10,7 @@ export function UnitSelect({
 }) {
   const currentMeasureIndex = IngredientEdit.matchedMeasurementIndex;
   const [measureSelectOptions, setMeasures] = useState(measures);
+  let defaultUnits = false;
 
   const genericMeasurements = [
     { name: 'tsp', gramWeight: 4 },
@@ -20,6 +21,9 @@ export function UnitSelect({
   ];
 
   useEffect(() => {
+    let switchStatus = document.querySelector('.switch input');
+    switchStatus.checked = false;
+
     setMeasures(measures);
   }, [measures]);
 
@@ -45,36 +49,42 @@ export function UnitSelect({
     setIngredientEdit(IngredientEditCopy);
   };
 
-  const handleuseGeneric = (event) => {
-    event.preventDefault();
-    setMeasures(genericMeasurements);
+  const handleSwitch = () => {
+    let switchStatus = document.querySelector('.switch input');
+    if (switchStatus.checked) {
+      setMeasures(genericMeasurements);
+    } else {
+      setMeasures(measures);
+    }
   };
 
-  let measureOptions;
-  if (measureSelectOptions.length > 0) {
-    measureOptions = measureSelectOptions.map((measure, index) => {
-      return {
-        value: `${index}`,
-        label: `${measure.name} (${measure.gramWeight}g)`,
-      };
-    });
-  } else {
-    measureOptions = genericMeasurements.map((measure, index) => {
-      return {
-        value: `${index}`,
-        label: `${measure.name} - ${measure.gramWeight}g`,
-      };
-    });
+  let currentMeasures = measureSelectOptions;
+  if (measureSelectOptions.length === 0) {
+    currentMeasures = genericMeasurements;
   }
+
+  let selectOptions = currentMeasures.map((measure, index) => {
+    return {
+      value: `${index}`,
+      label: `${measure.name} (${measure.gramWeight}g)`,
+    };
+  });
+
   return (
     <div className="caculator-edit-form-select-container ">
       <Select
-        options={measureOptions}
-        value={measureOptions[currentMeasureIndex]}
+        options={selectOptions}
+        value={selectOptions[currentMeasureIndex]}
         onChange={handleChange}
         className="calculator-edit-form-unit-select-field"
       />
-      <button onClick={(event) => handleuseGeneric(event)}>Use Generic</button>
+      <div>
+        Default Units{' '}
+        <label class="switch" onClick={handleSwitch}>
+          <input type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+      </div>
     </div>
   );
 }

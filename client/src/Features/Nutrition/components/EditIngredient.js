@@ -62,46 +62,56 @@ export function EditIngredient({
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="calculator-edit-form-inputs">
-        <label>
-          <input
-            className="calculator-ingredient-quantity-input"
-            defaultValue={quantity}
-            type="number"
-            {...register(`quantity${index}`)}
-          />
-        </label>
-        <UnitSelect
-          measures={IngredientEdit.measurementOptions}
-          recipeNutrition={recipeNutrition}
-          IngredientEdit={IngredientEdit}
-          setIngredientEdit={setIngredientEdit}
-        />
-        <div className="caculator-edit-form-select-container ">
-          <IngredientSelect
+        <div className="calculator-edit-form-input-container">
+          <div> Qty </div>
+          <label>
+            <input
+              className="calculator-ingredient-quantity-input"
+              defaultValue={quantity}
+              type="number"
+              {...register(`quantity${index}`)}
+            />
+          </label>
+        </div>
+        <div className="calculator-edit-form-input-container">
+          <div>Unit</div>
+          <UnitSelect
+            measures={IngredientEdit.measurementOptions}
             recipeNutrition={recipeNutrition}
-            ingredientName={ingredient.recipeIngredient.text}
-            setRecipeNutrition={setRecipeNutrition}
             IngredientEdit={IngredientEdit}
             setIngredientEdit={setIngredientEdit}
           />
-          <button
-            onClick={(event) =>
-              handleCreateIngredient(
-                ingredient.recipeIngredient.text,
-                IngredientEdit,
-                setIngredientEdit,
-                event
-              )
-            }
-          >
-            + Custom Ingredient
-          </button>
+        </div>
+        <div className="calculator-edit-form-input-container">
+          <div>Ingredient</div>
+          <div className="caculator-edit-form-select-container ">
+            <IngredientSelect
+              recipeNutrition={recipeNutrition}
+              ingredientName={ingredient.recipeIngredient.text}
+              setRecipeNutrition={setRecipeNutrition}
+              IngredientEdit={IngredientEdit}
+              setIngredientEdit={setIngredientEdit}
+            />
+            <button
+              id={'custom-ingredient-button'}
+              onClick={(event) =>
+                handleCreateIngredient(
+                  ingredient.recipeIngredient.text,
+                  IngredientEdit,
+                  setIngredientEdit,
+                  event
+                )
+              }
+            >
+              Create Ingredient
+            </button>
+          </div>
         </div>
       </div>
       <input
         className="calculator-edit-form-submit-button"
         type="submit"
-        value="Save"
+        value="Update"
       ></input>
     </form>
   );

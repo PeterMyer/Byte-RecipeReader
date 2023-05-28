@@ -1102,13 +1102,6 @@ td:last-child {
 
 /*Calculator CSS */
 
-.nutrition-calculator-refactor {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: white;
-}
-
 .calculator-single-ingredient-container {
   display: flex;
   flex-direction: column;
@@ -1121,28 +1114,4 @@ td:last-child {
 .calculator-single-ingredient-editbox-input-container {
   display: flex;
   flex-direction: row;
-}
-
-.calculator-ingredient-quantity-input {
-  width: 50px;
-  height: 33px;
-  border: solid 1px rgb(181, 181, 181);
-  border-radius: 5px;
-}
-
-.calculator-edit-form-unit-select-field {
-  width: 275px;
-}
-
-.calculator-edit-form-submit-button {
-  width: 100px;
-}
-
-.calculator-edit-form-ingredient-select-field {
-  width: 275px;
-}
-
-.caculator-edit-form-select-container {
-  display: flex;
-  flex-direction: column;
 }

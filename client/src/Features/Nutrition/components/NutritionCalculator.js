@@ -67,22 +67,21 @@ export function NutritionCalculator() {
 
   return (
     <>
+      <button
+        className="calculator-edit-form-submit-button"
+        onClick={() =>
+          handleSaveNutrition(
+            recipeId,
+            recipeNutrition.totalNutrition,
+            recipeNutrition.ingredients
+          )
+        }
+      >
+        Save Nutrition
+      </button>
       <div>
         {recipeNutrition ? (
           <>
-            <>
-              <button
-                onClick={() =>
-                  handleSaveNutrition(
-                    recipeId,
-                    recipeNutrition.totalNutrition,
-                    recipeNutrition.ingredients
-                  )
-                }
-              >
-                Save Nutrition
-              </button>
-            </>
             <div className="nutrition-calculator-refactor">
               <IngredientNutrition
                 ingredients={ingredients}
