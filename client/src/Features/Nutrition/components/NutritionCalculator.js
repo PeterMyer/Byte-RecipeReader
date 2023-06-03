@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import { IngredientNutrition } from './IngredientNutrition';
 import { useAuth0 } from '@auth0/auth0-react';
 import { NutritionLabel } from './NutritionLabel';
-import { NewIngredientForm } from './NewIngredientForm';
 import { NewIngredientPanel } from './NewIngredientPanel';
 
 export function NutritionCalculator() {
@@ -18,6 +17,8 @@ export function NutritionCalculator() {
   const [existingNutrition, setExistingNutrition] = useState(state.nutrition);
   const [form, setForm] = useState(null);
   const [showPanel, setShowPanel] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
+  const breakPoint = 850;
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
@@ -62,11 +63,18 @@ export function NutritionCalculator() {
   };
 
   useEffect(() => {
+    const windowResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', windowResize);
+
+    return () => window.removeEventListener('resize', windowResize);
+  }, []);
+
+  useEffect(() => {
     handleNutritionSetUp(recipeId);
   }, []);
 
-  return (
-    <>
+  function SubmitButton() {
+    return (
       <button
         className="calculator-edit-form-submit-button"
         onClick={() =>
@@ -79,20 +87,32 @@ export function NutritionCalculator() {
       >
         Save Nutrition
       </button>
+    );
+  }
+
+  return (
+    <>
       <div>
         {recipeNutrition ? (
           <>
+            <div>
+              <h1>Nutrition Caluclator</h1>
+            </div>
             <div className="nutrition-calculator-refactor">
-              <IngredientNutrition
-                ingredients={ingredients}
-                recipeNutrition={recipeNutrition}
-                recipeIngredients={recipeNutrition.ingredients}
-                setRecipeNutrition={setRecipeNutrition}
-                setForm={setForm}
-                setShowModal={setShowPanel}
-                form={form}
-              />
+              <div className="nutrition-calculator-ingredients-container">
+                <IngredientNutrition
+                  ingredients={ingredients}
+                  recipeNutrition={recipeNutrition}
+                  recipeIngredients={recipeNutrition.ingredients}
+                  setRecipeNutrition={setRecipeNutrition}
+                  setForm={setForm}
+                  setShowModal={setShowPanel}
+                  form={form}
+                />
+                {width < breakPoint ? <></> : <SubmitButton />}
+              </div>
               <NutritionLabel recipeNutrition={recipeNutrition} />
+              {width < breakPoint ? <SubmitButton /> : <></>}
             </div>
             <NewIngredientPanel
               onClose={() => setShowPanel(false)}

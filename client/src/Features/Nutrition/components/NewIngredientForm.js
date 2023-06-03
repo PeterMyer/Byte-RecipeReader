@@ -205,7 +205,7 @@ export function NewIngredientForm({
                   key={field.id}
                   className="new-ingredient-measurement-input"
                 >
-                  <label>
+                  <label className="name-input">
                     Name
                     <input
                       key={field.id}

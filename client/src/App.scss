@@ -4,10 +4,54 @@
   margin-right: 10%;
 }
 
+.recipe-display-header-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.recipe-page-single {
+  display: flex;
+  justify-content: center;
+  min-width: 400px;
+}
+
+.recipe-display-section {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.recipe-display-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 75%;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+  border-style: solid;
+  border-width: 1px;
+  border-color: lightgray;
+  box-shadow: 0px 10px 25px #d7d9de;
+  background-color: white;
+}
+
+.recipe-display-instructions-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
 .nutrition-calculator-refactor {
   display: flex;
   flex-direction: row;
-  background-color: var(--off_white);
+  background-color: white;
+  border: 1px solid darkgrey;
+  padding: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .Panel {
@@ -16,7 +60,7 @@
   top: 80px;
   opacity: 0;
   background-color: white;
-  width: 35%;
+  width: 40%;
   height: 90vh;
   padding: 0 12px 12px;
   z-index: 40;
@@ -145,8 +189,12 @@
   }
 }
 
+.nutrition-calculator-ingredients-container {
+  width: 65%;
+}
+
 .calculator-ingredients-list {
-  width: 70%;
+  width: 100%;
 }
 
 .calculator-ingredients-single {
@@ -167,7 +215,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  width: 90%;
 }
 
 .ingredient-input-text-container {
@@ -179,10 +227,17 @@
 .input-line {
   display: flex;
   flex-direction: row;
+
+  strong {
+    white-space: nowrap;
+  }
 }
 
 .input-line-comment {
-  font-weight: light;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .calculator-edit-form-inputs {
@@ -333,16 +388,114 @@ input:checked + .slider:before {
 }
 
 @media (max-width: 1000px) {
+  .Panel {
+    width: 50%;
+  }
+
   .calculator-edit-form-inputs {
     display: flex;
     flex-direction: column;
   }
+
+  .input-line {
+    display: flex;
+    flex-direction: column;
+
+    strong {
+      white-space: normal;
+    }
+  }
 }
 
 @media (max-width: 850px) {
+  .nutrition-calculator-ingredients-container {
+    width: 100%;
+  }
+
+  .Panel {
+    width: 70%;
+  }
+
   .nutrition-calculator-refactor {
     display: flex;
-    flex-direction: column-reverse;
-    align-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nutrition-label {
+    width: 240px;
+  }
+
+  .recipe-display-container {
+    width: 90%;
+  }
+
+  .recipe-display-section {
+    margin-left: 1rem;
+
+    ul {
+      padding-left: 1rem;
+    }
+  }
+
+  .recipe-display-instructions-container {
+    padding-left: 1rem;
+  }
+
+  .recipe-page-single {
+    flex-direction: column;
+  }
+
+  .recipe-display-header-buttons {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 600px) {
+  .Panel {
+    width: 80%;
+  }
+  .new-ingredient-form section {
+    flex-direction: column;
+
+    .section-inputs {
+      padding-top: 10px;
+
+      .new-ingredient-measurement-input {
+        display: flex;
+        justify-content: flex-end;
+
+        label {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          input {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 350px) {
+  .new-ingredient-form section .section-inputs {
+    label {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .new-ingredient-measurement-input {
+      display: flex;
+
+      .name-input {
+        margin-right: 10px;
+
+        input {
+          max-width: 100px;
+        }
+      }
+    }
   }
 }

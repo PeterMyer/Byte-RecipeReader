@@ -26,7 +26,6 @@ export const IngredientNutrition = ({
 
   return (
     <section className="calculator-ingredients-list">
-      <h3>Ingredients</h3>
       {ingredients.map((ingredient, index) => {
         return (
           <section className="calculator-ingredients-single">

@@ -74,7 +74,7 @@ export function SingleRecipe() {
           <div className="recipe-display-container">
             <div className="recipe-display-header">
               <div className="display-header-text">
-                <h1>{recipeData.name}</h1>
+                <h2>{recipeData.name}</h2>
                 <strong>Servings:</strong>
                 <div>{recipeData.servings}</div>
               </div>
