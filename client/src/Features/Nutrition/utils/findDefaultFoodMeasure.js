@@ -7,15 +7,17 @@ export function findDefaultFoodMeasure(measurementUnit, measurementOptions) {
   let defaultIndex = 0;
 
   if (measurementOptions.length > 0) {
+    console.log('measure options', measurementOptions);
+
     measureOptions = measurementOptions.map((measure, index) => {
-      if (measure.disseminationText.includes(measurementUnit)) {
+      if (measure.name.includes(measurementUnit)) {
         matchedMeasurement = measurementOptions[index];
         matchedIndex = index;
-      } else if (measure.disseminationText === 'Quantity not specified') {
+      } else if (measure.name === 'Quantity not specified') {
         defaultIndex = index;
       }
       return {
-        name: measure.disseminationText,
+        name: measure.name,
         gramWeight: measure.gramWeight,
       };
     });

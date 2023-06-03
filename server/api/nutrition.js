@@ -95,7 +95,12 @@ router.post('/:id', async (req, res, next) => {
           nutrition: food.foodNutrients,
           source: 'USDA',
           fdcId: food.fdcId,
-          foodMeasures: food.foodMeasures,
+          foodMeasures: food.foodMeasures.map((measure) => {
+            return {
+              name: measure.disseminationText,
+              gramWeight: measure.gramWeight,
+            };
+          }),
           servingSize: food.servingSize,
         }));
 

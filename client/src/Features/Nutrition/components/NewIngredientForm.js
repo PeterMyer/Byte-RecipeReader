@@ -1,7 +1,7 @@
 import { useForm, useFieldArray } from 'react-hook-form';
 import { createNutritionItem } from '../api';
 import { useAuth0 } from '@auth0/auth0-react';
-import { calculateIngredientNutrition } from '../utils/calculateIngredientNutrition';
+import { sumIngredientNutrition, calculateIngredientNutrition } from '../utils';
 import { filterNutrientValues } from '../utils';
 import { genericMeasurements } from '../utils/genericMeasurements';
 
@@ -93,17 +93,31 @@ export function NewIngredientForm({
       recipeNutrition.servings
     );
 
+    let recipeNutritionCopy = { ...recipeNutrition };
+    recipeNutritionCopy.ingredients[
+      ingredientEditCopy.recipeData.recipeIngredient.text
+    ] = ingredientEditCopy;
+
+    recipeNutritionCopy.totalNutrition =
+      sumIngredientNutrition(recipeNutritionCopy);
+
     setIngredientEdit(ingredientEditCopy);
+    setRecipeNutrition(recipeNutritionCopy);
     setForm(null);
     const body = document.querySelector('body');
     body.style.overflow = 'auto';
+    document.getElementById('new-ingredient-form').reset();
     onClose();
   };
 
   return (
     <article>
       <div></div>
-      <form className="new-ingredient-form" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        id="new-ingredient-form"
+        className="new-ingredient-form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <section>
           <div className="section-title">
             <strong>Required</strong>

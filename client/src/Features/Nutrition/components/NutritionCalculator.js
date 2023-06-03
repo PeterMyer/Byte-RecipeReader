@@ -22,7 +22,7 @@ export function NutritionCalculator() {
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
-
+    console.log('nutritionData')
     let recipeNutrition = calculateNutrition(
       ingredients,
       nutritionData.data.usdaResults,
@@ -65,7 +65,6 @@ export function NutritionCalculator() {
   useEffect(() => {
     const windowResize = () => setWidth(window.innerWidth);
     window.addEventListener('resize', windowResize);
-
     return () => window.removeEventListener('resize', windowResize);
   }, []);
 

@@ -47,6 +47,8 @@ export function buildRecipeNutrition(ingredients, nutritionData, servings) {
       ...nutritionValues,
     };
 
+    console.log('currentFood', currentFood);
+
     const {
       currentMeasurement,
       gramWeight,

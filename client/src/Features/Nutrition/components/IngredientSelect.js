@@ -17,6 +17,7 @@ export function IngredientSelect({
   const handleChange = (event) => {
     const IngredientEditCopy = { ...IngredientEdit };
 
+    console.log('IngredientEditCopy', IngredientEditCopy);
     IngredientEditCopy.matchedIndex = event.value;
     IngredientEditCopy.matchedIndexItem =
       IngredientEdit.allUsdaOptions[event.value];

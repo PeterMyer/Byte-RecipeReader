@@ -1,17 +1,25 @@
 import React from 'react';
 import { NewIngredientForm } from './NewIngredientForm';
 
-export function NewIngredientPanel(props) {
+// export function NewIngredientPanel(props) {
+export function NewIngredientPanel({
+  onClose,
+  showPanel,
+  form,
+  recipeNutrition,
+  setForm,
+  setRecipeNutrition,
+}) {
   const handleClick = () => {
     const body = document.querySelector('body');
     body.style.overflow = 'auto';
-    props.onClose();
+    onClose();
   };
 
   return (
     <>
       <section
-        className={`Panel ${props.showPanel ? 'Show' : ''}`}
+        className={`Panel ${showPanel ? 'Show' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
         <header>
@@ -19,12 +27,18 @@ export function NewIngredientPanel(props) {
           <button onClick={handleClick}>X</button>
         </header>
         <div className="panel-body">
-          <NewIngredientForm onClose={props.onClose} />
+          <NewIngredientForm
+            form={form}
+            setForm={setForm}
+            recipeNutrition={recipeNutrition}
+            onClose={onClose}
+            setRecipeNutrition={setRecipeNutrition}
+          />
         </div>
       </section>
       <div
-        className={`Overlay ${props.showPanel ? 'Show' : ''}`}
-        onClick={() => props.onClose()}
+        className={`Overlay ${showPanel ? 'Show' : ''}`}
+        onClick={() => onClose()}
       />
     </>
   );
