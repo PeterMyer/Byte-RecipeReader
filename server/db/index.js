@@ -59,13 +59,15 @@ userFoodItem.belongsTo(FoodItemNutrition);
 FoodItemNutrition.hasOne(DefaultByteFoodItem);
 DefaultByteFoodItem.belongsTo(FoodItemNutrition);
 
-FoodItemNutrition.hasOne(FoodItemMeasureOptions, { foreignKey: 'FoodItemId' });
+FoodItemNutrition.hasOne(FoodItemMeasureOptions, {
+  foreignKey: 'foodItemNutritionId',
+});
 FoodItemMeasureOptions.belongsTo(FoodItemNutrition, {
-  foreignKey: 'FoodItemId',
+  foreignKey: 'foodItemNutritionId',
 });
 
-RecipeIngredient.hasOne(FoodItemNutrition, { foreignKey: 'FoodItemId' });
-FoodItemNutrition.belongsTo(RecipeIngredient, { foreignKey: 'FoodItemId' });
+// RecipeIngredient.hasOne(FoodItemNutrition, { foreignKey: 'foodItemNutritionId' });
+// FoodItemNutrition.belongsTo(RecipeIngredient, { foreignKey: 'foodItemNutritionId' });
 
 module.exports = {
   db,

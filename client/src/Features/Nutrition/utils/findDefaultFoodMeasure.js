@@ -7,8 +7,6 @@ export function findDefaultFoodMeasure(measurementUnit, measurementOptions) {
   let defaultIndex = 0;
 
   if (measurementOptions.length > 0) {
-    console.log('measure options', measurementOptions);
-
     measureOptions = measurementOptions.map((measure, index) => {
       if (measure.name.includes(measurementUnit)) {
         matchedMeasurement = measurementOptions[index];

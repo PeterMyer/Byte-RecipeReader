@@ -4,7 +4,12 @@ import { formatNutrientData } from './formatNutritionData';
 import { findDefaultFoodMeasure } from './findDefaultFoodMeasure';
 import { handleQuantityInts } from './handleQuantityInts';
 
-export function buildRecipeNutrition(ingredients, nutritionData, servings) {
+export function buildRecipeNutrition(
+  ingredients,
+  nutritionData,
+  servings,
+  userFoods
+) {
   const recipeNutrition = {
     ingredients: {},
     totalNutrition: {},
@@ -18,12 +23,26 @@ export function buildRecipeNutrition(ingredients, nutritionData, servings) {
       ingredient.measurementQuantity.qtyAmount
     );
 
+    let currentUserFoods = [];
+    if (userFoods[index].length > 0) {
+      console.log('user food', userFoods[index]);
+      currentUserFoods = userFoods[index].map((food) => {
+        return {
+          name: food.name,
+          nutrition: food.nutrition,
+          source: food.source,
+          foodMeasures: JSON.parse(food.foodItemMeasureOption.options),
+        };
+      });
+    }
+
     recipeNutrition['ingredients'][ingredient.recipeIngredient.text] = {
       nurtritionPer100G: {},
       matchedIndex: 0,
       matchedIndexItem: currentFood,
       allUsdaOptions: [
         currentFood,
+        ...currentUserFoods.filter((item) => item.name !== currentFood.name),
         ...nutritionData[index].filter(
           (item) => item.fdcId !== currentFood.fdcId
         ),
@@ -46,8 +65,6 @@ export function buildRecipeNutrition(ingredients, nutritionData, servings) {
     ].nurtritionPer100G = {
       ...nutritionValues,
     };
-
-    console.log('currentFood', currentFood);
 
     const {
       currentMeasurement,

@@ -18,15 +18,15 @@ export function NutritionCalculator() {
   const [form, setForm] = useState(null);
   const [showPanel, setShowPanel] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
-  const breakPoint = 850;
+  const breakPoint = 900;
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
-    console.log('nutritionData')
     let recipeNutrition = calculateNutrition(
       ingredients,
       nutritionData.data.usdaResults,
-      servings
+      servings,
+      nutritionData.data.userFoods
     );
     setRecipeNutrition(recipeNutrition);
   };

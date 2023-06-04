@@ -1,5 +1,8 @@
 const axios = require('axios');
 const router = require('express').Router();
+const Sequelize = require('sequelize');
+
+const { Op } = Sequelize;
 const {
   models: {
     Recipe,
@@ -36,7 +39,7 @@ router.post('/newItem', async (req, res, next) => {
     const [itemMeasureOptions, itemMeasureOptionsCreated] =
       await FoodItemMeasureOptions.findOrCreate({
         where: {
-          foodItemId: foodItemNutrition.id,
+          foodItemNutritionId: foodItemNutrition.id,
         },
       });
 
@@ -78,6 +81,24 @@ router.post('/:id', async (req, res, next) => {
       ],
     });
 
+    // User Foods
+    const userFoods = await Promise.all(
+      recipe.ingredients.map(async (ingredient) => {
+        const results = await FoodItemNutrition.findAll({
+          where: {
+            name: { [Op.iLike]: `%${ingredient.component.name}%` },
+          },
+          include: [
+            {
+              model: FoodItemMeasureOptions,
+              attributes: ['id', 'foodItemNutritionId', 'options'],
+            },
+          ],
+        });
+        return results;
+      })
+    );
+
     // USDA API CALL
     const usdaResults = await Promise.all(
       recipe.ingredients.map(async (ingredient) => {
@@ -90,7 +111,7 @@ router.post('/:id', async (req, res, next) => {
           `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${process.env.foodDataCentralApiKey}`,
           params
         );
-        const result = response.data.foods.map((food) => ({
+        const results = response.data.foods.map((food) => ({
           name: food.description,
           nutrition: food.foodNutrients,
           source: 'USDA',
@@ -104,10 +125,10 @@ router.post('/:id', async (req, res, next) => {
           servingSize: food.servingSize,
         }));
 
-        return result;
+        return results;
       })
     );
-    res.json({ recipe, usdaResults });
+    res.json({ recipe, usdaResults, userFoods });
   } catch (error) {
     next(error);
   }

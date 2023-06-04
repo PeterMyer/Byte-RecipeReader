@@ -371,7 +371,7 @@ input:checked + .slider:before {
     white-space: normal;
   }
 }
-@media (max-width: 850px) {
+@media (max-width: 900px) {
   .nutrition-calculator-ingredients-container {
     width: 100%;
   }

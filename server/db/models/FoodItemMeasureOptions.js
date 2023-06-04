@@ -7,7 +7,7 @@ const FoodItemMeasureOptions = db.define('foodItemMeasureOptions', {
     primaryKey: true,
     defaultValue: Sequelize.DataTypes.UUIDV4,
   },
-  foodItemId: {
+  foodItemNutritionId: {
     type: Sequelize.UUID,
     allowNull: false,
   },
