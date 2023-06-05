@@ -34,7 +34,7 @@ router.post('/newItem', async (req, res, next) => {
 
     await foodItemNutrition.update({
       nutrition: req.body.nutrition,
-      measureOptions: req.body.measureOptions,
+      measureOptions: req.body.measurementOptions,
     });
 
     // const [itemMeasureOptions, itemMeasureOptionsCreated] =

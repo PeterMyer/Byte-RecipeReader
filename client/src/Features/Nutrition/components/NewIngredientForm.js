@@ -56,7 +56,9 @@ export function NewIngredientForm({
     let ingredientEdit = form[2];
     let setIngredientEdit = form[3];
 
-    let measureOptions = JSON.parse(response.data.measureOptions.options);
+    console.log('measureOptions', response.data);
+
+    let measureOptions = JSON.parse(response.data.itemNutrition.measureOptions);
 
     let newFoodItem = {
       name: response.data.itemNutrition.name,
