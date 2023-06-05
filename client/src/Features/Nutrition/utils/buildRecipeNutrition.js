@@ -16,6 +16,11 @@ export function buildRecipeNutrition(
     servings: servings,
   };
 
+  console.log('ingredients', ingredients);
+  console.log('nutritionData', nutritionData);
+  console.log('servings', servings);
+  console.log('userFoods', userFoods);
+
   ingredients.map((ingredient, index) => {
     let currentFood =
       ingredient.component.foodItemNutritions[0] || nutritionData[index][0];
@@ -23,15 +28,18 @@ export function buildRecipeNutrition(
       ingredient.measurementQuantity.qtyAmount
     );
 
+    console.log('currentFood', currentFood);
+
     let currentUserFoods = [];
     if (userFoods[index].length > 0) {
-      console.log('user food', userFoods[index]);
       currentUserFoods = userFoods[index].map((food) => {
         return {
           name: food.name,
           nutrition: food.nutrition,
           source: food.source,
-          foodMeasures: JSON.parse(food.foodItemMeasureOption.options),
+          foodMeasures: food.foodItemMeasureOption
+            ? JSON.parse(food.foodItemMeasureOption.options)
+            : null,
         };
       });
     }
@@ -44,7 +52,7 @@ export function buildRecipeNutrition(
         currentFood,
         ...currentUserFoods.filter((item) => item.name !== currentFood.name),
         ...nutritionData[index].filter(
-          (item) => item.fdcId !== currentFood.fdcId
+          (item) => item.name !== currentFood.name
         ),
       ],
       ingredientNutrition: {},
@@ -105,6 +113,8 @@ export function buildRecipeNutrition(
       ...ingredientNutritionCalculated,
     };
   });
+
+  console.log('recipeNutrition', recipeNutrition);
 
   return recipeNutrition;
 }

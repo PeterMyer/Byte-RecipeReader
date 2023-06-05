@@ -6,6 +6,7 @@ import { IngredientNutrition } from './IngredientNutrition';
 import { useAuth0 } from '@auth0/auth0-react';
 import { NutritionLabel } from './NutritionLabel';
 import { NewIngredientPanel } from './NewIngredientPanel';
+import { useNavigate } from 'react-router-dom';
 
 export function NutritionCalculator() {
   const { state } = useLocation();
@@ -19,6 +20,7 @@ export function NutritionCalculator() {
   const [showPanel, setShowPanel] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
   const breakPoint = 900;
+  const navigate = useNavigate();
 
   const handleNutritionSetUp = async (id) => {
     let nutritionData = await lookupNutrition(id);
@@ -60,6 +62,7 @@ export function NutritionCalculator() {
       response = await saveNutrition(id, nutritionPayload);
     }
     setExistingNutrition(JSON.parse(response.data.nutritionData));
+    navigate(`/recipes/${id}`);
   };
 
   useEffect(() => {
@@ -110,7 +113,10 @@ export function NutritionCalculator() {
                 />
                 {width < breakPoint ? <></> : <SubmitButton />}
               </div>
-              <NutritionLabel recipeNutrition={recipeNutrition} />
+              <NutritionLabel
+                nutritionData={recipeNutrition.totalNutrition}
+                servings={recipeNutrition.servings}
+              />
               {width < breakPoint ? <SubmitButton /> : <></>}
             </div>
             <NewIngredientPanel

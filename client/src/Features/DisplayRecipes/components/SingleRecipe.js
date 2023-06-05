@@ -7,6 +7,7 @@ import {
   createWithContent,
   EditorState,
 } from 'draft-js';
+import { NutritionLabel } from '../../Nutrition/components/NutritionLabel';
 import { Nutrition } from './Nutrition';
 import { DisplayIngredients } from './Ingredients';
 import ByteIcon from '../../../Assets/ByteIcon.png';
@@ -18,6 +19,7 @@ export function SingleRecipe() {
 
   const handleGetRecipe = async (recipeId) => {
     let recipe = await getRecipe(recipeId);
+    console.log('recipeData', recipe.data);
     setRecipeData({ ...recipe.data });
   };
 
@@ -107,14 +109,19 @@ export function SingleRecipe() {
               id="recipe-display-nutrition-data"
             >
               <h2>Nutrition</h2>
+              {recipeData.recipeNutrition ? (
+                <NutritionLabel
+                  nutritionData={JSON.parse(
+                    recipeData.recipeNutrition.nutritionData
+                  )}
+                  servings={recipeData.servings}
+                />
+              ) : (
+                <></>
+              )}
               <button onClick={handleCalculateNutrition}>
-                Calculate Nutrition
+                Nutrition Calculator
               </button>
-              {/* <Nutrition 
-								recipeId = { recipeId } 
-								ingredients = { recipeData.ingredients } 
-								servings = { recipeData.servings }
-							/> */}
             </section>
           </div>
         </div>

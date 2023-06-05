@@ -73,22 +73,27 @@ html {
 #navbar-options {
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
 }
 
 #navbar-options a {
   display: flex;
   color: var(--off_white);
-  padding: 5px 10px;
+  height: 100%;
+  padding: 0px 10px;
   font-family: 'Mukta', sans-serif;
   font-size: large;
   align-self: center;
   text-decoration: none;
+  align-items: center;
+}
+#navbar-options a:hover {
+  background-color: #444;
+  border: none;
 }
 
 #navbar-options button {
   color: var(--off_white);
-  float: left;
   display: block;
   align-self: center;
   text-align: center;
@@ -100,21 +105,39 @@ html {
   background-color: var(--dark_neutral);
 }
 
+#navbar-options button:hover {
+  background-color: #444;
+  border: none;
+}
+
 #navbar-auth {
+  display: flex;
+  align-items: center;
   align-self: center;
-  padding: 5px;
+  padding: 0px;
+  height: 100%;
+}
+
+#navbar-auth:hover {
+  background-color: #444;
+  border: none;
 }
 
 #navbar-auth button {
   padding: 10px;
   font-family: 'Mukta', sans-serif;
+  height: 100%;
   text-decoration: none;
   color: var(--off_white);
   background-color: var(--dark_neutral);
   border: none;
-  border-radius: 30px;
   cursor: pointer;
   font-size: large;
+}
+
+#navbar-auth button:hover {
+  background-color: #444;
+  border: none;
 }
 
 /* Landing Page */

@@ -1,13 +1,13 @@
 import { buildLabelData } from '../utils/buildLabelData';
 
-export function NutritionLabel({ recipeNutrition }) {
-  const labelData = buildLabelData(recipeNutrition);
+export function NutritionLabel({ nutritionData, servings }) {
+  const labelData = buildLabelData(nutritionData);
   return (
     <>
       <section className="nutrition-label">
         <header className="nutrition-label-header">
           <h1 className="nutrition-label-title">Nutrition Facts</h1>
-          <div>Servings {recipeNutrition.servings}</div>
+          <div>Servings {servings}</div>
           <div>{/* <b>Serving Size{placeholder}</b> */}</div>
         </header>
         <table className="nutrition-label-table">

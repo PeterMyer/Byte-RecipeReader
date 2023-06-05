@@ -34,22 +34,23 @@ router.post('/newItem', async (req, res, next) => {
 
     await foodItemNutrition.update({
       nutrition: req.body.nutrition,
+      measureOptions: req.body.measureOptions,
     });
 
-    const [itemMeasureOptions, itemMeasureOptionsCreated] =
-      await FoodItemMeasureOptions.findOrCreate({
-        where: {
-          foodItemNutritionId: foodItemNutrition.id,
-        },
-      });
+    // const [itemMeasureOptions, itemMeasureOptionsCreated] =
+    //   await FoodItemMeasureOptions.findOrCreate({
+    //     where: {
+    //       foodItemNutritionId: foodItemNutrition.id,
+    //     },
+    //   });
 
-    await itemMeasureOptions.update({
-      options: req.body.measurementOptions,
-    });
+    // await itemMeasureOptions.update({
+    //   options: req.body.measurementOptions,
+    // });
 
     const response = {
       itemNutrition: foodItemNutrition,
-      measureOptions: itemMeasureOptions,
+      // measureOptions: itemMeasureOptions,
     };
 
     res.send(response);

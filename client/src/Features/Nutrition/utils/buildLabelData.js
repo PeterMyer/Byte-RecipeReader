@@ -1,15 +1,15 @@
-export function buildLabelData(recipeNutrition) {
+export function buildLabelData(nutritionData, servings) {
   function createLabelItem(keyString, dailyValue) {
-    let amount = Math.round(recipeNutrition.totalNutrition[keyString]?.amount);
+    let amount = Math.round(nutritionData[keyString]?.amount);
     let labelItem = {
-      amount: amount + recipeNutrition.totalNutrition[keyString]?.unit,
+      amount: amount + nutritionData[keyString]?.unit,
       DV: dailyValue ? Math.round((amount / dailyValue) * 100) : null,
     };
     return labelItem;
   }
 
   const labelData = {
-    servings: recipeNutrition.servings,
+    servings: servings,
     calories: createLabelItem('calories'),
     totalFat: createLabelItem('totalFat', 65),
     saturatedFat: createLabelItem('saturatedFat', 20),
