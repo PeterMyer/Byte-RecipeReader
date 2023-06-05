@@ -557,3 +557,63 @@ input:checked + .slider:before {
 .show-dropdown {
   display: block;
 }
+
+#mobiledropdown {
+  display: none;
+  position: absolute;
+  top: 80px;
+  right: 0px;
+  width: 200px;
+}
+
+#mobileNavLinks {
+  position: relative;
+  background-color: white;
+  z-index: 1;
+  width: 200px;
+}
+
+#mobileNavLinks a {
+  color: black;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+#icon {
+  display: inline-block;
+  position: absolute;
+  height: 100%;
+  width: 80px;
+  top: 0;
+  right: 0;
+  font-size: large;
+  background-color: #242c29;
+  color: white;
+  border: none;
+}
+
+#mobileNavLinks a:hover {
+  background-color: #ddd;
+  color: black;
+  border-radius: 0px;
+}
+
+#mobiledropdown button {
+  width: 100%;
+  color: var(--dark_neutral);
+  display: block;
+  align-self: left;
+  text-align: left;
+  padding: 5px 20px;
+  font-family: 'Mukta', sans-serif;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  font-size: large;
+}
+
+#create-recipe {
+  display: none;
+}

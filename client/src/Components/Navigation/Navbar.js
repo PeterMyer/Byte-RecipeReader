@@ -1,23 +1,20 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthenticationButton } from '../../Features/Auth';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useState } from 'react';
+import NavOptions from './NavOptions';
+import NavOptionsMobile from './NavOptionsMobile';
 
 export default function NavBar() {
   const { isAuthenticated } = useAuth0();
+  const [width, setWidth] = useState(window.innerWidth);
+  const breakPoint = 700;
 
-  const showDropdown = () => {
-    document.getElementById('createDropdown').classList.toggle('show-dropdown');
-  };
-
-  window.onclick = function (e) {
-    if (!e.target.matches('.dropbtn')) {
-      var myDropdown = document.getElementById('createDropdown');
-      if (myDropdown.classList.contains('show-dropdown')) {
-        myDropdown.classList.remove('show-dropdown');
-      }
-    }
-  };
+  useEffect(() => {
+    const windowResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', windowResize);
+    return () => window.removeEventListener('resize', windowResize);
+  }, []);
 
   return (
     <>
@@ -29,25 +26,11 @@ export default function NavBar() {
             </Link>
           </div>
           <div className="navbar-options-container">
-            <div id="navbar-options">
-              {isAuthenticated ? (
-                <>
-                  <Link to="/recipes">Recipes</Link>
-                  <div className="dropdown">
-                    <button class="dropbtn" onClick={showDropdown}>
-                      Create Recipe <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content" id="createDropdown">
-                      <Link to="/recipeForm/new">Create Manually</Link>
-                      <Link to="/recipeImageIntake">Create From Image</Link>
-                    </div>
-                  </div>
-                </>
-              ) : null}
-            </div>
-            <div id="navbar-auth">
-              <AuthenticationButton />
-            </div>
+            {width < breakPoint ? (
+              <NavOptionsMobile isAuthenticated={isAuthenticated} />
+            ) : (
+              <NavOptions isAuthenticated={isAuthenticated} />
+            )}
           </div>
         </div>
       </nav>
