@@ -17,6 +17,9 @@ export function RecipeForm() {
   const [recipeName] = useState(state ? state.recipeData.name : null);
   const [servings] = useState(state ? state.recipeData.servings : null);
   const [source] = useState(state ? state.recipeData.source : null);
+  const [prepTime] = useState(state ? state.recipeData.prepTime : null);
+  const [cookTime] = useState(state ? state.recipeData.cookTime : null);
+
   const [ingredients] = useState(
     state
       ? state.recipeData.ingredients
@@ -67,6 +70,8 @@ export function RecipeForm() {
       recipeName: recipeName ? recipeName : null,
       servings: servings ? servings : null,
       source: source ? source : null,
+      prepTime: prepTime ? prepTime : null,
+      cookTime: cookTime ? cookTime : null,
       DraftJs:
         useCase === 'edit'
           ? instructions
@@ -170,12 +175,12 @@ export function RecipeForm() {
                 </div>
               </label>
               <label className="recipeform-input-label">
-                <strong>Servings</strong>
+                <strong>Source</strong>
                 <div className="recipeform-input-container">
                   <input
-                    {...register('servings')}
+                    {...register('source')}
                     type="text"
-                    placeholder="Servings"
+                    placeholder="Source"
                     className="recipeform-input-field"
                   />
                 </div>
@@ -197,6 +202,43 @@ export function RecipeForm() {
                   encType="multipart/form-data"
                   onChange={onChange}
                 />
+              </label>
+            </div>
+          </section>
+          <section className="recipeform-section">
+            <div className="recipeform-subsection">
+              <label className="recipeform-input-label">
+                <strong>Servings</strong>
+                <div className="recipeform-input-container">
+                  <input
+                    {...register('servings')}
+                    type="text"
+                    placeholder="Servings"
+                    className="recipeform-input-field"
+                  />
+                </div>
+              </label>
+              <label className="recipeform-input-label">
+                <strong>Prep Time</strong>
+                <div className="recipeform-input-container">
+                  <input
+                    {...register('prepTime')}
+                    type="text"
+                    placeholder="Prep Time"
+                    className="recipeform-input-field"
+                  />
+                </div>
+              </label>
+              <label className="recipeform-input-label">
+                <strong>Cook Time</strong>
+                <div className="recipeform-input-container">
+                  <input
+                    {...register('cookTime')}
+                    type="text"
+                    placeholder="Cook Time"
+                    className="recipeform-input-field"
+                  />
+                </div>
               </label>
             </div>
           </section>
