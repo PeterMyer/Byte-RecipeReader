@@ -10,6 +10,7 @@ import {
 import { NutritionLabel } from '../../Nutrition/components/NutritionLabel';
 import { Nutrition } from './Nutrition';
 import { DisplayIngredients } from './Ingredients';
+import { StarRating } from './StarRating';
 import ByteIcon from '../../../Assets/ByteIcon.png';
 
 export function SingleRecipe() {
@@ -65,64 +66,94 @@ export function SingleRecipe() {
     <article className="page-content">
       {recipeData !== null ? (
         <div className="recipe-page-single">
-          <div className="recipe-display-header-buttons">
-            <button onClick={handleEditRecipe} id="edit-button">
-              <i class="fa-regular fa-pen-to-square"></i>
-            </button>
-            <button onClick={handleDeleteRecipe} id="edit-button">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+          <div className="recipe-display-button-container">
+            <div className="recipe-display-buttons">
+              <button onClick={handleEditRecipe} id="edit-button">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+              <button onClick={handleDeleteRecipe} id="edit-button">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
           </div>
           <div className="recipe-display-container">
             <div className="recipe-display-header">
-              <div className="display-header-text">
-                <h2>{recipeData.name}</h2>
-                <strong>Servings:</strong>
-                <div>{recipeData.servings}</div>
+              <div className="recipe-header-section">
+                <div className="recipe-display-img-container">
+                  <img
+                    src={
+                      recipeData.image ? recipeData.image.filepath : ByteIcon
+                    }
+                    alt="recipe"
+                    className="responsive-image"
+                  />
+                </div>
+                <div className="display-header-text">
+                  <h2>{recipeData.name}</h2>
+                  <p>{recipeData.source}</p>
+                  <StarRating rating={4} />
+                </div>
               </div>
-              <div className="recipe-display-img-container">
-                <img
-                  src={recipeData.image ? recipeData.image.filepath : ByteIcon}
-                  alt="ByteIcon"
-                  className="responsive-image"
-                />
+              <div className="details-section-header">
+                <div className="header-content">
+                  <strong>Servings:</strong> <p>&nbsp;{recipeData.servings}</p>
+                </div>
+                <div className="header-content">
+                  <strong>Prep Time:</strong> <p>&nbsp;{recipeData.prepTime}</p>
+                </div>
+                <div className="header-content">
+                  <strong>Cook Time:</strong> <p>&nbsp;{recipeData.cookTime}</p>
+                </div>
+                <div className="header-content">
+                  <strong>Difficulty:</strong> <p>&nbsp;Easy</p>
+                </div>
               </div>
             </div>
-            <section className="recipe-display-section">
-              <h2>Ingredients</h2>
-              <DisplayIngredients ingredients={recipeData.ingredients} />
-            </section>
-
-            <section className="recipe-display-section">
-              <h2>Instructions</h2>
-              <div className="recipe-display-instructions-container">
-                <Editor
-                  editorState={EditorState.createWithContent(
-                    convertFromRaw(JSON.parse(recipeData.instructions))
-                  )}
-                  readOnly="true"
-                />
+            <section className="recipe-details-section">
+              <div className="details-section-description">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
               </div>
             </section>
-            <section
-              className="recipe-display-section"
-              id="recipe-display-nutrition-data"
-            >
-              <h2>Nutrition</h2>
-              {recipeData.recipeNutrition ? (
-                <NutritionLabel
-                  nutritionData={JSON.parse(
-                    recipeData.recipeNutrition.nutritionData
-                  )}
-                  servings={recipeData.servings}
-                />
-              ) : (
-                <></>
-              )}
-              <button onClick={handleCalculateNutrition}>
-                Nutrition Calculator
-              </button>
-            </section>
+            <div className="single-recipe-body">
+              <div className="recipe-display-container">
+                <section className="recipe-display-section">
+                  <h2>Ingredients</h2>
+                  <DisplayIngredients ingredients={recipeData.ingredients} />
+                </section>
+                <section className="recipe-display-section">
+                  <h2>Instructions</h2>
+                  <Editor
+                    editorState={EditorState.createWithContent(
+                      convertFromRaw(JSON.parse(recipeData.instructions))
+                    )}
+                    readOnly="true"
+                  />
+                </section>
+              </div>
+              <section id="recipe-display-nutrition-data">
+                {recipeData.recipeNutrition ? (
+                  <NutritionLabel
+                    nutritionData={JSON.parse(
+                      recipeData.recipeNutrition.nutritionData
+                    )}
+                    servings={recipeData.servings}
+                  />
+                ) : (
+                  <></>
+                )}
+                <button
+                  className="nutrition-calc-button"
+                  onClick={handleCalculateNutrition}
+                >
+                  Nutrition Calculator
+                </button>
+              </section>
+            </div>
           </div>
         </div>
       ) : (

@@ -1,49 +1,3 @@
-.main-content {
-  margin-top: 80px; /* Add a top margin to avoid content overlay */
-  margin-left: 10%;
-  margin-right: 10%;
-}
-
-.recipe-display-header-buttons {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.recipe-page-single {
-  display: flex;
-  justify-content: center;
-  min-width: 400px;
-}
-
-.recipe-display-section {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  margin-left: 2em;
-  margin-right: 2em;
-}
-
-.recipe-display-container {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  width: 75%;
-  margin-bottom: 2em;
-  padding-bottom: 2em;
-  border-style: solid;
-  border-width: 1px;
-  border-color: lightgray;
-  box-shadow: 0px 10px 25px #d7d9de;
-  background-color: white;
-}
-
-.recipe-display-instructions-container {
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
 .nutrition-calculator-refactor {
   display: flex;
   flex-direction: row;
@@ -386,9 +340,6 @@ input:checked + .slider:before {
   .nutrition-label {
     width: 240px;
   }
-  .recipe-display-container {
-    width: 90%;
-  }
   .recipe-display-section {
     margin-left: 1rem;
   }
@@ -397,13 +348,6 @@ input:checked + .slider:before {
   }
   .recipe-display-instructions-container {
     padding-left: 1rem;
-  }
-  .recipe-page-single {
-    flex-direction: column;
-  }
-  .recipe-display-header-buttons {
-    display: flex;
-    flex-direction: row;
   }
 }
 @media (max-width: 600px) {
@@ -556,4 +500,196 @@ input:checked + .slider:before {
 
 #create-recipe {
   display: none;
+}
+
+.recipe-page-single {
+  display: flex;
+  justify-content: center;
+  min-width: 400px;
+}
+
+.recipe-display-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+  background-color: white;
+  width: 100%;
+}
+
+.recipe-display-button-container {
+  position: fixed;
+  left: 10px;
+}
+
+.recipe-display-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-display-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.recipe-header-section {
+  display: flex;
+  flex-direction: row;
+}
+
+.display-header-text {
+  display: flex;
+  margin-left: 15px;
+  flex-direction: column;
+  align-items: flex-start;
+  color: black;
+  max-width: 35vw;
+  width: 100%;
+}
+.display-header-text h2 {
+  font-size: 3rem;
+  margin: 0;
+}
+.display-header-text p {
+  font-size: 1.5em;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.recipe-display-img-container {
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 300px;
+  margin: 0;
+  padding: 0;
+}
+
+.responsive-image {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.single-recipe-body {
+  display: flex;
+  flex-direction: row;
+}
+
+.recipe-details-section {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.details-section-header {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #f5d7cc;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 17rem;
+  max-width: 300px;
+  border-radius: 15px;
+  margin-right: 6rem;
+}
+
+.details-section-description {
+  border-top: 2px solid darkred;
+  min-width: none;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.2rem;
+}
+.header-content p {
+  margin: 0.75rem;
+}
+
+.recipe-display-section {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-right: 1rem;
+}
+.recipe-display-section h2 {
+  font-size: 2rem;
+}
+
+#recipie-display-ingredient-list {
+  list-style-type: none;
+  padding: 0;
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+#recipie-display-ingredient-list li {
+  list-style: none;
+  margin-bottom: 0.75rem;
+}
+
+.nutrition-calc-button {
+  background-color: var(--dark_neutral);
+  color: var(--off_white);
+  cursor: pointer;
+  font-family: "Mukta", sans-serif;
+  border: none;
+  padding: 15px;
+  margin-top: 1rem;
+}
+.nutrition-calc-button:hover {
+  background-color: rgb(53, 53, 253);
+}
+
+div.public-DraftEditor-content {
+  width: 100%;
+}
+
+.starRating {
+  display: flex;
+  color: grey;
+  font-size: 1.5rem;
+}
+
+.checked {
+  color: #d65929;
+}
+
+@media (max-width: 900px) {
+  .recipe-display-container {
+    width: 90%;
+  }
+}
+#navbar {
+  background-color: #242c29;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.navbar-content {
+  display: flex;
+  flex-direction: row;
+  height: 80px;
+  margin-left: 6rem;
+  margin-right: 6rem;
+}
+
+.main-content {
+  margin-top: 80px; /* Add a top margin to avoid content overlay */
+  margin-left: 6rem;
+  margin-right: 6rem;
+}
+
+.page-content {
+  width: 100%;
+  padding-top: 1rem;
 }/*# sourceMappingURL=App.css.map */

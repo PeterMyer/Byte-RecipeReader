@@ -9,14 +9,6 @@
   --light_blue: #089184;
 }
 
-html {
-  background-color: var(--off_white);
-}
-
-.page-content {
-  margin-top: 10%;
-}
-
 .page-title {
   font-family: 'Manrope', sans-serif;
   color: var(--dark_neutral);
@@ -25,21 +17,6 @@ html {
 }
 
 /*///// Navbar ////*/
-#navbar {
-  background-color: var(--dark_neutral);
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1;
-}
-
-.navbar-content {
-  display: flex;
-  flex-direction: row;
-  height: 80px;
-  margin-left: 10%;
-  margin-right: 10%;
-}
 
 #navbar-home-link-container {
   display: flex;
@@ -661,31 +638,6 @@ modal-footer {
 
 /* Display Recipe Single */
 
-.recipe-display-header {
-  display: flex;
-  flex-direction: row;
-  border-bottom: solid;
-  border-color: white;
-  justify-content: space-between;
-  width: 100%;
-  background-color: var(--dark_neutral);
-}
-
-.display-header-text {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  color: white;
-}
-
-.recipe-display-header h2 {
-  font-size: xx-large;
-  text-align: center;
-}
-
 .recipe-display-section h2 {
   margin-top: 0;
 }
@@ -694,29 +646,6 @@ modal-footer {
   display: flex;
   flex-direction: column;
   max-width: 300px;
-}
-
-.recipe-display-img-container {
-  min-width: 100px;
-  min-height: 100px;
-  max-width: 350px;
-  margin: 0;
-  padding: 0;
-}
-
-#recipie-display-ingredient-list {
-  list-style: none;
-  margin-top: 5px;
-}
-
-#recipie-display-ingredient-list li {
-  list-style: none;
-  padding-top: 0.75rem;
-}
-
-.recipe-display-instructions-container {
-  padding-left: 40px;
-  padding-right: 40px;
 }
 
 #recipe-display-nutrition-data h2 {
@@ -754,11 +683,6 @@ modal-footer {
   display: flex;
   min-width: 20%;
   padding: 10px;
-}
-
-.responsive-image {
-  width: 100%;
-  height: auto;
 }
 
 #edit-button {
@@ -995,8 +919,8 @@ modal-footer {
 /*Nutrition Label */
 .nutrition-label {
   border: 1px solid black;
-  margin: 20px;
   float: left;
+  margin-right: 6rem;
   width: 280px;
   height: 580px;
   padding: 0.5rem;
