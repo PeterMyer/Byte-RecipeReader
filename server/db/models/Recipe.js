@@ -24,6 +24,10 @@ const Recipe = db.define('recipe', {
     type: Sequelize.STRING,
     allowNull: true,
   },
+  rating: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+  },
   profileId: {
     type: Sequelize.INTEGER,
     allowNull: true,

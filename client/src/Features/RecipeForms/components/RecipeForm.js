@@ -7,6 +7,7 @@ import { updateRecipe, saveImage, createRecipe } from '../api';
 import { useAuth0 } from '@auth0/auth0-react';
 import { createEditRecipePayload, createNewRecipePayload } from '../utils';
 import ByteIcon from '../../../Assets/ByteIcon.png';
+import { RatingSelect } from './RatingSelect';
 
 export function RecipeForm() {
   const { user } = useAuth0();
@@ -16,6 +17,7 @@ export function RecipeForm() {
 
   const [recipeName] = useState(state ? state.recipeData.name : null);
   const [servings] = useState(state ? state.recipeData.servings : null);
+  const [rating] = useState(state ? state.recipeData.rating : 0);
   const [source] = useState(state ? state.recipeData.source : null);
   const [prepTime] = useState(state ? state.recipeData.prepTime : null);
   const [cookTime] = useState(state ? state.recipeData.cookTime : null);
@@ -70,6 +72,7 @@ export function RecipeForm() {
       recipeName: recipeName ? recipeName : null,
       servings: servings ? servings : null,
       source: source ? source : null,
+      rating: rating ? rating : 0,
       prepTime: prepTime ? prepTime : null,
       cookTime: cookTime ? cookTime : null,
       DraftJs:
@@ -184,6 +187,10 @@ export function RecipeForm() {
                     className="recipeform-input-field"
                   />
                 </div>
+              </label>
+              <label className="recipeform-input-label">
+                <strong>Rating</strong>
+                <RatingSelect control={control} />
               </label>
             </div>
             <div className="recipeform-subsection">

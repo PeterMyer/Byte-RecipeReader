@@ -17,6 +17,7 @@ export async function createNewRecipePayload(data, userId) {
     name: data.recipeName,
     servings: data.servings,
     source: data.source,
+    rating: data.rating.value,
     prepTime: data.prepTime,
     cookTime: data.CookTime,
     ingredients: JSON.stringify(

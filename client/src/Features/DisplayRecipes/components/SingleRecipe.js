@@ -33,6 +33,9 @@ export function SingleRecipe() {
       source: recipeData.source,
       ingredients: recipeData.ingredients,
       recipeImg: recipeData.image,
+      rating: recipeData.rating,
+      prepTime: recipeData.prepTime,
+      cookTime: recipeData.cookTime,
     };
     navigate(`/recipeForm/edit/${recipeId}`, {
       state: {
@@ -91,7 +94,7 @@ export function SingleRecipe() {
                 <div className="display-header-text">
                   <h2>{recipeData.name}</h2>
                   <p>{recipeData.source}</p>
-                  <StarRating rating={4} />
+                  <StarRating rating={recipeData.rating} />
                 </div>
               </div>
               <div className="details-section-header">

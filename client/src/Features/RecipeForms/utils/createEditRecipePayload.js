@@ -20,7 +20,7 @@ export async function createEditRecipePayload(
   let imgResponse = null;
   let recipeImgId = recipeImg ? recipeImg.id : null;
 
-  if (data.ImgFile !== recipeImg) {
+  if (data.ImgFile !== recipeImg.filepath) {
     const fileData = new FormData();
     fileData.append('uploaded_file', data.ImgFile[0]);
     let userId = user.sub;
@@ -31,6 +31,7 @@ export async function createEditRecipePayload(
     name: data.recipeName,
     servings: data.servings,
     source: data.source,
+    rating: data.rating.value,
     prepTime: data.prepTime,
     cookTime: data.cookTime,
     ingredients: JSON.stringify([...newIngredient]),

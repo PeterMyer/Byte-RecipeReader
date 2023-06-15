@@ -96,6 +96,7 @@ router.post('/', ParseIngredient, async (req, res, next) => {
       profileId: req.body.imgId,
       prepTime: req.body.prepTime,
       cookTime: req.body.cookTime,
+      rating: req.body.rating,
     });
     await Promise.all(
       parsedIngredients.map(async (item) => {
@@ -209,6 +210,7 @@ router.put('/:id', ParseIngredient, async (req, res, next) => {
         profileId: req.body.imgId,
         prepTime: req.body.prepTime,
         cookTime: req.body.cookTime,
+        rating: req.body.rating,
       },
       { where: { id: req.params.id } }
     );
