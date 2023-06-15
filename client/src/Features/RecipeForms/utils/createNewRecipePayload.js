@@ -20,6 +20,7 @@ export async function createNewRecipePayload(data, userId) {
     rating: data.rating.value,
     prepTime: data.prepTime,
     cookTime: data.CookTime,
+    difficulty: data.difficulty.value,
     ingredients: JSON.stringify(
       data.Ingredients.map((ingredient) => ingredient.value.toLowerCase())
     ),

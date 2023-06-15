@@ -34,6 +34,7 @@ export async function createEditRecipePayload(
     rating: data.rating.value,
     prepTime: data.prepTime,
     cookTime: data.cookTime,
+    difficulty: data.difficulty.value,
     ingredients: JSON.stringify([...newIngredient]),
     instructions: JSON.stringify(
       convertToRaw(data.DraftJs.getCurrentContent())

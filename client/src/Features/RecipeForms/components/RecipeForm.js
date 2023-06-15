@@ -8,6 +8,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { createEditRecipePayload, createNewRecipePayload } from '../utils';
 import ByteIcon from '../../../Assets/ByteIcon.png';
 import { RatingSelect } from './RatingSelect';
+import { DifficultySelect } from './DifficultySelect';
 
 export function RecipeForm() {
   const { user } = useAuth0();
@@ -21,6 +22,7 @@ export function RecipeForm() {
   const [source] = useState(state ? state.recipeData.source : null);
   const [prepTime] = useState(state ? state.recipeData.prepTime : null);
   const [cookTime] = useState(state ? state.recipeData.cookTime : null);
+  const [difficulty] = useState(state ? state.recipeData.difficulty : null);
 
   const [ingredients] = useState(
     state
@@ -75,6 +77,9 @@ export function RecipeForm() {
       rating: rating ? rating : 0,
       prepTime: prepTime ? prepTime : null,
       cookTime: cookTime ? cookTime : null,
+      difficulty: difficulty
+        ? { value: `${difficulty}`, label: `${difficulty}` }
+        : null,
       DraftJs:
         useCase === 'edit'
           ? instructions
@@ -246,6 +251,10 @@ export function RecipeForm() {
                     className="recipeform-input-field"
                   />
                 </div>
+              </label>
+              <label className="recipeform-input-label">
+                <strong>Difficulty</strong>
+                <DifficultySelect control={control} />
               </label>
             </div>
           </section>

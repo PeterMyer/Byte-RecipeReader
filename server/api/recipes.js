@@ -97,6 +97,7 @@ router.post('/', ParseIngredient, async (req, res, next) => {
       prepTime: req.body.prepTime,
       cookTime: req.body.cookTime,
       rating: req.body.rating,
+      difficulty: req.body.difficulty,
     });
     await Promise.all(
       parsedIngredients.map(async (item) => {
@@ -211,6 +212,7 @@ router.put('/:id', ParseIngredient, async (req, res, next) => {
         prepTime: req.body.prepTime,
         cookTime: req.body.cookTime,
         rating: req.body.rating,
+        difficulty: req.body.difficulty,
       },
       { where: { id: req.params.id } }
     );

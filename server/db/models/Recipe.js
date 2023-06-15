@@ -44,6 +44,10 @@ const Recipe = db.define('recipe', {
     type: Sequelize.TEXT,
     allowNull: true,
   },
+  difficulty: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
 });
 
 module.exports = Recipe;

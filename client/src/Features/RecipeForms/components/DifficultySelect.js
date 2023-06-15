@@ -1,25 +1,22 @@
 import Select from 'react-select';
 import { Controller } from 'react-hook-form';
-import { useState } from 'react';
 
-export const RatingSelect = ({ control }) => {
+export const DifficultySelect = ({ control }) => {
   const options = [
-    { value: 0, label: '0' },
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 4, label: '4' },
-    { value: 5, label: '5' },
+    { value: null, label: '' },
+    { value: 'Easy', label: 'Easy' },
+    { value: 'Medium', label: 'Medium' },
+    { value: 'Hard', label: 'Hard' },
   ];
 
   return (
     <div className="recipeform-input-container">
       <Controller
-        name="rating"
+        name="difficulty"
         control={control}
         render={({ field: { value, onChange } }) => (
           <Select
-            value={options[value]}
+            value={value}
             options={options}
             onChange={onChange}
             isClearable={true}

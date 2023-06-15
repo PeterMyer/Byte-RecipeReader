@@ -36,6 +36,7 @@ export function SingleRecipe() {
       rating: recipeData.rating,
       prepTime: recipeData.prepTime,
       cookTime: recipeData.cookTime,
+      difficulty: recipeData.difficulty,
     };
     navigate(`/recipeForm/edit/${recipeId}`, {
       state: {
@@ -108,7 +109,8 @@ export function SingleRecipe() {
                   <strong>Cook Time:</strong> <p>&nbsp;{recipeData.cookTime}</p>
                 </div>
                 <div className="header-content">
-                  <strong>Difficulty:</strong> <p>&nbsp;Easy</p>
+                  <strong>Difficulty:</strong>{' '}
+                  <p>&nbsp;{recipeData.difficulty}</p>
                 </div>
               </div>
             </div>
