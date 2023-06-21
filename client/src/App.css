@@ -461,45 +461,6 @@ modal-footer {
 }
 
 /* Recipe Forms */
-.recipeform-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.recipeform-outside-box {
-  display: block;
-  width: 70%;
-  min-width: 500px;
-  margin-top: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: lightgray;
-  padding: 10px;
-  box-shadow: 0px 10px 25px #d7d9de;
-  background-color: white;
-}
-
-.recipeform {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.recipeform-section {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  border-style: solid;
-  width: 90%;
-  border-width: 1px;
-  border-color: var(--deep_blue);
-  border-left: none;
-  border-right: none;
-  border-bottom: none;
-  gap: 30px;
-  padding: 10px;
-}
 
 .recipeSegment {
   display: flex;
@@ -512,129 +473,14 @@ modal-footer {
   margin: 5px;
 }
 
-.recipeform-subsection {
-  display: flex;
-  flex-direction: column;
-}
-
-.recipeform-img-container {
-  border: lightgray;
-  border-style: solid;
-  min-width: 200px;
-  min-height: 100px;
-}
-
-#recipeform-img-upload {
-  display: flex;
-  flex-direction: row;
-  padding-top: 5px;
-  font-size: small;
-  cursor: pointer;
-  width: 120px;
-}
-
-#recipeform-img-upload:hover {
-  color: #1d5c2f;
-}
-
-#ingredient {
+/* #ingredient {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
   margin: 10px;
   max-width: 100%;
-}
-
-.recipeform-input-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.recipeform-instructions-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 70%;
-  min-height: 100px;
-}
-
-.recipeform-input-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  margin: 3px;
-  left: 2%;
-  height: 35px;
-}
-
-.recipeform-input-container:hover .recipeform-input-hiddenbutton {
-  display: block;
-  visibility: visible;
-  color: lightcoral;
-  background-color: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: large;
-}
-
-.recipeform-input-container:hover .recipeform-input-hiddenbutton:hover {
-  display: block;
-  color: darkred;
-}
-
-.recipeform-input-field-ingredients {
-  width: 400px;
-  min-width: 150px;
-}
-
-#addButton {
-  color: var(--light_blue);
-  background-color: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: large;
-  align-self: flex-start;
-}
-
-#addButton:hover {
-  color: var(--deep_blue);
-}
-
-.recipeform-input-field {
-  max-width: 200px;
-  margin: 2px;
-}
-
-.recipeform-input-hiddenbutton {
-  visibility: hidden;
-  position: relative;
-  left: 5px;
-}
-
-.recipeform-input-instructions-container {
-  width: 100%;
-  border: solid;
-  border-color: lightgray;
-  resize: none;
-  height: 100%;
-}
-#save-recipe {
-  text-align: center;
-  background-color: var(--light_blue);
-  padding: 10px;
-  color: white;
-  text-decoration: none;
-  margin: 10px 30px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-}
+} */
 
 /* Display Recipe Single */
 

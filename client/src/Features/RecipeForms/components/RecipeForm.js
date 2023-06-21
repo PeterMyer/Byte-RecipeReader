@@ -15,7 +15,6 @@ export function RecipeForm() {
   const { state } = useLocation();
   const { id } = useParams();
   const useCase = state ? state.useCase : null;
-
   const [recipeName] = useState(state ? state.recipeData.name : null);
   const [servings] = useState(state ? state.recipeData.servings : null);
   const [rating] = useState(state ? state.recipeData.rating : 0);
@@ -166,149 +165,151 @@ export function RecipeForm() {
   };
 
   return (
-    <div className="recipeform-container">
-      <div className="recipeform-outside-box">
-        <form className="recipeform" onSubmit={handleSubmit(onSubmit)}>
-          {useCase === 'edit' ? <h1> Edit Recipe </h1> : <h1>New Recipe</h1>}
-          <section className="recipeform-section">
-            <div className="recipeform-subsection">
-              <label className="recipeform-input-label">
-                <strong>Recipe Name</strong>
-                <div className="recipeform-input-container">
-                  <input
-                    {...register('recipeName', { required: true })}
-                    placeholder="Recipe Name"
-                    className="recipeform-input-field"
-                  />
-                </div>
-              </label>
-              <label className="recipeform-input-label">
-                <strong>Source</strong>
-                <div className="recipeform-input-container">
-                  <input
-                    {...register('source')}
-                    type="text"
-                    placeholder="Source"
-                    className="recipeform-input-field"
-                  />
-                </div>
-              </label>
-              <label className="recipeform-input-label">
-                <strong>Rating</strong>
-                <RatingSelect control={control} />
-              </label>
-            </div>
-            <div className="recipeform-subsection">
-              <strong>Recipe Image</strong>
-              <div className="recipeform-img-container">
-                <img src={imgPreview} alt="" style={{ 'max-width': 200 }} />
-              </div>
-              <label
-                id="recipeform-img-upload"
-                className="recipeform-input-label"
-              >
-                <input
-                  {...register('ImgFile', { required: false })}
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  encType="multipart/form-data"
-                  onChange={onChange}
-                />
-              </label>
-            </div>
-          </section>
-          <section className="recipeform-section">
-            <div className="recipeform-subsection">
-              <label className="recipeform-input-label">
-                <strong>Servings</strong>
-                <div className="recipeform-input-container">
-                  <input
-                    {...register('servings')}
-                    type="text"
-                    placeholder="Servings"
-                    className="recipeform-input-field"
-                  />
-                </div>
-              </label>
-              <label className="recipeform-input-label">
-                <strong>Prep Time</strong>
-                <div className="recipeform-input-container">
-                  <input
-                    {...register('prepTime')}
-                    type="text"
-                    placeholder="Prep Time"
-                    className="recipeform-input-field"
-                  />
-                </div>
-              </label>
-              <label className="recipeform-input-label">
-                <strong>Cook Time</strong>
-                <div className="recipeform-input-container">
-                  <input
-                    {...register('cookTime')}
-                    type="text"
-                    placeholder="Cook Time"
-                    className="recipeform-input-field"
-                  />
-                </div>
-              </label>
-              <label className="recipeform-input-label">
-                <strong>Difficulty</strong>
-                <DifficultySelect control={control} />
-              </label>
-            </div>
-          </section>
-          <section className="recipeform-section" id="ingredient">
-            <label className="recipeform-input-label">
-              <strong>Ingredients</strong>
-              {fields.map((field, index) => {
-                return (
-                  <div key={field.id} className="recipeform-input-container">
+    <article className="page-content">
+      <div className="recipeform-container">
+        <div className="recipeform-outside-box">
+          <form className="recipeform" onSubmit={handleSubmit(onSubmit)}>
+            {useCase === 'edit' ? <h1> Edit Recipe </h1> : <h1>New Recipe</h1>}
+            <section className="recipeform-section">
+              <div className="recipeform-subsection">
+                <label className="recipeform-input-label">
+                  <strong>Recipe Name</strong>
+                  <div className="recipeform-input-container">
                     <input
-                      key={field.id}
-                      {...register(`Ingredients.${index}.value`)}
-                      type="text"
-                      placeholder="Ingredient"
-                      className="recipeform-input-field-ingredients"
-                      defaultValue={field.value}
+                      {...register('recipeName', { required: true })}
+                      placeholder="Recipe Name"
+                      className="recipeform-input-field"
                     />
-                    <button
-                      type="button"
-                      className="recipeform-input-hiddenbutton"
-                      onClick={() => handleDelete(index)}
-                    >
-                      <i className="fa-solid fa-circle-xmark"></i>
-                    </button>
                   </div>
-                );
-              })}
-              <button
-                type="button"
-                id="addButton"
-                onClick={() =>
-                  append({
-                    value: '',
-                    id: null,
-                  })
-                }
-              >
-                <i className="fa-solid fa-circle-plus"></i>
+                </label>
+                <label className="recipeform-input-label">
+                  <strong>Source</strong>
+                  <div className="recipeform-input-container">
+                    <input
+                      {...register('source')}
+                      type="text"
+                      placeholder="Source"
+                      className="recipeform-input-field"
+                    />
+                  </div>
+                </label>
+                <label className="recipeform-input-label">
+                  <strong>Rating</strong>
+                  <RatingSelect control={control} />
+                </label>
+              </div>
+              <div className="recipeform-subsection">
+                <strong>Recipe Image</strong>
+                <div className="recipeform-img-container">
+                  <img src={imgPreview} alt="" style={{ 'max-width': 200 }} />
+                </div>
+                <label
+                  id="recipeform-img-upload"
+                  className="recipeform-input-label"
+                >
+                  <input
+                    {...register('ImgFile', { required: false })}
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    encType="multipart/form-data"
+                    onChange={onChange}
+                  />
+                </label>
+              </div>
+            </section>
+            <section className="recipeform-section">
+              <div className="recipeform-subsection">
+                <label className="recipeform-input-label">
+                  <strong>Servings</strong>
+                  <div className="recipeform-input-container">
+                    <input
+                      {...register('servings')}
+                      type="text"
+                      placeholder="Servings"
+                      className="recipeform-input-field"
+                    />
+                  </div>
+                </label>
+                <label className="recipeform-input-label">
+                  <strong>Prep Time</strong>
+                  <div className="recipeform-input-container">
+                    <input
+                      {...register('prepTime')}
+                      type="text"
+                      placeholder="Prep Time"
+                      className="recipeform-input-field"
+                    />
+                  </div>
+                </label>
+                <label className="recipeform-input-label">
+                  <strong>Cook Time</strong>
+                  <div className="recipeform-input-container">
+                    <input
+                      {...register('cookTime')}
+                      type="text"
+                      placeholder="Cook Time"
+                      className="recipeform-input-field"
+                    />
+                  </div>
+                </label>
+                <label className="recipeform-input-label">
+                  <strong>Difficulty</strong>
+                  <DifficultySelect control={control} />
+                </label>
+              </div>
+            </section>
+            <section className="recipeform-section" id="ingredient">
+              <label className="recipeform-input-label">
+                <strong>Ingredients</strong>
+                {fields.map((field, index) => {
+                  return (
+                    <div key={field.id} className="recipeform-input-container">
+                      <input
+                        key={field.id}
+                        {...register(`Ingredients.${index}.value`)}
+                        type="text"
+                        placeholder="Ingredient"
+                        className="recipeform-input-field-ingredients"
+                        defaultValue={field.value}
+                      />
+                      <button
+                        type="button"
+                        className="recipeform-input-hiddenbutton"
+                        onClick={() => handleDelete(index)}
+                      >
+                        <i className="fa-solid fa-circle-xmark"></i>
+                      </button>
+                    </div>
+                  );
+                })}
+                <button
+                  type="button"
+                  id="addButton"
+                  onClick={() =>
+                    append({
+                      value: '',
+                      id: null,
+                    })
+                  }
+                >
+                  <i className="fa-solid fa-circle-plus"></i>
+                </button>
+              </label>
+            </section>
+            <section className="recipeform-section">
+              <label className="recipeform-input-label">
+                <strong>Instructions</strong>
+                <RecipeInstructionsEditor control={control} />
+              </label>
+            </section>
+            <section className="recipeform-section">
+              <button id="save-recipe" type="submit" value="Save Recipe">
+                Save Recipe
               </button>
-            </label>
-          </section>
-          <section className="recipeform-section">
-            <label className="recipeform-input-label">
-              <strong>Instructions</strong>
-              <RecipeInstructionsEditor control={control} />
-            </label>
-          </section>
-          <section className="recipeform-section">
-            <button id="save-recipe" type="submit" value="Save Recipe">
-              Save Recipe
-            </button>
-          </section>
-        </form>
+            </section>
+          </form>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }

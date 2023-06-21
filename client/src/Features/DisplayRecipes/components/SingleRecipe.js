@@ -115,14 +115,7 @@ export function SingleRecipe() {
               </div>
             </div>
             <section className="recipe-details-section">
-              <div className="details-section-description">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-              </div>
+              <div className="details-section-description"></div>
             </section>
             <div className="single-recipe-body">
               <div className="recipe-display-container">
