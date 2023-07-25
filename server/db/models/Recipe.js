@@ -1,38 +1,53 @@
-const Sequelize = require("sequelize")
-const db = require("../db")
+const Sequelize = require('sequelize');
+const db = require('../db');
 
-const Recipe = db.define("recipe",{
-  id:{
+const Recipe = db.define('recipe', {
+  id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
-    primaryKey: true
-    
+    primaryKey: true,
   },
-  name:{
+  name: {
     type: Sequelize.STRING,
-    allowNull:false,
+    allowNull: false,
   },
-  servings:{
+  servings: {
     type: Sequelize.INTEGER,
     allowNull: true,
-    defaultValue: 1
+    defaultValue: 1,
   },
-  instructions:{
+  instructions: {
     type: Sequelize.JSON,
-    allowNull:true,
+    allowNull: true,
   },
-  source:{
+  source: {
     type: Sequelize.STRING,
-    allowNull:true
+    allowNull: true,
   },
-  profileId:{
+  rating: {
     type: Sequelize.INTEGER,
-    allowNull: true
+    allowNull: true,
   },
-  userId:{
+  profileId: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+  },
+  userId: {
     type: Sequelize.TEXT,
-    allowNull:false
-  }}
-)
+    allowNull: false,
+  },
+  prepTime: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
+  cookTime: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
+  difficulty: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
+});
 
 module.exports = Recipe;

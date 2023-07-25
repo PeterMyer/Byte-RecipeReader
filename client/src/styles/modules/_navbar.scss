@@ -1,0 +1,15 @@
+#navbar {
+  background-color: #242c29;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.navbar-content {
+  display: flex;
+  flex-direction: row;
+  height: 80px;
+  margin-left: 6rem;
+  margin-right: 6rem;
+}
